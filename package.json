@@ -1,0 +1,9 @@
+{
+  "name": "3dpic-to-ifc-viewer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "xeokit IFC viewer for 3DpicToIFCModeling",
+  "dependencies": {
+    "@xeokit/xeokit-sdk": "^2.6.0"
+  }
+}

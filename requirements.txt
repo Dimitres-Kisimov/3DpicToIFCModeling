@@ -1,0 +1,8 @@
+PySide6>=6.6.0
+ifcopenshell>=0.8.0
+openai>=1.0.0
+huggingface-hub>=0.20.0
+transformers>=4.36.0
+python-dotenv>=1.0.0
+numpy>=1.24.0
+Pillow>=10.0.0
