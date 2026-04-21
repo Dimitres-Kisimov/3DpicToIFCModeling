@@ -95,16 +95,13 @@ app.get('/api/models/available', (req, res) => {
   });
 });
 
-// Placeholder for generate endpoint (will be implemented in Phase 3)
-app.post('/api/generate', (req, res, next) => {
-  res.status(501).json({
-    success: false,
-    error: {
-      code: 'NOT_IMPLEMENTED',
-      message: 'Generate endpoint will be implemented in Phase 3',
-    },
-  });
-});
+// Import and use API routes (Phase 3)
+const apiRoutes = require('./routes/apiRoutes');
+app.use('/api', apiRoutes);
+
+// Import and use object routes (Phase 5)
+const objectRoutes = require('./routes/objectRoutes');
+app.use('/api', objectRoutes);
 
 // ============================================================================
 // 404 HANDLER
