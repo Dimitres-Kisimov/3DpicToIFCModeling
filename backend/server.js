@@ -38,6 +38,9 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 // Serve outputs (generated files)
 app.use('/outputs', express.static(path.join(__dirname, '../outputs')));
 
+// Serve xeokit-sdk from local node_modules (avoids CDN dependency)
+app.use('/vendor/xeokit-sdk', express.static(path.join(__dirname, '../node_modules/@xeokit/xeokit-sdk/dist')));
+
 // ============================================================================
 // ROUTES
 // ============================================================================

@@ -5,6 +5,7 @@
 
 let viewer = null;
 let canvas = null;
+let gltfLoader = null;
 
 /**
  * Initialize xeokit viewer
@@ -24,23 +25,29 @@ function initViewer(containerId) {
   }
 
   try {
-    // Create canvas element
-    canvas = document.createElement('canvas');
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    container.innerHTML = ''; // Clear placeholder
-    container.appendChild(canvas);
-
-    // Check if xeokit is available
+    // Check if xeokit is available before touching the DOM
     if (typeof window.xeokit === 'undefined' || typeof window.xeokit.Viewer === 'undefined') {
       throw new Error('xeokit SDK not loaded. Check CDN connection.');
     }
 
+    // Create canvas element with explicit pixel dimensions so xeokit can initialize WebGL
+    canvas = document.createElement('canvas');
+    canvas.id = 'xeokit-canvas';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    container.innerHTML = ''; // Clear placeholder
+    container.appendChild(canvas);
+    canvas.width = container.clientWidth || 800;
+    canvas.height = container.clientHeight || 600;
+
     // Initialize viewer using xeokit.Viewer
     viewer = new window.xeokit.Viewer({
-      canvas: canvas,
+      canvasId: 'xeokit-canvas',
       transparent: true,
     });
+
+    // Initialize GLTFLoaderPlugin for loading GLB/GLTF files
+    gltfLoader = new window.xeokit.GLTFLoaderPlugin(viewer);
 
     // Setup camera for good initial view
     viewer.camera.eye = [0, 0, 3];
@@ -52,7 +59,7 @@ function initViewer(containerId) {
 
     return viewer;
   } catch (error) {
-    showError('Failed to initialize xeokit viewer', error);
+    showError(`Failed to initialize xeokit viewer: ${error.message}`, error);
     throw error;
   }
 }
@@ -65,38 +72,33 @@ function initViewer(containerId) {
  * @returns {Promise<object>} - Loaded model entity
  */
 async function loadGLBModel(glbUrl, objectId, options = {}) {
-  if (!viewer) {
+  if (!viewer || !gltfLoader) {
     showError('Viewer not initialized');
     return null;
   }
 
-  try {
+  return new Promise((resolve, reject) => {
     updateStatus(`Loading 3D model: ${objectId}`);
 
-    // Load GLB using xeokit's load method
-    const model = await viewer.scene.load({
+    const model = gltfLoader.load({
       id: objectId,
       src: glbUrl,
-      metaModelId: 'GLBModel',
+      edges: true,
     });
 
-    // Auto-fit model into view
-    viewer.cameraFlight.flyTo(
-      {
-        aabb: viewer.scene.getAABB(),
-        duration: 1.0,
-      },
-      () => {
+    model.on('loaded', () => {
+      viewer.cameraFlight.flyTo(model, () => {
         console.log('[xeokitViewer] Camera fitted to model');
-      }
-    );
+      });
+      updateStatus(`✓ Model loaded: ${objectId}`);
+      resolve(model);
+    });
 
-    updateStatus(`✓ Model loaded: ${objectId}`);
-    return model;
-  } catch (error) {
-    showError(`Failed to load GLB model: ${objectId}`, error);
-    throw error;
-  }
+    model.on('error', (errMsg) => {
+      showError(`Failed to load GLB model: ${objectId}`, errMsg);
+      reject(new Error(errMsg));
+    });
+  });
 }
 
 /**
@@ -255,4 +257,5 @@ window.xeokitModule = {
   clearScene,
   exportSceneData,
   getViewer: () => viewer,
+  getLoader: () => gltfLoader,
 };
