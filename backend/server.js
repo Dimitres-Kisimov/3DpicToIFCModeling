@@ -103,6 +103,14 @@ app.use('/api', apiRoutes);
 const objectRoutes = require('./routes/objectRoutes');
 app.use('/api', objectRoutes);
 
+// Import and use export routes (Phase 6)
+const exportRoutes = require('./routes/exportRoutes');
+app.use('/api', exportRoutes);
+
+// Import and use pipeline routes (Phase 7)
+const pipelineRoutes = require('./routes/pipelineRoutes');
+app.use('/api', pipelineRoutes);
+
 // ============================================================================
 // 404 HANDLER
 // ============================================================================
