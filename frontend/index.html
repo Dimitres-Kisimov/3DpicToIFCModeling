@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Picture to IFC Modeling</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Controls -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h2>3D to IFC</h2>
+                <p class="subtitle">AI-Powered Modeling</p>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="sidebar-section">
+                <h3>1. Upload Image</h3>
+                <div class="upload-box">
+                    <input type="file" id="imageInput" accept="image/*" class="file-input">
+                    <label for="imageInput" class="upload-label">
+                        <span>📷 Choose Image</span>
+                    </label>
+                </div>
+                <div id="imagePreview" class="image-preview"></div>
+            </div>
+
+            <!-- Model Selection -->
+            <div class="sidebar-section">
+                <h3>2. Select Model</h3>
+                <div class="model-options">
+                    <label class="radio-option">
+                        <input type="radio" name="model" value="instantmesh" checked>
+                        <span>InstantMesh</span>
+                        <small>Fast mesh generation</small>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="model" value="stablefast3d">
+                        <span>StableFast3D</span>
+                        <small>Stable & fast 3D</small>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="model" value="triposr">
+                        <span>TripoSR</span>
+                        <small>High quality</small>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <div class="sidebar-section">
+                <h3>3. Generate 3D Model</h3>
+                <button id="generateBtn" class="btn btn-primary" disabled>
+                    ⚙️ Generate
+                </button>
+                <div id="progressContainer" class="progress-container" style="display: none;">
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                    <p id="progressText" class="progress-text">Generating...</p>
+                </div>
+            </div>
+
+            <!-- Inventory -->
+            <div class="sidebar-section">
+                <h3>4. Inventory</h3>
+                <div id="inventoryList" class="inventory-list">
+                    <p class="empty-state">No objects yet</p>
+                </div>
+            </div>
+
+            <!-- Export -->
+            <div class="sidebar-section">
+                <h3>5. Export</h3>
+                <button id="exportIfcBtn" class="btn btn-secondary" disabled>
+                    📥 Export to IFC
+                </button>
+            </div>
+
+            <!-- Debug Info -->
+            <div class="sidebar-section debug-section">
+                <h3>Debug</h3>
+                <button id="healthCheckBtn" class="btn btn-small">Check Health</button>
+                <div id="healthInfo" class="health-info"></div>
+            </div>
+        </aside>
+
+        <!-- Main Viewer -->
+        <main class="main-content">
+            <div id="xeokit-container" class="xeokit-viewer">
+                <div class="viewer-placeholder">
+                    <p>xeokit viewer will load here</p>
+                    <p class="subtitle">Upload an image and generate a 3D model</p>
+                </div>
+            </div>
+
+            <!-- Transform Controls -->
+            <div class="transform-panel" id="transformPanel" style="display: none;">
+                <div class="transform-section">
+                    <label>Position</label>
+                    <div class="transform-inputs">
+                        <input type="number" id="posX" placeholder="X" class="transform-input">
+                        <input type="number" id="posY" placeholder="Y" class="transform-input">
+                        <input type="number" id="posZ" placeholder="Z" class="transform-input">
+                    </div>
+                </div>
+                <div class="transform-section">
+                    <label>Rotation (degrees)</label>
+                    <div class="transform-inputs">
+                        <input type="number" id="rotX" placeholder="X" class="transform-input">
+                        <input type="number" id="rotY" placeholder="Y" class="transform-input">
+                        <input type="number" id="rotZ" placeholder="Z" class="transform-input">
+                    </div>
+                </div>
+                <button id="snapToGroundBtn" class="btn btn-small">Snap to Ground</button>
+                <button id="resetTransformBtn" class="btn btn-small">Reset Transform</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <span id="statusMessage">Ready</span>
+    </div>
+
+    <!-- Scripts -->
+    <!-- xeokit SDK loaded as ES module, exposed globally for non-module scripts -->
+    <script type="module">
+      import * as xeokit from '/vendor/xeokit-sdk/xeokit-sdk.min.es.js';
+      window.xeokit = xeokit;
+    </script>
+    
+    <!-- Core API -->
+    <script src="js/api.js"></script>
+    
+    <!-- xeokit Modules (Phase 2+) -->
+    <script src="js/xeokitViewer.js"></script>
+    <script src="js/glbLoader.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/transformControls.js"></script>
+    <script src="js/exporter.js"></script>
+    
+    <!-- Main App -->
+    <script src="js/index.js"></script>
+</body>
+</html>

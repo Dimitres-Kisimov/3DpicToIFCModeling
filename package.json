@@ -1,9 +1,35 @@
 {
-  "name": "3dpic-to-ifc-viewer",
+  "name": "3d-pic-to-ifc-modeling",
   "version": "1.0.0",
-  "private": true,
-  "description": "xeokit IFC viewer for 3DpicToIFCModeling",
+  "description": "Convert 2D images to 3D models using AI, display in xeokit, and export to IFC format",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "3D",
+    "AI",
+    "xeokit",
+    "IFC",
+    "BIM",
+    "InstantMesh",
+    "StableFast3D",
+    "TripoSR"
+  ],
+  "author": "",
+  "license": "MIT",
   "dependencies": {
-    "@xeokit/xeokit-sdk": "^2.6.0"
+    "@xeokit/xeokit-sdk": "^2.6.108",
+    "axios": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

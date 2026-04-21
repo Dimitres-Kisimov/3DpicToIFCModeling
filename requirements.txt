@@ -1,8 +1,28 @@
-PySide6>=6.6.0
-ifcopenshell>=0.8.0
-openai>=1.0.0
-huggingface-hub>=0.20.0
-transformers>=4.36.0
-python-dotenv>=1.0.0
-numpy>=1.24.0
-Pillow>=10.0.0
+# Python Dependencies
+
+# Deep Learning & 3D
+torch==2.0.0
+torchvision==0.15.0
+torchaudio==2.0.0
+
+# 3D Mesh Processing
+open3d==0.17.0
+trimesh==3.20.0
+numpy==1.24.0
+scipy==1.10.0
+
+# AI Models (to be installed from specific sources)
+# instantmesh - Install from: https://github.com/TencentARC/InstantMesh
+# stable-fast-3d - Install from: https://github.com/stability-ai/stable-fast-3d
+# triposr - Install from: https://github.com/VAST-AI-Research/Tripo-SR
+
+# File I/O
+Pillow==9.5.0
+imageio==2.25.0
+
+# IFC
+ifcopenshell==0.7.0
+
+# Utilities
+python-dotenv==1.0.0
+pydantic==2.0.0
