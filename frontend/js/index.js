@@ -15,7 +15,7 @@ function initializeViewer() {
 
   try {
     // Wait for xeokit to load
-    if (typeof Viewer === 'undefined') {
+    if (typeof window.xeokit === 'undefined' || typeof window.xeokit.Viewer === 'undefined') {
       console.warn('[app] xeokit not yet loaded, retrying...');
       setTimeout(initializeViewer, 500);
       return;

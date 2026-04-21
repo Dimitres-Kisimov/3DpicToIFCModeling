@@ -31,8 +31,13 @@ function initViewer(containerId) {
     container.innerHTML = ''; // Clear placeholder
     container.appendChild(canvas);
 
-    // Initialize viewer
-    viewer = new Viewer({
+    // Check if xeokit is available
+    if (typeof window.xeokit === 'undefined' || typeof window.xeokit.Viewer === 'undefined') {
+      throw new Error('xeokit SDK not loaded. Check CDN connection.');
+    }
+
+    // Initialize viewer using xeokit.Viewer
+    viewer = new window.xeokit.Viewer({
       canvas: canvas,
       transparent: true,
     });
@@ -68,16 +73,12 @@ async function loadGLBModel(glbUrl, objectId, options = {}) {
   try {
     updateStatus(`Loading 3D model: ${objectId}`);
 
-    const model = await viewer.scene.importModel(
-      {
-        id: objectId,
-        src: glbUrl,
-        metaModelId: 'GLBModel',
-      },
-      () => {
-        console.log(`[xeokitViewer] Model loaded: ${objectId}`);
-      }
-    );
+    // Load GLB using xeokit's load method
+    const model = await viewer.scene.load({
+      id: objectId,
+      src: glbUrl,
+      metaModelId: 'GLBModel',
+    });
 
     // Auto-fit model into view
     viewer.cameraFlight.flyTo(
