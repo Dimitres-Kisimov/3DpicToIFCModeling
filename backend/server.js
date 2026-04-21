@@ -111,6 +111,10 @@ app.use('/api', exportRoutes);
 const pipelineRoutes = require('./routes/pipelineRoutes');
 app.use('/api', pipelineRoutes);
 
+// Import and use debug routes (Phase 8)
+const debugRoutes = require('./routes/debugRoutes');
+app.use('/api', debugRoutes);
+
 // ============================================================================
 // 404 HANDLER
 // ============================================================================
