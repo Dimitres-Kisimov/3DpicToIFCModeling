@@ -83,7 +83,7 @@ async function loadGLBModel(glbUrl, objectId, options = {}) {
     const model = gltfLoader.load({
       id: objectId,
       src: glbUrl,
-      edges: true,
+      edges: false,
     });
 
     model.on('loaded', () => {

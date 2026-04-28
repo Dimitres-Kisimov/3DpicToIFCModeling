@@ -25,9 +25,15 @@ async function runTripoSR(imagePath, outputDir) {
     
     logger.info('TripoSR', `Starting high-quality inference`, { imagePath, outputGlbPath });
 
-    // Execute Python script
-    const result = await executePythonScript('run_triposr.py', [imagePath, outputGlbPath], {
-      timeout: 900000, // 15 minutes for high-quality inference
+    // Use Meshy cloud API if key is configured, otherwise fall back to local depth mesh
+    const meshyKey = process.env.MESHY_API_KEY || '';
+    const script = meshyKey ? 'run_meshy_api.py' : 'run_triposr.py';
+    const env = meshyKey ? { ...process.env, MESHY_API_KEY: meshyKey } : process.env;
+    logger.info('TripoSR', meshyKey ? 'Using Meshy cloud API' : 'Using local depth mesh (no MESHY_API_KEY set)');
+
+    const result = await executePythonScript(script, [imagePath, outputGlbPath], {
+      timeout: 900000,
+      env,
     });
 
     if (!result.success) {
