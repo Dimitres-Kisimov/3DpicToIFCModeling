@@ -82,79 +82,15 @@ def generate_mesh_triposr(image_path, output_path):
         # 2. Center mesh at origin
         mesh.apply_translation(-mesh.bounding_box.centroid)
 
-        # 3. Orientation fix — TripoSR outputs are often upside-down.
-        #    Detect by clustering face normals: find how many faces point UP (+Y)
-        #    vs DOWN (-Y). The seat/back is a large flat upward-facing surface.
-        #    If more face area points downward than upward, the mesh is inverted.
-        face_normals = mesh.face_normals          # (N, 3)
-        face_areas   = mesh.area_faces            # (N,)
-        up_area   = face_areas[face_normals[:, 1] >  0.5].sum()
-        down_area = face_areas[face_normals[:, 1] < -0.5].sum()
-        if down_area > up_area:
+        # 3. Orientation fix — TripoSR sometimes outputs upside-down
+        #    Heuristic: if vertex mass is above Y=0 (heavy top = upside down), flip
+        centroid_y = mesh.vertices[:, 1].mean()
+        if centroid_y > 0.05:
             R = trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0])
             mesh.apply_transform(R)
-            log(f"Orientation corrected (down_area={down_area:.4f} > up_area={up_area:.4f})", "info")
-        else:
-            log(f"Orientation OK (up_area={up_area:.4f} >= down_area={down_area:.4f})", "info")
+            log("Applied orientation correction (flipped)", "info")
 
-        # 4. Rotational symmetry enforcement for the chair base
-        #    Office chairs have an N-spoke base (usually 5) that is rotationally
-        #    symmetric. TripoSR reconstructs each spoke independently from whatever
-        #    was visible in the photo, so they come out different shapes.
-        #    Fix: isolate the bottom 25% of the mesh (the base), find the best-formed
-        #    spoke (largest by volume), rotate it N times to replace all spokes.
-        try:
-            bbox = mesh.bounding_box.bounds          # [[xmin,ymin,zmin],[xmax,ymax,zmax]]
-            y_min, y_max = bbox[0][1], bbox[1][1]
-            y_base_cutoff = y_min + (y_max - y_min) * 0.28  # bottom 28% = base zone
-
-            # Split into base and upper body
-            base_mask = mesh.vertices[mesh.faces].mean(axis=1)[:, 1] < y_base_cutoff
-            upper_faces = mesh.faces[~base_mask]
-            base_faces  = mesh.faces[base_mask]
-
-            if len(base_faces) > 50:
-                base_mesh = trimesh.Trimesh(vertices=mesh.vertices.copy(),
-                                            faces=base_faces, process=False)
-                upper_mesh = trimesh.Trimesh(vertices=mesh.vertices.copy(),
-                                             faces=upper_faces, process=False)
-
-                # Split base into disconnected spoke components
-                base_components = base_mesh.split(only_watertight=False)
-                # Keep only spoke-sized components (not the tiny centre hub debris)
-                spokes = [c for c in base_components if len(c.faces) > 10]
-
-                n_spokes = len(spokes)
-                if 3 <= n_spokes <= 7:
-                    # Pick the best-formed spoke: largest volume proxy
-                    best = max(spokes, key=lambda c: c.bounding_box.volume)
-                    best_center = best.bounding_box.centroid
-                    # Compute the angle of this spoke around Y axis
-                    angle_step = (2 * np.pi) / n_spokes
-                    symmetry_axis = [0, 1, 0]
-                    rotated_spokes = []
-                    for i in range(n_spokes):
-                        spoke_copy = best.copy()
-                        # Rotate around Y through the mesh centre
-                        R = trimesh.transformations.rotation_matrix(
-                            angle_step * i, symmetry_axis, point=[0, best_center[1], 0]
-                        )
-                        spoke_copy.apply_transform(R)
-                        rotated_spokes.append(spoke_copy)
-
-                    symmetric_base = trimesh.util.concatenate(rotated_spokes)
-                    mesh = trimesh.util.concatenate([upper_mesh, symmetric_base])
-                    log(f"Symmetry applied: {n_spokes} identical spokes rotated at "
-                        f"{np.degrees(angle_step):.1f}° intervals", "info")
-                else:
-                    log(f"Symmetry skipped: found {n_spokes} base components "
-                        f"(expected 3–7)", "info")
-            else:
-                log("Symmetry skipped: base too small", "info")
-        except Exception as se:
-            log(f"Symmetry pass skipped: {se}", "warn")
-
-        # 5. Laplacian smoothing — reduce faceted look while preserving structure
+        # 4. Laplacian smoothing — reduce faceted look while preserving structure
         trimesh.smoothing.filter_laplacian(mesh, iterations=5)
         log("Mesh smoothed", "info")
 
