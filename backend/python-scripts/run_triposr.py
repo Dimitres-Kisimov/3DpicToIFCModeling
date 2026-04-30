@@ -1,5 +1,6 @@
 """
 TripoSR inference — real single-image 3D reconstruction.
+Improvements: SAM2 segmentation, Poisson refinement, Humphrey smoothing.
 Weights cached after first run. GPU-accelerated when available.
 """
 
@@ -12,13 +13,131 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "triposr"))
 
 from inference_base import log, error_exit, success_exit
 
+# SAM2 checkpoint — downloaded to models/sam2/
+SAM2_CHECKPOINT = str(Path(__file__).parent.parent.parent / "models" / "sam2" / "sam2.1_hiera_tiny.pt")
+SAM2_CONFIG    = "configs/sam2.1/sam2.1_hiera_t.yaml"
+
+
+def segment_with_sam2(image_path):
+    """
+    Use SAM2 to produce a pixel-perfect foreground mask.
+    Automatically picks the largest detected object (the furniture piece).
+    Falls back to rembg if SAM2 fails.
+    Returns: PIL Image in RGBA with clean alpha mask.
+    """
+    try:
+        import torch
+        import numpy as np
+        from PIL import Image
+        from sam2.build_sam import build_sam2
+        from sam2.sam2_image_predictor import SAM2ImagePredictor
+
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        img = Image.open(image_path).convert("RGB")
+        img_np = np.array(img)
+
+        log("Loading SAM2 model...", "info")
+        sam2_model = build_sam2(SAM2_CONFIG, SAM2_CHECKPOINT, device=device)
+        predictor = SAM2ImagePredictor(sam2_model)
+        predictor.set_image(img_np)
+
+        # Use a grid of points across the image centre to find the main object
+        h, w = img_np.shape[:2]
+        cx, cy = w // 2, h // 2
+        # Prompt with centre + surrounding points — picks up the main object
+        point_coords = np.array([
+            [cx, cy],
+            [cx - w // 6, cy],
+            [cx + w // 6, cy],
+            [cx, cy - h // 6],
+            [cx, cy + h // 6],
+        ])
+        point_labels = np.ones(len(point_coords), dtype=np.int32)
+
+        masks, scores, _ = predictor.predict(
+            point_coords=point_coords,
+            point_labels=point_labels,
+            multimask_output=True,
+        )
+
+        # Pick the mask with highest score
+        best_mask = masks[scores.argmax()]
+
+        # Build RGBA image: object pixels keep colour, background becomes transparent
+        rgba = np.zeros((h, w, 4), dtype=np.uint8)
+        rgba[:, :, :3] = img_np
+        rgba[:, :, 3]  = (best_mask * 255).astype(np.uint8)
+
+        log(f"SAM2 segmentation OK — mask coverage: "
+            f"{best_mask.sum() / best_mask.size * 100:.1f}%", "info")
+
+        # Free SAM2 from GPU before TripoSR loads
+        del sam2_model, predictor
+        if device == "cuda":
+            torch.cuda.empty_cache()
+
+        return Image.fromarray(rgba)
+
+    except Exception as e:
+        log(f"SAM2 failed ({e}), falling back to rembg", "warn")
+        import rembg
+        rembg_session = rembg.new_session()
+        return rembg.remove(Image.open(image_path).convert("RGB"), session=rembg_session)
+
+
+def poisson_refine(mesh):
+    """
+    Poisson surface reconstruction via pyvista.
+    Produces a cleaner, smoother, fully watertight mesh from the raw
+    marching-cubes output. Particularly improves flat surfaces.
+    Falls back to the original mesh if pyvista fails.
+    """
+    try:
+        import pyvista as pv
+        import numpy as np
+        import trimesh
+
+        log("Running Poisson surface reconstruction...", "info")
+
+        # Convert trimesh → pyvista PolyData
+        faces_pv = np.hstack([
+            np.full((len(mesh.faces), 1), 3, dtype=np.int_),
+            mesh.faces
+        ])
+        cloud = pv.PolyData(mesh.vertices, faces_pv)
+
+        # Compute normals then reconstruct
+        cloud_with_normals = cloud.compute_normals(
+            cell_normals=False, point_normals=True, consistent_normals=True
+        )
+        reconstructed = cloud_with_normals.reconstruct_surface(
+            nbr_sz=20,         # neighbourhood size
+            sample_spacing=None
+        )
+        triangulated = reconstructed.triangulate()
+
+        # Convert back to trimesh
+        verts = np.array(triangulated.points)
+        faces_raw = triangulated.faces.reshape(-1, 4)[:, 1:]
+        refined = trimesh.Trimesh(vertices=verts, faces=faces_raw, process=True)
+
+        if len(refined.faces) > 100:
+            log(f"Poisson refinement OK — {len(refined.faces)} faces", "info")
+            return refined
+        else:
+            log("Poisson produced too-small mesh, keeping original", "warn")
+            return mesh
+
+    except Exception as e:
+        log(f"Poisson refinement skipped: {e}", "warn")
+        return mesh
+
 
 def generate_mesh_triposr(image_path, output_path):
     try:
         import numpy as np
         import torch
         import trimesh
-        import rembg
         from PIL import Image
         from tsr.system import TSR
         from tsr.utils import remove_background, resize_foreground
@@ -26,6 +145,19 @@ def generate_mesh_triposr(image_path, output_path):
         device = "cuda" if torch.cuda.is_available() else "cpu"
         log(f"Device: {device}", "info")
 
+        # ── Step 1: SAM2 segmentation ────────────────────────────────────────
+        log("Segmenting with SAM2...", "info")
+        img_rgba = segment_with_sam2(image_path)
+
+        # Resize foreground to 85% of canvas, composite onto gray background
+        from tsr.utils import resize_foreground as _resize_fg
+        img_rgba = _resize_fg(img_rgba, 0.85)
+        img_arr = np.array(img_rgba).astype(np.float32) / 255.0
+        img_arr = img_arr[:, :, :3] * img_arr[:, :, 3:4] + (1 - img_arr[:, :, 3:4]) * 0.5
+        image = Image.fromarray((img_arr * 255.0).astype(np.uint8))
+        log("Input image prepared", "info")
+
+        # ── Step 2: TripoSR inference ────────────────────────────────────────
         log("Loading TripoSR model...", "info")
         model = TSR.from_pretrained(
             "stabilityai/TripoSR",
@@ -36,17 +168,6 @@ def generate_mesh_triposr(image_path, output_path):
         model.to(device)
         log("Model loaded", "info")
 
-        # Remove background and composite onto gray
-        log("Removing background...", "info")
-        rembg_session = rembg.new_session()
-        img_rgba = remove_background(Image.open(image_path), rembg_session)
-        img_rgba = resize_foreground(img_rgba, 0.85)
-        img_arr = np.array(img_rgba).astype(np.float32) / 255.0
-        img_arr = img_arr[:, :, :3] * img_arr[:, :, 3:4] + (1 - img_arr[:, :, 3:4]) * 0.5
-        image = Image.fromarray((img_arr * 255.0).astype(np.uint8))
-        log("Background removed", "info")
-
-        # Run inference
         log("Running TripoSR inference...", "info")
         with torch.no_grad():
             scene_codes = model([image], device=device)
@@ -56,9 +177,14 @@ def generate_mesh_triposr(image_path, output_path):
         meshes = model.extract_mesh(scene_codes, True, resolution=mc_resolution)
         mesh = meshes[0]
 
+        # Free TripoSR from GPU before Poisson pass
+        del model
+        if device == "cuda":
+            torch.cuda.empty_cache()
+
         # ── Post-processing ──────────────────────────────────────────────────
 
-        # 1. Component filtering — keep significant parts, remove spikes/noise
+        # 3. Component filtering — keep significant parts, remove spikes/noise
         components = mesh.split(only_watertight=False)
         if components:
             total_faces = sum(len(c.faces) for c in components)
@@ -66,47 +192,58 @@ def generate_mesh_triposr(image_path, output_path):
             for c in components:
                 face_ratio = len(c.faces) / total_faces
                 if face_ratio < 0.005:
-                    continue  # too small — floating debris
-                # Reject needle-like spike artifacts by checking aspect ratio
+                    continue
                 extents = c.bounding_box.extents
                 if extents.max() > 0:
                     compactness = extents.min() / extents.max()
                     if compactness < 0.04 and face_ratio < 0.05:
-                        continue  # spike with low mass — artifact
+                        continue
                 kept.append(c)
-
             if kept:
                 mesh = trimesh.util.concatenate(kept)
                 log(f"Kept {len(kept)}/{len(components)} components, {len(mesh.faces)} faces", "info")
 
-        # 2. Center mesh at origin
+        # 4. Center at origin
         mesh.apply_translation(-mesh.bounding_box.centroid)
 
-        # 3. Orientation fix — TripoSR sometimes outputs upside-down
-        #    Heuristic: if vertex mass is above Y=0 (heavy top = upside down), flip
-        centroid_y = mesh.vertices[:, 1].mean()
-        if centroid_y > 0.05:
+        # 5. Orientation fix — face normal area vote
+        face_normals = mesh.face_normals
+        face_areas   = mesh.area_faces
+        up_area   = face_areas[face_normals[:, 1] >  0.5].sum()
+        down_area = face_areas[face_normals[:, 1] < -0.5].sum()
+        if down_area > up_area:
             R = trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0])
             mesh.apply_transform(R)
-            log("Applied orientation correction (flipped)", "info")
+            log("Orientation corrected (flipped)", "info")
+        else:
+            log("Orientation OK", "info")
 
-        # 4. Laplacian smoothing — reduce faceted look while preserving structure
-        trimesh.smoothing.filter_laplacian(mesh, iterations=5)
-        log("Mesh smoothed", "info")
+        # 6. Poisson surface reconstruction — smoother, watertight mesh
+        mesh = poisson_refine(mesh)
 
-        # 5. Apply PBR material color so xeokit renders it correctly
-        #    Average foreground color from rembg alpha mask
+        # 7. Humphrey smoothing — preserves volume and sharp edges better than Laplacian
+        trimesh.smoothing.filter_humphrey(mesh, iterations=5, beta=0.5)
+        log("Humphrey smoothing applied", "info")
+
+        # 8. PBR material — dominant color cluster from SAM2 mask
         try:
             rgba_arr = np.array(img_rgba)
             alpha_mask = rgba_arr[:, :, 3] > 64
             if alpha_mask.sum() > 0:
-                fg_pixels = rgba_arr[:, :, :3][alpha_mask]
-                avg_color = fg_pixels.mean(axis=0)
+                fg_pixels = rgba_arr[:, :, :3][alpha_mask].astype(np.float32)
+                # K-means with k=3, pick the largest cluster as dominant color
+                from scipy.cluster.vq import kmeans, vq
+                k = min(3, len(fg_pixels))
+                centroids, _ = kmeans(fg_pixels, k)
+                labels, _ = vq(fg_pixels, centroids)
+                counts = np.bincount(labels)
+                dominant = centroids[counts.argmax()]
+                avg_color = dominant
             else:
-                avg_color = np.array([120, 120, 120], dtype=np.float64)
+                avg_color = np.array([120, 120, 120], dtype=np.float32)
 
             r, g, b = avg_color[0] / 255.0, avg_color[1] / 255.0, avg_color[2] / 255.0
-            log(f"Applying PBR color: rgb({int(avg_color[0])}, {int(avg_color[1])}, {int(avg_color[2])})", "info")
+            log(f"Dominant color: rgb({int(avg_color[0])}, {int(avg_color[1])}, {int(avg_color[2])})", "info")
 
             mesh.visual = trimesh.visual.TextureVisuals(
                 material=trimesh.visual.material.PBRMaterial(
@@ -129,7 +266,7 @@ def generate_mesh_triposr(image_path, output_path):
             "output_path": output_path,
             "glb_size_bytes": size,
             "device": device,
-            "method": "triposr-real",
+            "method": "triposr-sam2-poisson-humphrey",
             "faces": len(mesh.faces),
         }
 

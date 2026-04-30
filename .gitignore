@@ -42,3 +42,4 @@ build/
 # Generated files
 uploads/
 outputs/
+models/sam2/*.pt
