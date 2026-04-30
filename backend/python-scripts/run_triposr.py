@@ -12,16 +12,61 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "triposr"))
 
 from inference_base import log, error_exit, success_exit
 
+SAM2_CHECKPOINT = str(Path(__file__).parent.parent.parent / "models" / "sam2" / "sam2.1_hiera_tiny.pt")
+SAM2_CONFIG = "configs/sam2.1/sam2.1_hiera_t.yaml"
+
+
+def _segment_foreground(image_path):
+    """SAM2 segmentation with rembg fallback."""
+    try:
+        import torch
+        import numpy as np
+        from PIL import Image
+        from sam2.build_sam import build_sam2
+        from sam2.sam2_image_predictor import SAM2ImagePredictor
+
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        img_np = np.array(Image.open(image_path).convert("RGB"))
+        h, w = img_np.shape[:2]
+
+        sam2 = build_sam2(SAM2_CONFIG, SAM2_CHECKPOINT, device=device)
+        predictor = SAM2ImagePredictor(sam2)
+        predictor.set_image(img_np)
+
+        # Centre-point grid prompt — finds the main object
+        cx, cy = w // 2, h // 2
+        pts = np.array([[cx, cy], [cx - w//6, cy], [cx + w//6, cy],
+                        [cx, cy - h//6], [cx, cy + h//6]])
+        labels = np.ones(len(pts), dtype=np.int32)
+        masks, scores, _ = predictor.predict(point_coords=pts,
+                                              point_labels=labels,
+                                              multimask_output=True)
+        best = masks[scores.argmax()]
+        rgba = np.zeros((h, w, 4), dtype=np.uint8)
+        rgba[:, :, :3] = img_np
+        rgba[:, :, 3] = (best * 255).astype(np.uint8)
+
+        del sam2, predictor
+        if device == "cuda":
+            torch.cuda.empty_cache()
+
+        log(f"SAM2 OK — coverage {best.sum() / best.size * 100:.1f}%", "info")
+        return Image.fromarray(rgba)
+
+    except Exception as e:
+        log(f"SAM2 failed ({e}), using rembg", "warn")
+        import rembg
+        return rembg.remove(open(image_path, "rb").read())
+
 
 def generate_mesh_triposr(image_path, output_path):
     try:
         import numpy as np
         import torch
         import trimesh
-        import rembg
         from PIL import Image
         from tsr.system import TSR
-        from tsr.utils import remove_background, resize_foreground
+        from tsr.utils import resize_foreground
 
         device = "cuda" if torch.cuda.is_available() else "cpu"
         log(f"Device: {device}", "info")
@@ -36,15 +81,14 @@ def generate_mesh_triposr(image_path, output_path):
         model.to(device)
         log("Model loaded", "info")
 
-        # Remove background and composite onto gray
-        log("Removing background...", "info")
-        rembg_session = rembg.new_session()
-        img_rgba = remove_background(Image.open(image_path), rembg_session)
+        # Remove background — SAM2 preferred, rembg fallback
+        log("Segmenting foreground...", "info")
+        img_rgba = _segment_foreground(image_path)
         img_rgba = resize_foreground(img_rgba, 0.85)
         img_arr = np.array(img_rgba).astype(np.float32) / 255.0
         img_arr = img_arr[:, :, :3] * img_arr[:, :, 3:4] + (1 - img_arr[:, :, 3:4]) * 0.5
         image = Image.fromarray((img_arr * 255.0).astype(np.uint8))
-        log("Background removed", "info")
+        log("Foreground segmented", "info")
 
         # Run inference
         log("Running TripoSR inference...", "info")
@@ -90,20 +134,28 @@ def generate_mesh_triposr(image_path, output_path):
             mesh.apply_transform(R)
             log("Applied orientation correction (flipped)", "info")
 
-        # 4. Laplacian smoothing — reduce faceted look while preserving structure
-        trimesh.smoothing.filter_laplacian(mesh, iterations=5)
-        log("Mesh smoothed", "info")
+        # 4. Humphrey smoothing — preserves volume and sharp edges better than
+        #    Laplacian. beta=0.5 pulls each vertex back toward original position
+        #    after each smooth pass, preventing shrinkage and corner rounding.
+        trimesh.smoothing.filter_humphrey(mesh, iterations=5, beta=0.5)
+        log("Mesh smoothed (Humphrey)", "info")
 
-        # 5. Apply PBR material color so xeokit renders it correctly
-        #    Average foreground color from rembg alpha mask
+        # 5. Apply PBR material — dominant color via k-means (k=3) on SAM2 mask
+        #    More accurate than mean: picks the actual object color, not a
+        #    blend that includes background tones leaked by rembg.
         try:
+            from scipy.cluster.vq import kmeans, vq
             rgba_arr = np.array(img_rgba)
             alpha_mask = rgba_arr[:, :, 3] > 64
             if alpha_mask.sum() > 0:
-                fg_pixels = rgba_arr[:, :, :3][alpha_mask]
-                avg_color = fg_pixels.mean(axis=0)
+                fg_pixels = rgba_arr[:, :, :3][alpha_mask].astype(np.float32)
+                k = min(3, len(fg_pixels))
+                centroids, _ = kmeans(fg_pixels, k)
+                labels, _ = vq(fg_pixels, centroids)
+                counts = np.bincount(labels)
+                avg_color = centroids[counts.argmax()]
             else:
-                avg_color = np.array([120, 120, 120], dtype=np.float64)
+                avg_color = np.array([120, 120, 120], dtype=np.float32)
 
             r, g, b = avg_color[0] / 255.0, avg_color[1] / 255.0, avg_color[2] / 255.0
             log(f"Applying PBR color: rgb({int(avg_color[0])}, {int(avg_color[1])}, {int(avg_color[2])})", "info")
