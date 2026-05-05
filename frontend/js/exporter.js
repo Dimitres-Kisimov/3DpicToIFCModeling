@@ -9,8 +9,17 @@
  */
 function prepareSceneForExport() {
   const sceneData = window.xeokitModule.exportSceneData();
-  console.log('[exporter] Prepared scene data:', sceneData.length, 'objects');
-  return sceneData;
+  const glbMap = window._objectGlbMap || {};
+
+  // Attach glbPath to each scene object using the objectId→glbPath map
+  const enriched = sceneData.map(obj => ({
+    ...obj,
+    glbPath: glbMap[obj.id] || null,
+    glbUrl: glbMap[obj.id] || null,
+  })).filter(obj => obj.glbPath);
+
+  console.log('[exporter] Prepared scene:', enriched.length, 'objects with GLB paths');
+  return enriched;
 }
 
 /**
