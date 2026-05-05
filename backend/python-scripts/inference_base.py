@@ -31,7 +31,156 @@ def load_image(image_path):
         error_exit(f"Failed to load image: {str(e)}")
 
 
-def generate_depth_mesh(image_path, resolution=64, model_name="Intel/dpt-hybrid-midas"):
+# IFC entity mapping — CLIP label → (IFC class, category)
+_IFC_LABEL_MAP = {
+    "chair":        ("IfcFurnitureElement", "Chair"),
+    "office chair": ("IfcFurnitureElement", "Chair"),
+    "armchair":     ("IfcFurnitureElement", "Chair"),
+    "sofa":         ("IfcFurnitureElement", "Sofa"),
+    "couch":        ("IfcFurnitureElement", "Sofa"),
+    "table":        ("IfcFurnitureElement", "Table"),
+    "desk":         ("IfcFurnitureElement", "Table"),
+    "bed":          ("IfcFurnitureElement", "Bed"),
+    "cabinet":      ("IfcFurnitureElement", "Cabinet"),
+    "wardrobe":     ("IfcFurnitureElement", "Cabinet"),
+    "bookshelf":    ("IfcFurnitureElement", "Shelf"),
+    "shelf":        ("IfcFurnitureElement", "Shelf"),
+    "door":         ("IfcDoor",             "Door"),
+    "window":       ("IfcWindow",           "Window"),
+    "lamp":         ("IfcFurnitureElement", "Lighting"),
+    "light":        ("IfcFurnitureElement", "Lighting"),
+    "monitor":      ("IfcFurnitureElement", "Equipment"),
+    "computer":     ("IfcFurnitureElement", "Equipment"),
+    "refrigerator": ("IfcFurnitureElement", "Equipment"),
+    "toilet":       ("IfcSanitaryTerminal", "Toilet"),
+    "sink":         ("IfcSanitaryTerminal", "Sink"),
+    "bathtub":      ("IfcSanitaryTerminal", "Bath"),
+    "stairs":       ("IfcStair",            "Stair"),
+    "wall":         ("IfcWall",             "Wall"),
+    "floor":        ("IfcSlab",             "Floor"),
+}
+
+_CLIP_LABELS = list(_IFC_LABEL_MAP.keys()) + ["other object"]
+
+
+def classify_object_clip(image_path):
+    """
+    Use CLIP (openai/clip-vit-base-patch32, MIT license) to identify the
+    object type and return the matching IFC entity class and category.
+    Falls back to IfcFurnitureElement if classification fails.
+    """
+    try:
+        from transformers import pipeline
+        from PIL import Image
+
+        log("Running CLIP object classification...", "info")
+        classifier = pipeline(
+            "zero-shot-image-classification",
+            model="openai/clip-vit-base-patch32",
+        )
+        img = Image.open(image_path).convert("RGB")
+        results = classifier(img, candidate_labels=_CLIP_LABELS)
+
+        top = results[0]
+        label = top["label"]
+        score = top["score"]
+        log(f"CLIP: '{label}' ({score:.2%})", "info")
+
+        ifc_class, category = _IFC_LABEL_MAP.get(label, ("IfcFurnitureElement", "Furniture"))
+        return {
+            "label": label,
+            "score": score,
+            "ifc_class": ifc_class,
+            "category": category,
+        }
+    except Exception as e:
+        log(f"CLIP classification failed ({e}), defaulting to IfcFurnitureElement", "warn")
+        return {
+            "label": "unknown",
+            "score": 0.0,
+            "ifc_class": "IfcFurnitureElement",
+            "category": "Furniture",
+        }
+
+
+def estimate_metric_scale(image_path, mask_rgba=None):
+    """
+    Use Depth Anything V2 (Apache 2.0) to estimate relative object dimensions.
+    Returns estimated height/width/depth in metres using a known-object prior.
+    The metric model gives relative depth in a 0-1 normalised space; we use
+    average furniture priors to convert to approximate real-world metres.
+    """
+    try:
+        import numpy as np
+        from PIL import Image
+        from transformers import pipeline
+
+        log("Estimating metric scale with Depth Anything V2...", "info")
+        depth_pipe = pipeline(
+            "depth-estimation",
+            model="depth-anything/Depth-Anything-V2-Small-hf",
+        )
+        img = Image.open(image_path).convert("RGB")
+        W_img, H_img = img.size
+        result = depth_pipe(img)
+
+        if "predicted_depth" in result:
+            depth = result["predicted_depth"]
+            depth = depth.squeeze().numpy() if hasattr(depth, "numpy") else np.array(depth).squeeze()
+        else:
+            depth = np.array(result["depth"], dtype=np.float32)
+
+        depth = depth.astype(np.float32)
+
+        # Use SAM2 mask if provided to focus on the object
+        if mask_rgba is not None:
+            mask_arr = np.array(mask_rgba)[:, :, 3] > 64
+            from scipy.ndimage import zoom as scipy_zoom
+            mh, mw = depth.shape
+            mask_resized = scipy_zoom(mask_arr.astype(np.float32),
+                                      (mh / H_img, mw / W_img), order=1) > 0.5
+            object_depth = depth[mask_resized]
+            # Bounding box of the mask to estimate pixel height/width
+            rows = np.any(mask_resized, axis=1)
+            cols = np.any(mask_resized, axis=0)
+            rmin, rmax = np.where(rows)[0][[0, -1]]
+            cmin, cmax = np.where(cols)[0][[0, -1]]
+            pixel_h = rmax - rmin
+            pixel_w = cmax - cmin
+        else:
+            object_depth = depth.ravel()
+            pixel_h = H_img
+            pixel_w = W_img
+
+        if len(object_depth) == 0:
+            raise ValueError("Empty depth region")
+
+        depth_range = float(object_depth.max() - object_depth.min())
+
+        # Normalise pixel dimensions to image fraction, then scale by a
+        # furniture-average height prior of 1.0 m so IFC gets plausible values.
+        fraction_h = pixel_h / H_img
+        fraction_w = pixel_w / W_img
+        prior_height_m = 1.0  # conservative furniture average
+
+        est_h = round(prior_height_m * fraction_h * (H_img / max(pixel_h, 1)), 2)
+        est_w = round(prior_height_m * fraction_w * (W_img / max(pixel_w, 1)), 2)
+        est_d = round(float(np.clip(depth_range / (depth.max() + 1e-8), 0.1, 1.0)), 2)
+
+        # Clamp to sensible furniture range: 0.1 m – 3.0 m
+        est_h = float(np.clip(est_h, 0.1, 3.0))
+        est_w = float(np.clip(est_w, 0.1, 3.0))
+        est_d = float(np.clip(est_d * est_w, 0.1, 3.0))
+
+        log(f"Estimated dimensions — H:{est_h}m  W:{est_w}m  D:{est_d}m", "info")
+        return {"height_m": est_h, "width_m": est_w, "depth_m": est_d}
+
+    except Exception as e:
+        log(f"Scale estimation failed ({e}), using defaults", "warn")
+        return {"height_m": 1.0, "width_m": 0.8, "depth_m": 0.8}
+
+
+def generate_depth_mesh(image_path, resolution=64, model_name="depth-anything/Depth-Anything-V2-Small-hf"):
     """Full-image depth mesh — fallback when segmentation finds nothing."""
     from PIL import Image
     from scipy.ndimage import zoom as scipy_zoom
@@ -86,7 +235,7 @@ def generate_depth_mesh(image_path, resolution=64, model_name="Intel/dpt-hybrid-
     return data
 
 
-def generate_segmented_depth_mesh(image_path, resolution=64, depth_model="Intel/dpt-hybrid-midas"):
+def generate_segmented_depth_mesh(image_path, resolution=64, depth_model="depth-anything/Depth-Anything-V2-Small-hf"):
     """
     SAM-3D-style pipeline:
       1. YOLO-seg isolates the main object (no background)

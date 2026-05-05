@@ -175,14 +175,35 @@ def generate_mesh_triposr(image_path, output_path):
         size = os.path.getsize(output_path)
         log(f"GLB saved: {size} bytes", "info")
 
+        # Improvement 2 & 3: CLIP classification + metric scale estimation
+        from inference_base import classify_object_clip, estimate_metric_scale
+        clip_result = classify_object_clip(image_path)
+        scale = estimate_metric_scale(image_path, mask_rgba=img_rgba)
+
+        # Scale the mesh to estimated real-world dimensions
+        try:
+            extents = mesh.bounding_box.extents
+            if extents.max() > 0:
+                scale_factor = scale["height_m"] / extents.max()
+                mesh.apply_scale(scale_factor)
+                mesh.export(output_path)  # re-export with scaled mesh
+                log(f"Mesh scaled to {scale['height_m']}m (factor {scale_factor:.4f})", "info")
+        except Exception as se:
+            log(f"Scale application skipped: {se}", "warn")
+
         return {
             "model": "triposr",
             "image_path": image_path,
             "output_path": output_path,
             "glb_size_bytes": size,
             "device": device,
-            "method": "triposr-real",
+            "method": "triposr-real+clip+depth-scale",
             "faces": len(mesh.faces),
+            "ifc_class": clip_result["ifc_class"],
+            "ifc_category": clip_result["category"],
+            "object_label": clip_result["label"],
+            "clip_confidence": clip_result["score"],
+            "estimated_dimensions_m": scale,
         }
 
     except Exception as e:
