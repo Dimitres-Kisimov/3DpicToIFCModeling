@@ -63,17 +63,122 @@ _IFC_LABEL_MAP = {
 _CLIP_LABELS = list(_IFC_LABEL_MAP.keys()) + ["other object"]
 
 
+def _classify_with_finetuned(image_path, checkpoint_path):
+    """
+    Internal helper: run inference using the fine-tuned CLIP checkpoint saved by
+    scripts/train_clip_office.py.  Returns the same dict format as the zero-shot
+    path, or raises an exception if anything goes wrong.
+
+    Checkpoint format (produced by train_clip_office.py):
+        {
+            "model_state_dict": ...,
+            "label_to_idx": {"office_chair": 0, "table": 1, ...},
+            "mode": "linear_probe" | "lora",
+            "val_accuracy": float,
+            "num_classes": int,
+        }
+    """
+    import torch
+    import torch.nn as nn
+    import torch.nn.functional as F
+    from torchvision import transforms
+    from PIL import Image
+    from transformers import CLIPModel
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
+    label_to_idx: dict = ckpt["label_to_idx"]
+    idx_to_label: dict = {v: k for k, v in label_to_idx.items()}
+    num_classes: int = ckpt["num_classes"]
+    mode: str = ckpt.get("mode", "linear_probe")
+
+    # Reconstruct model skeleton (same architecture as train_clip_office.py)
+    clip_base = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+
+    class _ProbeModel(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.vision_encoder = clip_base.vision_model
+            self.visual_projection = clip_base.visual_projection
+            self.head = nn.Linear(512, num_classes)
+
+        def forward(self, pixel_values):
+            out = self.vision_encoder(pixel_values=pixel_values)
+            feats = self.visual_projection(out.pooler_output)
+            feats = feats / feats.norm(dim=-1, keepdim=True)
+            return self.head(feats)
+
+    model = _ProbeModel()
+    model.load_state_dict(ckpt["model_state_dict"], strict=False)
+    model.eval()
+    model = model.to(device)
+
+    # Preprocessing (CLIP normalisation)
+    preprocess = transforms.Compose([
+        transforms.Resize(224),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=[0.48145466, 0.4578275,  0.40821073],
+            std =[0.26862954, 0.26130258, 0.27577711],
+        ),
+    ])
+
+    img = Image.open(image_path).convert("RGB")
+    tensor = preprocess(img).unsqueeze(0).to(device)
+
+    with torch.no_grad():
+        logits = model(tensor)
+        probs  = F.softmax(logits, dim=-1).squeeze(0).cpu().tolist()
+
+    best_idx = max(range(num_classes), key=lambda i: probs[i])
+    label    = idx_to_label[best_idx]
+    score    = probs[best_idx]
+
+    # Map fine-tuned label slug back to IFC — try direct and cleaned variants
+    ifc_class, category = _IFC_LABEL_MAP.get(
+        label,
+        _IFC_LABEL_MAP.get(label.replace("_", " "), ("IfcFurnitureElement", "Furniture")),
+    )
+    return {
+        "label": label,
+        "score": score,
+        "ifc_class": ifc_class,
+        "category": category,
+    }
+
+
 def classify_object_clip(image_path):
     """
     Use CLIP (openai/clip-vit-base-patch32, MIT license) to identify the
     object type and return the matching IFC entity class and category.
     Falls back to IfcFurnitureElement if classification fails.
+
+    Automatically uses the fine-tuned model if the checkpoint produced by
+    scripts/train_clip_office.py is present at:
+        models/clip_office/best_model.pt
+    Otherwise falls back to zero-shot CLIP.
     """
+    # ── Fine-tuned path ──────────────────────────────────────────────────────
+    _CHECKPOINT = Path(__file__).resolve().parents[2] / "models" / "clip_office" / "best_model.pt"
+    if _CHECKPOINT.exists():
+        log(f"Using fine-tuned CLIP checkpoint: {_CHECKPOINT}", "info")
+        try:
+            result = _classify_with_finetuned(image_path, _CHECKPOINT)
+            log(f"Fine-tuned CLIP: '{result['label']}' ({result['score']:.2%})", "info")
+            return result
+        except Exception as e:
+            log(f"Fine-tuned CLIP failed ({e}), falling back to zero-shot", "warn")
+    else:
+        log("No fine-tuned checkpoint found — using zero-shot CLIP", "info")
+
+    # ── Zero-shot fallback ───────────────────────────────────────────────────
     try:
         from transformers import pipeline
         from PIL import Image
 
-        log("Running CLIP object classification...", "info")
+        log("Running zero-shot CLIP object classification...", "info")
         classifier = pipeline(
             "zero-shot-image-classification",
             model="openai/clip-vit-base-patch32",
@@ -84,7 +189,7 @@ def classify_object_clip(image_path):
         top = results[0]
         label = top["label"]
         score = top["score"]
-        log(f"CLIP: '{label}' ({score:.2%})", "info")
+        log(f"Zero-shot CLIP: '{label}' ({score:.2%})", "info")
 
         ifc_class, category = _IFC_LABEL_MAP.get(label, ("IfcFurnitureElement", "Furniture"))
         return {
