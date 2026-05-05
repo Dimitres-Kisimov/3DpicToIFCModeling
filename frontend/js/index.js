@@ -6,6 +6,9 @@ let selectedImage = null;
 let selectedModel = 'instantmesh';
 let viewerInitialized = false;
 
+// Maps objectId → server GLB path for export
+window._objectGlbMap = {};
+
 // ============================================================================
 // XEOKIT VIEWER INITIALIZATION
 // ============================================================================
@@ -104,6 +107,9 @@ if (generateBtn) {
       const objectId = `obj_${Date.now()}`;
       await window.glbLoaderModule.addGLBToViewer(glbPath, objectId);
 
+      // Record mapping so exporter can find the GLB file
+      window._objectGlbMap[objectId] = glbPath;
+
       // Add to inventory
       window.inventoryModule.addToInventory({
         name: `${selectedModel} Model`,
@@ -142,8 +148,17 @@ if (exportIfcBtn) {
         return;
       }
 
-      await window.exporterModule.exportSceneToIFC(sceneObjects);
-      // TODO: Download IFC file when Phase 6 is complete
+      const ifcUrl = await window.exporterModule.exportSceneToIFC(sceneObjects);
+      if (ifcUrl) {
+        const filename = ifcUrl.split('/').pop();
+        const link = document.createElement('a');
+        link.href = ifcUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        updateStatus(`✓ IFC exported: ${filename}`);
+      }
     } catch (error) {
       console.error('[app] Export error:', error);
     } finally {

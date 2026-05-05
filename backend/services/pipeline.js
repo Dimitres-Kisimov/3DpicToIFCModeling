@@ -9,9 +9,11 @@ const logger = require('../middleware/logger');
 
 // Import all services
 const aiAdapters = {
-  instantmesh: require('../ai/instantMesh'),
+  instantmesh:  require('../ai/instantMesh'),
   stablefast3d: require('../ai/stablefast3d'),
-  triposr: require('../ai/triposr'),
+  triposr:      require('../ai/triposr'),
+  trellis:      require('../ai/trellis'),
+  hunyuan3d:    require('../ai/hunyuan3d'),
 };
 const meshProcessor = require('./meshProcessor');
 const ifcExporter = require('./ifcExporter');
@@ -51,6 +53,12 @@ async function runFullPipeline(imagePath, model, options = {}) {
         break;
       case 'triposr':
         aiResult = await aiAdapter.runTripoSR(imagePath, outputDir);
+        break;
+      case 'trellis':
+        aiResult = await aiAdapter.runTRELLIS(imagePath, outputDir);
+        break;
+      case 'hunyuan3d':
+        aiResult = await aiAdapter.runHunyuan3D(imagePath, outputDir);
         break;
     }
 
@@ -162,7 +170,7 @@ function getPipelineInfo() {
     phases: [
       {
         name: 'AI Generation',
-        models: ['instantmesh', 'stablefast3d', 'triposr'],
+        models: ['instantmesh', 'stablefast3d', 'triposr', 'trellis', 'hunyuan3d'],
         description: 'Generate 3D mesh from 2D image',
       },
       {

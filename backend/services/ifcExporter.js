@@ -94,20 +94,19 @@ async function exportSceneToIFC(sceneObjects, outputDir) {
       ifcPath,
     });
 
-    // Prepare objects array JSON
-    const objectsJSON = sceneObjects.map(obj => JSON.stringify({
+    // Single JSON array arg — Python receives sys.argv[2] as the full list
+    const objectsJSON = JSON.stringify(sceneObjects.map(obj => ({
       id: obj.id,
-      name: obj.name,
-      position: obj.position,
-      rotation: obj.rotation,
-      scale: obj.scale,
-      glbPath: obj.glbPath,
-    }));
+      name: obj.name || 'Object',
+      position: obj.position || [0, 0, 0],
+      rotation: obj.rotation || [0, 0, 0],
+      scale: obj.scale || [1, 1, 1],
+      glbPath: obj.glbPath || obj.glbUrl || '',
+    })));
 
-    // Execute Python script with all objects
     const result = await executePythonScript(
       'saveIFC.py',
-      [ifcPath, ...objectsJSON],
+      [ifcPath, objectsJSON],
       { timeout: 120000 }
     );
 

@@ -9,8 +9,18 @@
  */
 function prepareSceneForExport() {
   const sceneData = window.xeokitModule.exportSceneData();
-  console.log('[exporter] Prepared scene data:', sceneData.length, 'objects');
-  return sceneData;
+  const glbMap = window._objectGlbMap || {};
+
+  const enriched = sceneData
+    .map(obj => ({
+      ...obj,
+      glbPath: glbMap[obj.id] || null,
+      glbUrl:  glbMap[obj.id] || null,
+    }))
+    .filter(obj => obj.glbPath);
+
+  console.log('[exporter] Prepared', enriched.length, '/', sceneData.length, 'objects with GLB paths');
+  return enriched;
 }
 
 /**
@@ -37,8 +47,8 @@ async function exportSceneToIFC(sceneObjects) {
     }
 
     showSuccess('IFC exported successfully');
-    console.log('[exporter] IFC exported:', data.ifcPath);
-    return data.ifcPath;
+    console.log('[exporter] IFC exported:', data.ifcUrl);
+    return data.ifcUrl;
   } catch (error) {
     showError('IFC export failed', error);
     throw error;
