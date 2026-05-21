@@ -167,6 +167,43 @@ router.post('/export/glb-to-ifc', async (req, res, next) => {
 });
 
 // ============================================================================
+// POST /api/export/xkt - Convert IFC → XKT (Sprint 3)
+// ============================================================================
+
+router.post('/export/xkt', async (req, res, next) => {
+  try {
+    const { ifcPath } = req.body;
+    if (!ifcPath) {
+      return res.status(400).json({ success: false, error: { code: 'MISSING_IFC', message: 'ifcPath required' } });
+    }
+    if (!fs.existsSync(ifcPath)) {
+      return res.status(400).json({ success: false, error: { code: 'IFC_NOT_FOUND', message: `IFC not found: ${ifcPath}` } });
+    }
+
+    const { executePythonScript } = require('../services/pythonBridge');
+    const path = require('path');
+    const xktPath = ifcPath.replace(/\.ifc$/, '.xkt');
+
+    logger.info('EXPORT', 'Converting IFC → XKT', { ifcPath, xktPath });
+    const result = await executePythonScript('convert_to_xkt.py', [ifcPath, xktPath], { timeout: 120000 });
+
+    if (!result.success || !fs.existsSync(xktPath)) {
+      throw new Error(result.stderr || 'XKT conversion failed');
+    }
+
+    return res.json({
+      success: true,
+      xktPath,
+      xktUrl: `/outputs/${path.basename(xktPath)}`,
+      metadata: result.stdout?.data || {},
+    });
+  } catch (error) {
+    logger.error('EXPORT', 'XKT conversion error', { error: error.message });
+    next(error);
+  }
+});
+
+// ============================================================================
 // GET /api/export/list - List recent exports
 // ============================================================================
 

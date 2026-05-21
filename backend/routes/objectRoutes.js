@@ -288,4 +288,37 @@ router.post('/objects/batch/update', (req, res) => {
   }
 });
 
+// ============================================================================
+// POST /api/objects/layout - Solve spatial layout (Sprint 5)
+// ============================================================================
+
+router.post('/objects/layout', async (req, res, next) => {
+  try {
+    const { room, objects } = req.body;
+    if (!room || !Array.isArray(objects)) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 'INVALID_INPUT', message: 'room object and objects array required' },
+      });
+    }
+
+    const { executePythonScript } = require('../services/pythonBridge');
+    const result = await executePythonScript(
+      'spatial_layout.py',
+      [JSON.stringify(room), JSON.stringify(objects)],
+      { timeout: 60000 }
+    );
+
+    if (!result.success) {
+      throw new Error(result.stderr || 'Layout solver failed');
+    }
+
+    logger.info('OBJECTS', 'Spatial layout solved', { objects: objects.length });
+    return res.json({ success: true, ...(result.stdout?.data || {}) });
+  } catch (error) {
+    logger.error('OBJECTS', 'Layout error', { error: error.message });
+    next(error);
+  }
+});
+
 module.exports = router;
