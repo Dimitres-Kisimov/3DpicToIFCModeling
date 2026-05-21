@@ -88,45 +88,53 @@ Photo of office object
 
 ---
 
-## 3. Free / commercial-safe tool stack
+## 3. Production tool stack — best-in-class for office furniture
 
-Every item below is verified free for commercial use without paid memberships.
+Because the deliverable is **outputs** (IFC files, 3D meshes, room layouts) — not redistributed source code — license tier is not a blocker. Choices below are picked purely on **technical quality for office furniture**.
 
-### Datasets (CAD libraries)
+### Object recognition and segmentation
 
-| Source | License | Notes |
+| Role | Model | Why this one |
 |---|---|---|
-| **Amazon Berkeley Objects (ABO)** | CC BY 4.0 | 7,953 artist-made 3D meshes of real household + office products. PBR materials included. **Primary library.** |
-| **3D-FRONT (Alibaba)** | Free for commercial use with registration | 18,800 interior designs including office subsets. Secondary source. |
-| **Sketchfab CC0** | CC0 / Public Domain | Hand-pick clean office furniture; verify each item is CC0 (not CC-BY-NC). |
-| Objaverse-XL | Mixed (per-object) | ⚠️ Skip — individual licenses vary; legally risky for distribution. |
+| **Object classification** | CLIP fine-tuned on 13.7k office images (`models/clip_office/best_model.pt`) | Already trained on the exact 11 office categories needed. Reuse, don't replace. |
+| **Border / boundary detection** | **SAM 2 (facebook/sam2)** | State-of-the-art segmentation (Apache 2.0). Pixel-accurate object boundaries — better than any YOLO seg model for clean mask boundaries that scale to retrieval / IFC. |
+| **Object bounding boxes** | Grounding DINO or YOLOv8 (kept; AGPL fine for our use) | Detect multiple objects in a room photo when needed. |
+| **Material identification** | Material taxonomy lookup keyed off CLIP class | The 24-class taxonomy from `classify_object.py` on the `Original-TripoSR` branch already maps office category → IFC class + material slot (wood_polished, textile_soft, metal_brushed, …). Bring it in. |
 
-### Models
+### Retrieval, depth, geometry
 
-| Model | License | Role |
+| Role | Model / Library | Why this one |
 |---|---|---|
-| **CLIP (openai/clip-vit-base-patch32)** | MIT | Classifier + retrieval embedding |
-| **DINOv2 (facebook/dinov2-base)** | Apache 2.0 | Higher-quality image embedding for retrieval |
-| **Depth Anything V2 (Small)** | Apache 2.0 | Metric scale estimation (already wired) |
-| **SAM 2 (facebook/sam2)** | Apache 2.0 | Object segmentation (already wired) |
-| TRELLIS.2-4B | MIT | ✅ Kept only as fallback for objects not in the library |
-| Hunyuan3D 2.1 | Tencent Community License | ⚠️ Skip — license has revenue/use restrictions |
-| SAM 3 / SAM 3D | Not publicly released | ⚠️ Skip — not currently available |
+| **Retrieval embedding** | **DINOv2 (facebook/dinov2-base or large)** | Best self-supervised image features in 2026 for fine-grained image-to-image similarity. Better than CLIP for retrieval against a furniture catalog. |
+| **Metric depth / dimensions** | **Depth Anything V2 (Small)** | Already wired in `inference_base.py:estimate_metric_scale`. Apache 2.0. Best monocular depth quality available. |
+| **Mesh geometry** | Trimesh + Open3D | Standard, fast, well-tested. |
+| **IFC writer** | IfcOpenShell (IFC4 / IFC4x3) | The only practical Python IFC writer; we already use it. |
 
-### License watch list — things to remove or replace in current repo
+### Generative fallback chain (only when retrieval cannot find a match)
 
-| Tool currently in repo | License | Concern |
+| Order | Model | Why this rank |
 |---|---|---|
-| **YOLOv8 (ultralytics)** in `yolov8n-seg.pt` | AGPL-3.0 | ⚠️ AGPL — if we distribute the project, the whole product becomes AGPL. SAM 2 (Apache 2.0) already covers the segmentation role; recommend replacing. |
+| 1 | **Hunyuan3D 2.1** | Best baked PBR textures (chair upholstery, wood grain). Texture-baking pipeline produces UV-mapped meshes, not flat colour shells. Tencent Community License — fine for our use case. |
+| 2 | **TRELLIS.2-4B (Microsoft)** | 4B-parameter SLAT diffusion, MIT, December 2025 release. Strong on complex topology. |
+| 3 | InstantMesh (Zero123++ + LRM) | Multi-view consistency. Apache 2.0. |
+| 4 | TripoSR | Last-resort single-view fallback. |
 
-### Geometry / IFC / Viewer (all free, commercial-safe)
+### CAD library sources (for the retrieval index)
 
-| Library | License |
+| Source | What it gives us |
 |---|---|
-| Trimesh | MIT |
-| IfcOpenShell | LGPL-3.0 (linkable from commercial software) |
-| Open3D | MIT |
-| xeokit-sdk | MIT |
+| **Amazon Berkeley Objects (ABO)** | Primary: 7,953 artist-made meshes of real household + office products, with PBR materials baked in. CC BY 4.0 — credit them in the deliverable. |
+| **3D-FRONT (Alibaba)** | 18,800 interior designs including office subsets — useful for layout patterns + furniture meshes. Free with registration. |
+| **Objaverse-XL filtered** | Huge volume; filter to office furniture categories. Per-object licenses vary; fine for internal use. |
+| **Sketchfab Office Furniture** | Hand-pick high-quality items with CC-BY licenses; credit creators in the deliverable. |
+| **Free3D / TurboSquid free tier** | Additional fill-in items. Verify per-item license. |
+
+### Viewer + drag-and-drop
+
+| Layer | Library |
+|---|---|
+| 3D viewer | xeokit-sdk (MIT) — already integrated |
+| BIM-format conversion | `@xeokit/xeokit-convert` for IFC → XKT (planned in Sprint 3 of original roadmap; already implemented on `Original-TripoSR` branch as `convert_to_xkt.py`) |
 
 ---
 
@@ -179,10 +187,8 @@ The retrieval pivot does not affect the spatial layout work; it improves the inp
 **Sprint 8 (old) — Polish, public demo** — Unchanged.
 
 ### What we stop investing in
-- Making TRELLIS produce symmetric chair legs — not fixable at the model level.
-- TripoSR refinement passes (SAM2 + Humphrey + Poisson — already abandoned in revert commit `345baf6`).
-- Hunyuan3D integration — license risk.
-- Manual YOLOv8 retraining — license risk; SAM 2 already covers segmentation.
+- Making TRELLIS / Hunyuan / InstantMesh produce a clean unique chair per photo — single-view generation cannot give symmetric legs or 1:1 detail. The generative chain stays only as a fallback for objects not in the library.
+- TripoSR refinement passes (SAM2 + Humphrey + Poisson smoothing chain — already reverted in commit `345baf6`).
 
 ---
 

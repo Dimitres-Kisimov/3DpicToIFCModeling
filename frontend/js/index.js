@@ -104,8 +104,13 @@ if (generateBtn) {
       const objectId = `obj_${Date.now()}`;
       await window.glbLoaderModule.addGLBToViewer(glbPath, objectId);
 
+      // Store objectId → glbPath so export can find the file
+      window._objectGlbMap = window._objectGlbMap || {};
+      window._objectGlbMap[objectId] = glbPath;
+
       // Add to inventory
       window.inventoryModule.addToInventory({
+        id: objectId,
         name: `${selectedModel} Model`,
         modelType: selectedModel,
         glbUrl: glbPath,
@@ -142,8 +147,17 @@ if (exportIfcBtn) {
         return;
       }
 
-      await window.exporterModule.exportSceneToIFC(sceneObjects);
-      // TODO: Download IFC file when Phase 6 is complete
+      const ifcPath = await window.exporterModule.exportSceneToIFC(sceneObjects);
+      // Trigger browser download of the exported IFC file
+      if (ifcPath) {
+        const filename = ifcPath.split('/').pop() || 'export.ifc';
+        const link = document.createElement('a');
+        link.href = `/outputs/${filename}`;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     } catch (error) {
       console.error('[app] Export error:', error);
     } finally {
