@@ -23,6 +23,7 @@ function prepareSceneForExport() {
       ifcClass: m.ifcClass || null,
       category: m.category || null,
       dimensions: m.dimensions || null,
+      extraMeta: m.extraMeta || null,
     };
   }).filter(obj => obj.glbPath);
 

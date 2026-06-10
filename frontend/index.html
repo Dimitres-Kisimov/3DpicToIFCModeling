@@ -32,24 +32,30 @@
             </div>
 
             <!-- Model Selection -->
+            <!-- Pipeline status -->
             <div class="sidebar-section">
-                <h3>2. Select Model</h3>
-                <div class="model-options">
-                    <label class="radio-option">
-                        <input type="radio" name="model" value="instantmesh" checked>
-                        <span>InstantMesh</span>
-                        <small>Fast mesh generation</small>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="model" value="stablefast3d">
-                        <span>StableFast3D</span>
-                        <small>Stable & fast 3D</small>
-                    </label>
-                    <label class="radio-option">
-                        <input type="radio" name="model" value="triposr">
-                        <span>TripoSR</span>
-                        <small>High quality</small>
-                    </label>
+                <h3>2. Pipeline</h3>
+                <div id="pipelineStatus" class="pipeline-status">
+                    <div class="pipe-row" data-stage="detect">
+                        <span class="pipe-dot"></span>
+                        <span class="pipe-label">DETR detection</span>
+                        <small>commercial-safe (Apache-2.0)</small>
+                    </div>
+                    <div class="pipe-row" data-stage="depth">
+                        <span class="pipe-dot"></span>
+                        <span class="pipe-label">Depth Anything V2 Metric</span>
+                        <small>real H×W×D in metres</small>
+                    </div>
+                    <div class="pipe-row" data-stage="retrieve">
+                        <span class="pipe-dot"></span>
+                        <span class="pipe-label">DINOv2 → catalog match</span>
+                        <small>ABO retrieval (CC-BY-4.0)</small>
+                    </div>
+                    <div class="pipe-row" data-stage="fallback">
+                        <span class="pipe-dot"></span>
+                        <span class="pipe-label">SAM 3D Objects fallback</span>
+                        <small>generative, SAM Licence</small>
+                    </div>
                 </div>
             </div>
 
@@ -88,6 +94,15 @@
                 <h3>Debug</h3>
                 <button id="healthCheckBtn" class="btn btn-small">Check Health</button>
                 <div id="healthInfo" class="health-info"></div>
+            </div>
+
+            <!-- Credits / Attribution (required by ABO CC-BY-4.0 + SAM Licence) -->
+            <div class="credits-footer">
+                3D meshes from <a href="https://amazon-berkeley-objects.s3.amazonaws.com/index.html" target="_blank" rel="noopener">Amazon Berkeley Objects</a> (CC&#8209;BY&#8209;4.0).
+                Generative fallback by <a href="https://huggingface.co/facebook/sam-3d-objects" target="_blank" rel="noopener">SAM&nbsp;3D&nbsp;Objects</a> (Meta, SAM&nbsp;License).
+                Detection &amp; depth: Apache&#8209;2.0 components on HuggingFace.
+                IFC&nbsp;writer: <a href="https://github.com/IfcOpenShell/IfcOpenShell" target="_blank" rel="noopener">IfcOpenShell</a> (LGPL&#8209;3.0).
+                Viewer: <a href="https://xeokit.io" target="_blank" rel="noopener">xeokit</a> (MIT).
             </div>
         </aside>
 

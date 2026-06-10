@@ -449,3 +449,46 @@ body {
     transform: scale(1.02);
     transition: all 0.15s ease;
 }
+
+/* ============================================================================
+   PIPELINE STATUS — honest indicator of what runs on each upload
+   ============================================================================ */
+.pipeline-status { display: flex; flex-direction: column; gap: 0.45rem; }
+.pipe-row {
+    display: grid;
+    grid-template-columns: 12px 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 0.55rem;
+    align-items: center;
+    padding: 0.4rem 0.55rem;
+    background: #1a2235;
+    border-radius: 6px;
+    border-left: 3px solid #3a4760;
+}
+.pipe-row.active   { border-left-color: #6aa0ff; background: #1f2c4a; }
+.pipe-row.success  { border-left-color: #5bcf8a; background: #1d2f25; }
+.pipe-row.skipped  { border-left-color: #5a5a5a; opacity: 0.6; }
+.pipe-row.error    { border-left-color: #f56565; background: #2f1d1d; }
+.pipe-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #3a4760;
+    grid-row: span 2;
+}
+.pipe-row.active .pipe-dot   { background: #6aa0ff; box-shadow: 0 0 6px #6aa0ff; }
+.pipe-row.success .pipe-dot  { background: #5bcf8a; }
+.pipe-row.error .pipe-dot    { background: #f56565; }
+.pipe-label { font-weight: 500; font-size: 0.88rem; color: #e0e6f0; }
+.pipe-row small {
+    grid-column: 2;
+    font-size: 0.72rem; color: #8a96ad;
+}
+
+/* Credits footer */
+.credits-footer {
+    margin-top: auto;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.72rem; color: #6a7488; line-height: 1.5;
+    border-top: 1px solid #2a3548;
+}
+.credits-footer a { color: #8aa3d8; text-decoration: none; }
+.credits-footer a:hover { text-decoration: underline; }

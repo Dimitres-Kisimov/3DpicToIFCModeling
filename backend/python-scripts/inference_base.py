@@ -358,40 +358,32 @@ def generate_segmented_depth_mesh(image_path, resolution=64, depth_model="depth-
     W_img, H_img = img.size
     img_arr = np.array(img, dtype=np.uint8)
 
-    # ── 1. YOLO segmentation ────────────────────────────────────────────────
+    # ── 1. Foreground segmentation (rembg — MIT-licenced, U²-Net) ───────────
+    # Replaces the previous AGPL-3.0 YOLOv8 path. rembg ships its own MIT-
+    # licensed U²-Net weights and runs on CPU or GPU.  For commercial-grade
+    # mask boundaries SAM 2.1 (Apache-2.0) is a drop-in upgrade — see
+    # run_detect_and_place.py for the SAM-segmented pipeline used by the
+    # production detect-and-place route.
     mask_full = None
     try:
-        log("Running YOLO segmentation...", "info")
-        from ultralytics import YOLO
-        yolo = YOLO("yolov8n-seg.pt")
-        results = yolo(image_path, verbose=False)
-
-        if results[0].masks is not None and len(results[0].masks.data) > 0:
-            masks = results[0].masks.data.cpu().numpy()   # (N, H', W')
-            confs = results[0].boxes.conf.cpu().numpy()
-
-            # Pick the largest mask (main object fills most of the frame)
-            areas = [m.sum() for m in masks]
-            best = int(np.argmax(areas))
-            raw = masks[best]                              # (H', W') float32 0-1
-
-            # Resize mask back to original image size
-            mask_pil = Image.fromarray((raw * 255).astype(np.uint8), mode="L")
-            mask_pil = mask_pil.resize((W_img, H_img), Image.BILINEAR)
-            mask_full = np.array(mask_pil, dtype=np.float32) / 255.0
-
-            # Erode mask slightly to remove jagged boundary artifacts
+        log("Running rembg (U²-Net) foreground segmentation...", "info")
+        import rembg
+        with open(image_path, "rb") as f:
+            rgba_bytes = rembg.remove(f.read())
+        from io import BytesIO
+        rgba = np.array(Image.open(BytesIO(rgba_bytes)).convert("RGBA"))
+        if rgba.shape[-1] == 4:
+            mask_full = (rgba[:, :, 3].astype(np.float32) / 255.0)
             from scipy.ndimage import binary_erosion
             binary = (mask_full > 0.5)
             binary = binary_erosion(binary, iterations=4)
             mask_full = binary.astype(np.float32)
-
-            log(f"Object segmented — largest area, confidence: {confs[best]:.2f}, "
-                f"class: {results[0].names[int(results[0].boxes.cls[best])]}", "info")
+            coverage = mask_full.sum() / mask_full.size * 100
+            log(f"Foreground segmented — coverage {coverage:.1f}%", "info")
         else:
-            log("No objects detected, using full image", "info")
+            log("rembg returned no alpha channel, using full image", "warn")
     except Exception as e:
-        log(f"YOLO failed ({e}), using full image", "warn")
+        log(f"rembg failed ({e}), using full image", "warn")
 
     # ── 2. Depth estimation ─────────────────────────────────────────────────
     log(f"Depth estimation: {depth_model}", "info")

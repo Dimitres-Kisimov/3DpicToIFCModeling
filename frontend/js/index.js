@@ -119,16 +119,34 @@ if (useSampleBtn) {
 }
 
 // ============================================================================
-// EVENT LISTENERS - MODEL SELECTION
+// PIPELINE STATUS — one source of truth for what happened on the last call
 // ============================================================================
-
-const modelRadios = document.querySelectorAll('input[name="model"]');
-modelRadios.forEach((radio) => {
-  radio.addEventListener('change', (e) => {
-    selectedModel = e.target.value;
-    updateStatus(`Selected model: ${selectedModel}`);
-  });
-});
+function setPipeStatus(stage, state) {
+  const el = document.querySelector(`.pipe-row[data-stage="${stage}"]`);
+  if (!el) return;
+  el.classList.remove('active', 'success', 'skipped', 'error');
+  if (state) el.classList.add(state);
+}
+function resetPipeStatus() {
+  ['detect', 'depth', 'retrieve', 'fallback'].forEach(s => setPipeStatus(s, ''));
+}
+function applyPipelineResult(result) {
+  // detect: success if we got a label, error otherwise
+  setPipeStatus('detect', result.detection?.coco_label ? 'success' : 'error');
+  // depth: success if Depth Anything returned a number
+  setPipeStatus('depth', result.dimension_source === 'depth_anything_v2_metric' ? 'success' : 'error');
+  // retrieve / fallback: mutually exclusive based on mesh_source
+  if (result.mesh_source === 'retrieval' || result.retrieval) {
+    setPipeStatus('retrieve', 'success');
+    setPipeStatus('fallback', 'skipped');
+  } else if (result.mesh_source === 'sam3d') {
+    setPipeStatus('retrieve', 'skipped');
+    setPipeStatus('fallback', 'success');
+  } else {
+    setPipeStatus('retrieve', 'skipped');
+    setPipeStatus('fallback', 'skipped');
+  }
+}
 
 // ============================================================================
 // EVENT LISTENERS - GENERATE BUTTON
@@ -147,12 +165,15 @@ if (generateBtn) {
     }
 
     generateBtn.disabled = true;
+    resetPipeStatus();
+    ['detect', 'depth', 'retrieve'].forEach(s => setPipeStatus(s, 'active'));
     const progressContainer = document.getElementById('progressContainer');
     progressContainer.style.display = 'block';
 
     try {
-      const result = await generateModel(selectedImage, selectedModel);
+      const result = await generateModel(selectedImage, 'detect');
       console.log('[app] Pipeline result:', result);
+      applyPipelineResult(result);
       const glbPath = result.glb;
 
       // Load into xeokit viewer
@@ -172,6 +193,7 @@ if (generateBtn) {
         dimensions: result.dimensions_m || null,
         confidence: result.detection?.confidence ?? null,
         cocoLabel: result.detection?.coco_label || null,
+        extraMeta: result.extra_meta || result.extraMeta || null,
       };
 
       // Add to inventory with rich metadata from the pipeline

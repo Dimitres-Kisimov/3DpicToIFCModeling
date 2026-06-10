@@ -144,6 +144,11 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
       category: result.category,
       ifcClass: result.ifc_class,
       dimensions_m: result.dimensions_m,
+      dimension_source: result.dimension_source,
+      mesh_source: result.mesh_source,
+      retrieval: result.retrieval,
+      extra_meta: result.extra_meta,
+      library_used: result.library_used,
       metadata: {
         method: result.method,
         faces: result.faces,

@@ -31,7 +31,21 @@ from PIL import Image
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-MESH_LIBRARY_DIR = REPO_ROOT / "data" / "mesh_library"
+
+# Prefer the real ABO library (CC-BY-4.0) when it's been built; fall back to the
+# procedural library only if ABO isn't present. Both have the same layout:
+# <dir>/manifest.json + <dir>/index.faiss + <dir>/*.glb.
+def _resolve_mesh_library():
+    candidates = [
+        REPO_ROOT / "data" / "mesh_library_abo",
+        REPO_ROOT / "data" / "mesh_library",
+    ]
+    for d in candidates:
+        if (d / "index.faiss").exists() and (d / "manifest.json").exists():
+            return d
+    return candidates[-1]
+
+MESH_LIBRARY_DIR = _resolve_mesh_library()
 MESH_INDEX_PATH = MESH_LIBRARY_DIR / "index.faiss"
 MESH_MANIFEST_PATH = MESH_LIBRARY_DIR / "manifest.json"
 
@@ -409,6 +423,10 @@ def _try_retrieval(image_crop: Image.Image, category: str):
             "library_entry": entry.get("id"),
             "library_category": entry.get("category"),
             "similarity": round(best_score, 4),
+            "source_id": entry.get("source_id"),
+            "source": entry.get("source"),
+            "license": entry.get("license"),
+            "attribution": entry.get("attribution"),
         }
     except Exception as e:
         return None, {"retrieval_error": str(e)}
@@ -505,6 +523,25 @@ def run(image_path: str, output_glb: str):
 
     elapsed_ms = round((time.perf_counter() - t0) * 1000, 1)
 
+    # Build an attribution / source bundle that the IFC writer will stamp as
+    # Pset_SCS_DetectionMetadata properties. Required by ABO's CC-BY-4.0 and
+    # by SAM Licence for SAM 3D Objects outputs.
+    extra_meta = {
+        "method": f"detr-r50 + depth-anything-v2-metric + dominant-colour + {mesh_source}",
+    }
+    if retrieval_meta:
+        if retrieval_meta.get("library_entry"):
+            extra_meta["library_entry"] = retrieval_meta["library_entry"]
+        if retrieval_meta.get("source"):
+            extra_meta["source"] = retrieval_meta["source"]
+        if retrieval_meta.get("license"):
+            extra_meta["license"] = retrieval_meta["license"]
+        if retrieval_meta.get("attribution"):
+            extra_meta["attribution"] = retrieval_meta["attribution"]
+    elif mesh_source == "primitive-library":
+        extra_meta["source"] = "SCS procedural primitive library"
+        extra_meta["license"] = "Apache-2.0"
+
     return {
         "success": True,
         "image_path": image_path,
@@ -526,10 +563,12 @@ def run(image_path: str, output_glb: str):
         "colour_rgb": [round(c, 3) for c in colour_rgb],
         "mesh_source": mesh_source,
         "retrieval": retrieval_meta,
+        "extra_meta": extra_meta,
         "faces": len(mesh.faces),
-        "method": "detr-r50 + depth-anything-v2-metric + dominant-colour + (retrieval-or-primitive)",
+        "method": extra_meta["method"],
         "latency_ms": elapsed_ms,
         "device": "cuda" if torch.cuda.is_available() else "cpu",
+        "library_used": str(MESH_LIBRARY_DIR.relative_to(REPO_ROOT)),
     }
 
 

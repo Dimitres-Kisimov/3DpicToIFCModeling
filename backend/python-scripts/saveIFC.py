@@ -113,7 +113,8 @@ IFC4_ENTITY_MAP = {
 
 
 def _add_furniture(ifc, owner_history, body_ctx, storey, mesh, name, position, scale,
-                    ifc_class="IfcFurniture", category=None, dimensions=None):
+                    ifc_class="IfcFurniture", category=None, dimensions=None,
+                    extra_meta=None):
     """Add one furniture item with real triangulated mesh geometry.
 
     ifc_class is the IFC4 entity type to instantiate (IfcChair, IfcTable, ...).
@@ -193,9 +194,12 @@ def _add_furniture(ifc, owner_history, body_ctx, storey, mesh, name, position, s
         RelatingStructure=storey
     )
 
-    # Attach Pset_FurnitureCommon with SCS-specific properties and measured
-    # dimensions so they survive into Revit/BIM Vision schedules.
-    if dimensions or category:
+    # Attach Pset_SCS_DetectionMetadata with category, measured dimensions,
+    # the mesh-source attribution (required by ABO CC-BY-4.0 + SAM Licence
+    # downstream), and method metadata so they survive into Revit / BIM Vision
+    # schedules and any IFC consumer.
+    extra = extra_meta or {}
+    if dimensions or category or extra:
         props = []
         if category:
             props.append(ifc.createIfcPropertySingleValue(
@@ -208,6 +212,21 @@ def _add_furniture(ifc, owner_history, body_ctx, storey, mesh, name, position, s
                         Name=f"Measured_{key.capitalize()}_m",
                         NominalValue=ifc.createIfcReal(float(dimensions[key]))
                     ))
+        # Mesh-source attribution — required when the geometry came from a
+        # licensed source like ABO (CC-BY-4.0) or SAM 3D Objects (SAM Licence).
+        for key, label in (
+            ("mesh_source", "MeshSource"),
+            ("library_entry", "MeshSource_Id"),
+            ("source", "MeshSource_Dataset"),
+            ("license", "MeshSource_License"),
+            ("attribution", "MeshSource_Attribution"),
+            ("method", "Pipeline_Method"),
+        ):
+            val = extra.get(key)
+            if val:
+                props.append(ifc.createIfcPropertySingleValue(
+                    Name=label, NominalValue=ifc.createIfcText(str(val))
+                ))
         if props:
             pset = ifc.createIfcPropertySet(
                 GlobalId=guid.new(), OwnerHistory=owner_history,
@@ -266,6 +285,7 @@ def save_ifc_project(objects_list, output_ifc):
                 ifc_class=obj.get("ifcClass") or obj.get("ifc_class") or "IfcFurniture",
                 category=obj.get("category"),
                 dimensions=obj.get("dimensions"),
+                extra_meta=obj.get("extraMeta") or obj.get("extra_meta") or {},
             )
             added += 1
             log(f"Added '{obj.get('name')}' as {obj.get('ifcClass') or 'IfcFurniture'} — {len(mesh.faces)} faces", "info")

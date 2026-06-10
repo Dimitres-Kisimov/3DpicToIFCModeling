@@ -105,6 +105,7 @@ async function exportSceneToIFC(sceneObjects, outputDir) {
       ifcClass: obj.ifcClass || obj.ifc_class || null,
       category: obj.category || null,
       dimensions: obj.dimensions || null,
+      extraMeta: obj.extraMeta || obj.extra_meta || null,
     })));
 
     const result = await executePythonScript(
