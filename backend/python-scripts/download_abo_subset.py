@@ -35,36 +35,45 @@ SPINS_URL    = "https://amazon-berkeley-objects.s3.amazonaws.com/archives/abo-sp
 MODELS_BASE  = "https://amazon-berkeley-objects.s3.amazonaws.com/3dmodels/original"
 
 # ABO product_type values mapped to SCS canonical categories.
-# Coverage chosen so every entry contributes to one of the 11 SCS categories.
+# Counts shown are how many ABO listings have a 3dmodel_id for each type
+# (enumerated from the listings shards on 2026-06-10). Categories chosen
+# because they map cleanly to the 11 SCS office-furniture categories.
+#
+# ABO does NOT contain: KEYBOARD, COMPUTER_MOUSE, TV, COMPUTER_MONITOR,
+# FILING_CABINET (as a separate type), or DESK_LAMP (separate from LAMP).
+# Those need a different source — see CREDITS.md and PIVOT_BLUEPRINT.md
+# §3 for the long-tail coverage strategy.
 SCS_CATEGORY_MAP = {
+    # CHAIR family (1184 + 14 = 1198 candidates)
     "CHAIR":           "office_chair",
-    "OFFICE_CHAIR":    "office_chair",
-    "DINING_CHAIR":    "office_chair",
-    "RECLINER":        "office_chair",
+    "BEAN_BAG_CHAIR":  "office_chair",
+
+    # STOOL family (340 candidates) — separate seating category, not chair
+    "STOOL_SEATING":   "stool",
+
+    # SOFA family (859 + 288 + 39 = 1186 candidates)
     "SOFA":            "sofa",
-    "SECTIONAL_SOFA":  "sofa",
-    "LOVESEAT":        "sofa",
+    "OTTOMAN":         "sofa",
     "BENCH":           "sofa",
+
+    # DESK — keep separate from generic TABLE (145 candidates)
+    "DESK":            "desk",
+
+    # TABLE (584 candidates) — NOT including DESK
     "TABLE":           "table",
-    "DINING_TABLE":    "table",
-    "COFFEE_TABLE":    "table",
-    "END_TABLE":       "table",
-    "CONSOLE_TABLE":   "table",
-    "DESK":            "table",  # treat as desk-like
-    "OUTDOOR_TABLE":   "table",
-    "CABINET":         "appliance",
-    "STORAGE_CABINET": "appliance",
-    "DRESSER":         "appliance",
-    "WARDROBE":        "appliance",
-    "BOOKCASE":        "appliance",
-    "SHELF":           "appliance",
-    "STORAGE_RACK":    "appliance",
-    "LAMP":            "plant",  # floor-standing object slot
-    "TABLE_LAMP":      "plant",
-    "FLOOR_LAMP":      "plant",
-    "PENDANT_LIGHT":   "plant",
-    "TV":              "monitor",
-    "COMPUTER_MONITOR": "monitor",
+
+    # CABINET / storage family (137 + 62 + 5 = 204 candidates)
+    "CABINET":         "cabinet",
+    "DRESSER":         "cabinet",
+    "STORAGE_RACK":    "cabinet",
+
+    # BOOKSHELF — SHELF in ABO (106 candidates)
+    "SHELF":           "bookshelf",
+
+    # LAMP family (345 + 197 + 3 = 545 candidates)
+    "LAMP":            "lamp",
+    "LIGHT_FIXTURE":   "lamp",
+    "HOME_LIGHTING_AND_LAMPS": "lamp",
 }
 
 

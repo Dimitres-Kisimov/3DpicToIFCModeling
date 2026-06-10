@@ -54,26 +54,32 @@ MESH_MANIFEST_PATH = MESH_LIBRARY_DIR / "manifest.json"
 # Category and IFC4 entity-class map
 # ---------------------------------------------------------------------------
 # COCO label -> (SCS category, IFC4 entity class, default H x W x D fallback in m)
+# SCS categories now match the ABO retrieval library: office_chair, stool,
+# sofa, desk, table, cabinet, bookshelf, lamp. Items COCO calls "couch" map
+# to "sofa", "dining table" maps either to "desk" (if a single-person work
+# surface in the photo context) or "table" (multi-seat). When detection is
+# ambiguous between desk and table, retrieval picks the closer match by
+# DINOv2 silhouette similarity.
 COCO_TO_IFC = {
     "chair":           ("office_chair",    "IfcChair",                  (0.95, 0.55, 0.55)),
     "couch":           ("sofa",            "IfcFurniture",              (0.85, 2.00, 0.90)),
-    "bench":           ("bench",           "IfcFurniture",              (0.45, 1.50, 0.40)),
+    "bench":           ("sofa",            "IfcFurniture",              (0.45, 1.50, 0.40)),
     "dining table":    ("table",           "IfcTable",                  (0.74, 1.80, 0.90)),
     "tv":              ("monitor",         "IfcAudioVisualAppliance",   (0.55, 1.00, 0.10)),
-    "laptop":          ("laptop",          "IfcCommunicationsAppliance", (0.02, 0.36, 0.25)),
-    "keyboard":        ("keyboard",        "IfcInputDevice",            (0.03, 0.45, 0.15)),
-    "mouse":           ("mouse",           "IfcInputDevice",            (0.04, 0.12, 0.07)),
-    "book":            ("book",            "IfcFurniture",              (0.30, 0.22, 0.03)),
-    "vase":            ("vase",            "IfcFurniture",              (0.30, 0.15, 0.15)),
-    "bottle":          ("bottle",          "IfcFurniture",              (0.25, 0.07, 0.07)),
-    "cup":             ("cup",             "IfcFurniture",              (0.10, 0.08, 0.08)),
-    "potted plant":    ("plant",           "IfcFurniture",              (0.50, 0.30, 0.30)),
-    "refrigerator":    ("appliance",       "IfcElectricAppliance",      (1.70, 0.65, 0.65)),
-    "microwave":       ("appliance",       "IfcElectricAppliance",      (0.30, 0.55, 0.40)),
-    "oven":            ("appliance",       "IfcElectricAppliance",      (0.85, 0.60, 0.60)),
-    "toaster":         ("appliance",       "IfcElectricAppliance",      (0.20, 0.30, 0.20)),
-    "sink":            ("sink",            "IfcSanitaryTerminal",       (0.20, 0.60, 0.50)),
-    "clock":           ("clock",           "IfcFurniture",              (0.30, 0.30, 0.05)),
+    "laptop":          ("desk",            "IfcCommunicationsAppliance", (0.02, 0.36, 0.25)),
+    "keyboard":        ("desk",            "IfcInputDevice",            (0.03, 0.45, 0.15)),
+    "mouse":           ("desk",            "IfcInputDevice",            (0.04, 0.12, 0.07)),
+    "book":            ("bookshelf",       "IfcFurniture",              (0.30, 0.22, 0.03)),
+    "vase":            ("lamp",            "IfcFurniture",              (0.30, 0.15, 0.15)),
+    "bottle":          ("lamp",            "IfcFurniture",              (0.25, 0.07, 0.07)),
+    "cup":             ("lamp",            "IfcFurniture",              (0.10, 0.08, 0.08)),
+    "potted plant":    ("lamp",            "IfcFurniture",              (0.50, 0.30, 0.30)),
+    "refrigerator":    ("cabinet",         "IfcElectricAppliance",      (1.70, 0.65, 0.65)),
+    "microwave":       ("cabinet",         "IfcElectricAppliance",      (0.30, 0.55, 0.40)),
+    "oven":            ("cabinet",         "IfcElectricAppliance",      (0.85, 0.60, 0.60)),
+    "toaster":         ("cabinet",         "IfcElectricAppliance",      (0.20, 0.30, 0.20)),
+    "sink":            ("cabinet",         "IfcSanitaryTerminal",       (0.20, 0.60, 0.50)),
+    "clock":           ("lamp",            "IfcFurniture",              (0.30, 0.30, 0.05)),
 }
 
 DEFAULT_MAPPING = ("furniture", "IfcFurnishingElement", (0.80, 0.60, 0.60))
@@ -151,23 +157,52 @@ def _plant_mesh(h, w, d):
     return trimesh.util.concatenate(parts)
 
 
+def _stool_mesh(h, w, d):
+    parts = []
+    seat = trimesh.creation.cylinder(radius=w / 2, height=0.04, sections=20)
+    seat.apply_translation([0, 0, h * 0.94]); parts.append(seat)
+    for ang_idx in range(4):
+        ang = ang_idx * np.pi / 2 + np.pi / 4
+        leg = trimesh.creation.cylinder(radius=0.018, height=h * 0.92, sections=12)
+        leg.apply_translation([(w * 0.32) * np.cos(ang), (w * 0.32) * np.sin(ang), h * 0.46])
+        parts.append(leg)
+    return trimesh.util.concatenate(parts)
+
+
+def _bookshelf_mesh(h, w, d):
+    parts = []
+    body = trimesh.creation.box(extents=[w, 0.02, h]); body.apply_translation([0, -d / 2 + 0.01, h / 2]); parts.append(body)
+    for x_sign in (-1, 1):
+        side = trimesh.creation.box(extents=[0.02, d, h]); side.apply_translation([x_sign * (w / 2 - 0.01), 0, h / 2]); parts.append(side)
+    n_shelves = max(2, int(h / 0.40))
+    for sh in range(1, n_shelves):
+        shelf = trimesh.creation.box(extents=[w - 0.04, d - 0.05, 0.02])
+        shelf.apply_translation([0, 0, sh * (h / n_shelves)]); parts.append(shelf)
+    return trimesh.util.concatenate(parts)
+
+
+def _lamp_mesh(h, w, d):
+    parts = []
+    base = trimesh.creation.cylinder(radius=w * 0.45, height=0.03, sections=24)
+    base.apply_translation([0, 0, 0.015]); parts.append(base)
+    pole = trimesh.creation.cylinder(radius=0.018, height=h * 0.82, sections=12)
+    pole.apply_translation([0, 0, h * 0.43]); parts.append(pole)
+    shade = trimesh.creation.cone(radius=w * 0.5, height=0.25, sections=20)
+    shade.apply_transform(trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0]))
+    shade.apply_translation([0, 0, h - 0.05]); parts.append(shade)
+    return trimesh.util.concatenate(parts)
+
+
 CATEGORY_MESH_BUILDERS = {
     "office_chair": _chair_mesh,
-    "table":        _table_mesh,
-    "bench":        _table_mesh,
+    "stool":        _stool_mesh,
     "sofa":         _sofa_mesh,
+    "desk":         _table_mesh,
+    "table":        _table_mesh,
+    "cabinet":      _box_mesh,
+    "bookshelf":    _bookshelf_mesh,
+    "lamp":         _lamp_mesh,
     "monitor":      _monitor_mesh,
-    "laptop":       _laptop_mesh,
-    "keyboard":     _box_mesh,
-    "mouse":        _box_mesh,
-    "book":         _box_mesh,
-    "bottle":       _cylinder_mesh,
-    "vase":         _cylinder_mesh,
-    "cup":          _cylinder_mesh,
-    "plant":        _plant_mesh,
-    "appliance":    _box_mesh,
-    "sink":         _box_mesh,
-    "clock":        _box_mesh,
 }
 
 

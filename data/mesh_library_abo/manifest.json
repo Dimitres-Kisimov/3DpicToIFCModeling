@@ -760,6 +760,196 @@
     "faces": 17732
   },
   {
+    "id": "office_chair_B07B4N11TX",
+    "category": "office_chair",
+    "glb": "office_chair_B07B4N11TX.glb",
+    "source_id": "B07B4N11TX",
+    "product_type": "CHAIR",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "office_chair_B07B4N11TX.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.955,
+      "y": 1.038,
+      "z": 1.07
+    },
+    "faces": 22480
+  },
+  {
+    "id": "office_chair_B0746H4BPM",
+    "category": "office_chair",
+    "glb": "office_chair_B0746H4BPM.glb",
+    "source_id": "B0746H4BPM",
+    "product_type": "CHAIR",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "office_chair_B0746H4BPM.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.793,
+      "y": 0.952,
+      "z": 0.91
+    },
+    "faces": 16054
+  },
+  {
+    "id": "office_chair_B07HSJSH2Q",
+    "category": "office_chair",
+    "glb": "office_chair_B07HSJSH2Q.glb",
+    "source_id": "B07HSJSH2Q",
+    "product_type": "CHAIR",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "office_chair_B07HSJSH2Q.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.503,
+      "y": 0.933,
+      "z": 0.597
+    },
+    "faces": 7252
+  },
+  {
+    "id": "office_chair_B00IFHPVEU",
+    "category": "office_chair",
+    "glb": "office_chair_B00IFHPVEU.glb",
+    "source_id": "B00IFHPVEU",
+    "product_type": "CHAIR",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "office_chair_B00IFHPVEU.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.576,
+      "y": 0.998,
+      "z": 0.641
+    },
+    "faces": 70621
+  },
+  {
+    "id": "office_chair_B075YNJQLB",
+    "category": "office_chair",
+    "glb": "office_chair_B075YNJQLB.glb",
+    "source_id": "B075YNJQLB",
+    "product_type": "CHAIR",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "office_chair_B075YNJQLB.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.491,
+      "y": 0.849,
+      "z": 0.583
+    },
+    "faces": 21116
+  },
+  {
+    "id": "office_chair_B071W5VD5C",
+    "category": "office_chair",
+    "glb": "office_chair_B071W5VD5C.glb",
+    "source_id": "B071W5VD5C",
+    "product_type": "CHAIR",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "office_chair_B071W5VD5C.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.878,
+      "y": 1.063,
+      "z": 0.904
+    },
+    "faces": 19446
+  },
+  {
+    "id": "office_chair_B075X4YDN6",
+    "category": "office_chair",
+    "glb": "office_chair_B075X4YDN6.glb",
+    "source_id": "B075X4YDN6",
+    "product_type": "CHAIR",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "office_chair_B075X4YDN6.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.729,
+      "y": 0.869,
+      "z": 0.874
+    },
+    "faces": 14694
+  },
+  {
+    "id": "office_chair_B0746GYJJD",
+    "category": "office_chair",
+    "glb": "office_chair_B0746GYJJD.glb",
+    "source_id": "B0746GYJJD",
+    "product_type": "CHAIR",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "office_chair_B0746GYJJD.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.758,
+      "y": 0.956,
+      "z": 0.813
+    },
+    "faces": 8310
+  },
+  {
+    "id": "office_chair_B07B4FZGW8",
+    "category": "office_chair",
+    "glb": "office_chair_B07B4FZGW8.glb",
+    "source_id": "B07B4FZGW8",
+    "product_type": "CHAIR",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "office_chair_B07B4FZGW8.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.955,
+      "y": 0.997,
+      "z": 1.07
+    },
+    "faces": 17144
+  },
+  {
+    "id": "office_chair_B07HJ66BLL",
+    "category": "office_chair",
+    "glb": "office_chair_B07HJ66BLL.glb",
+    "source_id": "B07HJ66BLL",
+    "product_type": "CHAIR",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "office_chair_B07HJ66BLL.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.696,
+      "y": 1.293,
+      "z": 0.651
+    },
+    "faces": 59324
+  },
+  {
     "id": "sofa_B07DBGHYG6",
     "category": "sofa",
     "glb": "sofa_B07DBGHYG6.glb",
@@ -798,6 +988,63 @@
     "faces": 6108
   },
   {
+    "id": "sofa_B07B4D89MZ",
+    "category": "sofa",
+    "glb": "sofa_B07B4D89MZ.glb",
+    "source_id": "B07B4D89MZ",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 0.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4D89MZ.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.613,
+      "y": 0.438,
+      "z": 0.616
+    },
+    "faces": 12552
+  },
+  {
+    "id": "sofa_B07B4GXYDG",
+    "category": "sofa",
+    "glb": "sofa_B07B4GXYDG.glb",
+    "source_id": "B07B4GXYDG",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4GXYDG.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.922,
+      "y": 0.948,
+      "z": 0.882
+    },
+    "faces": 25642
+  },
+  {
+    "id": "sofa_B07B4MH5Q1",
+    "category": "sofa",
+    "glb": "sofa_B07B4MH5Q1.glb",
+    "source_id": "B07B4MH5Q1",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4MH5Q1.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.839,
+      "y": 0.464,
+      "z": 0.639
+    },
+    "faces": 14208
+  },
+  {
     "id": "sofa_B07DBDTCTY",
     "category": "sofa",
     "glb": "sofa_B07DBDTCTY.glb",
@@ -834,6 +1081,44 @@
       "z": 0.363
     },
     "faces": 17778
+  },
+  {
+    "id": "sofa_B07B4MKCLM",
+    "category": "sofa",
+    "glb": "sofa_B07B4MKCLM.glb",
+    "source_id": "B07B4MKCLM",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4MKCLM.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.726,
+      "y": 0.46,
+      "z": 0.735
+    },
+    "faces": 21180
+  },
+  {
+    "id": "sofa_B07B4MGBJD",
+    "category": "sofa",
+    "glb": "sofa_B07B4MGBJD.glb",
+    "source_id": "B07B4MGBJD",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4MGBJD.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.764,
+      "y": 0.47,
+      "z": 0.751
+    },
+    "faces": 21180
   },
   {
     "id": "sofa_B07B4M6BS1",
@@ -893,6 +1178,44 @@
     "faces": 19496
   },
   {
+    "id": "sofa_B07HZ6YWZY",
+    "category": "sofa",
+    "glb": "sofa_B07HZ6YWZY.glb",
+    "source_id": "B07HZ6YWZY",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07HZ6YWZY.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.885,
+      "y": 0.438,
+      "z": 0.57
+    },
+    "faces": 18500
+  },
+  {
+    "id": "sofa_B07J2VY53W",
+    "category": "sofa",
+    "glb": "sofa_B07J2VY53W.glb",
+    "source_id": "B07J2VY53W",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07J2VY53W.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.902,
+      "y": 0.395,
+      "z": 0.901
+    },
+    "faces": 27504
+  },
+  {
     "id": "sofa_B07B4G5QDB",
     "category": "sofa",
     "glb": "sofa_B07B4G5QDB.glb",
@@ -910,6 +1233,25 @@
       "z": 0.859
     },
     "faces": 17212
+  },
+  {
+    "id": "sofa_B071PDYXKC",
+    "category": "sofa",
+    "glb": "sofa_B071PDYXKC.glb",
+    "source_id": "B071PDYXKC",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B071PDYXKC.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.655,
+      "y": 0.399,
+      "z": 0.648
+    },
+    "faces": 5262
   },
   {
     "id": "sofa_B07DBHFDSQ",
@@ -931,6 +1273,63 @@
     "faces": 2564
   },
   {
+    "id": "sofa_B073G856G3",
+    "category": "sofa",
+    "glb": "sofa_B073G856G3.glb",
+    "source_id": "B073G856G3",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B073G856G3.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.507,
+      "y": 0.475,
+      "z": 0.497
+    },
+    "faces": 20894
+  },
+  {
+    "id": "sofa_B07B4FZWCN",
+    "category": "sofa",
+    "glb": "sofa_B07B4FZWCN.glb",
+    "source_id": "B07B4FZWCN",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4FZWCN.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 2.561,
+      "y": 0.928,
+      "z": 1.294
+    },
+    "faces": 46547
+  },
+  {
+    "id": "sofa_B07B4FZNM4",
+    "category": "sofa",
+    "glb": "sofa_B07B4FZNM4.glb",
+    "source_id": "B07B4FZNM4",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4FZNM4.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 2.561,
+      "y": 0.928,
+      "z": 1.294
+    },
+    "faces": 46526
+  },
+  {
     "id": "sofa_B072FVHS93",
     "category": "sofa",
     "glb": "sofa_B072FVHS93.glb",
@@ -948,6 +1347,25 @@
       "z": 0.97
     },
     "faces": 7024
+  },
+  {
+    "id": "sofa_B071FMSYZV",
+    "category": "sofa",
+    "glb": "sofa_B071FMSYZV.glb",
+    "source_id": "B071FMSYZV",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B071FMSYZV.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.25,
+      "y": 0.434,
+      "z": 0.817
+    },
+    "faces": 13904
   },
   {
     "id": "sofa_B07HZ7TL95",
@@ -1026,6 +1444,63 @@
     "faces": 17212
   },
   {
+    "id": "sofa_B07B4D88HC",
+    "category": "sofa",
+    "glb": "sofa_B07B4D88HC.glb",
+    "source_id": "B07B4D88HC",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4D88HC.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 2.587,
+      "y": 1.562,
+      "z": 1.351
+    },
+    "faces": 35284
+  },
+  {
+    "id": "sofa_B071W5VJ93",
+    "category": "sofa",
+    "glb": "sofa_B071W5VJ93.glb",
+    "source_id": "B071W5VJ93",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B071W5VJ93.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.835,
+      "y": 0.497,
+      "z": 0.581
+    },
+    "faces": 9744
+  },
+  {
+    "id": "sofa_B07B4GSKS1",
+    "category": "sofa",
+    "glb": "sofa_B07B4GSKS1.glb",
+    "source_id": "B07B4GSKS1",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4GSKS1.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.838,
+      "y": 0.479,
+      "z": 0.838
+    },
+    "faces": 6096
+  },
+  {
     "id": "sofa_B07B4MPVZG",
     "category": "sofa",
     "glb": "sofa_B07B4MPVZG.glb",
@@ -1043,6 +1518,63 @@
       "z": 0.866
     },
     "faces": 19812
+  },
+  {
+    "id": "sofa_B07B4G5ZL3",
+    "category": "sofa",
+    "glb": "sofa_B07B4G5ZL3.glb",
+    "source_id": "B07B4G5ZL3",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4G5ZL3.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.808,
+      "y": 0.612,
+      "z": 0.871
+    },
+    "faces": 12176
+  },
+  {
+    "id": "sofa_B073G7BV63",
+    "category": "sofa",
+    "glb": "sofa_B073G7BV63.glb",
+    "source_id": "B073G7BV63",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B073G7BV63.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.507,
+      "y": 0.475,
+      "z": 0.497
+    },
+    "faces": 20894
+  },
+  {
+    "id": "sofa_B073GC43LG",
+    "category": "sofa",
+    "glb": "sofa_B073GC43LG.glb",
+    "source_id": "B073GC43LG",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B073GC43LG.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.507,
+      "y": 0.475,
+      "z": 0.497
+    },
+    "faces": 20894
   },
   {
     "id": "sofa_B07B4SC9RP",
@@ -1083,6 +1615,25 @@
     "faces": 43466
   },
   {
+    "id": "sofa_B07B4GSNB1",
+    "category": "sofa",
+    "glb": "sofa_B07B4GSNB1.glb",
+    "source_id": "B07B4GSNB1",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 1.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4GSNB1.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.818,
+      "y": 0.485,
+      "z": 0.634
+    },
+    "faces": 6656
+  },
+  {
     "id": "sofa_B071FMSY5S",
     "category": "sofa",
     "glb": "sofa_B071FMSY5S.glb",
@@ -1119,6 +1670,25 @@
       "z": 1.11
     },
     "faces": 43466
+  },
+  {
+    "id": "sofa_B073ZRS8TR",
+    "category": "sofa",
+    "glb": "sofa_B073ZRS8TR.glb",
+    "source_id": "B073ZRS8TR",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B073ZRS8TR.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.097,
+      "y": 0.461,
+      "z": 0.617
+    },
+    "faces": 6644
   },
   {
     "id": "sofa_B07DBB1T6Z",
@@ -1159,6 +1729,120 @@
     "faces": 28632
   },
   {
+    "id": "sofa_B07J2W23YZ",
+    "category": "sofa",
+    "glb": "sofa_B07J2W23YZ.glb",
+    "source_id": "B07J2W23YZ",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07J2W23YZ.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.912,
+      "y": 0.916,
+      "z": 1.001
+    },
+    "faces": 12484
+  },
+  {
+    "id": "sofa_B073ZRX6T8",
+    "category": "sofa",
+    "glb": "sofa_B073ZRX6T8.glb",
+    "source_id": "B073ZRX6T8",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 2.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B073ZRX6T8.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.097,
+      "y": 0.448,
+      "z": 0.617
+    },
+    "faces": 6644
+  },
+  {
+    "id": "sofa_B073G6T3GM",
+    "category": "sofa",
+    "glb": "sofa_B073G6T3GM.glb",
+    "source_id": "B073G6T3GM",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 2.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B073G6T3GM.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.443,
+      "y": 0.502,
+      "z": 0.494
+    },
+    "faces": 9552
+  },
+  {
+    "id": "sofa_B073GBFBWJ",
+    "category": "sofa",
+    "glb": "sofa_B073GBFBWJ.glb",
+    "source_id": "B073GBFBWJ",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 2.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B073GBFBWJ.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.454,
+      "y": 0.505,
+      "z": 0.492
+    },
+    "faces": 10560
+  },
+  {
+    "id": "sofa_B07B4M2QSW",
+    "category": "sofa",
+    "glb": "sofa_B07B4M2QSW.glb",
+    "source_id": "B07B4M2QSW",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 2.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4M2QSW.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 2.131,
+      "y": 0.902,
+      "z": 0.791
+    },
+    "faces": 49461
+  },
+  {
+    "id": "sofa_B075X4HZXK",
+    "category": "sofa",
+    "glb": "sofa_B075X4HZXK.glb",
+    "source_id": "B075X4HZXK",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 2.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B075X4HZXK.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.891,
+      "y": 0.439,
+      "z": 0.901
+    },
+    "faces": 49376
+  },
+  {
     "id": "sofa_B07HZ4XHMX",
     "category": "sofa",
     "glb": "sofa_B07HZ4XHMX.glb",
@@ -1176,6 +1860,25 @@
       "z": 0.997
     },
     "faces": 36480
+  },
+  {
+    "id": "sofa_B07B4G46T9",
+    "category": "sofa",
+    "glb": "sofa_B07B4G46T9.glb",
+    "source_id": "B07B4G46T9",
+    "product_type": "OTTOMAN",
+    "dimensions_m": {},
+    "glb_size_mb": 2.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "sofa_B07B4G46T9.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.764,
+      "y": 0.402,
+      "z": 0.57
+    },
+    "faces": 7488
   },
   {
     "id": "sofa_B073G947XM",
@@ -1197,346 +1900,954 @@
     "faces": 6744
   },
   {
-    "id": "sofa_B072FVHNS7",
-    "category": "sofa",
-    "glb": "sofa_B072FVHNS7.glb",
-    "source_id": "B072FVHNS7",
-    "product_type": "SOFA",
+    "id": "stool_B07B79GMHH",
+    "category": "stool",
+    "glb": "stool_B07B79GMHH.glb",
+    "source_id": "B07B79GMHH",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 0.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B79GMHH.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.737,
+      "z": 0.476
+    },
+    "faces": 9322
+  },
+  {
+    "id": "stool_B07B7B3CVQ",
+    "category": "stool",
+    "glb": "stool_B07B7B3CVQ.glb",
+    "source_id": "B07B7B3CVQ",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 0.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B7B3CVQ.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.737,
+      "z": 0.476
+    },
+    "faces": 9600
+  },
+  {
+    "id": "stool_B07B7BRXCK",
+    "category": "stool",
+    "glb": "stool_B07B7BRXCK.glb",
+    "source_id": "B07B7BRXCK",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 0.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B7BRXCK.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.737,
+      "z": 0.476
+    },
+    "faces": 9586
+  },
+  {
+    "id": "stool_B07B7B94GH",
+    "category": "stool",
+    "glb": "stool_B07B7B94GH.glb",
+    "source_id": "B07B7B94GH",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 0.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B7B94GH.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.737,
+      "z": 0.476
+    },
+    "faces": 9586
+  },
+  {
+    "id": "stool_B07B78M4DN",
+    "category": "stool",
+    "glb": "stool_B07B78M4DN.glb",
+    "source_id": "B07B78M4DN",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 0.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B78M4DN.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.737,
+      "z": 0.476
+    },
+    "faces": 9322
+  },
+  {
+    "id": "stool_B07B7B9FKC",
+    "category": "stool",
+    "glb": "stool_B07B7B9FKC.glb",
+    "source_id": "B07B7B9FKC",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 0.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B7B9FKC.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.737,
+      "z": 0.476
+    },
+    "faces": 9322
+  },
+  {
+    "id": "stool_B07B7BJKBN",
+    "category": "stool",
+    "glb": "stool_B07B7BJKBN.glb",
+    "source_id": "B07B7BJKBN",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 0.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B7BJKBN.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.737,
+      "z": 0.476
+    },
+    "faces": 9594
+  },
+  {
+    "id": "stool_B07GNCVKSG",
+    "category": "stool",
+    "glb": "stool_B07GNCVKSG.glb",
+    "source_id": "B07GNCVKSG",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07GNCVKSG.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.406,
+      "y": 0.61,
+      "z": 0.406
+    },
+    "faces": 13992
+  },
+  {
+    "id": "stool_B07DBDZ2PV",
+    "category": "stool",
+    "glb": "stool_B07DBDZ2PV.glb",
+    "source_id": "B07DBDZ2PV",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DBDZ2PV.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.399,
+      "y": 0.609,
+      "z": 0.359
+    },
+    "faces": 19210
+  },
+  {
+    "id": "stool_B07DBB1GX5",
+    "category": "stool",
+    "glb": "stool_B07DBB1GX5.glb",
+    "source_id": "B07DBB1GX5",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DBB1GX5.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.359,
+      "y": 0.609,
+      "z": 0.399
+    },
+    "faces": 19371
+  },
+  {
+    "id": "stool_B07HSB4WV6",
+    "category": "stool",
+    "glb": "stool_B07HSB4WV6.glb",
+    "source_id": "B07HSB4WV6",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07HSB4WV6.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.462,
+      "y": 1.084,
+      "z": 0.546
+    },
+    "faces": 6536
+  },
+  {
+    "id": "stool_B075Z6YRVN",
+    "category": "stool",
+    "glb": "stool_B075Z6YRVN.glb",
+    "source_id": "B075Z6YRVN",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B075Z6YRVN.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.514,
+      "y": 1.082,
+      "z": 0.561
+    },
+    "faces": 25076
+  },
+  {
+    "id": "stool_B07L6KPT9P",
+    "category": "stool",
+    "glb": "stool_B07L6KPT9P.glb",
+    "source_id": "B07L6KPT9P",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07L6KPT9P.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.406,
+      "y": 0.742,
+      "z": 0.322
+    },
+    "faces": 14348
+  },
+  {
+    "id": "stool_B07L6BMW6Q",
+    "category": "stool",
+    "glb": "stool_B07L6BMW6Q.glb",
+    "source_id": "B07L6BMW6Q",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07L6BMW6Q.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.406,
+      "y": 0.61,
+      "z": 0.322
+    },
+    "faces": 14348
+  },
+  {
+    "id": "stool_B07HSK7Z85",
+    "category": "stool",
+    "glb": "stool_B07HSK7Z85.glb",
+    "source_id": "B07HSK7Z85",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07HSK7Z85.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.464,
+      "y": 1.061,
+      "z": 0.573
+    },
+    "faces": 16840
+  },
+  {
+    "id": "stool_B07DBD9VY1",
+    "category": "stool",
+    "glb": "stool_B07DBD9VY1.glb",
+    "source_id": "B07DBD9VY1",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DBD9VY1.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.41,
+      "y": 0.608,
+      "z": 0.41
+    },
+    "faces": 16622
+  },
+  {
+    "id": "stool_B072Y2MRY2",
+    "category": "stool",
+    "glb": "stool_B072Y2MRY2.glb",
+    "source_id": "B072Y2MRY2",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B072Y2MRY2.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.673,
+      "y": 0.576,
+      "z": 0.638
+    },
+    "faces": 27488
+  },
+  {
+    "id": "stool_B07DBD3G32",
+    "category": "stool",
+    "glb": "stool_B07DBD3G32.glb",
+    "source_id": "B07DBD3G32",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DBD3G32.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.41,
+      "y": 0.608,
+      "z": 0.41
+    },
+    "faces": 16544
+  },
+  {
+    "id": "stool_B07L6C51SC",
+    "category": "stool",
+    "glb": "stool_B07L6C51SC.glb",
+    "source_id": "B07L6C51SC",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07L6C51SC.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.406,
+      "y": 0.742,
+      "z": 0.322
+    },
+    "faces": 14348
+  },
+  {
+    "id": "stool_B07L6KM74G",
+    "category": "stool",
+    "glb": "stool_B07L6KM74G.glb",
+    "source_id": "B07L6KM74G",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07L6KM74G.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.406,
+      "y": 0.61,
+      "z": 0.322
+    },
+    "faces": 14348
+  },
+  {
+    "id": "stool_B07L6MD26Y",
+    "category": "stool",
+    "glb": "stool_B07L6MD26Y.glb",
+    "source_id": "B07L6MD26Y",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07L6MD26Y.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.406,
+      "y": 0.742,
+      "z": 0.322
+    },
+    "faces": 14348
+  },
+  {
+    "id": "stool_B07L6LL293",
+    "category": "stool",
+    "glb": "stool_B07L6LL293.glb",
+    "source_id": "B07L6LL293",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07L6LL293.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.406,
+      "y": 0.61,
+      "z": 0.322
+    },
+    "faces": 14348
+  },
+  {
+    "id": "stool_B075YMY1PD",
+    "category": "stool",
+    "glb": "stool_B075YMY1PD.glb",
+    "source_id": "B075YMY1PD",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B075YMY1PD.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.548,
+      "y": 1.012,
+      "z": 0.558
+    },
+    "faces": 13086
+  },
+  {
+    "id": "stool_B07DB8XFGM",
+    "category": "stool",
+    "glb": "stool_B07DB8XFGM.glb",
+    "source_id": "B07DB8XFGM",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DB8XFGM.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.455,
+      "y": 0.609,
+      "z": 0.423
+    },
+    "faces": 18294
+  },
+  {
+    "id": "stool_B07DBDT68B",
+    "category": "stool",
+    "glb": "stool_B07DBDT68B.glb",
+    "source_id": "B07DBDT68B",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DBDT68B.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.398,
+      "y": 0.609,
+      "z": 0.358
+    },
+    "faces": 18834
+  },
+  {
+    "id": "stool_B07B8F76PH",
+    "category": "stool",
+    "glb": "stool_B07B8F76PH.glb",
+    "source_id": "B07B8F76PH",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B8F76PH.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.538,
+      "z": 0.423
+    },
+    "faces": 9436
+  },
+  {
+    "id": "stool_B07DBF5JCC",
+    "category": "stool",
+    "glb": "stool_B07DBF5JCC.glb",
+    "source_id": "B07DBF5JCC",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DBF5JCC.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.359,
+      "y": 0.609,
+      "z": 0.399
+    },
+    "faces": 19371
+  },
+  {
+    "id": "stool_B07B8F6V9M",
+    "category": "stool",
+    "glb": "stool_B07B8F6V9M.glb",
+    "source_id": "B07B8F6V9M",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B8F6V9M.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.593,
+      "z": 0.421
+    },
+    "faces": 10300
+  },
+  {
+    "id": "stool_B07B8445B5",
+    "category": "stool",
+    "glb": "stool_B07B8445B5.glb",
+    "source_id": "B07B8445B5",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B8445B5.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.438,
+      "y": 0.595,
+      "z": 0.472
+    },
+    "faces": 10300
+  },
+  {
+    "id": "stool_B07B8JBR7N",
+    "category": "stool",
+    "glb": "stool_B07B8JBR7N.glb",
+    "source_id": "B07B8JBR7N",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B8JBR7N.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.595,
+      "z": 0.43
+    },
+    "faces": 10300
+  },
+  {
+    "id": "stool_B07DBGJ4CS",
+    "category": "stool",
+    "glb": "stool_B07DBGJ4CS.glb",
+    "source_id": "B07DBGJ4CS",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DBGJ4CS.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.436,
+      "y": 1.023,
+      "z": 0.475
+    },
+    "faces": 22812
+  },
+  {
+    "id": "stool_B07DBG26SH",
+    "category": "stool",
+    "glb": "stool_B07DBG26SH.glb",
+    "source_id": "B07DBG26SH",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 1.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DBG26SH.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.436,
+      "y": 1.042,
+      "z": 0.475
+    },
+    "faces": 22812
+  },
+  {
+    "id": "stool_B07B7B94NC",
+    "category": "stool",
+    "glb": "stool_B07B7B94NC.glb",
+    "source_id": "B07B7B94NC",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B7B94NC.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.737,
+      "z": 0.476
+    },
+    "faces": 4368
+  },
+  {
+    "id": "stool_B075YPTF1L",
+    "category": "stool",
+    "glb": "stool_B075YPTF1L.glb",
+    "source_id": "B075YPTF1L",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B075YPTF1L.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.48,
+      "y": 0.679,
+      "z": 0.401
+    },
+    "faces": 21616
+  },
+  {
+    "id": "stool_B075Z9QBLL",
+    "category": "stool",
+    "glb": "stool_B075Z9QBLL.glb",
+    "source_id": "B075Z9QBLL",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B075Z9QBLL.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.509,
+      "y": 0.969,
+      "z": 0.44
+    },
+    "faces": 19912
+  },
+  {
+    "id": "stool_B07DBF1BC9",
+    "category": "stool",
+    "glb": "stool_B07DBF1BC9.glb",
+    "source_id": "B07DBF1BC9",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DBF1BC9.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.504,
+      "y": 0.742,
+      "z": 0.372
+    },
+    "faces": 22292
+  },
+  {
+    "id": "stool_B07HSJY1JM",
+    "category": "stool",
+    "glb": "stool_B07HSJY1JM.glb",
+    "source_id": "B07HSJY1JM",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07HSJY1JM.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.463,
+      "y": 0.946,
+      "z": 0.562
+    },
+    "faces": 17734
+  },
+  {
+    "id": "stool_B075ZCLPHP",
+    "category": "stool",
+    "glb": "stool_B075ZCLPHP.glb",
+    "source_id": "B075ZCLPHP",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B075ZCLPHP.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.409,
+      "y": 0.508,
+      "z": 0.409
+    },
+    "faces": 31890
+  },
+  {
+    "id": "stool_B07B78RCTK",
+    "category": "stool",
+    "glb": "stool_B07B78RCTK.glb",
+    "source_id": "B07B78RCTK",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07B78RCTK.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.486,
+      "y": 0.625,
+      "z": 0.405
+    },
+    "faces": 9848
+  },
+  {
+    "id": "stool_B07HSBJ5CH",
+    "category": "stool",
+    "glb": "stool_B07HSBJ5CH.glb",
+    "source_id": "B07HSBJ5CH",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 2.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07HSBJ5CH.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.463,
+      "y": 1.065,
+      "z": 0.562
+    },
+    "faces": 17878
+  },
+  {
+    "id": "stool_B07DBGJ4X4",
+    "category": "stool",
+    "glb": "stool_B07DBGJ4X4.glb",
+    "source_id": "B07DBGJ4X4",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 2.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DBGJ4X4.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.504,
+      "y": 0.654,
+      "z": 0.372
+    },
+    "faces": 22068
+  },
+  {
+    "id": "stool_B07DBDT6ZS",
+    "category": "stool",
+    "glb": "stool_B07DBDT6ZS.glb",
+    "source_id": "B07DBDT6ZS",
+    "product_type": "STOOL_SEATING",
+    "dimensions_m": {},
+    "glb_size_mb": 2.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "stool_B07DBDT6ZS.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.504,
+      "y": 0.742,
+      "z": 0.372
+    },
+    "faces": 22068
+  },
+  {
+    "id": "stool_B07DBFXZQT",
+    "category": "stool",
+    "glb": "stool_B07DBFXZQT.glb",
+    "source_id": "B07DBFXZQT",
+    "product_type": "STOOL_SEATING",
     "dimensions_m": {},
     "glb_size_mb": 2.2,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B072FVHNS7.thumb.png",
+    "thumb": "stool_B07DBFXZQT.thumb.png",
     "mesh_dimensions_m": {
-      "x": 2.146,
-      "y": 0.962,
-      "z": 0.901
+      "x": 0.462,
+      "y": 1.079,
+      "z": 0.539
     },
-    "faces": 35404
+    "faces": 26464
   },
   {
-    "id": "sofa_B072C8Q9S8",
-    "category": "sofa",
-    "glb": "sofa_B072C8Q9S8.glb",
-    "source_id": "B072C8Q9S8",
-    "product_type": "SOFA",
+    "id": "stool_B07DBDWX9T",
+    "category": "stool",
+    "glb": "stool_B07DBDWX9T.glb",
+    "source_id": "B07DBDWX9T",
+    "product_type": "STOOL_SEATING",
     "dimensions_m": {},
-    "glb_size_mb": 2.3,
+    "glb_size_mb": 2.2,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B072C8Q9S8.thumb.png",
+    "thumb": "stool_B07DBDWX9T.thumb.png",
     "mesh_dimensions_m": {
-      "x": 1.659,
-      "y": 0.907,
-      "z": 0.999
+      "x": 0.462,
+      "y": 1.079,
+      "z": 0.539
     },
-    "faces": 16340
+    "faces": 26464
   },
   {
-    "id": "sofa_B07BWK59KD",
-    "category": "sofa",
-    "glb": "sofa_B07BWK59KD.glb",
-    "source_id": "B07BWK59KD",
-    "product_type": "SOFA",
+    "id": "stool_B07DBF3X2P",
+    "category": "stool",
+    "glb": "stool_B07DBF3X2P.glb",
+    "source_id": "B07DBF3X2P",
+    "product_type": "STOOL_SEATING",
     "dimensions_m": {},
-    "glb_size_mb": 2.3,
+    "glb_size_mb": 2.2,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B07BWK59KD.thumb.png",
+    "thumb": "stool_B07DBF3X2P.thumb.png",
     "mesh_dimensions_m": {
-      "x": 2.593,
-      "y": 0.947,
-      "z": 3.302
+      "x": 0.504,
+      "y": 0.742,
+      "z": 0.372
     },
-    "faces": 18784
+    "faces": 22068
   },
   {
-    "id": "sofa_B07HZ5RM1D",
-    "category": "sofa",
-    "glb": "sofa_B07HZ5RM1D.glb",
-    "source_id": "B07HZ5RM1D",
-    "product_type": "SOFA",
+    "id": "stool_B07B86VTVM",
+    "category": "stool",
+    "glb": "stool_B07B86VTVM.glb",
+    "source_id": "B07B86VTVM",
+    "product_type": "STOOL_SEATING",
     "dimensions_m": {},
-    "glb_size_mb": 2.4,
+    "glb_size_mb": 2.2,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B07HZ5RM1D.thumb.png",
+    "thumb": "stool_B07B86VTVM.thumb.png",
     "mesh_dimensions_m": {
-      "x": 2.181,
-      "y": 1.074,
-      "z": 1.073
+      "x": 0.457,
+      "y": 0.519,
+      "z": 0.458
     },
-    "faces": 37436
+    "faces": 17152
   },
   {
-    "id": "sofa_B07HZ5RT3Y",
-    "category": "sofa",
-    "glb": "sofa_B07HZ5RT3Y.glb",
-    "source_id": "B07HZ5RT3Y",
-    "product_type": "SOFA",
+    "id": "stool_B07DBFSLFV",
+    "category": "stool",
+    "glb": "stool_B07DBFSLFV.glb",
+    "source_id": "B07DBFSLFV",
+    "product_type": "STOOL_SEATING",
     "dimensions_m": {},
-    "glb_size_mb": 2.4,
+    "glb_size_mb": 2.2,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B07HZ5RT3Y.thumb.png",
+    "thumb": "stool_B07DBFSLFV.thumb.png",
     "mesh_dimensions_m": {
-      "x": 1.503,
-      "y": 0.981,
-      "z": 0.985
-    },
-    "faces": 37436
-  },
-  {
-    "id": "sofa_B07B4MGRHY",
-    "category": "sofa",
-    "glb": "sofa_B07B4MGRHY.glb",
-    "source_id": "B07B4MGRHY",
-    "product_type": "SOFA",
-    "dimensions_m": {},
-    "glb_size_mb": 2.5,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B07B4MGRHY.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.971,
-      "y": 0.863,
-      "z": 0.933
-    },
-    "faces": 39012
-  },
-  {
-    "id": "sofa_B07DBB1S8N",
-    "category": "sofa",
-    "glb": "sofa_B07DBB1S8N.glb",
-    "source_id": "B07DBB1S8N",
-    "product_type": "BENCH",
-    "dimensions_m": {},
-    "glb_size_mb": 2.5,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B07DBB1S8N.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.196,
-      "y": 0.468,
-      "z": 0.367
-    },
-    "faces": 13995
-  },
-  {
-    "id": "sofa_B07124WQLW",
-    "category": "sofa",
-    "glb": "sofa_B07124WQLW.glb",
-    "source_id": "B07124WQLW",
-    "product_type": "SOFA",
-    "dimensions_m": {},
-    "glb_size_mb": 2.5,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B07124WQLW.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 2.125,
-      "y": 0.703,
-      "z": 0.985
-    },
-    "faces": 46942
-  },
-  {
-    "id": "sofa_B075X2WNVN",
-    "category": "sofa",
-    "glb": "sofa_B075X2WNVN.glb",
-    "source_id": "B075X2WNVN",
-    "product_type": "SOFA",
-    "dimensions_m": {},
-    "glb_size_mb": 2.6,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B075X2WNVN.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 2.102,
+      "x": 0.504,
       "y": 0.657,
-      "z": 0.797
+      "z": 0.372
     },
-    "faces": 25742
+    "faces": 22068
   },
   {
-    "id": "sofa_B07BWK59G9",
-    "category": "sofa",
-    "glb": "sofa_B07BWK59G9.glb",
-    "source_id": "B07BWK59G9",
-    "product_type": "SOFA",
+    "id": "stool_B075YQXRBS",
+    "category": "stool",
+    "glb": "stool_B075YQXRBS.glb",
+    "source_id": "B075YQXRBS",
+    "product_type": "STOOL_SEATING",
     "dimensions_m": {},
-    "glb_size_mb": 2.6,
+    "glb_size_mb": 2.2,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B07BWK59G9.thumb.png",
+    "thumb": "stool_B075YQXRBS.thumb.png",
     "mesh_dimensions_m": {
-      "x": 3.403,
-      "y": 0.889,
-      "z": 2.551
+      "x": 0.489,
+      "y": 0.866,
+      "z": 0.524
     },
-    "faces": 25524
+    "faces": 8852
   },
   {
-    "id": "sofa_B07B4FW7H5",
-    "category": "sofa",
-    "glb": "sofa_B07B4FW7H5.glb",
-    "source_id": "B07B4FW7H5",
-    "product_type": "SOFA",
+    "id": "stool_B075YQXRD4",
+    "category": "stool",
+    "glb": "stool_B075YQXRD4.glb",
+    "source_id": "B075YQXRD4",
+    "product_type": "STOOL_SEATING",
     "dimensions_m": {},
-    "glb_size_mb": 2.6,
+    "glb_size_mb": 2.2,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B07B4FW7H5.thumb.png",
+    "thumb": "stool_B075YQXRD4.thumb.png",
     "mesh_dimensions_m": {
-      "x": 1.971,
-      "y": 0.863,
-      "z": 0.923
+      "x": 0.489,
+      "y": 0.937,
+      "z": 0.524
     },
-    "faces": 39012
+    "faces": 9226
   },
   {
-    "id": "sofa_B073G7BVBP",
-    "category": "sofa",
-    "glb": "sofa_B073G7BVBP.glb",
-    "source_id": "B073G7BVBP",
-    "product_type": "BENCH",
+    "id": "stool_B07DBGHZH5",
+    "category": "stool",
+    "glb": "stool_B07DBGHZH5.glb",
+    "source_id": "B07DBGHZH5",
+    "product_type": "STOOL_SEATING",
     "dimensions_m": {},
-    "glb_size_mb": 2.6,
+    "glb_size_mb": 2.2,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B073G7BVBP.thumb.png",
+    "thumb": "stool_B07DBGHZH5.thumb.png",
     "mesh_dimensions_m": {
-      "x": 1.016,
-      "y": 0.471,
-      "z": 0.492
+      "x": 0.399,
+      "y": 1.096,
+      "z": 0.513
     },
-    "faces": 15456
-  },
-  {
-    "id": "sofa_B075X4F5T8",
-    "category": "sofa",
-    "glb": "sofa_B075X4F5T8.glb",
-    "source_id": "B075X4F5T8",
-    "product_type": "SOFA",
-    "dimensions_m": {},
-    "glb_size_mb": 2.6,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B075X4F5T8.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.242,
-      "y": 0.976,
-      "z": 0.946
-    },
-    "faces": 26144
-  },
-  {
-    "id": "sofa_B07BW8MJJ3",
-    "category": "sofa",
-    "glb": "sofa_B07BW8MJJ3.glb",
-    "source_id": "B07BW8MJJ3",
-    "product_type": "SOFA",
-    "dimensions_m": {},
-    "glb_size_mb": 2.6,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B07BW8MJJ3.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 3.46,
-      "y": 0.961,
-      "z": 2.594
-    },
-    "faces": 22114
-  },
-  {
-    "id": "sofa_B07BW8Q16K",
-    "category": "sofa",
-    "glb": "sofa_B07BW8Q16K.glb",
-    "source_id": "B07BW8Q16K",
-    "product_type": "SOFA",
-    "dimensions_m": {},
-    "glb_size_mb": 2.6,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B07BW8Q16K.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 3.46,
-      "y": 0.961,
-      "z": 2.594
-    },
-    "faces": 22114
-  },
-  {
-    "id": "sofa_B07HSBDCX8",
-    "category": "sofa",
-    "glb": "sofa_B07HSBDCX8.glb",
-    "source_id": "B07HSBDCX8",
-    "product_type": "BENCH",
-    "dimensions_m": {},
-    "glb_size_mb": 2.7,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B07HSBDCX8.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.698,
-      "y": 0.431,
-      "z": 0.378
-    },
-    "faces": 1624
-  },
-  {
-    "id": "sofa_B073GCWSTH",
-    "category": "sofa",
-    "glb": "sofa_B073GCWSTH.glb",
-    "source_id": "B073GCWSTH",
-    "product_type": "BENCH",
-    "dimensions_m": {},
-    "glb_size_mb": 2.7,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "sofa_B073GCWSTH.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.01,
-      "y": 0.467,
-      "z": 0.489
-    },
-    "faces": 15546
-  },
-  {
-    "id": "table_B07GFWW5JZ",
-    "category": "table",
-    "glb": "table_B07GFWW5JZ.glb",
-    "source_id": "B07GFWW5JZ",
-    "product_type": "DESK",
-    "dimensions_m": {},
-    "glb_size_mb": 0.2,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "table_B07GFWW5JZ.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.6,
-      "y": 0.75,
-      "z": 0.802
-    },
-    "faces": 792
+    "faces": 17607
   },
   {
     "id": "table_B07H8V49GP",
@@ -1556,25 +2867,6 @@
       "z": 0.408
     },
     "faces": 1316
-  },
-  {
-    "id": "table_B07GFFQZRQ",
-    "category": "table",
-    "glb": "table_B07GFFQZRQ.glb",
-    "source_id": "B07GFFQZRQ",
-    "product_type": "DESK",
-    "dimensions_m": {},
-    "glb_size_mb": 0.2,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "table_B07GFFQZRQ.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.9,
-      "y": 0.729,
-      "z": 0.498
-    },
-    "faces": 768
   },
   {
     "id": "table_B07GFWF2CX",
@@ -1613,25 +2905,6 @@
       "z": 0.399
     },
     "faces": 444
-  },
-  {
-    "id": "table_B07GFQ4D3J",
-    "category": "table",
-    "glb": "table_B07GFQ4D3J.glb",
-    "source_id": "B07GFQ4D3J",
-    "product_type": "DESK",
-    "dimensions_m": {},
-    "glb_size_mb": 0.3,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "table_B07GFQ4D3J.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.898,
-      "y": 0.73,
-      "z": 0.482
-    },
-    "faces": 1740
   },
   {
     "id": "table_B07DBGHSN7",
@@ -1746,25 +3019,6 @@
       "z": 0.348
     },
     "faces": 6722
-  },
-  {
-    "id": "table_B06XZV3F8F",
-    "category": "table",
-    "glb": "table_B06XZV3F8F.glb",
-    "source_id": "B06XZV3F8F",
-    "product_type": "DESK",
-    "dimensions_m": {},
-    "glb_size_mb": 0.5,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "table_B06XZV3F8F.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.015,
-      "y": 0.747,
-      "z": 0.505
-    },
-    "faces": 7184
   },
   {
     "id": "table_B079VNL3GM",
@@ -1919,25 +3173,6 @@
     "faces": 14292
   },
   {
-    "id": "table_B07HSCYS4C",
-    "category": "table",
-    "glb": "table_B07HSCYS4C.glb",
-    "source_id": "B07HSCYS4C",
-    "product_type": "DESK",
-    "dimensions_m": {},
-    "glb_size_mb": 0.7,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "table_B07HSCYS4C.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.313,
-      "y": 0.762,
-      "z": 0.589
-    },
-    "faces": 4234
-  },
-  {
     "id": "table_B07DBDPMRS",
     "category": "table",
     "glb": "table_B07DBDPMRS.glb",
@@ -2090,44 +3325,6 @@
     "faces": 20542
   },
   {
-    "id": "table_B07TN2RZPW",
-    "category": "table",
-    "glb": "table_B07TN2RZPW.glb",
-    "source_id": "B07TN2RZPW",
-    "product_type": "DESK",
-    "dimensions_m": {},
-    "glb_size_mb": 0.7,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "table_B07TN2RZPW.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.524,
-      "y": 0.753,
-      "z": 1.2
-    },
-    "faces": 3664
-  },
-  {
-    "id": "table_B079HYXWPC",
-    "category": "table",
-    "glb": "table_B079HYXWPC.glb",
-    "source_id": "B079HYXWPC",
-    "product_type": "DESK",
-    "dimensions_m": {},
-    "glb_size_mb": 0.7,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "table_B079HYXWPC.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.979,
-      "y": 0.723,
-      "z": 0.491
-    },
-    "faces": 7452
-  },
-  {
     "id": "table_B074KKMQHB",
     "category": "table",
     "glb": "table_B074KKMQHB.glb",
@@ -2183,25 +3380,6 @@
       "z": 0.55
     },
     "faces": 14180
-  },
-  {
-    "id": "table_B075X25BYC",
-    "category": "table",
-    "glb": "table_B075X25BYC.glb",
-    "source_id": "B075X25BYC",
-    "product_type": "DESK",
-    "dimensions_m": {},
-    "glb_size_mb": 0.8,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "table_B075X25BYC.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.178,
-      "y": 0.614,
-      "z": 1.186
-    },
-    "faces": 15688
   },
   {
     "id": "table_B07DBDZMSS",
@@ -2280,370 +3458,351 @@
     "faces": 9004
   },
   {
-    "id": "appliance_B07GFL6W68",
-    "category": "appliance",
-    "glb": "appliance_B07GFL6W68.glb",
-    "source_id": "B07GFL6W68",
-    "product_type": "DRESSER",
-    "dimensions_m": {},
-    "glb_size_mb": 0.2,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07GFL6W68.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.535,
-      "y": 0.79,
-      "z": 0.333
-    },
-    "faces": 432
-  },
-  {
-    "id": "appliance_B07C41C1C8",
-    "category": "appliance",
-    "glb": "appliance_B07C41C1C8.glb",
-    "source_id": "B07C41C1C8",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 0.3,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07C41C1C8.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.25,
-      "y": 2.16,
-      "z": 0.48
-    },
-    "faces": 1368
-  },
-  {
-    "id": "appliance_B07GFSJ69T",
-    "category": "appliance",
-    "glb": "appliance_B07GFSJ69T.glb",
-    "source_id": "B07GFSJ69T",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 0.4,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07GFSJ69T.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.78,
-      "y": 1.96,
-      "z": 0.629
-    },
-    "faces": 7880
-  },
-  {
-    "id": "appliance_B07GFFPKFV",
-    "category": "appliance",
-    "glb": "appliance_B07GFFPKFV.glb",
-    "source_id": "B07GFFPKFV",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 0.5,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07GFFPKFV.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.991,
-      "y": 1.808,
-      "z": 0.577
-    },
-    "faces": 12492
-  },
-  {
-    "id": "appliance_B07GFL6W6N",
-    "category": "appliance",
-    "glb": "appliance_B07GFL6W6N.glb",
-    "source_id": "B07GFL6W6N",
-    "product_type": "DRESSER",
-    "dimensions_m": {},
-    "glb_size_mb": 0.5,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07GFL6W6N.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.535,
-      "y": 0.79,
-      "z": 0.333
-    },
-    "faces": 432
-  },
-  {
-    "id": "appliance_B07JGXXK33",
-    "category": "appliance",
-    "glb": "appliance_B07JGXXK33.glb",
-    "source_id": "B07JGXXK33",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 0.6,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07JGXXK33.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.0,
-      "y": 0.8,
-      "z": 0.4
-    },
-    "faces": 1594
-  },
-  {
-    "id": "appliance_B07H8SSJVW",
-    "category": "appliance",
-    "glb": "appliance_B07H8SSJVW.glb",
-    "source_id": "B07H8SSJVW",
-    "product_type": "DRESSER",
-    "dimensions_m": {},
-    "glb_size_mb": 0.6,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07H8SSJVW.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.1,
-      "y": 1.0,
-      "z": 0.46
-    },
-    "faces": 1896
-  },
-  {
-    "id": "appliance_B07JGPKY8D",
-    "category": "appliance",
-    "glb": "appliance_B07JGPKY8D.glb",
-    "source_id": "B07JGPKY8D",
-    "product_type": "DRESSER",
-    "dimensions_m": {},
-    "glb_size_mb": 0.7,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07JGPKY8D.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.65,
-      "y": 1.19,
-      "z": 0.4
-    },
-    "faces": 2574
-  },
-  {
-    "id": "appliance_B07JGY5LML",
-    "category": "appliance",
-    "glb": "appliance_B07JGY5LML.glb",
-    "source_id": "B07JGY5LML",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 0.7,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07JGY5LML.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.65,
-      "y": 0.8,
-      "z": 0.4
-    },
-    "faces": 16346
-  },
-  {
-    "id": "appliance_B07GG2X2MX",
-    "category": "appliance",
-    "glb": "appliance_B07GG2X2MX.glb",
-    "source_id": "B07GG2X2MX",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 0.7,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07GG2X2MX.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.52,
-      "y": 1.63,
-      "z": 0.255
-    },
-    "faces": 3932
-  },
-  {
-    "id": "appliance_B075X2PC3L",
-    "category": "appliance",
-    "glb": "appliance_B075X2PC3L.glb",
-    "source_id": "B075X2PC3L",
-    "product_type": "DRESSER",
-    "dimensions_m": {},
-    "glb_size_mb": 0.7,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B075X2PC3L.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.558,
-      "y": 0.872,
-      "z": 0.463
-    },
-    "faces": 7690
-  },
-  {
-    "id": "appliance_B07H8JRYSB",
-    "category": "appliance",
-    "glb": "appliance_B07H8JRYSB.glb",
-    "source_id": "B07H8JRYSB",
-    "product_type": "DRESSER",
-    "dimensions_m": {},
-    "glb_size_mb": 0.7,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07H8JRYSB.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.83,
-      "y": 0.74,
-      "z": 0.42
-    },
-    "faces": 1836
-  },
-  {
-    "id": "appliance_B07H8T8ZS7",
-    "category": "appliance",
-    "glb": "appliance_B07H8T8ZS7.glb",
-    "source_id": "B07H8T8ZS7",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 0.8,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07H8T8ZS7.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.11,
-      "y": 1.85,
-      "z": 0.4
-    },
-    "faces": 29644
-  },
-  {
-    "id": "appliance_B07GFS1WDY",
-    "category": "appliance",
-    "glb": "appliance_B07GFS1WDY.glb",
-    "source_id": "B07GFS1WDY",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 0.8,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07GFS1WDY.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.991,
-      "y": 1.808,
-      "z": 0.577
-    },
-    "faces": 12492
-  },
-  {
-    "id": "appliance_B07JGPK68C",
-    "category": "appliance",
-    "glb": "appliance_B07JGPK68C.glb",
-    "source_id": "B07JGPK68C",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 0.8,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07JGPK68C.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.0,
-      "y": 1.19,
-      "z": 0.4
-    },
-    "faces": 8704
-  },
-  {
-    "id": "appliance_B07H8JRPLT",
-    "category": "appliance",
-    "glb": "appliance_B07H8JRPLT.glb",
-    "source_id": "B07H8JRPLT",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 0.8,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07H8JRPLT.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 1.168,
-      "y": 1.397,
-      "z": 0.473
-    },
-    "faces": 952
-  },
-  {
-    "id": "appliance_B07H8PWFDF",
-    "category": "appliance",
-    "glb": "appliance_B07H8PWFDF.glb",
-    "source_id": "B07H8PWFDF",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 0.8,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07H8PWFDF.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.496,
-      "y": 2.117,
-      "z": 0.588
-    },
-    "faces": 12156
-  },
-  {
-    "id": "appliance_B077NZFT6C",
-    "category": "appliance",
-    "glb": "appliance_B077NZFT6C.glb",
-    "source_id": "B077NZFT6C",
-    "product_type": "DRESSER",
+    "id": "table_B07DVVKD85",
+    "category": "table",
+    "glb": "table_B07DVVKD85.glb",
+    "source_id": "B07DVVKD85",
+    "product_type": "TABLE",
     "dimensions_m": {},
     "glb_size_mb": 0.9,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B077NZFT6C.thumb.png",
+    "thumb": "table_B07DVVKD85.thumb.png",
     "mesh_dimensions_m": {
-      "x": 1.022,
-      "y": 0.891,
-      "z": 0.46
+      "x": 0.45,
+      "y": 0.68,
+      "z": 0.35
     },
-    "faces": 6532
+    "faces": 7290
   },
   {
-    "id": "appliance_B07H8SM6Q4",
-    "category": "appliance",
-    "glb": "appliance_B07H8SM6Q4.glb",
-    "source_id": "B07H8SM6Q4",
-    "product_type": "CABINET",
+    "id": "table_B072ZMHBKQ",
+    "category": "table",
+    "glb": "table_B072ZMHBKQ.glb",
+    "source_id": "B072ZMHBKQ",
+    "product_type": "TABLE",
     "dimensions_m": {},
     "glb_size_mb": 0.9,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07H8SM6Q4.thumb.png",
+    "thumb": "table_B072ZMHBKQ.thumb.png",
     "mesh_dimensions_m": {
-      "x": 2.7,
-      "y": 2.37,
-      "z": 0.59
+      "x": 0.37,
+      "y": 0.508,
+      "z": 0.288
     },
-    "faces": 1728
+    "faces": 9800
   },
   {
-    "id": "appliance_B07HSGPG2D",
-    "category": "appliance",
-    "glb": "appliance_B07HSGPG2D.glb",
+    "id": "table_B072ZLCB3M",
+    "category": "table",
+    "glb": "table_B072ZLCB3M.glb",
+    "source_id": "B072ZLCB3M",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B072ZLCB3M.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.477,
+      "y": 0.476,
+      "z": 0.494
+    },
+    "faces": 912
+  },
+  {
+    "id": "table_B07H8T878F",
+    "category": "table",
+    "glb": "table_B07H8T878F.glb",
+    "source_id": "B07H8T878F",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07H8T878F.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.584,
+      "y": 0.692,
+      "z": 0.047
+    },
+    "faces": 10880
+  },
+  {
+    "id": "table_B07B7H9VMM",
+    "category": "table",
+    "glb": "table_B07B7H9VMM.glb",
+    "source_id": "B07B7H9VMM",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07B7H9VMM.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.425,
+      "y": 0.604,
+      "z": 0.441
+    },
+    "faces": 20
+  },
+  {
+    "id": "table_B07F3XLTRH",
+    "category": "table",
+    "glb": "table_B07F3XLTRH.glb",
+    "source_id": "B07F3XLTRH",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07F3XLTRH.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.508,
+      "y": 0.457,
+      "z": 0.457
+    },
+    "faces": 16128
+  },
+  {
+    "id": "table_B07B7HVCMB",
+    "category": "table",
+    "glb": "table_B07B7HVCMB.glb",
+    "source_id": "B07B7HVCMB",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07B7HVCMB.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.455,
+      "y": 0.554,
+      "z": 0.455
+    },
+    "faces": 8752
+  },
+  {
+    "id": "table_B07F49VHB8",
+    "category": "table",
+    "glb": "table_B07F49VHB8.glb",
+    "source_id": "B07F49VHB8",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07F49VHB8.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.333,
+      "y": 0.457,
+      "z": 0.571
+    },
+    "faces": 18296
+  },
+  {
+    "id": "table_B01M4OYBOI",
+    "category": "table",
+    "glb": "table_B01M4OYBOI.glb",
+    "source_id": "B01M4OYBOI",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B01M4OYBOI.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.083,
+      "y": 0.39,
+      "z": 0.542
+    },
+    "faces": 10190
+  },
+  {
+    "id": "table_B07F3Y9BSC",
+    "category": "table",
+    "glb": "table_B07F3Y9BSC.glb",
+    "source_id": "B07F3Y9BSC",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07F3Y9BSC.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.219,
+      "y": 0.78,
+      "z": 0.394
+    },
+    "faces": 19084
+  },
+  {
+    "id": "table_B07F3XM8M3",
+    "category": "table",
+    "glb": "table_B07F3XM8M3.glb",
+    "source_id": "B07F3XM8M3",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07F3XM8M3.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.914,
+      "y": 0.457,
+      "z": 0.914
+    },
+    "faces": 18704
+  },
+  {
+    "id": "table_B074KMZGRP",
+    "category": "table",
+    "glb": "table_B074KMZGRP.glb",
+    "source_id": "B074KMZGRP",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B074KMZGRP.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.418,
+      "y": 0.664,
+      "z": 0.414
+    },
+    "faces": 6784
+  },
+  {
+    "id": "table_B07DBHFDQW",
+    "category": "table",
+    "glb": "table_B07DBHFDQW.glb",
+    "source_id": "B07DBHFDQW",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07DBHFDQW.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.219,
+      "y": 0.78,
+      "z": 0.394
+    },
+    "faces": 19084
+  },
+  {
+    "id": "table_B07H8SSY2P",
+    "category": "table",
+    "glb": "table_B07H8SSY2P.glb",
+    "source_id": "B07H8SSY2P",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07H8SSY2P.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.778,
+      "y": 0.899,
+      "z": 0.795
+    },
+    "faces": 1392
+  },
+  {
+    "id": "table_B07W421VGL",
+    "category": "table",
+    "glb": "table_B07W421VGL.glb",
+    "source_id": "B07W421VGL",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07W421VGL.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.431,
+      "y": 0.55,
+      "z": 0.431
+    },
+    "faces": 49890
+  },
+  {
+    "id": "table_B072ZLMBH7",
+    "category": "table",
+    "glb": "table_B072ZLMBH7.glb",
+    "source_id": "B072ZLMBH7",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B072ZLMBH7.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.407,
+      "y": 0.447,
+      "z": 0.407
+    },
+    "faces": 6928
+  },
+  {
+    "id": "table_B07DW4VYQW",
+    "category": "table",
+    "glb": "table_B07DW4VYQW.glb",
+    "source_id": "B07DW4VYQW",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07DW4VYQW.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.513,
+      "y": 0.653,
+      "z": 0.513
+    },
+    "faces": 11416
+  },
+  {
+    "id": "table_B07B7BJK89",
+    "category": "table",
+    "glb": "table_B07B7BJK89.glb",
+    "source_id": "B07B7BJK89",
+    "product_type": "TABLE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "table_B07B7BJK89.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.609,
+      "y": 0.78,
+      "z": 0.946
+    },
+    "faces": 13804
+  },
+  {
+    "id": "bookshelf_B07HSGPG2D",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSGPG2D.glb",
     "source_id": "B07HSGPG2D",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2651,7 +3810,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07HSGPG2D.thumb.png",
+    "thumb": "bookshelf_B07HSGPG2D.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.888,
       "y": 0.888,
@@ -2660,28 +3819,9 @@
     "faces": 13406
   },
   {
-    "id": "appliance_B07B7JY9C5",
-    "category": "appliance",
-    "glb": "appliance_B07B7JY9C5.glb",
-    "source_id": "B07B7JY9C5",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 1.0,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07B7JY9C5.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.402,
-      "y": 0.455,
-      "z": 0.5
-    },
-    "faces": 11874
-  },
-  {
-    "id": "appliance_B07PPNNCM2",
-    "category": "appliance",
-    "glb": "appliance_B07PPNNCM2.glb",
+    "id": "bookshelf_B07PPNNCM2",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07PPNNCM2.glb",
     "source_id": "B07PPNNCM2",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2689,7 +3829,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07PPNNCM2.thumb.png",
+    "thumb": "bookshelf_B07PPNNCM2.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.636,
       "y": 1.779,
@@ -2698,9 +3838,9 @@
     "faces": 15748
   },
   {
-    "id": "appliance_B07HSJYKXY",
-    "category": "appliance",
-    "glb": "appliance_B07HSJYKXY.glb",
+    "id": "bookshelf_B07HSJYKXY",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSJYKXY.glb",
     "source_id": "B07HSJYKXY",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2708,7 +3848,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07HSJYKXY.thumb.png",
+    "thumb": "bookshelf_B07HSJYKXY.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.601,
       "y": 0.725,
@@ -2717,9 +3857,9 @@
     "faces": 5106
   },
   {
-    "id": "appliance_B07HSJN2FX",
-    "category": "appliance",
-    "glb": "appliance_B07HSJN2FX.glb",
+    "id": "bookshelf_B07HSJN2FX",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSJN2FX.glb",
     "source_id": "B07HSJN2FX",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2727,7 +3867,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07HSJN2FX.thumb.png",
+    "thumb": "bookshelf_B07HSJN2FX.thumb.png",
     "mesh_dimensions_m": {
       "x": 1.781,
       "y": 0.972,
@@ -2736,9 +3876,9 @@
     "faces": 11038
   },
   {
-    "id": "appliance_B07B7J5BC2",
-    "category": "appliance",
-    "glb": "appliance_B07B7J5BC2.glb",
+    "id": "bookshelf_B07B7J5BC2",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07B7J5BC2.glb",
     "source_id": "B07B7J5BC2",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2746,7 +3886,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07B7J5BC2.thumb.png",
+    "thumb": "bookshelf_B07B7J5BC2.thumb.png",
     "mesh_dimensions_m": {
       "x": 1.575,
       "y": 0.719,
@@ -2755,9 +3895,9 @@
     "faces": 12116
   },
   {
-    "id": "appliance_B00NUS53CY",
-    "category": "appliance",
-    "glb": "appliance_B00NUS53CY.glb",
+    "id": "bookshelf_B00NUS53CY",
+    "category": "bookshelf",
+    "glb": "bookshelf_B00NUS53CY.glb",
     "source_id": "B00NUS53CY",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2765,7 +3905,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B00NUS53CY.thumb.png",
+    "thumb": "bookshelf_B00NUS53CY.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.907,
       "y": 1.36,
@@ -2774,9 +3914,9 @@
     "faces": 28976
   },
   {
-    "id": "appliance_B07B8P1JCT",
-    "category": "appliance",
-    "glb": "appliance_B07B8P1JCT.glb",
+    "id": "bookshelf_B07B8P1JCT",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07B8P1JCT.glb",
     "source_id": "B07B8P1JCT",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2784,7 +3924,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07B8P1JCT.thumb.png",
+    "thumb": "bookshelf_B07B8P1JCT.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.605,
       "y": 0.053,
@@ -2793,9 +3933,9 @@
     "faces": 6816
   },
   {
-    "id": "appliance_B07B8PXMQT",
-    "category": "appliance",
-    "glb": "appliance_B07B8PXMQT.glb",
+    "id": "bookshelf_B07B8PXMQT",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07B8PXMQT.glb",
     "source_id": "B07B8PXMQT",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2803,7 +3943,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07B8PXMQT.thumb.png",
+    "thumb": "bookshelf_B07B8PXMQT.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.924,
       "y": 0.049,
@@ -2812,9 +3952,9 @@
     "faces": 19840
   },
   {
-    "id": "appliance_B01LYBQXRH",
-    "category": "appliance",
-    "glb": "appliance_B01LYBQXRH.glb",
+    "id": "bookshelf_B01LYBQXRH",
+    "category": "bookshelf",
+    "glb": "bookshelf_B01LYBQXRH.glb",
     "source_id": "B01LYBQXRH",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2822,7 +3962,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B01LYBQXRH.thumb.png",
+    "thumb": "bookshelf_B01LYBQXRH.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.907,
       "y": 1.361,
@@ -2831,9 +3971,9 @@
     "faces": 29296
   },
   {
-    "id": "appliance_B07H8SQ2NZ",
-    "category": "appliance",
-    "glb": "appliance_B07H8SQ2NZ.glb",
+    "id": "bookshelf_B07H8SQ2NZ",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07H8SQ2NZ.glb",
     "source_id": "B07H8SQ2NZ",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2841,7 +3981,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07H8SQ2NZ.thumb.png",
+    "thumb": "bookshelf_B07H8SQ2NZ.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.995,
       "y": 1.405,
@@ -2850,9 +3990,9 @@
     "faces": 1668
   },
   {
-    "id": "appliance_B07B8PXQ1Q",
-    "category": "appliance",
-    "glb": "appliance_B07B8PXQ1Q.glb",
+    "id": "bookshelf_B07B8PXQ1Q",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07B8PXQ1Q.glb",
     "source_id": "B07B8PXQ1Q",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2860,7 +4000,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07B8PXQ1Q.thumb.png",
+    "thumb": "bookshelf_B07B8PXQ1Q.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.456,
       "y": 0.053,
@@ -2869,9 +4009,9 @@
     "faces": 6816
   },
   {
-    "id": "appliance_B07HSLQY2F",
-    "category": "appliance",
-    "glb": "appliance_B07HSLQY2F.glb",
+    "id": "bookshelf_B07HSLQY2F",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSLQY2F.glb",
     "source_id": "B07HSLQY2F",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2879,7 +4019,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07HSLQY2F.thumb.png",
+    "thumb": "bookshelf_B07HSLQY2F.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.564,
       "y": 0.913,
@@ -2888,28 +4028,9 @@
     "faces": 6212
   },
   {
-    "id": "appliance_B07G4ZXLC8",
-    "category": "appliance",
-    "glb": "appliance_B07G4ZXLC8.glb",
-    "source_id": "B07G4ZXLC8",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 1.7,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07G4ZXLC8.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.801,
-      "y": 0.78,
-      "z": 0.396
-    },
-    "faces": 9680
-  },
-  {
-    "id": "appliance_B07HSLTFWR",
-    "category": "appliance",
-    "glb": "appliance_B07HSLTFWR.glb",
+    "id": "bookshelf_B07HSLTFWR",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSLTFWR.glb",
     "source_id": "B07HSLTFWR",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2917,7 +4038,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07HSLTFWR.thumb.png",
+    "thumb": "bookshelf_B07HSLTFWR.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.645,
       "y": 0.229,
@@ -2926,9 +4047,9 @@
     "faces": 5492
   },
   {
-    "id": "appliance_B07HSMYNYJ",
-    "category": "appliance",
-    "glb": "appliance_B07HSMYNYJ.glb",
+    "id": "bookshelf_B07HSMYNYJ",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSMYNYJ.glb",
     "source_id": "B07HSMYNYJ",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -2936,7 +4057,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07HSMYNYJ.thumb.png",
+    "thumb": "bookshelf_B07HSMYNYJ.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.67,
       "y": 1.545,
@@ -2945,66 +4066,9 @@
     "faces": 31330
   },
   {
-    "id": "appliance_B07GFLD22Q",
-    "category": "appliance",
-    "glb": "appliance_B07GFLD22Q.glb",
-    "source_id": "B07GFLD22Q",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 1.8,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07GFLD22Q.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.75,
-      "y": 1.28,
-      "z": 0.25
-    },
-    "faces": 2562
-  },
-  {
-    "id": "appliance_B07S74J1JT",
-    "category": "appliance",
-    "glb": "appliance_B07S74J1JT.glb",
-    "source_id": "B07S74J1JT",
-    "product_type": "CABINET",
-    "dimensions_m": {},
-    "glb_size_mb": 1.8,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07S74J1JT.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.8,
-      "y": 0.46,
-      "z": 0.8
-    },
-    "faces": 5514
-  },
-  {
-    "id": "appliance_B07GFRP9RY",
-    "category": "appliance",
-    "glb": "appliance_B07GFRP9RY.glb",
-    "source_id": "B07GFRP9RY",
-    "product_type": "DRESSER",
-    "dimensions_m": {},
-    "glb_size_mb": 1.9,
-    "license": "CC-BY-4.0",
-    "source": "Amazon Berkeley Objects (ABO)",
-    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07GFRP9RY.thumb.png",
-    "mesh_dimensions_m": {
-      "x": 0.809,
-      "y": 0.762,
-      "z": 0.529
-    },
-    "faces": 124
-  },
-  {
-    "id": "appliance_B075ZF4S39",
-    "category": "appliance",
-    "glb": "appliance_B075ZF4S39.glb",
+    "id": "bookshelf_B075ZF4S39",
+    "category": "bookshelf",
+    "glb": "bookshelf_B075ZF4S39.glb",
     "source_id": "B075ZF4S39",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -3012,7 +4076,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B075ZF4S39.thumb.png",
+    "thumb": "bookshelf_B075ZF4S39.thumb.png",
     "mesh_dimensions_m": {
       "x": 1.022,
       "y": 1.878,
@@ -3021,9 +4085,9 @@
     "faces": 10480
   },
   {
-    "id": "appliance_B07B8VJQG1",
-    "category": "appliance",
-    "glb": "appliance_B07B8VJQG1.glb",
+    "id": "bookshelf_B07B8VJQG1",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07B8VJQG1.glb",
     "source_id": "B07B8VJQG1",
     "product_type": "SHELF",
     "dimensions_m": {},
@@ -3031,7 +4095,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "appliance_B07B8VJQG1.thumb.png",
+    "thumb": "bookshelf_B07B8VJQG1.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.607,
       "y": 0.088,
@@ -3040,9 +4104,655 @@
     "faces": 3072
   },
   {
-    "id": "plant_B07B4Z9PL9",
-    "category": "plant",
-    "glb": "plant_B07B4Z9PL9.glb",
+    "id": "bookshelf_B07B8PXSD2",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07B8PXSD2.glb",
+    "source_id": "B07B8PXSD2",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07B8PXSD2.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.457,
+      "y": 0.088,
+      "z": 0.152
+    },
+    "faces": 768
+  },
+  {
+    "id": "bookshelf_B07HSGBB2D",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSGBB2D.glb",
+    "source_id": "B07HSGBB2D",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07HSGBB2D.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.491,
+      "y": 1.342,
+      "z": 0.267
+    },
+    "faces": 2274
+  },
+  {
+    "id": "bookshelf_B07HSJX4S6",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSJX4S6.glb",
+    "source_id": "B07HSJX4S6",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07HSJX4S6.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.822,
+      "y": 0.45,
+      "z": 0.15
+    },
+    "faces": 7724
+  },
+  {
+    "id": "bookshelf_B07HSLTLGP",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSLTLGP.glb",
+    "source_id": "B07HSLTLGP",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07HSLTLGP.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.371,
+      "y": 1.826,
+      "z": 0.379
+    },
+    "faces": 6484
+  },
+  {
+    "id": "bookshelf_B07HSKW3D6",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSKW3D6.glb",
+    "source_id": "B07HSKW3D6",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07HSKW3D6.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.3,
+      "y": 0.495,
+      "z": 0.4
+    },
+    "faces": 6556
+  },
+  {
+    "id": "bookshelf_B075ZBW1RR",
+    "category": "bookshelf",
+    "glb": "bookshelf_B075ZBW1RR.glb",
+    "source_id": "B075ZBW1RR",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B075ZBW1RR.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.822,
+      "y": 0.947,
+      "z": 0.352
+    },
+    "faces": 14544
+  },
+  {
+    "id": "bookshelf_B07HSKY884",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSKY884.glb",
+    "source_id": "B07HSKY884",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07HSKY884.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.403,
+      "y": 1.063,
+      "z": 0.344
+    },
+    "faces": 25008
+  },
+  {
+    "id": "bookshelf_B075Z6YS1Z",
+    "category": "bookshelf",
+    "glb": "bookshelf_B075Z6YS1Z.glb",
+    "source_id": "B075Z6YS1Z",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B075Z6YS1Z.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.874,
+      "y": 1.86,
+      "z": 0.359
+    },
+    "faces": 6084
+  },
+  {
+    "id": "bookshelf_B07HSGFLJ9",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSGFLJ9.glb",
+    "source_id": "B07HSGFLJ9",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07HSGFLJ9.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.212,
+      "y": 0.865,
+      "z": 0.685
+    },
+    "faces": 3524
+  },
+  {
+    "id": "bookshelf_B07HSCJZQM",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSCJZQM.glb",
+    "source_id": "B07HSCJZQM",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07HSCJZQM.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.652,
+      "y": 2.005,
+      "z": 0.454
+    },
+    "faces": 17976
+  },
+  {
+    "id": "bookshelf_B07HSPHZXD",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSPHZXD.glb",
+    "source_id": "B07HSPHZXD",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07HSPHZXD.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.708,
+      "y": 0.701,
+      "z": 0.15
+    },
+    "faces": 13964
+  },
+  {
+    "id": "bookshelf_B075Z7SQND",
+    "category": "bookshelf",
+    "glb": "bookshelf_B075Z7SQND.glb",
+    "source_id": "B075Z7SQND",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 2.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B075Z7SQND.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.746,
+      "y": 1.808,
+      "z": 0.508
+    },
+    "faces": 2988
+  },
+  {
+    "id": "bookshelf_B07B7J8GGS",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07B7J8GGS.glb",
+    "source_id": "B07B7J8GGS",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 3.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07B7J8GGS.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.201,
+      "y": 0.765,
+      "z": 0.361
+    },
+    "faces": 5570
+  },
+  {
+    "id": "bookshelf_B074KKXLK1",
+    "category": "bookshelf",
+    "glb": "bookshelf_B074KKXLK1.glb",
+    "source_id": "B074KKXLK1",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 3.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B074KKXLK1.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.539,
+      "y": 1.732,
+      "z": 0.395
+    },
+    "faces": 15584
+  },
+  {
+    "id": "bookshelf_B07B8K18WV",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07B8K18WV.glb",
+    "source_id": "B07B8K18WV",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 3.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07B8K18WV.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.729,
+      "y": 0.439,
+      "z": 0.112
+    },
+    "faces": 15698
+  },
+  {
+    "id": "bookshelf_B07HSCNKCT",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSCNKCT.glb",
+    "source_id": "B07HSCNKCT",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 3.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07HSCNKCT.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.748,
+      "y": 1.471,
+      "z": 0.308
+    },
+    "faces": 2998
+  },
+  {
+    "id": "bookshelf_B07HSM36J9",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSM36J9.glb",
+    "source_id": "B07HSM36J9",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 3.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07HSM36J9.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.636,
+      "y": 0.19,
+      "z": 0.166
+    },
+    "faces": 5743
+  },
+  {
+    "id": "bookshelf_B07HSGCNVB",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07HSGCNVB.glb",
+    "source_id": "B07HSGCNVB",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 3.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07HSGCNVB.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.847,
+      "y": 2.015,
+      "z": 0.431
+    },
+    "faces": 13744
+  },
+  {
+    "id": "bookshelf_B07PNHSR4G",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07PNHSR4G.glb",
+    "source_id": "B07PNHSR4G",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 3.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07PNHSR4G.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.66,
+      "y": 1.892,
+      "z": 0.381
+    },
+    "faces": 31196
+  },
+  {
+    "id": "bookshelf_B07QY2ZN7X",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07QY2ZN7X.glb",
+    "source_id": "B07QY2ZN7X",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 3.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07QY2ZN7X.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.895,
+      "y": 0.732,
+      "z": 0.396
+    },
+    "faces": 14698
+  },
+  {
+    "id": "bookshelf_B07B7GZTNR",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07B7GZTNR.glb",
+    "source_id": "B07B7GZTNR",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 3.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07B7GZTNR.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.584,
+      "y": 1.727,
+      "z": 0.472
+    },
+    "faces": 6903
+  },
+  {
+    "id": "bookshelf_B075ZBW22K",
+    "category": "bookshelf",
+    "glb": "bookshelf_B075ZBW22K.glb",
+    "source_id": "B075ZBW22K",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 4.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B075ZBW22K.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.5,
+      "y": 1.9,
+      "z": 0.428
+    },
+    "faces": 9502
+  },
+  {
+    "id": "bookshelf_B07B7J2VCD",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07B7J2VCD.glb",
+    "source_id": "B07B7J2VCD",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 4.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07B7J2VCD.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.864,
+      "y": 1.93,
+      "z": 0.453
+    },
+    "faces": 38530
+  },
+  {
+    "id": "bookshelf_B07B7GYMQ9",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07B7GYMQ9.glb",
+    "source_id": "B07B7GYMQ9",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 4.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07B7GYMQ9.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.878,
+      "y": 0.715,
+      "z": 0.471
+    },
+    "faces": 81802
+  },
+  {
+    "id": "bookshelf_B071DZHLXH",
+    "category": "bookshelf",
+    "glb": "bookshelf_B071DZHLXH.glb",
+    "source_id": "B071DZHLXH",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 7.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B071DZHLXH.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.762,
+      "y": 1.645,
+      "z": 0.356
+    },
+    "faces": 38770
+  },
+  {
+    "id": "bookshelf_B0754KHKCX",
+    "category": "bookshelf",
+    "glb": "bookshelf_B0754KHKCX.glb",
+    "source_id": "B0754KHKCX",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 9.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B0754KHKCX.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.79,
+      "y": 0.786,
+      "z": 0.39
+    },
+    "faces": 504
+  },
+  {
+    "id": "bookshelf_B00NUS5GXA",
+    "category": "bookshelf",
+    "glb": "bookshelf_B00NUS5GXA.glb",
+    "source_id": "B00NUS5GXA",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 10.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B00NUS5GXA.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.762,
+      "y": 1.587,
+      "z": 0.356
+    },
+    "faces": 23364
+  },
+  {
+    "id": "bookshelf_B072JT7WDX",
+    "category": "bookshelf",
+    "glb": "bookshelf_B072JT7WDX.glb",
+    "source_id": "B072JT7WDX",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 10.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B072JT7WDX.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.524,
+      "y": 1.981,
+      "z": 0.61
+    },
+    "faces": 63982
+  },
+  {
+    "id": "bookshelf_B07PQS58XN",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07PQS58XN.glb",
+    "source_id": "B07PQS58XN",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 11.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07PQS58XN.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.66,
+      "y": 1.892,
+      "z": 0.381
+    },
+    "faces": 54996
+  },
+  {
+    "id": "bookshelf_B07QW1L8H6",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07QW1L8H6.glb",
+    "source_id": "B07QW1L8H6",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 11.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07QW1L8H6.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.89,
+      "y": 1.65,
+      "z": 0.25
+    },
+    "faces": 10956
+  },
+  {
+    "id": "bookshelf_B07RQZKXT4",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07RQZKXT4.glb",
+    "source_id": "B07RQZKXT4",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 11.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07RQZKXT4.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.6,
+      "y": 0.6,
+      "z": 0.16
+    },
+    "faces": 10456
+  },
+  {
+    "id": "bookshelf_B07QZ77FGN",
+    "category": "bookshelf",
+    "glb": "bookshelf_B07QZ77FGN.glb",
+    "source_id": "B07QZ77FGN",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 12.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B07QZ77FGN.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.6,
+      "y": 1.81,
+      "z": 0.5
+    },
+    "faces": 77244
+  },
+  {
+    "id": "bookshelf_B0735CJJDM",
+    "category": "bookshelf",
+    "glb": "bookshelf_B0735CJJDM.glb",
+    "source_id": "B0735CJJDM",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 12.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B0735CJJDM.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.711,
+      "y": 0.711,
+      "z": 0.356
+    },
+    "faces": 13392
+  },
+  {
+    "id": "bookshelf_B0735CKD6R",
+    "category": "bookshelf",
+    "glb": "bookshelf_B0735CKD6R.glb",
+    "source_id": "B0735CKD6R",
+    "product_type": "SHELF",
+    "dimensions_m": {},
+    "glb_size_mb": 12.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "bookshelf_B0735CKD6R.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.711,
+      "y": 0.711,
+      "z": 0.356
+    },
+    "faces": 13392
+  },
+  {
+    "id": "lamp_B07B4Z9PL9",
+    "category": "lamp",
+    "glb": "lamp_B07B4Z9PL9.glb",
     "source_id": "B07B4Z9PL9",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3050,7 +4760,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07B4Z9PL9.thumb.png",
+    "thumb": "lamp_B07B4Z9PL9.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.219,
       "y": 1.23,
@@ -3059,9 +4769,9 @@
     "faces": 9862
   },
   {
-    "id": "plant_B07374M818",
-    "category": "plant",
-    "glb": "plant_B07374M818.glb",
+    "id": "lamp_B07374M818",
+    "category": "lamp",
+    "glb": "lamp_B07374M818.glb",
     "source_id": "B07374M818",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3069,7 +4779,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07374M818.thumb.png",
+    "thumb": "lamp_B07374M818.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.208,
       "y": 0.406,
@@ -3078,9 +4788,47 @@
     "faces": 11122
   },
   {
-    "id": "plant_B07B4YYC4V",
-    "category": "plant",
-    "glb": "plant_B07B4YYC4V.glb",
+    "id": "lamp_B07HK3F2NH",
+    "category": "lamp",
+    "glb": "lamp_B07HK3F2NH.glb",
+    "source_id": "B07HK3F2NH",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B07HK3F2NH.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.312,
+      "y": 1.366,
+      "z": 0.315
+    },
+    "faces": 14416
+  },
+  {
+    "id": "lamp_B07B4YVX5Q",
+    "category": "lamp",
+    "glb": "lamp_B07B4YVX5Q.glb",
+    "source_id": "B07B4YVX5Q",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B07B4YVX5Q.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.587,
+      "y": 0.242,
+      "z": 0.239
+    },
+    "faces": 11966
+  },
+  {
+    "id": "lamp_B07B4YYC4V",
+    "category": "lamp",
+    "glb": "lamp_B07B4YYC4V.glb",
     "source_id": "B07B4YYC4V",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3088,7 +4836,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07B4YYC4V.thumb.png",
+    "thumb": "lamp_B07B4YYC4V.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.162,
       "y": 0.385,
@@ -3097,9 +4845,9 @@
     "faces": 11544
   },
   {
-    "id": "plant_B075X2XZDY",
-    "category": "plant",
-    "glb": "plant_B075X2XZDY.glb",
+    "id": "lamp_B075X2XZDY",
+    "category": "lamp",
+    "glb": "lamp_B075X2XZDY.glb",
     "source_id": "B075X2XZDY",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3107,7 +4855,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B075X2XZDY.thumb.png",
+    "thumb": "lamp_B075X2XZDY.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.295,
       "y": 0.639,
@@ -3116,9 +4864,9 @@
     "faces": 28760
   },
   {
-    "id": "plant_B07DBHM1RK",
-    "category": "plant",
-    "glb": "plant_B07DBHM1RK.glb",
+    "id": "lamp_B07DBHM1RK",
+    "category": "lamp",
+    "glb": "lamp_B07DBHM1RK.glb",
     "source_id": "B07DBHM1RK",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3126,7 +4874,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DBHM1RK.thumb.png",
+    "thumb": "lamp_B07DBHM1RK.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.328,
       "y": 0.612,
@@ -3135,9 +4883,9 @@
     "faces": 15144
   },
   {
-    "id": "plant_B07GNNPB3M",
-    "category": "plant",
-    "glb": "plant_B07GNNPB3M.glb",
+    "id": "lamp_B07GNNPB3M",
+    "category": "lamp",
+    "glb": "lamp_B07GNNPB3M.glb",
     "source_id": "B07GNNPB3M",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3145,7 +4893,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07GNNPB3M.thumb.png",
+    "thumb": "lamp_B07GNNPB3M.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.247,
       "y": 0.387,
@@ -3154,9 +4902,9 @@
     "faces": 8458
   },
   {
-    "id": "plant_B07DBCG1QY",
-    "category": "plant",
-    "glb": "plant_B07DBCG1QY.glb",
+    "id": "lamp_B07DBCG1QY",
+    "category": "lamp",
+    "glb": "lamp_B07DBCG1QY.glb",
     "source_id": "B07DBCG1QY",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3164,7 +4912,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DBCG1QY.thumb.png",
+    "thumb": "lamp_B07DBCG1QY.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.256,
       "y": 1.571,
@@ -3173,9 +4921,9 @@
     "faces": 21376
   },
   {
-    "id": "plant_B07GNNPB38",
-    "category": "plant",
-    "glb": "plant_B07GNNPB38.glb",
+    "id": "lamp_B07GNNPB38",
+    "category": "lamp",
+    "glb": "lamp_B07GNNPB38.glb",
     "source_id": "B07GNNPB38",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3183,7 +4931,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07GNNPB38.thumb.png",
+    "thumb": "lamp_B07GNNPB38.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.247,
       "y": 0.387,
@@ -3192,9 +4940,47 @@
     "faces": 8458
   },
   {
-    "id": "plant_B07DTFBDTL",
-    "category": "plant",
-    "glb": "plant_B07DTFBDTL.glb",
+    "id": "lamp_B07DBJYDLK",
+    "category": "lamp",
+    "glb": "lamp_B07DBJYDLK.glb",
+    "source_id": "B07DBJYDLK",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B07DBJYDLK.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.382,
+      "y": 0.304,
+      "z": 0.395
+    },
+    "faces": 18310
+  },
+  {
+    "id": "lamp_B07376VCCS",
+    "category": "lamp",
+    "glb": "lamp_B07376VCCS.glb",
+    "source_id": "B07376VCCS",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B07376VCCS.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.863,
+      "y": 0.869,
+      "z": 0.299
+    },
+    "faces": 16416
+  },
+  {
+    "id": "lamp_B07DTFBDTL",
+    "category": "lamp",
+    "glb": "lamp_B07DTFBDTL.glb",
     "source_id": "B07DTFBDTL",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3202,7 +4988,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DTFBDTL.thumb.png",
+    "thumb": "lamp_B07DTFBDTL.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.207,
       "y": 0.559,
@@ -3211,9 +4997,47 @@
     "faces": 8272
   },
   {
-    "id": "plant_B07DBCN3KB",
-    "category": "plant",
-    "glb": "plant_B07DBCN3KB.glb",
+    "id": "lamp_B07B4VSTG2",
+    "category": "lamp",
+    "glb": "lamp_B07B4VSTG2.glb",
+    "source_id": "B07B4VSTG2",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B07B4VSTG2.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.279,
+      "y": 0.269,
+      "z": 0.279
+    },
+    "faces": 15626
+  },
+  {
+    "id": "lamp_B07DBHC39X",
+    "category": "lamp",
+    "glb": "lamp_B07DBHC39X.glb",
+    "source_id": "B07DBHC39X",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B07DBHC39X.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.393,
+      "y": 0.229,
+      "z": 0.393
+    },
+    "faces": 8640
+  },
+  {
+    "id": "lamp_B07DBCN3KB",
+    "category": "lamp",
+    "glb": "lamp_B07DBCN3KB.glb",
     "source_id": "B07DBCN3KB",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3221,7 +5045,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DBCN3KB.thumb.png",
+    "thumb": "lamp_B07DBCN3KB.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.405,
       "y": 1.797,
@@ -3230,9 +5054,9 @@
     "faces": 17500
   },
   {
-    "id": "plant_B07DTLF7DN",
-    "category": "plant",
-    "glb": "plant_B07DTLF7DN.glb",
+    "id": "lamp_B07DTLF7DN",
+    "category": "lamp",
+    "glb": "lamp_B07DTLF7DN.glb",
     "source_id": "B07DTLF7DN",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3240,7 +5064,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DTLF7DN.thumb.png",
+    "thumb": "lamp_B07DTLF7DN.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.249,
       "y": 1.505,
@@ -3249,9 +5073,9 @@
     "faces": 9184
   },
   {
-    "id": "plant_B07DBDV3FH",
-    "category": "plant",
-    "glb": "plant_B07DBDV3FH.glb",
+    "id": "lamp_B07DBDV3FH",
+    "category": "lamp",
+    "glb": "lamp_B07DBDV3FH.glb",
     "source_id": "B07DBDV3FH",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3259,7 +5083,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DBDV3FH.thumb.png",
+    "thumb": "lamp_B07DBDV3FH.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.355,
       "y": 1.473,
@@ -3268,9 +5092,9 @@
     "faces": 17102
   },
   {
-    "id": "plant_B0742DNBGB",
-    "category": "plant",
-    "glb": "plant_B0742DNBGB.glb",
+    "id": "lamp_B0742DNBGB",
+    "category": "lamp",
+    "glb": "lamp_B0742DNBGB.glb",
     "source_id": "B0742DNBGB",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3278,7 +5102,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B0742DNBGB.thumb.png",
+    "thumb": "lamp_B0742DNBGB.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.144,
       "y": 0.603,
@@ -3287,9 +5111,9 @@
     "faces": 9166
   },
   {
-    "id": "plant_B07B4YY8H3",
-    "category": "plant",
-    "glb": "plant_B07B4YY8H3.glb",
+    "id": "lamp_B07B4YY8H3",
+    "category": "lamp",
+    "glb": "lamp_B07B4YY8H3.glb",
     "source_id": "B07B4YY8H3",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3297,7 +5121,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07B4YY8H3.thumb.png",
+    "thumb": "lamp_B07B4YY8H3.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.11,
       "y": 0.464,
@@ -3306,9 +5130,9 @@
     "faces": 11818
   },
   {
-    "id": "plant_B07DBHCKKD",
-    "category": "plant",
-    "glb": "plant_B07DBHCKKD.glb",
+    "id": "lamp_B07DBHCKKD",
+    "category": "lamp",
+    "glb": "lamp_B07DBHCKKD.glb",
     "source_id": "B07DBHCKKD",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3316,7 +5140,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DBHCKKD.thumb.png",
+    "thumb": "lamp_B07DBHCKKD.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.431,
       "y": 1.488,
@@ -3325,9 +5149,9 @@
     "faces": 14508
   },
   {
-    "id": "plant_B07DBCMTCS",
-    "category": "plant",
-    "glb": "plant_B07DBCMTCS.glb",
+    "id": "lamp_B07DBCMTCS",
+    "category": "lamp",
+    "glb": "lamp_B07DBCMTCS.glb",
     "source_id": "B07DBCMTCS",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3335,7 +5159,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DBCMTCS.thumb.png",
+    "thumb": "lamp_B07DBCMTCS.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.331,
       "y": 0.698,
@@ -3344,9 +5168,9 @@
     "faces": 15414
   },
   {
-    "id": "plant_B07DTLKL7L",
-    "category": "plant",
-    "glb": "plant_B07DTLKL7L.glb",
+    "id": "lamp_B07DTLKL7L",
+    "category": "lamp",
+    "glb": "lamp_B07DTLKL7L.glb",
     "source_id": "B07DTLKL7L",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3354,7 +5178,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DTLKL7L.thumb.png",
+    "thumb": "lamp_B07DTLKL7L.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.32,
       "y": 0.591,
@@ -3363,9 +5187,28 @@
     "faces": 7331
   },
   {
-    "id": "plant_B07DBHB6D4",
-    "category": "plant",
-    "glb": "plant_B07DBHB6D4.glb",
+    "id": "lamp_B071HSMXBT",
+    "category": "lamp",
+    "glb": "lamp_B071HSMXBT.glb",
+    "source_id": "B071HSMXBT",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 0.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B071HSMXBT.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.217,
+      "y": 1.367,
+      "z": 0.211
+    },
+    "faces": 16474
+  },
+  {
+    "id": "lamp_B07DBHB6D4",
+    "category": "lamp",
+    "glb": "lamp_B07DBHB6D4.glb",
     "source_id": "B07DBHB6D4",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3373,7 +5216,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DBHB6D4.thumb.png",
+    "thumb": "lamp_B07DBHB6D4.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.159,
       "y": 0.708,
@@ -3382,9 +5225,9 @@
     "faces": 28313
   },
   {
-    "id": "plant_B073P3WGZZ",
-    "category": "plant",
-    "glb": "plant_B073P3WGZZ.glb",
+    "id": "lamp_B073P3WGZZ",
+    "category": "lamp",
+    "glb": "lamp_B073P3WGZZ.glb",
     "source_id": "B073P3WGZZ",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3392,7 +5235,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B073P3WGZZ.thumb.png",
+    "thumb": "lamp_B073P3WGZZ.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.181,
       "y": 0.639,
@@ -3401,9 +5244,9 @@
     "faces": 14072
   },
   {
-    "id": "plant_B07DBHCKML",
-    "category": "plant",
-    "glb": "plant_B07DBHCKML.glb",
+    "id": "lamp_B07DBHCKML",
+    "category": "lamp",
+    "glb": "lamp_B07DBHCKML.glb",
     "source_id": "B07DBHCKML",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3411,7 +5254,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DBHCKML.thumb.png",
+    "thumb": "lamp_B07DBHCKML.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.575,
       "y": 1.785,
@@ -3420,9 +5263,47 @@
     "faces": 25118
   },
   {
-    "id": "plant_B073P3NL8C",
-    "category": "plant",
-    "glb": "plant_B073P3NL8C.glb",
+    "id": "lamp_B07B4Z9C39",
+    "category": "lamp",
+    "glb": "lamp_B07B4Z9C39.glb",
+    "source_id": "B07B4Z9C39",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B07B4Z9C39.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.638,
+      "y": 0.292,
+      "z": 0.177
+    },
+    "faces": 30850
+  },
+  {
+    "id": "lamp_B0719H3LG2",
+    "category": "lamp",
+    "glb": "lamp_B0719H3LG2.glb",
+    "source_id": "B0719H3LG2",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B0719H3LG2.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.173,
+      "y": 0.741,
+      "z": 0.173
+    },
+    "faces": 30494
+  },
+  {
+    "id": "lamp_B073P3NL8C",
+    "category": "lamp",
+    "glb": "lamp_B073P3NL8C.glb",
     "source_id": "B073P3NL8C",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3430,7 +5311,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B073P3NL8C.thumb.png",
+    "thumb": "lamp_B073P3NL8C.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.232,
       "y": 1.813,
@@ -3439,9 +5320,9 @@
     "faces": 16832
   },
   {
-    "id": "plant_B0825F3GC7",
-    "category": "plant",
-    "glb": "plant_B0825F3GC7.glb",
+    "id": "lamp_B0825F3GC7",
+    "category": "lamp",
+    "glb": "lamp_B0825F3GC7.glb",
     "source_id": "B0825F3GC7",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3449,7 +5330,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B0825F3GC7.thumb.png",
+    "thumb": "lamp_B0825F3GC7.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.197,
       "y": 0.559,
@@ -3458,9 +5339,9 @@
     "faces": 19146
   },
   {
-    "id": "plant_B073P2ZGMJ",
-    "category": "plant",
-    "glb": "plant_B073P2ZGMJ.glb",
+    "id": "lamp_B073P2ZGMJ",
+    "category": "lamp",
+    "glb": "lamp_B073P2ZGMJ.glb",
     "source_id": "B073P2ZGMJ",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3468,7 +5349,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B073P2ZGMJ.thumb.png",
+    "thumb": "lamp_B073P2ZGMJ.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.175,
       "y": 0.469,
@@ -3477,9 +5358,9 @@
     "faces": 22650
   },
   {
-    "id": "plant_B0742DNY41",
-    "category": "plant",
-    "glb": "plant_B0742DNY41.glb",
+    "id": "lamp_B0742DNY41",
+    "category": "lamp",
+    "glb": "lamp_B0742DNY41.glb",
     "source_id": "B0742DNY41",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3487,7 +5368,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B0742DNY41.thumb.png",
+    "thumb": "lamp_B0742DNY41.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.194,
       "y": 1.594,
@@ -3496,9 +5377,9 @@
     "faces": 9476
   },
   {
-    "id": "plant_B075X2XZDD",
-    "category": "plant",
-    "glb": "plant_B075X2XZDD.glb",
+    "id": "lamp_B075X2XZDD",
+    "category": "lamp",
+    "glb": "lamp_B075X2XZDD.glb",
     "source_id": "B075X2XZDD",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3506,7 +5387,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B075X2XZDD.thumb.png",
+    "thumb": "lamp_B075X2XZDD.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.222,
       "y": 1.25,
@@ -3515,9 +5396,9 @@
     "faces": 9530
   },
   {
-    "id": "plant_B07B4ZBB7R",
-    "category": "plant",
-    "glb": "plant_B07B4ZBB7R.glb",
+    "id": "lamp_B07B4ZBB7R",
+    "category": "lamp",
+    "glb": "lamp_B07B4ZBB7R.glb",
     "source_id": "B07B4ZBB7R",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3525,7 +5406,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07B4ZBB7R.thumb.png",
+    "thumb": "lamp_B07B4ZBB7R.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.219,
       "y": 1.23,
@@ -3534,9 +5415,28 @@
     "faces": 9862
   },
   {
-    "id": "plant_B07B4YHYR2",
-    "category": "plant",
-    "glb": "plant_B07B4YHYR2.glb",
+    "id": "lamp_B07B4ZP62F",
+    "category": "lamp",
+    "glb": "lamp_B07B4ZP62F.glb",
+    "source_id": "B07B4ZP62F",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B07B4ZP62F.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.067,
+      "y": 0.249,
+      "z": 0.067
+    },
+    "faces": 17578
+  },
+  {
+    "id": "lamp_B07B4YHYR2",
+    "category": "lamp",
+    "glb": "lamp_B07B4YHYR2.glb",
     "source_id": "B07B4YHYR2",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3544,7 +5444,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07B4YHYR2.thumb.png",
+    "thumb": "lamp_B07B4YHYR2.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.434,
       "y": 1.778,
@@ -3553,9 +5453,66 @@
     "faces": 27144
   },
   {
-    "id": "plant_B073P3HHFS",
-    "category": "plant",
-    "glb": "plant_B073P3HHFS.glb",
+    "id": "lamp_B0742D9X4G",
+    "category": "lamp",
+    "glb": "lamp_B0742D9X4G.glb",
+    "source_id": "B0742D9X4G",
+    "product_type": "HOME_LIGHTING_AND_LAMPS",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B0742D9X4G.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.153,
+      "y": 0.456,
+      "z": 0.286
+    },
+    "faces": 23458
+  },
+  {
+    "id": "lamp_B071F6WK9K",
+    "category": "lamp",
+    "glb": "lamp_B071F6WK9K.glb",
+    "source_id": "B071F6WK9K",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B071F6WK9K.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.265,
+      "y": 1.055,
+      "z": 0.265
+    },
+    "faces": 16246
+  },
+  {
+    "id": "lamp_B07B4Z9BS4",
+    "category": "lamp",
+    "glb": "lamp_B07B4Z9BS4.glb",
+    "source_id": "B07B4Z9BS4",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B07B4Z9BS4.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.279,
+      "y": 0.269,
+      "z": 0.279
+    },
+    "faces": 16178
+  },
+  {
+    "id": "lamp_B073P3HHFS",
+    "category": "lamp",
+    "glb": "lamp_B073P3HHFS.glb",
     "source_id": "B073P3HHFS",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3563,7 +5520,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B073P3HHFS.thumb.png",
+    "thumb": "lamp_B073P3HHFS.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.286,
       "y": 0.456,
@@ -3572,9 +5529,9 @@
     "faces": 23418
   },
   {
-    "id": "plant_B073P46SHG",
-    "category": "plant",
-    "glb": "plant_B073P46SHG.glb",
+    "id": "lamp_B073P46SHG",
+    "category": "lamp",
+    "glb": "lamp_B073P46SHG.glb",
     "source_id": "B073P46SHG",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3582,7 +5539,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B073P46SHG.thumb.png",
+    "thumb": "lamp_B073P46SHG.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.211,
       "y": 0.536,
@@ -3591,9 +5548,9 @@
     "faces": 11774
   },
   {
-    "id": "plant_B075X3S2X5",
-    "category": "plant",
-    "glb": "plant_B075X3S2X5.glb",
+    "id": "lamp_B075X3S2X5",
+    "category": "lamp",
+    "glb": "lamp_B075X3S2X5.glb",
     "source_id": "B075X3S2X5",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3601,7 +5558,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B075X3S2X5.thumb.png",
+    "thumb": "lamp_B075X3S2X5.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.223,
       "y": 1.43,
@@ -3610,9 +5567,28 @@
     "faces": 26357
   },
   {
-    "id": "plant_B07374SBFL",
-    "category": "plant",
-    "glb": "plant_B07374SBFL.glb",
+    "id": "lamp_B07HK6B4D7",
+    "category": "lamp",
+    "glb": "lamp_B07HK6B4D7.glb",
+    "source_id": "B07HK6B4D7",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B07HK6B4D7.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.189,
+      "y": 0.665,
+      "z": 0.422
+    },
+    "faces": 19268
+  },
+  {
+    "id": "lamp_B07374SBFL",
+    "category": "lamp",
+    "glb": "lamp_B07374SBFL.glb",
     "source_id": "B07374SBFL",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3620,7 +5596,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07374SBFL.thumb.png",
+    "thumb": "lamp_B07374SBFL.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.25,
       "y": 1.526,
@@ -3629,9 +5605,9 @@
     "faces": 40130
   },
   {
-    "id": "plant_B073P484RR",
-    "category": "plant",
-    "glb": "plant_B073P484RR.glb",
+    "id": "lamp_B073P484RR",
+    "category": "lamp",
+    "glb": "lamp_B073P484RR.glb",
     "source_id": "B073P484RR",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3639,7 +5615,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B073P484RR.thumb.png",
+    "thumb": "lamp_B073P484RR.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.667,
       "y": 1.624,
@@ -3648,9 +5624,28 @@
     "faces": 23852
   },
   {
-    "id": "plant_B0742F7GT8",
-    "category": "plant",
-    "glb": "plant_B0742F7GT8.glb",
+    "id": "lamp_B07B4SC2JX",
+    "category": "lamp",
+    "glb": "lamp_B07B4SC2JX.glb",
+    "source_id": "B07B4SC2JX",
+    "product_type": "LIGHT_FIXTURE",
+    "dimensions_m": {},
+    "glb_size_mb": 1.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "lamp_B07B4SC2JX.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.279,
+      "y": 0.613,
+      "z": 0.281
+    },
+    "faces": 15200
+  },
+  {
+    "id": "lamp_B0742F7GT8",
+    "category": "lamp",
+    "glb": "lamp_B0742F7GT8.glb",
     "source_id": "B0742F7GT8",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3658,7 +5653,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B0742F7GT8.thumb.png",
+    "thumb": "lamp_B0742F7GT8.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.483,
       "y": 1.553,
@@ -3667,9 +5662,9 @@
     "faces": 17412
   },
   {
-    "id": "plant_B07HKGY4YZ",
-    "category": "plant",
-    "glb": "plant_B07HKGY4YZ.glb",
+    "id": "lamp_B07HKGY4YZ",
+    "category": "lamp",
+    "glb": "lamp_B07HKGY4YZ.glb",
     "source_id": "B07HKGY4YZ",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3677,7 +5672,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07HKGY4YZ.thumb.png",
+    "thumb": "lamp_B07HKGY4YZ.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.299,
       "y": 0.454,
@@ -3686,9 +5681,9 @@
     "faces": 7956
   },
   {
-    "id": "plant_B075X2Y3Q9",
-    "category": "plant",
-    "glb": "plant_B075X2Y3Q9.glb",
+    "id": "lamp_B075X2Y3Q9",
+    "category": "lamp",
+    "glb": "lamp_B075X2Y3Q9.glb",
     "source_id": "B075X2Y3Q9",
     "product_type": "LAMP",
     "dimensions_m": {},
@@ -3696,7 +5691,7 @@
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B075X2Y3Q9.thumb.png",
+    "thumb": "lamp_B075X2Y3Q9.thumb.png",
     "mesh_dimensions_m": {
       "x": 0.285,
       "y": 0.483,
@@ -3705,98 +5700,1903 @@
     "faces": 10916
   },
   {
-    "id": "plant_B07DBHBMBF",
-    "category": "plant",
-    "glb": "plant_B07DBHBMBF.glb",
-    "source_id": "B07DBHBMBF",
-    "product_type": "LAMP",
+    "id": "cabinet_B07GFL6W68",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFL6W68.glb",
+    "source_id": "B07GFL6W68",
+    "product_type": "DRESSER",
     "dimensions_m": {},
-    "glb_size_mb": 1.3,
+    "glb_size_mb": 0.2,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DBHBMBF.thumb.png",
+    "thumb": "cabinet_B07GFL6W68.thumb.png",
     "mesh_dimensions_m": {
-      "x": 0.333,
-      "y": 0.696,
+      "x": 1.535,
+      "y": 0.79,
       "z": 0.333
     },
-    "faces": 16430
+    "faces": 432
   },
   {
-    "id": "plant_B07HK85S6P",
-    "category": "plant",
-    "glb": "plant_B07HK85S6P.glb",
-    "source_id": "B07HK85S6P",
-    "product_type": "LAMP",
+    "id": "cabinet_B07C41C1C8",
+    "category": "cabinet",
+    "glb": "cabinet_B07C41C1C8.glb",
+    "source_id": "B07C41C1C8",
+    "product_type": "CABINET",
     "dimensions_m": {},
-    "glb_size_mb": 1.3,
+    "glb_size_mb": 0.3,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07HK85S6P.thumb.png",
+    "thumb": "cabinet_B07C41C1C8.thumb.png",
     "mesh_dimensions_m": {
-      "x": 0.372,
-      "y": 1.465,
-      "z": 0.405
+      "x": 1.25,
+      "y": 2.16,
+      "z": 0.48
     },
-    "faces": 9752
+    "faces": 1368
   },
   {
-    "id": "plant_B07HK68BTZ",
-    "category": "plant",
-    "glb": "plant_B07HK68BTZ.glb",
-    "source_id": "B07HK68BTZ",
-    "product_type": "LAMP",
+    "id": "cabinet_B07GFSJ69T",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFSJ69T.glb",
+    "source_id": "B07GFSJ69T",
+    "product_type": "CABINET",
     "dimensions_m": {},
-    "glb_size_mb": 1.3,
+    "glb_size_mb": 0.4,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07HK68BTZ.thumb.png",
+    "thumb": "cabinet_B07GFSJ69T.thumb.png",
     "mesh_dimensions_m": {
-      "x": 0.185,
-      "y": 0.495,
-      "z": 0.567
+      "x": 1.78,
+      "y": 1.96,
+      "z": 0.629
     },
-    "faces": 28972
+    "faces": 7880
   },
   {
-    "id": "plant_B075X12JW7",
-    "category": "plant",
-    "glb": "plant_B075X12JW7.glb",
-    "source_id": "B075X12JW7",
-    "product_type": "LAMP",
+    "id": "cabinet_B07GFFPKFV",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFFPKFV.glb",
+    "source_id": "B07GFFPKFV",
+    "product_type": "CABINET",
     "dimensions_m": {},
-    "glb_size_mb": 1.3,
+    "glb_size_mb": 0.5,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B075X12JW7.thumb.png",
+    "thumb": "cabinet_B07GFFPKFV.thumb.png",
     "mesh_dimensions_m": {
-      "x": 0.309,
-      "y": 0.545,
-      "z": 0.309
+      "x": 0.991,
+      "y": 1.808,
+      "z": 0.577
     },
-    "faces": 8480
+    "faces": 12492
   },
   {
-    "id": "plant_B07DBHLX1W",
-    "category": "plant",
-    "glb": "plant_B07DBHLX1W.glb",
-    "source_id": "B07DBHLX1W",
-    "product_type": "LAMP",
+    "id": "cabinet_B07GFL6W6N",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFL6W6N.glb",
+    "source_id": "B07GFL6W6N",
+    "product_type": "DRESSER",
     "dimensions_m": {},
-    "glb_size_mb": 1.3,
+    "glb_size_mb": 0.5,
     "license": "CC-BY-4.0",
     "source": "Amazon Berkeley Objects (ABO)",
     "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
-    "thumb": "plant_B07DBHLX1W.thumb.png",
+    "thumb": "cabinet_B07GFL6W6N.thumb.png",
     "mesh_dimensions_m": {
-      "x": 0.348,
-      "y": 1.473,
+      "x": 1.535,
+      "y": 0.79,
+      "z": 0.333
+    },
+    "faces": 432
+  },
+  {
+    "id": "cabinet_B07JGXXK33",
+    "category": "cabinet",
+    "glb": "cabinet_B07JGXXK33.glb",
+    "source_id": "B07JGXXK33",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 0.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07JGXXK33.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.0,
+      "y": 0.8,
+      "z": 0.4
+    },
+    "faces": 1594
+  },
+  {
+    "id": "cabinet_B07H8SSJVW",
+    "category": "cabinet",
+    "glb": "cabinet_B07H8SSJVW.glb",
+    "source_id": "B07H8SSJVW",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 0.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07H8SSJVW.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.1,
+      "y": 1.0,
+      "z": 0.46
+    },
+    "faces": 1896
+  },
+  {
+    "id": "cabinet_B07JGPKY8D",
+    "category": "cabinet",
+    "glb": "cabinet_B07JGPKY8D.glb",
+    "source_id": "B07JGPKY8D",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 0.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07JGPKY8D.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.65,
+      "y": 1.19,
+      "z": 0.4
+    },
+    "faces": 2574
+  },
+  {
+    "id": "cabinet_B07JGY5LML",
+    "category": "cabinet",
+    "glb": "cabinet_B07JGY5LML.glb",
+    "source_id": "B07JGY5LML",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 0.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07JGY5LML.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.65,
+      "y": 0.8,
+      "z": 0.4
+    },
+    "faces": 16346
+  },
+  {
+    "id": "cabinet_B07GG2X2MX",
+    "category": "cabinet",
+    "glb": "cabinet_B07GG2X2MX.glb",
+    "source_id": "B07GG2X2MX",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 0.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07GG2X2MX.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.52,
+      "y": 1.63,
+      "z": 0.255
+    },
+    "faces": 3932
+  },
+  {
+    "id": "cabinet_B075X2PC3L",
+    "category": "cabinet",
+    "glb": "cabinet_B075X2PC3L.glb",
+    "source_id": "B075X2PC3L",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 0.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B075X2PC3L.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.558,
+      "y": 0.872,
+      "z": 0.463
+    },
+    "faces": 7690
+  },
+  {
+    "id": "cabinet_B07H8JRYSB",
+    "category": "cabinet",
+    "glb": "cabinet_B07H8JRYSB.glb",
+    "source_id": "B07H8JRYSB",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 0.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07H8JRYSB.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.83,
+      "y": 0.74,
+      "z": 0.42
+    },
+    "faces": 1836
+  },
+  {
+    "id": "cabinet_B07H8T8ZS7",
+    "category": "cabinet",
+    "glb": "cabinet_B07H8T8ZS7.glb",
+    "source_id": "B07H8T8ZS7",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 0.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07H8T8ZS7.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.11,
+      "y": 1.85,
+      "z": 0.4
+    },
+    "faces": 29644
+  },
+  {
+    "id": "cabinet_B07GFS1WDY",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFS1WDY.glb",
+    "source_id": "B07GFS1WDY",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 0.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07GFS1WDY.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.991,
+      "y": 1.808,
+      "z": 0.577
+    },
+    "faces": 12492
+  },
+  {
+    "id": "cabinet_B07JGPK68C",
+    "category": "cabinet",
+    "glb": "cabinet_B07JGPK68C.glb",
+    "source_id": "B07JGPK68C",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 0.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07JGPK68C.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.0,
+      "y": 1.19,
+      "z": 0.4
+    },
+    "faces": 8704
+  },
+  {
+    "id": "cabinet_B07H8JRPLT",
+    "category": "cabinet",
+    "glb": "cabinet_B07H8JRPLT.glb",
+    "source_id": "B07H8JRPLT",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 0.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07H8JRPLT.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.168,
+      "y": 1.397,
+      "z": 0.473
+    },
+    "faces": 952
+  },
+  {
+    "id": "cabinet_B07H8PWFDF",
+    "category": "cabinet",
+    "glb": "cabinet_B07H8PWFDF.glb",
+    "source_id": "B07H8PWFDF",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 0.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07H8PWFDF.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.496,
+      "y": 2.117,
+      "z": 0.588
+    },
+    "faces": 12156
+  },
+  {
+    "id": "cabinet_B077NZFT6C",
+    "category": "cabinet",
+    "glb": "cabinet_B077NZFT6C.glb",
+    "source_id": "B077NZFT6C",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 0.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B077NZFT6C.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.022,
+      "y": 0.891,
+      "z": 0.46
+    },
+    "faces": 6532
+  },
+  {
+    "id": "cabinet_B07H8SM6Q4",
+    "category": "cabinet",
+    "glb": "cabinet_B07H8SM6Q4.glb",
+    "source_id": "B07H8SM6Q4",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 0.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07H8SM6Q4.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 2.7,
+      "y": 2.37,
+      "z": 0.59
+    },
+    "faces": 1728
+  },
+  {
+    "id": "cabinet_B07B7JY9C5",
+    "category": "cabinet",
+    "glb": "cabinet_B07B7JY9C5.glb",
+    "source_id": "B07B7JY9C5",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07B7JY9C5.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.402,
+      "y": 0.455,
+      "z": 0.5
+    },
+    "faces": 11874
+  },
+  {
+    "id": "cabinet_B07G4ZXLC8",
+    "category": "cabinet",
+    "glb": "cabinet_B07G4ZXLC8.glb",
+    "source_id": "B07G4ZXLC8",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 1.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07G4ZXLC8.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.801,
+      "y": 0.78,
+      "z": 0.396
+    },
+    "faces": 9680
+  },
+  {
+    "id": "cabinet_B07GFLD22Q",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFLD22Q.glb",
+    "source_id": "B07GFLD22Q",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 1.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07GFLD22Q.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.75,
+      "y": 1.28,
+      "z": 0.25
+    },
+    "faces": 2562
+  },
+  {
+    "id": "cabinet_B07S74J1JT",
+    "category": "cabinet",
+    "glb": "cabinet_B07S74J1JT.glb",
+    "source_id": "B07S74J1JT",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 1.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07S74J1JT.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.8,
+      "y": 0.46,
+      "z": 0.8
+    },
+    "faces": 5514
+  },
+  {
+    "id": "cabinet_B07GFRP9RY",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFRP9RY.glb",
+    "source_id": "B07GFRP9RY",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 1.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07GFRP9RY.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.809,
+      "y": 0.762,
+      "z": 0.529
+    },
+    "faces": 124
+  },
+  {
+    "id": "cabinet_B07GFS1WH7",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFS1WH7.glb",
+    "source_id": "B07GFS1WH7",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07GFS1WH7.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.75,
+      "y": 1.28,
+      "z": 0.25
+    },
+    "faces": 2562
+  },
+  {
+    "id": "cabinet_B07S74K5Y9",
+    "category": "cabinet",
+    "glb": "cabinet_B07S74K5Y9.glb",
+    "source_id": "B07S74K5Y9",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 2.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07S74K5Y9.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.98,
+      "y": 1.92,
+      "z": 0.58
+    },
+    "faces": 27294
+  },
+  {
+    "id": "cabinet_B07GFFKRXS",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFFKRXS.glb",
+    "source_id": "B07GFFKRXS",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 2.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07GFFKRXS.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.994,
+      "y": 0.816,
+      "z": 0.404
+    },
+    "faces": 1788
+  },
+  {
+    "id": "cabinet_B07B78G1D1",
+    "category": "cabinet",
+    "glb": "cabinet_B07B78G1D1.glb",
+    "source_id": "B07B78G1D1",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 2.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07B78G1D1.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.21,
+      "y": 1.659,
+      "z": 0.61
+    },
+    "faces": 20778
+  },
+  {
+    "id": "cabinet_B07H8JN9QF",
+    "category": "cabinet",
+    "glb": "cabinet_B07H8JN9QF.glb",
+    "source_id": "B07H8JN9QF",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07H8JN9QF.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.998,
+      "y": 2.159,
+      "z": 0.598
+    },
+    "faces": 1460
+  },
+  {
+    "id": "cabinet_B07HSH4ZR2",
+    "category": "cabinet",
+    "glb": "cabinet_B07HSH4ZR2.glb",
+    "source_id": "B07HSH4ZR2",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07HSH4ZR2.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.503,
+      "y": 0.568,
+      "z": 0.414
+    },
+    "faces": 8150
+  },
+  {
+    "id": "cabinet_B07GFDPB2V",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFDPB2V.glb",
+    "source_id": "B07GFDPB2V",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07GFDPB2V.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.994,
+      "y": 0.816,
+      "z": 0.404
+    },
+    "faces": 1788
+  },
+  {
+    "id": "cabinet_B07HSBD8DM",
+    "category": "cabinet",
+    "glb": "cabinet_B07HSBD8DM.glb",
+    "source_id": "B07HSBD8DM",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07HSBD8DM.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.708,
+      "y": 0.82,
+      "z": 0.522
+    },
+    "faces": 7292
+  },
+  {
+    "id": "cabinet_B07H8SKPWP",
+    "category": "cabinet",
+    "glb": "cabinet_B07H8SKPWP.glb",
+    "source_id": "B07H8SKPWP",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07H8SKPWP.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.43,
+      "y": 0.36,
+      "z": 0.4
+    },
+    "faces": 5028
+  },
+  {
+    "id": "cabinet_B07121RM99",
+    "category": "cabinet",
+    "glb": "cabinet_B07121RM99.glb",
+    "source_id": "B07121RM99",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 2.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07121RM99.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.072,
+      "y": 1.514,
+      "z": 0.506
+    },
+    "faces": 13927
+  },
+  {
+    "id": "cabinet_B07RMYJWLS",
+    "category": "cabinet",
+    "glb": "cabinet_B07RMYJWLS.glb",
+    "source_id": "B07RMYJWLS",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 2.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07RMYJWLS.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.3,
+      "y": 1.4,
+      "z": 0.269
+    },
+    "faces": 5724
+  },
+  {
+    "id": "cabinet_B07B4Y45GY",
+    "category": "cabinet",
+    "glb": "cabinet_B07B4Y45GY.glb",
+    "source_id": "B07B4Y45GY",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 2.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07B4Y45GY.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.551,
+      "y": 0.856,
+      "z": 0.463
+    },
+    "faces": 26621
+  },
+  {
+    "id": "cabinet_B07GFWW3S8",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFWW3S8.glb",
+    "source_id": "B07GFWW3S8",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 2.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07GFWW3S8.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.78,
+      "y": 1.96,
+      "z": 0.629
+    },
+    "faces": 7880
+  },
+  {
+    "id": "cabinet_B07B8NBQQP",
+    "category": "cabinet",
+    "glb": "cabinet_B07B8NBQQP.glb",
+    "source_id": "B07B8NBQQP",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 2.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07B8NBQQP.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.541,
+      "y": 0.603,
+      "z": 0.21
+    },
+    "faces": 10164
+  },
+  {
+    "id": "cabinet_B07H8PS4FZ",
+    "category": "cabinet",
+    "glb": "cabinet_B07H8PS4FZ.glb",
+    "source_id": "B07H8PS4FZ",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 2.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07H8PS4FZ.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 2.16,
+      "y": 2.26,
+      "z": 0.59
+    },
+    "faces": 12660
+  },
+  {
+    "id": "cabinet_B071FJR479",
+    "category": "cabinet",
+    "glb": "cabinet_B071FJR479.glb",
+    "source_id": "B071FJR479",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 2.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B071FJR479.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.523,
+      "y": 0.889,
+      "z": 0.512
+    },
+    "faces": 5920
+  },
+  {
+    "id": "cabinet_B07HSL4TS1",
+    "category": "cabinet",
+    "glb": "cabinet_B07HSL4TS1.glb",
+    "source_id": "B07HSL4TS1",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 2.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07HSL4TS1.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.905,
+      "y": 0.721,
+      "z": 0.457
+    },
+    "faces": 17300
+  },
+  {
+    "id": "cabinet_B01LYEG73K",
+    "category": "cabinet",
+    "glb": "cabinet_B01LYEG73K.glb",
+    "source_id": "B01LYEG73K",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 2.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B01LYEG73K.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 4.679,
+      "y": 1.863,
+      "z": 2.251
+    },
+    "faces": 33286
+  },
+  {
+    "id": "cabinet_B07B4VXZZC",
+    "category": "cabinet",
+    "glb": "cabinet_B07B4VXZZC.glb",
+    "source_id": "B07B4VXZZC",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 2.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07B4VXZZC.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.049,
+      "y": 0.986,
+      "z": 0.463
+    },
+    "faces": 31966
+  },
+  {
+    "id": "cabinet_B072MF4SHR",
+    "category": "cabinet",
+    "glb": "cabinet_B072MF4SHR.glb",
+    "source_id": "B072MF4SHR",
+    "product_type": "STORAGE_RACK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B072MF4SHR.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.524,
+      "y": 1.981,
+      "z": 0.61
+    },
+    "faces": 63982
+  },
+  {
+    "id": "cabinet_B071SHBTM5",
+    "category": "cabinet",
+    "glb": "cabinet_B071SHBTM5.glb",
+    "source_id": "B071SHBTM5",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 3.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B071SHBTM5.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.964,
+      "y": 1.32,
+      "z": 0.516
+    },
+    "faces": 6272
+  },
+  {
+    "id": "cabinet_B075YZYJQN",
+    "category": "cabinet",
+    "glb": "cabinet_B075YZYJQN.glb",
+    "source_id": "B075YZYJQN",
+    "product_type": "DRESSER",
+    "dimensions_m": {},
+    "glb_size_mb": 3.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B075YZYJQN.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.761,
+      "y": 1.24,
+      "z": 0.479
+    },
+    "faces": 16872
+  },
+  {
+    "id": "cabinet_B07GFDZWMS",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFDZWMS.glb",
+    "source_id": "B07GFDZWMS",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 3.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07GFDZWMS.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.75,
+      "y": 1.28,
+      "z": 0.25
+    },
+    "faces": 2562
+  },
+  {
+    "id": "cabinet_B07GFS1VB6",
+    "category": "cabinet",
+    "glb": "cabinet_B07GFS1VB6.glb",
+    "source_id": "B07GFS1VB6",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 3.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07GFS1VB6.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.78,
+      "y": 1.96,
+      "z": 0.629
+    },
+    "faces": 7880
+  },
+  {
+    "id": "cabinet_B074KN35K2",
+    "category": "cabinet",
+    "glb": "cabinet_B074KN35K2.glb",
+    "source_id": "B074KN35K2",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 3.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B074KN35K2.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.607,
+      "y": 0.695,
+      "z": 0.41
+    },
+    "faces": 33526
+  },
+  {
+    "id": "cabinet_B07B8FHTJ4",
+    "category": "cabinet",
+    "glb": "cabinet_B07B8FHTJ4.glb",
+    "source_id": "B07B8FHTJ4",
+    "product_type": "CABINET",
+    "dimensions_m": {},
+    "glb_size_mb": 3.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "cabinet_B07B8FHTJ4.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.489,
+      "y": 0.59,
+      "z": 0.184
+    },
+    "faces": 4824
+  },
+  {
+    "id": "desk_B07GFWW5JZ",
+    "category": "desk",
+    "glb": "desk_B07GFWW5JZ.glb",
+    "source_id": "B07GFWW5JZ",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 0.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07GFWW5JZ.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.6,
+      "y": 0.75,
+      "z": 0.802
+    },
+    "faces": 792
+  },
+  {
+    "id": "desk_B07GFFQZRQ",
+    "category": "desk",
+    "glb": "desk_B07GFFQZRQ.glb",
+    "source_id": "B07GFFQZRQ",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 0.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07GFFQZRQ.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.9,
+      "y": 0.729,
+      "z": 0.498
+    },
+    "faces": 768
+  },
+  {
+    "id": "desk_B07GFQ4D3J",
+    "category": "desk",
+    "glb": "desk_B07GFQ4D3J.glb",
+    "source_id": "B07GFQ4D3J",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 0.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07GFQ4D3J.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.898,
+      "y": 0.73,
+      "z": 0.482
+    },
+    "faces": 1740
+  },
+  {
+    "id": "desk_B06XZV3F8F",
+    "category": "desk",
+    "glb": "desk_B06XZV3F8F.glb",
+    "source_id": "B06XZV3F8F",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 0.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B06XZV3F8F.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.015,
+      "y": 0.747,
+      "z": 0.505
+    },
+    "faces": 7184
+  },
+  {
+    "id": "desk_B07HSCYS4C",
+    "category": "desk",
+    "glb": "desk_B07HSCYS4C.glb",
+    "source_id": "B07HSCYS4C",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 0.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07HSCYS4C.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.313,
+      "y": 0.762,
+      "z": 0.589
+    },
+    "faces": 4234
+  },
+  {
+    "id": "desk_B07TN2RZPW",
+    "category": "desk",
+    "glb": "desk_B07TN2RZPW.glb",
+    "source_id": "B07TN2RZPW",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 0.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07TN2RZPW.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.524,
+      "y": 0.753,
+      "z": 1.2
+    },
+    "faces": 3664
+  },
+  {
+    "id": "desk_B079HYXWPC",
+    "category": "desk",
+    "glb": "desk_B079HYXWPC.glb",
+    "source_id": "B079HYXWPC",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 0.7,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B079HYXWPC.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.979,
+      "y": 0.723,
+      "z": 0.491
+    },
+    "faces": 7452
+  },
+  {
+    "id": "desk_B075X25BYC",
+    "category": "desk",
+    "glb": "desk_B075X25BYC.glb",
+    "source_id": "B075X25BYC",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 0.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075X25BYC.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.178,
+      "y": 0.614,
+      "z": 1.186
+    },
+    "faces": 15688
+  },
+  {
+    "id": "desk_B07JGMW8DL",
+    "category": "desk",
+    "glb": "desk_B07JGMW8DL.glb",
+    "source_id": "B07JGMW8DL",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 0.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07JGMW8DL.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.58,
+      "y": 0.76,
+      "z": 0.67
+    },
+    "faces": 13536
+  },
+  {
+    "id": "desk_B07QWZDK9S",
+    "category": "desk",
+    "glb": "desk_B07QWZDK9S.glb",
+    "source_id": "B07QWZDK9S",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07QWZDK9S.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.94,
+      "y": 0.818,
+      "z": 0.926
+    },
+    "faces": 7464
+  },
+  {
+    "id": "desk_B07K6N5FVX",
+    "category": "desk",
+    "glb": "desk_B07K6N5FVX.glb",
+    "source_id": "B07K6N5FVX",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 1.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07K6N5FVX.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.2,
+      "y": 0.76,
+      "z": 0.55
+    },
+    "faces": 28576
+  },
+  {
+    "id": "desk_B07K7663DW",
+    "category": "desk",
+    "glb": "desk_B07K7663DW.glb",
+    "source_id": "B07K7663DW",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07K7663DW.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.85,
+      "y": 1.19,
+      "z": 0.39
+    },
+    "faces": 22934
+  },
+  {
+    "id": "desk_B075Z8629F",
+    "category": "desk",
+    "glb": "desk_B075Z8629F.glb",
+    "source_id": "B075Z8629F",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 1.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075Z8629F.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.608,
+      "y": 0.616,
+      "z": 0.66
+    },
+    "faces": 7788
+  },
+  {
+    "id": "desk_B075ZBW1SN",
+    "category": "desk",
+    "glb": "desk_B075ZBW1SN.glb",
+    "source_id": "B075ZBW1SN",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 1.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075ZBW1SN.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.277,
+      "y": 0.758,
+      "z": 0.612
+    },
+    "faces": 5494
+  },
+  {
+    "id": "desk_B07R7W7ZMP",
+    "category": "desk",
+    "glb": "desk_B07R7W7ZMP.glb",
+    "source_id": "B07R7W7ZMP",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 1.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07R7W7ZMP.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.99,
+      "y": 0.762,
+      "z": 0.497
+    },
+    "faces": 2972
+  },
+  {
+    "id": "desk_B075Z7HQK5",
+    "category": "desk",
+    "glb": "desk_B075Z7HQK5.glb",
+    "source_id": "B075Z7HQK5",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 1.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075Z7HQK5.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.066,
+      "y": 0.785,
+      "z": 0.418
+    },
+    "faces": 10422
+  },
+  {
+    "id": "desk_B07HSJDN75",
+    "category": "desk",
+    "glb": "desk_B07HSJDN75.glb",
+    "source_id": "B07HSJDN75",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 1.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07HSJDN75.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.069,
+      "y": 0.761,
+      "z": 0.409
+    },
+    "faces": 1134
+  },
+  {
+    "id": "desk_B075ZBVZST",
+    "category": "desk",
+    "glb": "desk_B075ZBVZST.glb",
+    "source_id": "B075ZBVZST",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075ZBVZST.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.256,
+      "y": 0.8,
+      "z": 0.486
+    },
+    "faces": 8426
+  },
+  {
+    "id": "desk_B01DJH742M",
+    "category": "desk",
+    "glb": "desk_B01DJH742M.glb",
+    "source_id": "B01DJH742M",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B01DJH742M.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.404,
+      "y": 0.73,
+      "z": 0.6
+    },
+    "faces": 6804
+  },
+  {
+    "id": "desk_B077HZ23BG",
+    "category": "desk",
+    "glb": "desk_B077HZ23BG.glb",
+    "source_id": "B077HZ23BG",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B077HZ23BG.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.75,
+      "y": 1.28,
+      "z": 0.25
+    },
+    "faces": 2562
+  },
+  {
+    "id": "desk_B075Z93NKX",
+    "category": "desk",
+    "glb": "desk_B075Z93NKX.glb",
+    "source_id": "B075Z93NKX",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075Z93NKX.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.814,
+      "y": 0.981,
+      "z": 0.462
+    },
+    "faces": 9210
+  },
+  {
+    "id": "desk_B07B7DL32P",
+    "category": "desk",
+    "glb": "desk_B07B7DL32P.glb",
+    "source_id": "B07B7DL32P",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07B7DL32P.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.575,
+      "y": 0.762,
+      "z": 0.724
+    },
+    "faces": 8082
+  },
+  {
+    "id": "desk_B075Z93NK8",
+    "category": "desk",
+    "glb": "desk_B075Z93NK8.glb",
+    "source_id": "B075Z93NK8",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075Z93NK8.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.803,
+      "y": 0.762,
+      "z": 0.688
+    },
+    "faces": 18840
+  },
+  {
+    "id": "desk_B075Z7HQHY",
+    "category": "desk",
+    "glb": "desk_B075Z7HQHY.glb",
+    "source_id": "B075Z7HQHY",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075Z7HQHY.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.803,
+      "y": 0.76,
+      "z": 0.688
+    },
+    "faces": 15968
+  },
+  {
+    "id": "desk_B07HSKSN5C",
+    "category": "desk",
+    "glb": "desk_B07HSKSN5C.glb",
+    "source_id": "B07HSKSN5C",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07HSKSN5C.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.982,
+      "y": 1.809,
+      "z": 0.515
+    },
+    "faces": 13272
+  },
+  {
+    "id": "desk_B075Z8KXDK",
+    "category": "desk",
+    "glb": "desk_B075Z8KXDK.glb",
+    "source_id": "B075Z8KXDK",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075Z8KXDK.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.538,
+      "y": 0.753,
+      "z": 0.617
+    },
+    "faces": 7340
+  },
+  {
+    "id": "desk_B07B7GXKCN",
+    "category": "desk",
+    "glb": "desk_B07B7GXKCN.glb",
+    "source_id": "B07B7GXKCN",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07B7GXKCN.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.577,
+      "y": 1.031,
+      "z": 0.734
+    },
+    "faces": 25124
+  },
+  {
+    "id": "desk_B07B7DFS3S",
+    "category": "desk",
+    "glb": "desk_B07B7DFS3S.glb",
+    "source_id": "B07B7DFS3S",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07B7DFS3S.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.543,
+      "y": 0.725,
+      "z": 0.784
+    },
+    "faces": 12256
+  },
+  {
+    "id": "desk_B07B7DL3GX",
+    "category": "desk",
+    "glb": "desk_B07B7DL3GX.glb",
+    "source_id": "B07B7DL3GX",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07B7DL3GX.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.499,
+      "y": 0.762,
+      "z": 0.813
+    },
+    "faces": 14520
+  },
+  {
+    "id": "desk_B00QQNFJYC",
+    "category": "desk",
+    "glb": "desk_B00QQNFJYC.glb",
+    "source_id": "B00QQNFJYC",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B00QQNFJYC.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.762,
+      "y": 0.8,
+      "z": 0.549
+    },
+    "faces": 3463
+  },
+  {
+    "id": "desk_B079HXWXXD",
+    "category": "desk",
+    "glb": "desk_B079HXWXXD.glb",
+    "source_id": "B079HXWXXD",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B079HXWXXD.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.979,
+      "y": 0.723,
+      "z": 0.491
+    },
+    "faces": 7452
+  },
+  {
+    "id": "desk_B07GFWF2GM",
+    "category": "desk",
+    "glb": "desk_B07GFWF2GM.glb",
+    "source_id": "B07GFWF2GM",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.5,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07GFWF2GM.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.099,
+      "y": 0.729,
+      "z": 0.557
+    },
+    "faces": 660
+  },
+  {
+    "id": "desk_B07B7DKRW4",
+    "category": "desk",
+    "glb": "desk_B07B7DKRW4.glb",
+    "source_id": "B07B7DKRW4",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07B7DKRW4.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.289,
+      "y": 0.861,
+      "z": 0.63
+    },
+    "faces": 36650
+  },
+  {
+    "id": "desk_B075Z6YS29",
+    "category": "desk",
+    "glb": "desk_B075Z6YS29.glb",
+    "source_id": "B075Z6YS29",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075Z6YS29.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.2,
+      "y": 0.854,
+      "z": 0.565
+    },
+    "faces": 13482
+  },
+  {
+    "id": "desk_B07PYT7NZ9",
+    "category": "desk",
+    "glb": "desk_B07PYT7NZ9.glb",
+    "source_id": "B07PYT7NZ9",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07PYT7NZ9.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.902,
+      "y": 0.75,
+      "z": 0.498
+    },
+    "faces": 9120
+  },
+  {
+    "id": "desk_B075Z8KXG7",
+    "category": "desk",
+    "glb": "desk_B075Z8KXG7.glb",
+    "source_id": "B075Z8KXG7",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075Z8KXG7.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.479,
+      "y": 0.762,
+      "z": 0.684
+    },
+    "faces": 13142
+  },
+  {
+    "id": "desk_B07GFLD8VP",
+    "category": "desk",
+    "glb": "desk_B07GFLD8VP.glb",
+    "source_id": "B07GFLD8VP",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07GFLD8VP.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.893,
+      "y": 0.724,
+      "z": 0.498
+    },
+    "faces": 768
+  },
+  {
+    "id": "desk_B07GFLD57T",
+    "category": "desk",
+    "glb": "desk_B07GFLD57T.glb",
+    "source_id": "B07GFLD57T",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07GFLD57T.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.6,
+      "y": 0.75,
+      "z": 0.802
+    },
+    "faces": 812
+  },
+  {
+    "id": "desk_B07GFWLSS4",
+    "category": "desk",
+    "glb": "desk_B07GFWLSS4.glb",
+    "source_id": "B07GFWLSS4",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 2.9,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07GFWLSS4.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.893,
+      "y": 0.724,
+      "z": 0.498
+    },
+    "faces": 768
+  },
+  {
+    "id": "desk_B074L4976T",
+    "category": "desk",
+    "glb": "desk_B074L4976T.glb",
+    "source_id": "B074L4976T",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 3.0,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B074L4976T.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.6,
+      "y": 0.752,
+      "z": 0.802
+    },
+    "faces": 812
+  },
+  {
+    "id": "desk_B075Z93NHP",
+    "category": "desk",
+    "glb": "desk_B075Z93NHP.glb",
+    "source_id": "B075Z93NHP",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 3.1,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075Z93NHP.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.567,
+      "y": 0.751,
+      "z": 0.685
+    },
+    "faces": 15714
+  },
+  {
+    "id": "desk_B07HSCN9RM",
+    "category": "desk",
+    "glb": "desk_B07HSCN9RM.glb",
+    "source_id": "B07HSCN9RM",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 3.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07HSCN9RM.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.204,
+      "y": 0.917,
+      "z": 0.384
+    },
+    "faces": 5804
+  },
+  {
+    "id": "desk_B07QTKCKVB",
+    "category": "desk",
+    "glb": "desk_B07QTKCKVB.glb",
+    "source_id": "B07QTKCKVB",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 3.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07QTKCKVB.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.94,
+      "y": 0.986,
+      "z": 0.94
+    },
+    "faces": 14052
+  },
+  {
+    "id": "desk_B075X41RLD",
+    "category": "desk",
+    "glb": "desk_B075X41RLD.glb",
+    "source_id": "B075X41RLD",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 4.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B075X41RLD.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.346,
+      "y": 0.737,
+      "z": 1.346
+    },
+    "faces": 32670
+  },
+  {
+    "id": "desk_B07K6PVP52",
+    "category": "desk",
+    "glb": "desk_B07K6PVP52.glb",
+    "source_id": "B07K6PVP52",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 4.2,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07K6PVP52.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.877,
+      "y": 0.763,
+      "z": 0.475
+    },
+    "faces": 86296
+  },
+  {
+    "id": "desk_B07B7DL32H",
+    "category": "desk",
+    "glb": "desk_B07B7DL32H.glb",
+    "source_id": "B07B7DL32H",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 4.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07B7DL32H.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.906,
+      "y": 1.88,
       "z": 0.348
     },
-    "faces": 16494
+    "faces": 35062
+  },
+  {
+    "id": "desk_B07B7DMLPL",
+    "category": "desk",
+    "glb": "desk_B07B7DMLPL.glb",
+    "source_id": "B07B7DMLPL",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 4.8,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07B7DMLPL.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.59,
+      "y": 0.751,
+      "z": 0.711
+    },
+    "faces": 66560
+  },
+  {
+    "id": "desk_B07QJJXBV8",
+    "category": "desk",
+    "glb": "desk_B07QJJXBV8.glb",
+    "source_id": "B07QJJXBV8",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 5.3,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07QJJXBV8.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.991,
+      "y": 0.66,
+      "z": 0.498
+    },
+    "faces": 24624
+  },
+  {
+    "id": "desk_B07B7DFR8X",
+    "category": "desk",
+    "glb": "desk_B07B7DFR8X.glb",
+    "source_id": "B07B7DFR8X",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 5.6,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07B7DFR8X.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 1.289,
+      "y": 0.912,
+      "z": 0.61
+    },
+    "faces": 60832
+  },
+  {
+    "id": "desk_B07QB6C9R8",
+    "category": "desk",
+    "glb": "desk_B07QB6C9R8.glb",
+    "source_id": "B07QB6C9R8",
+    "product_type": "DESK",
+    "dimensions_m": {},
+    "glb_size_mb": 6.4,
+    "license": "CC-BY-4.0",
+    "source": "Amazon Berkeley Objects (ABO)",
+    "attribution": "https://amazon-berkeley-objects.s3.amazonaws.com/index.html",
+    "thumb": "desk_B07QB6C9R8.thumb.png",
+    "mesh_dimensions_m": {
+      "x": 0.991,
+      "y": 0.66,
+      "z": 0.499
+    },
+    "faces": 5340
   }
 ]
