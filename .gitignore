@@ -42,3 +42,4 @@ build/
 # Generated files
 uploads/
 outputs/
+backend/sam3d/sam-3d-objects/
