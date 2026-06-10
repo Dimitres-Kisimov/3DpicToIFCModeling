@@ -624,13 +624,20 @@ def run(image_path: str, output_glb: str):
     crop = image.crop((bx0, by0, bx1, by1))
     retrieved_glb, retrieval_meta = _try_retrieval(crop, scs_category)
 
-    # Retrieval-quality gate: if the catalog match is weak, defer to the
-    # TripoSR generative fallback. The threshold is conservative so we use
-    # the catalog whenever it has anything reasonable.
+    # Retrieval-quality gate: photo-vs-silhouette DINOv2 cosine is typically
+    # 0.10-0.15 even on category-correct matches, so a high threshold is
+    # required for the catalog to "win" — otherwise we keep retrieving the
+    # closest silhouette even when it's visually wrong. Empirically (chair.png
+    # vs ABO B07B7BDFPR Wishbone) similarity was 0.12 for a poor visual match.
+    # Lifting the threshold to 0.18 routes most user uploads to the generative
+    # fallback (TripoSR) which produces a mesh derived FROM the photo itself.
+    # Tune as needed; the env var SCS_RETRIEVAL_THRESHOLD overrides it.
+    import os as _os
+    RETRIEVAL_THRESHOLD = float(_os.environ.get("SCS_RETRIEVAL_THRESHOLD", "0.18"))
     similarity = (retrieval_meta or {}).get("similarity")
     retrieval_good_enough = (
         retrieved_glb is not None
-        and (similarity is None or similarity >= 0.05)
+        and (similarity is None or similarity >= RETRIEVAL_THRESHOLD)
     )
 
     if retrieval_good_enough:
@@ -677,21 +684,21 @@ def run(image_path: str, output_glb: str):
     elapsed_ms = round((time.perf_counter() - t0) * 1000, 1)
 
     # Build an attribution / source bundle that the IFC writer will stamp as
-    # Pset_SCS_DetectionMetadata properties. Required by ABO's CC-BY-4.0 and
-    # by SAM Licence for SAM 3D Objects outputs.
+    # Pset_SCS_DetectionMetadata properties. Attribution MUST reflect the
+    # actual mesh shipped (mesh_source), not the upstream retrieval evaluation.
     extra_meta = {
         "method": f"detr-r50 + depth-anything-v2-metric + dominant-colour + {mesh_source}",
     }
-    if retrieval_meta:
+    if mesh_source == "retrieval" and retrieval_meta:
+        # Catalog mesh actually shipped — credit ABO
         if retrieval_meta.get("library_entry"):
             extra_meta["library_entry"] = retrieval_meta["library_entry"]
-        if retrieval_meta.get("source"):
-            extra_meta["source"] = retrieval_meta["source"]
-        if retrieval_meta.get("license"):
-            extra_meta["license"] = retrieval_meta["license"]
-        if retrieval_meta.get("attribution"):
-            extra_meta["attribution"] = retrieval_meta["attribution"]
+        extra_meta["source"] = retrieval_meta.get("source", "Amazon Berkeley Objects (ABO)")
+        extra_meta["license"] = retrieval_meta.get("license", "CC-BY-4.0")
+        extra_meta["attribution"] = retrieval_meta.get("attribution",
+            "https://amazon-berkeley-objects.s3.amazonaws.com/index.html")
     elif mesh_source == "triposr":
+        # Generative mesh shipped — credit TripoSR
         extra_meta["source"] = "TripoSR (Stability AI) generative model"
         extra_meta["license"] = "MIT"
         extra_meta["attribution"] = "https://huggingface.co/stabilityai/TripoSR"

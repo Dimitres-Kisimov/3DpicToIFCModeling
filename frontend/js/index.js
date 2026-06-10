@@ -139,7 +139,7 @@ function applyPipelineResult(result) {
   if (result.mesh_source === 'retrieval' || result.retrieval) {
     setPipeStatus('retrieve', 'success');
     setPipeStatus('fallback', 'skipped');
-  } else if (result.mesh_source === 'sam3d') {
+  } else if (result.mesh_source === 'sam3d' || result.mesh_source === 'triposr') {
     setPipeStatus('retrieve', 'skipped');
     setPipeStatus('fallback', 'success');
   } else {
