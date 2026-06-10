@@ -468,6 +468,111 @@ def _try_retrieval(image_crop: Image.Image, category: str):
 
 
 # ---------------------------------------------------------------------------
+# Stage 6 — TripoSR generative fallback (MIT, runs on 8 GB VRAM)
+# ---------------------------------------------------------------------------
+def _try_triposr_fallback(image_path: str, h_m: float, w_m: float, d_m: float,
+                           colour_rgb):
+    """Run TripoSR to produce a mesh when retrieval similarity is too low.
+
+    Returns ("triposr", trimesh.Trimesh) on success, ("triposr-failed", None)
+    on failure. The caller falls back to the primitive library if this fails.
+    """
+    try:
+        import tempfile
+        import sys as _sys
+        _triposr_root = str((REPO_ROOT / "backend" / "triposr").resolve())
+        if _triposr_root not in _sys.path:
+            _sys.path.insert(0, _triposr_root)
+        from tsr.system import TSR
+        from tsr.utils import resize_foreground
+
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+
+        # 1. Background removal via rembg (no SAM 2 weights on disk here)
+        import rembg
+        from io import BytesIO
+        cut_bytes = rembg.remove(open(image_path, "rb").read())
+        img_rgba = Image.open(BytesIO(cut_bytes)).convert("RGBA")
+        img_rgba = resize_foreground(img_rgba, 0.85)
+        arr = np.array(img_rgba).astype(np.float32) / 255.0
+        arr = arr[:, :, :3] * arr[:, :, 3:4] + (1 - arr[:, :, 3:4]) * 0.5
+        input_img = Image.fromarray((arr * 255.0).astype(np.uint8))
+
+        # 2. TripoSR inference
+        model = TSR.from_pretrained(
+            "stabilityai/TripoSR",
+            config_name="config.yaml",
+            weight_name="model.ckpt",
+        )
+        model.renderer.set_chunk_size(8192 if device == "cuda" else 2048)
+        model.to(device)
+        with torch.no_grad():
+            scene_codes = model([input_img], device=device)
+        mc_resolution = 256 if device == "cuda" else 96
+        meshes = model.extract_mesh(scene_codes, True, resolution=mc_resolution)
+        mesh = meshes[0]
+        del model
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
+        # 3. Component filtering
+        comps = mesh.split(only_watertight=False)
+        if comps:
+            total_faces = sum(len(c.faces) for c in comps)
+            kept = []
+            for c in comps:
+                ratio = len(c.faces) / total_faces if total_faces else 0
+                if ratio < 0.005:
+                    continue
+                ext_c = c.bounding_box.extents
+                if ext_c.max() > 0:
+                    compactness = ext_c.min() / ext_c.max()
+                    if compactness < 0.04 and ratio < 0.05:
+                        continue
+                kept.append(c)
+            if kept:
+                mesh = trimesh.util.concatenate(kept)
+
+        mesh.apply_translation(-mesh.bounding_box.centroid)
+
+        # 4. Orientation fix — TripoSR sometimes outputs upside down
+        if mesh.vertices[:, 1].mean() > 0.05:
+            R = trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0])
+            mesh.apply_transform(R)
+
+        # 5. Humphrey smoothing (preserves volume better than Laplacian)
+        try:
+            trimesh.smoothing.filter_humphrey(mesh, iterations=5, beta=0.5)
+        except Exception:
+            pass
+
+        # 6. Scale to measured dimensions
+        ext = mesh.bounding_box.extents
+        if ext.max() > 0:
+            target = max(h_m, w_m, d_m)
+            mesh.apply_scale(target / ext.max())
+
+        # 7. PBR material with the photo-derived dominant colour
+        try:
+            mesh.visual = trimesh.visual.TextureVisuals(
+                material=trimesh.visual.material.PBRMaterial(
+                    baseColorFactor=np.array([colour_rgb[0], colour_rgb[1], colour_rgb[2], 1.0]),
+                    roughnessFactor=0.7,
+                    metallicFactor=0.0,
+                )
+            )
+        except Exception:
+            pass
+
+        return "triposr", mesh
+    except Exception as e:
+        import traceback
+        print(f"[triposr-fallback] failed: {e}", flush=True)
+        print(traceback.format_exc(), flush=True)
+        return "triposr-failed", None
+
+
+# ---------------------------------------------------------------------------
 # Main entry point
 # ---------------------------------------------------------------------------
 def run(image_path: str, output_glb: str):
@@ -519,7 +624,16 @@ def run(image_path: str, output_glb: str):
     crop = image.crop((bx0, by0, bx1, by1))
     retrieved_glb, retrieval_meta = _try_retrieval(crop, scs_category)
 
-    if retrieved_glb:
+    # Retrieval-quality gate: if the catalog match is weak, defer to the
+    # TripoSR generative fallback. The threshold is conservative so we use
+    # the catalog whenever it has anything reasonable.
+    similarity = (retrieval_meta or {}).get("similarity")
+    retrieval_good_enough = (
+        retrieved_glb is not None
+        and (similarity is None or similarity >= 0.05)
+    )
+
+    if retrieval_good_enough:
         # Use the retrieved library mesh, scaled to the measured dimensions
         mesh = trimesh.load(retrieved_glb, force="mesh")
         if isinstance(mesh, trimesh.Scene):
@@ -542,8 +656,12 @@ def run(image_path: str, output_glb: str):
             pass
         mesh_source = "retrieval"
     else:
-        mesh = _build_primitive_mesh(scs_category, h_m, w_m, d_m, colour_rgb)
-        mesh_source = "primitive-library"
+        # Generative fallback — TripoSR (MIT). Runs on this hardware and
+        # handles any input shape, including out-of-catalog items.
+        mesh_source, mesh = _try_triposr_fallback(image_path, h_m, w_m, d_m, colour_rgb)
+        if mesh is None:
+            mesh = _build_primitive_mesh(scs_category, h_m, w_m, d_m, colour_rgb)
+            mesh_source = "primitive-library"
 
     os.makedirs(os.path.dirname(output_glb) or ".", exist_ok=True)
     mesh.export(output_glb)
@@ -573,6 +691,10 @@ def run(image_path: str, output_glb: str):
             extra_meta["license"] = retrieval_meta["license"]
         if retrieval_meta.get("attribution"):
             extra_meta["attribution"] = retrieval_meta["attribution"]
+    elif mesh_source == "triposr":
+        extra_meta["source"] = "TripoSR (Stability AI) generative model"
+        extra_meta["license"] = "MIT"
+        extra_meta["attribution"] = "https://huggingface.co/stabilityai/TripoSR"
     elif mesh_source == "primitive-library":
         extra_meta["source"] = "SCS procedural primitive library"
         extra_meta["license"] = "Apache-2.0"

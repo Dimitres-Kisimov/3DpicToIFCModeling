@@ -56,7 +56,12 @@ def _segment_foreground(image_path):
     except Exception as e:
         log(f"SAM2 failed ({e}), using rembg", "warn")
         import rembg
-        return rembg.remove(open(image_path, "rb").read())
+        from io import BytesIO
+        from PIL import Image as _Image
+        cut_bytes = rembg.remove(open(image_path, "rb").read())
+        # rembg returns PNG-encoded bytes when given bytes input;
+        # downstream resize_foreground() expects a PIL RGBA image
+        return _Image.open(BytesIO(cut_bytes)).convert("RGBA")
 
 
 def generate_mesh_triposr(image_path, output_path):

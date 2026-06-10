@@ -66,8 +66,39 @@ class TSR(BaseModule):
         cfg = OmegaConf.load(config_path)
         OmegaConf.resolve(cfg)
         model = cls(cfg)
-        ckpt = torch.load(weight_path, map_location="cpu")
-        model.load_state_dict(ckpt)
+        ckpt = torch.load(weight_path, map_location="cpu", weights_only=False)
+
+        # === SCS PATCH (2026-06-10) ===
+        # TripoSR's published weights use the legacy HuggingFace transformers
+        # ViT naming (transformers 4.x: encoder.layer.N.attention.attention.*).
+        # The rest of the SCS pipeline depends on transformers 5.x (which uses
+        # layers.N.attention.q_proj.*) for DETR / Depth Anything / DINOv2.
+        # Remap the legacy keys at load time so TripoSR works without
+        # downgrading the global transformers version.
+        # Remapper lives in backend/python-scripts/_tsr_state_dict_remap.py
+        try:
+            import sys as _sys
+            import os as _os
+            _scs_scripts = _os.path.abspath(_os.path.join(
+                _os.path.dirname(__file__), "..", "..", "python-scripts"
+            ))
+            if _scs_scripts not in _sys.path:
+                _sys.path.insert(0, _scs_scripts)
+            from _tsr_state_dict_remap import remap_tsr_state_dict
+            ckpt = remap_tsr_state_dict(ckpt)
+        except Exception as _e:
+            print(f"[tsr] state_dict remapper not applied ({_e}); "
+                  "loading may fail on transformers 5.x", flush=True)
+
+        # Allow strict=False because the remap may surface a few unexpected /
+        # missing keys (e.g. num_batches_tracked, which transformers ignores).
+        result = model.load_state_dict(ckpt, strict=False)
+        if result.missing_keys:
+            print(f"[tsr] missing_keys: {len(result.missing_keys)}, "
+                  f"first few: {result.missing_keys[:3]}", flush=True)
+        if result.unexpected_keys:
+            print(f"[tsr] unexpected_keys: {len(result.unexpected_keys)}, "
+                  f"first few: {result.unexpected_keys[:3]}", flush=True)
         return model
 
     def configure(self):
