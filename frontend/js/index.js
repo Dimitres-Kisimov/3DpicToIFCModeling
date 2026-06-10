@@ -128,22 +128,33 @@ function setPipeStatus(stage, state) {
   if (state) el.classList.add(state);
 }
 function resetPipeStatus() {
-  ['detect', 'depth', 'retrieve', 'fallback'].forEach(s => setPipeStatus(s, ''));
+  ['detect', 'depth', 'retrieve', 'trellis', 'fallback'].forEach(s => setPipeStatus(s, ''));
 }
 function applyPipelineResult(result) {
-  // detect: success if we got a label, error otherwise
   setPipeStatus('detect', result.detection?.coco_label ? 'success' : 'error');
-  // depth: success if Depth Anything returned a number
   setPipeStatus('depth', result.dimension_source === 'depth_anything_v2_metric' ? 'success' : 'error');
-  // retrieve / fallback: mutually exclusive based on mesh_source
-  if (result.mesh_source === 'retrieval' || result.retrieval) {
+
+  // Cascade visualization. mesh_source values:
+  //   'retrieval'  → ABO catalog won (row 3 green, rows 4+5 skipped)
+  //   'trellis'    → TRELLIS in WSL won (row 3 skipped, row 4 green, row 5 skipped)
+  //   'triposr'    → TripoSR won — could be because TRELLIS OOMed or TRELLIS disabled
+  //   'primitive-library' → everything fell through to procedural
+  const src = result.mesh_source;
+  if (src === 'retrieval') {
     setPipeStatus('retrieve', 'success');
+    setPipeStatus('trellis', 'skipped');
     setPipeStatus('fallback', 'skipped');
-  } else if (result.mesh_source === 'sam3d' || result.mesh_source === 'triposr') {
+  } else if (src === 'trellis') {
     setPipeStatus('retrieve', 'skipped');
+    setPipeStatus('trellis', 'success');
+    setPipeStatus('fallback', 'skipped');
+  } else if (src === 'triposr' || src === 'sam3d') {
+    setPipeStatus('retrieve', 'skipped');
+    setPipeStatus('trellis', 'skipped');   // could mark as error if we surface that
     setPipeStatus('fallback', 'success');
   } else {
     setPipeStatus('retrieve', 'skipped');
+    setPipeStatus('trellis', 'skipped');
     setPipeStatus('fallback', 'skipped');
   }
 }

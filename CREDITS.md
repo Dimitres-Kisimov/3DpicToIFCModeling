@@ -90,6 +90,38 @@ xeokit, FreeCAD, etc.).
 **Licence:** MIT
 **Paper:** Wang, R. et al. (2024). *MoGe: Unlocking Accurate Monocular Geometric Estimation.*
 
+### TRELLIS-image-large — Single-Image-to-3D Generative Model (best-quality fallback, via WSL2)
+
+**Source:** <https://github.com/microsoft/TRELLIS>
+**Publisher:** Microsoft Research
+**Licence:** MIT
+**Paper:** Xiang, J. et al. (2024). *Structured 3D Latents for Scalable and Versatile 3D Generation.* arXiv:2412.01506.
+
+**Why this matters for SCS:** TRELLIS is the highest-quality commercial-safe generative path the SCS pipeline can use. SAM 3D Objects has equivalent quality but is blocked on Windows by pytorch3d's missing wheel; TRELLIS solves the same problem under MIT, runs inside WSL2 on the same hardware, and produces multi-view-consistent meshes with baked-in textures derived from the input photograph. See [WSL_TRELLIS_SETUP.md](WSL_TRELLIS_SETUP.md) for the integration details.
+
+**Attribution in shipped IFC files:** when TRELLIS produces the mesh that ships, `Pset_SCS_DetectionMetadata` carries:
+```
+MeshSource_Dataset      = "TRELLIS-image-large (Microsoft Research) generative model"
+MeshSource_License      = "MIT"
+MeshSource_Attribution  = "https://github.com/microsoft/TRELLIS"
+```
+
+### TripoSR — Single-Image-to-3D Generative Model (guaranteed-runs fallback)
+
+**Source:** <https://huggingface.co/stabilityai/TripoSR>
+**Publisher:** Stability AI
+**Licence:** MIT
+**Paper:** Tochilkin, D. et al. (2024). *TripoSR: Fast 3D Object Reconstruction from a Single Image.* arXiv:2403.02151.
+
+**Why this matters for SCS:** TripoSR is the always-runs generative fallback. When TRELLIS OOMs on the 8 GB VRAM ceiling (~25% probability), the pipeline cascades to TripoSR which runs natively at ~4 GB VRAM with no risk of system crash. Lower quality than TRELLIS (flat per-vertex colour, asymmetric legs, the documented single-view failure modes) but produces *something* for every input. MIT licence — zero royalties, zero caps, zero geographic exclusions.
+
+**Attribution in shipped IFC files:** when TripoSR produces the mesh that ships, `Pset_SCS_DetectionMetadata` carries:
+```
+MeshSource_Dataset      = "TripoSR (Stability AI) generative model"
+MeshSource_License      = "MIT"
+MeshSource_Attribution  = "https://huggingface.co/stabilityai/TripoSR"
+```
+
 ---
 
 ## 3. Libraries

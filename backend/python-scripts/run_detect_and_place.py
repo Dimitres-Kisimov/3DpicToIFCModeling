@@ -468,6 +468,113 @@ def _try_retrieval(image_crop: Image.Image, category: str):
 
 
 # ---------------------------------------------------------------------------
+# Stage 5b — TRELLIS via WSL2 (MIT, higher quality, may OOM on 8 GB)
+# ---------------------------------------------------------------------------
+def _try_trellis_wsl_fallback(image_path: str, h_m: float, w_m: float,
+                                d_m: float, colour_rgb):
+    """Invoke TRELLIS inside the Ubuntu-22.04 WSL distro.
+
+    Returns ("trellis", trimesh.Trimesh) on success.
+    Returns ("trellis-oom"|"trellis-timeout"|"trellis-failed", None) on
+    failure — caller then tries the TripoSR fallback.
+    """
+    if not bool(int(os.environ.get("SCS_TRELLIS_ENABLED", "1"))):
+        return "trellis-disabled", None
+
+    import subprocess
+    import shutil
+    if shutil.which("wsl") is None:
+        return "trellis-no-wsl", None
+
+    # Stage TRELLIS output to a Windows-side temp path that WSL can also see
+    # via /mnt/c/...
+    tmp_out = REPO_ROOT / "outputs" / f"trellis_tmp_{os.getpid()}.glb"
+    tmp_out.parent.mkdir(parents=True, exist_ok=True)
+
+    # Translate Windows paths to /mnt/c/... for WSL
+    def _to_wsl(p: str) -> str:
+        p = os.path.abspath(p).replace("\\", "/")
+        if len(p) >= 2 and p[1] == ":":
+            return "/mnt/" + p[0].lower() + p[2:]
+        return p
+
+    wsl_img = _to_wsl(image_path)
+    wsl_out = _to_wsl(str(tmp_out))
+    wsl_script = _to_wsl(str(REPO_ROOT / "backend" / "python-scripts" / "run_trellis_wsl.py"))
+
+    cmd = [
+        "wsl", "-d", "Ubuntu-22.04", "-u", "root", "--exec", "bash", "-lc",
+        (
+            "source /opt/conda/etc/profile.d/conda.sh && "
+            "conda activate trellis && "
+            f"python {wsl_script} {wsl_img} {wsl_out}"
+        ),
+    ]
+    timeout_s = int(os.environ.get("SCS_TRELLIS_TIMEOUT", "240"))
+
+    try:
+        result = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=timeout_s,
+        )
+    except subprocess.TimeoutExpired:
+        # Kill the runaway WSL subprocess to free the GPU
+        subprocess.run(["wsl", "-d", "Ubuntu-22.04", "-u", "root", "--exec",
+                         "pkill", "-9", "-f", "run_trellis_wsl.py"],
+                        capture_output=True)
+        return "trellis-timeout", None
+    except Exception:
+        return "trellis-failed", None
+
+    # Parse the last JSON line from stdout
+    out_lines = [l for l in (result.stdout or "").splitlines() if l.strip()]
+    parsed = None
+    for line in reversed(out_lines):
+        if line.startswith("{"):
+            try:
+                parsed = json.loads(line)
+                break
+            except Exception:
+                continue
+    if parsed is None:
+        return "trellis-failed", None
+    if not parsed.get("success"):
+        err = (parsed.get("error") or {}).get("type", "unknown")
+        return f"trellis-{err}", None
+
+    # Load the GLB from disk
+    if not tmp_out.exists():
+        return "trellis-failed", None
+    try:
+        mesh = trimesh.load(str(tmp_out), force="mesh")
+        if isinstance(mesh, trimesh.Scene):
+            mesh = trimesh.util.concatenate([
+                g for g in mesh.geometry.values()
+                if isinstance(g, trimesh.Trimesh)
+            ])
+        mesh.apply_translation(-mesh.bounding_box.centroid)
+        ext = mesh.bounding_box.extents
+        if ext.max() > 0:
+            mesh.apply_scale(max(h_m, w_m, d_m) / ext.max())
+        try:
+            mesh.visual = trimesh.visual.TextureVisuals(
+                material=trimesh.visual.material.PBRMaterial(
+                    baseColorFactor=np.array([colour_rgb[0], colour_rgb[1],
+                                                colour_rgb[2], 1.0]),
+                    roughnessFactor=0.6, metallicFactor=0.0,
+                )
+            )
+        except Exception:
+            pass
+        try:
+            tmp_out.unlink()
+        except Exception:
+            pass
+        return "trellis", mesh
+    except Exception:
+        return "trellis-failed", None
+
+
+# ---------------------------------------------------------------------------
 # Stage 6 — TripoSR generative fallback (MIT, runs on 8 GB VRAM)
 # ---------------------------------------------------------------------------
 def _try_triposr_fallback(image_path: str, h_m: float, w_m: float, d_m: float,
@@ -663,11 +770,33 @@ def run(image_path: str, output_glb: str):
             pass
         mesh_source = "retrieval"
     else:
-        # Generative fallback — TripoSR (MIT). Runs on this hardware and
-        # handles any input shape, including out-of-catalog items.
-        mesh_source, mesh = _try_triposr_fallback(image_path, h_m, w_m, d_m, colour_rgb)
+        # Cascade of generative fallbacks, best-quality first:
+        #   1) TRELLIS via WSL2 — best quality if it doesn't OOM (~75% on 8 GB)
+        #   2) TripoSR native — guaranteed runs at lower quality
+        #   3) Primitive library — last-resort
+        mesh = None
+        mesh_source = None
+
+        if bool(int(os.environ.get("SCS_TRELLIS_ENABLED", "1"))):
+            mesh_source, mesh = _try_trellis_wsl_fallback(
+                image_path, h_m, w_m, d_m, colour_rgb
+            )
+            if mesh is not None:
+                # success — keep mesh_source = "trellis"
+                pass
+            else:
+                print(f"[fallback] TRELLIS not used ({mesh_source}); "
+                      "falling through to TripoSR", flush=True)
+
         if mesh is None:
-            mesh = _build_primitive_mesh(scs_category, h_m, w_m, d_m, colour_rgb)
+            mesh_source, mesh = _try_triposr_fallback(
+                image_path, h_m, w_m, d_m, colour_rgb
+            )
+
+        if mesh is None:
+            mesh = _build_primitive_mesh(
+                scs_category, h_m, w_m, d_m, colour_rgb
+            )
             mesh_source = "primitive-library"
 
     os.makedirs(os.path.dirname(output_glb) or ".", exist_ok=True)
@@ -697,6 +826,11 @@ def run(image_path: str, output_glb: str):
         extra_meta["license"] = retrieval_meta.get("license", "CC-BY-4.0")
         extra_meta["attribution"] = retrieval_meta.get("attribution",
             "https://amazon-berkeley-objects.s3.amazonaws.com/index.html")
+    elif mesh_source == "trellis":
+        # Generative mesh shipped — credit TRELLIS
+        extra_meta["source"] = "TRELLIS-image-large (Microsoft Research) generative model"
+        extra_meta["license"] = "MIT"
+        extra_meta["attribution"] = "https://github.com/microsoft/TRELLIS"
     elif mesh_source == "triposr":
         # Generative mesh shipped — credit TripoSR
         extra_meta["source"] = "TripoSR (Stability AI) generative model"
