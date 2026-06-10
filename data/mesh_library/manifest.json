@@ -1,0 +1,211 @@
+[
+  {
+    "id": "chair_classic_a",
+    "category": "office_chair",
+    "glb": "chair_classic_a.glb",
+    "thumb": "chair_classic_a.thumb.png",
+    "dimensions_m": {
+      "height": 0.879,
+      "width": 0.55,
+      "depth": 0.55
+    }
+  },
+  {
+    "id": "chair_classic_b",
+    "category": "office_chair",
+    "glb": "chair_classic_b.glb",
+    "thumb": "chair_classic_b.thumb.png",
+    "dimensions_m": {
+      "height": 0.833,
+      "width": 0.5,
+      "depth": 0.5
+    }
+  },
+  {
+    "id": "chair_classic_c",
+    "category": "office_chair",
+    "glb": "chair_classic_c.glb",
+    "thumb": "chair_classic_c.thumb.png",
+    "dimensions_m": {
+      "height": 0.925,
+      "width": 0.55,
+      "depth": 0.55
+    }
+  },
+  {
+    "id": "chair_with_arms",
+    "category": "office_chair",
+    "glb": "chair_with_arms.glb",
+    "thumb": "chair_with_arms.thumb.png",
+    "dimensions_m": {
+      "height": 0.879,
+      "width": 0.6,
+      "depth": 0.6
+    }
+  },
+  {
+    "id": "chair_swivel",
+    "category": "office_chair",
+    "glb": "chair_swivel.glb",
+    "thumb": "chair_swivel.thumb.png",
+    "dimensions_m": {
+      "height": 1.072,
+      "width": 0.6,
+      "depth": 0.6
+    }
+  },
+  {
+    "id": "chair_stool",
+    "category": "office_chair",
+    "glb": "chair_stool.glb",
+    "thumb": "chair_stool.thumb.png",
+    "dimensions_m": {
+      "height": 0.725,
+      "width": 0.4,
+      "depth": 0.4
+    }
+  },
+  {
+    "id": "sofa_two_seater",
+    "category": "sofa",
+    "glb": "sofa_two_seater.glb",
+    "thumb": "sofa_two_seater.thumb.png",
+    "dimensions_m": {
+      "height": 0.807,
+      "width": 1.8,
+      "depth": 0.9
+    }
+  },
+  {
+    "id": "sofa_compact",
+    "category": "sofa",
+    "glb": "sofa_compact.glb",
+    "thumb": "sofa_compact.thumb.png",
+    "dimensions_m": {
+      "height": 0.807,
+      "width": 1.5,
+      "depth": 0.8
+    }
+  },
+  {
+    "id": "desk_office",
+    "category": "table",
+    "glb": "desk_office.glb",
+    "thumb": "desk_office.thumb.png",
+    "dimensions_m": {
+      "height": 0.74,
+      "width": 1.6,
+      "depth": 0.8
+    }
+  },
+  {
+    "id": "desk_compact",
+    "category": "table",
+    "glb": "desk_compact.glb",
+    "thumb": "desk_compact.thumb.png",
+    "dimensions_m": {
+      "height": 0.74,
+      "width": 1.2,
+      "depth": 0.7
+    }
+  },
+  {
+    "id": "table_round",
+    "category": "table",
+    "glb": "table_round.glb",
+    "thumb": "table_round.thumb.png",
+    "dimensions_m": {
+      "height": 0.74,
+      "width": 1.2,
+      "depth": 1.2
+    }
+  },
+  {
+    "id": "table_round_small",
+    "category": "table",
+    "glb": "table_round_small.glb",
+    "thumb": "table_round_small.thumb.png",
+    "dimensions_m": {
+      "height": 0.74,
+      "width": 0.9,
+      "depth": 0.9
+    }
+  },
+  {
+    "id": "cabinet_tall",
+    "category": "appliance",
+    "glb": "cabinet_tall.glb",
+    "thumb": "cabinet_tall.thumb.png",
+    "dimensions_m": {
+      "height": 1.8,
+      "width": 0.8,
+      "depth": 0.495
+    }
+  },
+  {
+    "id": "cabinet_low",
+    "category": "appliance",
+    "glb": "cabinet_low.glb",
+    "thumb": "cabinet_low.thumb.png",
+    "dimensions_m": {
+      "height": 1.0,
+      "width": 0.8,
+      "depth": 0.495
+    }
+  },
+  {
+    "id": "bookshelf_tall",
+    "category": "appliance",
+    "glb": "bookshelf_tall.glb",
+    "thumb": "bookshelf_tall.thumb.png",
+    "dimensions_m": {
+      "height": 1.8,
+      "width": 0.8,
+      "depth": 0.3
+    }
+  },
+  {
+    "id": "bookshelf_low",
+    "category": "appliance",
+    "glb": "bookshelf_low.glb",
+    "thumb": "bookshelf_low.thumb.png",
+    "dimensions_m": {
+      "height": 1.2,
+      "width": 0.8,
+      "depth": 0.3
+    }
+  },
+  {
+    "id": "lamp_floor",
+    "category": "plant",
+    "glb": "lamp_floor.glb",
+    "thumb": "lamp_floor.thumb.png",
+    "dimensions_m": {
+      "height": 1.55,
+      "width": 0.3,
+      "depth": 0.3
+    }
+  },
+  {
+    "id": "monitor_standard",
+    "category": "monitor",
+    "glb": "monitor_standard.glb",
+    "thumb": "monitor_standard.thumb.png",
+    "dimensions_m": {
+      "height": 0.514,
+      "width": 0.62,
+      "depth": 0.18
+    }
+  },
+  {
+    "id": "monitor_wide",
+    "category": "monitor",
+    "glb": "monitor_wide.glb",
+    "thumb": "monitor_wide.thumb.png",
+    "dimensions_m": {
+      "height": 0.431,
+      "width": 0.8,
+      "depth": 0.18
+    }
+  }
+]

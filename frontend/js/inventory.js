@@ -13,9 +13,14 @@ let nextInventoryId = 1;
  */
 function addToInventory(item) {
   const inventoryItem = {
-    id: `inv_${nextInventoryId++}`,
+    id: item.id || `inv_${nextInventoryId++}`,
     name: item.name || `Object ${nextInventoryId}`,
     modelType: item.modelType || 'unknown',
+    category: item.category || null,
+    ifcClass: item.ifcClass || null,
+    confidence: item.confidence ?? null,
+    cocoLabel: item.cocoLabel || null,
+    dimensions: item.dimensions || null,
     glbPath: item.glbPath,
     glbUrl: item.glbUrl,
     position: item.position || [0, 0, 0],
@@ -157,26 +162,43 @@ function updateInventoryUI() {
     return;
   }
 
-  inventoryList.innerHTML = inventory
-    .map(
-      (item) => `
-    <div class="inventory-item">
-      <div>
-        <strong>${item.name}</strong>
-        <small>${item.modelType}</small>
-      </div>
-      <div>
-        <button class="btn btn-small" onclick="spawnFromInventory('${item.id}', 'obj_${Date.now()}')">
-          Spawn
-        </button>
-        <button class="btn btn-small" onclick="removeFromInventory('${item.id}')">
-          Remove
-        </button>
-      </div>
-    </div>
-  `
-    )
+  const rows = inventory
+    .map((item) => {
+      const dims = item.dimensions || {};
+      const dimsStr = (dims.height && dims.width && dims.depth)
+        ? `${dims.height.toFixed(2)} × ${dims.width.toFixed(2)} × ${dims.depth.toFixed(2)} m`
+        : '—';
+      const conf = item.confidence != null ? `${(item.confidence * 100).toFixed(0)}%` : '—';
+      const ifcClass = item.ifcClass || '—';
+      const category = item.category || item.modelType || '—';
+      return `
+        <tr>
+          <td><strong>${category.replace(/_/g, ' ')}</strong></td>
+          <td><code>${ifcClass}</code></td>
+          <td>${conf}</td>
+          <td>${dimsStr}</td>
+          <td>
+            <button class="btn btn-small" onclick="window.inventoryModule.spawnFromInventory('${item.id}', 'obj_' + Date.now())">Spawn</button>
+            <button class="btn btn-small" onclick="window.inventoryModule.removeFromInventory('${item.id}'); window.inventoryModule.refreshUI && window.inventoryModule.refreshUI();">Remove</button>
+          </td>
+        </tr>`;
+    })
     .join('');
+
+  inventoryList.innerHTML = `
+    <table class="inventory-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>IFC class</th>
+          <th>Conf.</th>
+          <th>H × W × D</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
 
   console.log('[inventory] UI updated, items:', inventory.length);
 }

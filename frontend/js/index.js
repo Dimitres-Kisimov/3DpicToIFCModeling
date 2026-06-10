@@ -43,23 +43,77 @@ const imageInput = document.getElementById('imageInput');
 const imagePreview = document.getElementById('imagePreview');
 const generateBtn = document.getElementById('generateBtn');
 
+function acceptImageFile(file) {
+  if (!file) return;
+  if (!file.type || !file.type.startsWith('image/')) {
+    showError('Please drop an image file (jpg/png/webp).');
+    return;
+  }
+  selectedImage = file;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    imagePreview.innerHTML = `<img src="${e.target.result}" alt="preview">`;
+    imagePreview.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+  generateBtn.disabled = false;
+  updateStatus(`Image loaded (${file.name || 'untitled'}). Click Generate.`);
+}
+
 if (imageInput) {
   imageInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      selectedImage = file;
+    acceptImageFile(e.target.files[0]);
+  });
+}
 
-      // Show preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        imagePreview.innerHTML = `<img src="${e.target.result}" alt="preview">`;
-        imagePreview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
+// Drag-and-drop on the upload box — avoids the OS file dialog entirely
+const dropZone = document.getElementById('dropZone');
+if (dropZone) {
+  ['dragenter', 'dragover'].forEach(ev => {
+    dropZone.addEventListener(ev, (e) => {
+      e.preventDefault(); e.stopPropagation();
+      dropZone.classList.add('dragging');
+    });
+  });
+  ['dragleave', 'drop'].forEach(ev => {
+    dropZone.addEventListener(ev, (e) => {
+      e.preventDefault(); e.stopPropagation();
+      dropZone.classList.remove('dragging');
+    });
+  });
+  dropZone.addEventListener('drop', (e) => {
+    const file = e.dataTransfer?.files?.[0];
+    acceptImageFile(file);
+  });
+}
 
-      // Enable generate button
-      generateBtn.disabled = false;
-      updateStatus('Image loaded. Select model and click Generate.');
+// Also allow paste (Ctrl+V) from clipboard
+document.addEventListener('paste', (e) => {
+  const items = e.clipboardData?.items || [];
+  for (const item of items) {
+    if (item.type && item.type.startsWith('image/')) {
+      acceptImageFile(item.getAsFile());
+      break;
+    }
+  }
+});
+
+// Sample chair button — fetches a bundled image, no file dialog needed
+const useSampleBtn = document.getElementById('useSampleBtn');
+if (useSampleBtn) {
+  useSampleBtn.addEventListener('click', async () => {
+    try {
+      updateStatus('Loading sample chair photo...');
+      const response = await fetch('/sample/chair.png');
+      if (!response.ok) {
+        showError('Sample image not found on server');
+        return;
+      }
+      const blob = await response.blob();
+      const file = new File([blob], 'chair.png', { type: blob.type || 'image/png' });
+      acceptImageFile(file);
+    } catch (err) {
+      showError('Failed to load sample chair', err);
     }
   });
 }
@@ -97,8 +151,9 @@ if (generateBtn) {
     progressContainer.style.display = 'block';
 
     try {
-      const glbPath = await generateModel(selectedImage, selectedModel);
-      console.log('[app] Model generated:', glbPath);
+      const result = await generateModel(selectedImage, selectedModel);
+      console.log('[app] Pipeline result:', result);
+      const glbPath = result.glb;
 
       // Load into xeokit viewer
       const objectId = `obj_${Date.now()}`;
@@ -108,18 +163,47 @@ if (generateBtn) {
       window._objectGlbMap = window._objectGlbMap || {};
       window._objectGlbMap[objectId] = glbPath;
 
-      // Add to inventory
+      // Store full per-object detection metadata so IFC export can use it
+      window._objectMetadataMap = window._objectMetadataMap || {};
+      window._objectMetadataMap[objectId] = {
+        name: result.category ? result.category.replace(/_/g, ' ') : 'Object',
+        ifcClass: result.ifcClass || null,
+        category: result.category || null,
+        dimensions: result.dimensions_m || null,
+        confidence: result.detection?.confidence ?? null,
+        cocoLabel: result.detection?.coco_label || null,
+      };
+
+      // Add to inventory with rich metadata from the pipeline
+      const category = result.category || 'unknown';
+      const ifcClass = result.ifcClass || 'IfcFurnishingElement';
+      const conf = result.detection?.confidence ?? 0;
+      const dims = result.dimensions_m || {};
+      const displayName = `${category.replace(/_/g, ' ')} (${(conf * 100).toFixed(0)}%)`;
+
       window.inventoryModule.addToInventory({
         id: objectId,
-        name: `${selectedModel} Model`,
-        modelType: selectedModel,
+        name: displayName,
+        modelType: 'detect-and-place',
+        category,
+        ifcClass,
+        confidence: conf,
+        dimensions: dims,
+        cocoLabel: result.detection?.coco_label,
         glbUrl: glbPath,
         metadata: {
           generatedAt: new Date().toISOString(),
+          faces: result.metadata?.faces,
+          latencyMs: result.metadata?.latencyMs,
+          method: result.metadata?.method,
         },
       });
 
-      updateStatus(`✓ Generated and loaded ${selectedModel} model`);
+      // Enable export now that we have at least one object
+      const exportBtn = document.getElementById('exportIfcBtn');
+      if (exportBtn) exportBtn.disabled = false;
+
+      updateStatus(`✓ Detected ${category} → ${ifcClass} (${dims.height || '?'}m × ${dims.width || '?'}m × ${dims.depth || '?'}m)`);
     } catch (error) {
       console.error('[app] Generation error:', error);
       showError('Failed to generate model', error);

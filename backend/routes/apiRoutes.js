@@ -9,13 +9,57 @@ const path = require('path');
 const fs = require('fs');
 const router = express.Router();
 
+const { spawn } = require('child_process');
 const logger = require('../middleware/logger');
 const config = require('../config/env');
 
-// Import AI model adapters
+// Import AI model adapters (kept for compatibility but currently broken on
+// transformers 5.10.2 — see Appendix E of TECHNICAL_REPORT_SCS.md).
 const instantMeshAdapter = require('../ai/instantMesh');
 const stableFast3DAdapter = require('../ai/stablefast3d');
 const triposrAdapter = require('../ai/triposr');
+
+/**
+ * Working pipeline: DETR detection -> category-keyed primitive mesh -> GLB.
+ * Replaces the broken TripoSR/InstantMesh/StableFast3D adapters.
+ */
+function runDetectAndPlace(imagePath, outputDir) {
+  return new Promise((resolve, reject) => {
+    const outputName = `mesh_${Date.now()}.glb`;
+    const outputGlb = path.join(outputDir, outputName);
+    const script = path.join(__dirname, '..', 'python-scripts', 'run_detect_and_place.py');
+    const pythonPath = config.PYTHON_PATH || 'python';
+
+    const child = spawn(pythonPath, [script, imagePath, outputGlb], {
+      cwd: path.join(__dirname, '..', '..'),
+    });
+
+    let stdout = '';
+    let stderr = '';
+    child.stdout.on('data', (chunk) => { stdout += chunk.toString(); });
+    child.stderr.on('data', (chunk) => { stderr += chunk.toString(); });
+    child.on('error', reject);
+    child.on('close', (code) => {
+      if (code !== 0) {
+        logger.error('PIPELINE', 'detect_and_place exited non-zero', { code, stderr: stderr.slice(-800) });
+        return reject(new Error(`detect_and_place failed: ${stderr.slice(-300) || stdout.slice(-300)}`));
+      }
+      const lastLine = stdout.trim().split('\n').filter(Boolean).pop();
+      if (!lastLine) return reject(new Error('detect_and_place produced no output'));
+      try {
+        const parsed = JSON.parse(lastLine);
+        if (!parsed.success) {
+          return reject(new Error(parsed.error?.message || 'detect_and_place reported failure'));
+        }
+        parsed.glbUrl = `/outputs/${outputName}`;
+        parsed.glbPath = parsed.output_path;
+        resolve(parsed);
+      } catch (e) {
+        reject(new Error(`Failed to parse Python output: ${e.message}\nOutput: ${lastLine.slice(0, 500)}`));
+      }
+    });
+  });
+}
 
 // ============================================================================
 // MULTER CONFIGURATION - Image Upload
@@ -72,48 +116,41 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
     }
 
     const imagePath = req.file.path;
-    logger.info('GENERATE', `Starting ${model} inference`, { imagePath });
+    logger.info('GENERATE', `Starting detection pipeline (requested model: ${model})`, { imagePath });
 
-    // Route to appropriate AI adapter
-    let result;
-    switch (model.toLowerCase()) {
-      case 'instantmesh':
-        result = await instantMeshAdapter.runInstantMesh(imagePath, config.OUTPUT_DIR);
-        break;
-      case 'stablefast3d':
-        result = await stableFast3DAdapter.runStableFast3D(imagePath, config.OUTPUT_DIR);
-        break;
-      case 'triposr':
-        result = await triposrAdapter.runTripoSR(imagePath, config.OUTPUT_DIR);
-        break;
-      default:
-        return res.status(400).json({
-          success: false,
-          error: {
-            code: 'INVALID_MODEL',
-            message: `Unknown model: ${model}. Use: instantmesh, stablefast3d, or triposr`,
-          },
-        });
-    }
+    // All three legacy generative adapters (instantmesh, stablefast3d, triposr)
+    // are currently broken on transformers 5.10.2. We route every request
+    // through the empirically-validated detection + primitive-library pipeline
+    // until the retrieval-against-ABO library is wired (sprints S3-S5).
+    const result = await runDetectAndPlace(imagePath, config.OUTPUT_DIR);
 
-    // Clean up uploaded image
-    try {
-      fs.unlinkSync(imagePath);
-    } catch (e) {
-      logger.warn('GENERATE', 'Failed to clean up uploaded image', { imagePath });
-    }
+    // Keep uploaded image for debugging — small footprint and useful for QA.
 
-    logger.info('GENERATE', `${model} inference complete`, {
+    logger.info('GENERATE', 'detection pipeline complete', {
       glbUrl: result.glbUrl,
-      glbSize: result.metadata.glbSize,
+      category: result.category,
+      ifcClass: result.ifc_class,
+      confidence: result.detection?.confidence,
+      glbSize: result.glb_size_bytes,
     });
 
     return res.json({
       success: true,
-      model: model.toLowerCase(),
+      model: 'detect-and-place',
+      requestedModel: (model || '').toLowerCase(),
       glb: result.glbUrl,
       glbPath: result.glbPath,
-      metadata: result.metadata,
+      detection: result.detection,
+      category: result.category,
+      ifcClass: result.ifc_class,
+      dimensions_m: result.dimensions_m,
+      metadata: {
+        method: result.method,
+        faces: result.faces,
+        glbSize: result.glb_size_bytes,
+        latencyMs: result.latency_ms,
+        device: result.device,
+      },
     });
 
   } catch (error) {

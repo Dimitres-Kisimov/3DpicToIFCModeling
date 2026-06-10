@@ -70,7 +70,7 @@ async function generateModel(imageBlob, modelName) {
     formData.append('image', imageBlob, 'uploaded_image');
     formData.append('model', modelName);
 
-    updateStatus(`Generating 3D model using ${modelName}...`);
+    updateStatus(`Detecting object and generating 3D model...`);
 
     const response = await fetch(`${API_BASE}/generate`, {
       method: 'POST',
@@ -83,8 +83,10 @@ async function generateModel(imageBlob, modelName) {
       throw new Error(data.error?.message || 'Generation failed');
     }
 
-    showSuccess(`Model generated successfully`);
-    return data.glb;
+    const detected = data.detection?.coco_label || 'unknown';
+    const conf = data.detection?.confidence ?? 0;
+    showSuccess(`Detected ${detected} (${(conf * 100).toFixed(1)}%) → ${data.ifcClass}`);
+    return data;  // return full result object: glb, glbPath, detection, category, ifcClass, dimensions_m, metadata
   } catch (error) {
     showError('Model generation failed', error);
     throw error;

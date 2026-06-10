@@ -41,6 +41,10 @@ app.use('/outputs', express.static(path.join(__dirname, '../outputs')));
 // Serve xeokit-sdk from local node_modules (avoids CDN dependency)
 app.use('/vendor/xeokit-sdk', express.static(path.join(__dirname, '../node_modules/@xeokit/xeokit-sdk/dist')));
 
+// Serve a small set of bundled sample images for the "Use sample" buttons.
+// This lets users test the pipeline without ever invoking the OS file dialog.
+app.use('/sample', express.static(path.join(__dirname, '../backend/triposr/examples')));
+
 // ============================================================================
 // ROUTES
 // ============================================================================
@@ -152,8 +156,12 @@ directories.forEach((dir) => {
 });
 
 // Start server
-const server = app.listen(config.PORT, config.HOST, () => {
-  logger.info('STARTUP', `Server running on http://${config.HOST}:${config.PORT}`);
+// Bind to 0.0.0.0 so both IPv4 (127.0.0.1) and IPv6 (::1) work. Node's
+// default resolution of "localhost" returns ::1 first on Windows, which
+// blocks browsers that prefer IPv4.
+const bindHost = (config.HOST === 'localhost' || !config.HOST) ? '0.0.0.0' : config.HOST;
+const server = app.listen(config.PORT, bindHost, () => {
+  logger.info('STARTUP', `Server running on http://${bindHost}:${config.PORT} (try http://localhost:${config.PORT})`);
   logger.info('STARTUP', `Environment: ${config.NODE_ENV}`);
   logger.info('STARTUP', `GPU enabled: ${config.USE_GPU}`);
 });

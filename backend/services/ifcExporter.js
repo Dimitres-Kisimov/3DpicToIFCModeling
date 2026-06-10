@@ -102,6 +102,9 @@ async function exportSceneToIFC(sceneObjects, outputDir) {
       rotation: obj.rotation || [0, 0, 0],
       scale: obj.scale || [1, 1, 1],
       glbPath: obj.glbPath || obj.glbUrl || '',
+      ifcClass: obj.ifcClass || obj.ifc_class || null,
+      category: obj.category || null,
+      dimensions: obj.dimensions || null,
     })));
 
     const result = await executePythonScript(

@@ -10,13 +10,21 @@
 function prepareSceneForExport() {
   const sceneData = window.xeokitModule.exportSceneData();
   const glbMap = window._objectGlbMap || {};
+  const meta = window._objectMetadataMap || {};
 
-  // Attach glbPath to each scene object using the objectId→glbPath map
-  const enriched = sceneData.map(obj => ({
-    ...obj,
-    glbPath: glbMap[obj.id] || null,
-    glbUrl: glbMap[obj.id] || null,
-  })).filter(obj => obj.glbPath);
+  // Attach glbPath + per-object detection metadata to each scene object
+  const enriched = sceneData.map(obj => {
+    const m = meta[obj.id] || {};
+    return {
+      ...obj,
+      glbPath: glbMap[obj.id] || null,
+      glbUrl: glbMap[obj.id] || null,
+      name: m.name || obj.name || 'Object',
+      ifcClass: m.ifcClass || null,
+      category: m.category || null,
+      dimensions: m.dimensions || null,
+    };
+  }).filter(obj => obj.glbPath);
 
   console.log('[exporter] Prepared scene:', enriched.length, 'objects with GLB paths');
   return enriched;

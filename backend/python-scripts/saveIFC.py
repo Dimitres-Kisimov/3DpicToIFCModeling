@@ -26,7 +26,7 @@ def _make_project(ifc):
         ApplicationFullName="3DPicToIFC", ApplicationIdentifier="3DPicToIFC"
     )
     owner_history = ifc.createIfcOwnerHistory(
-        OwnerHistory=person_org, OwningApplication=app,
+        OwningUser=person_org, OwningApplication=app,
         ChangeAction="ADDED", CreationDate=int(time.time())
     )
     unit_assignment = ifc.createIfcUnitAssignment(Units=[
@@ -90,8 +90,36 @@ def _make_project(ifc):
     return owner_history, body_ctx, storey
 
 
-def _add_furniture(ifc, owner_history, body_ctx, storey, mesh, name, position, scale):
-    """Add one furniture item with real triangulated mesh geometry."""
+# Map the per-category IFC labels the pipeline emits to entities that exist
+# in plain IFC4 (base) — IfcChair/IfcTable/IfcDesk were only added in IFC4.3,
+# so for maximum BIM-tool compatibility we instantiate IfcFurniture and stamp
+# the canonical class name into ObjectType. Revit and BIM Vision schedule
+# correctly off ObjectType, which is the standard IFC4 pattern.
+IFC4_FALLBACK_ENTITY = "IfcFurniture"
+
+IFC4_ENTITY_MAP = {
+    "IfcFurniture":               ("IfcFurniture",             None),
+    "IfcChair":                   ("IfcFurniture",             "Chair"),
+    "IfcTable":                   ("IfcFurniture",             "Table"),
+    "IfcDesk":                    ("IfcFurniture",             "Desk"),
+    "IfcSystemFurnitureElement":  ("IfcSystemFurnitureElement",None),
+    "IfcFurnishingElement":       ("IfcFurnishingElement",     None),
+    "IfcAudioVisualAppliance":    ("IfcAudioVisualAppliance",  None),
+    "IfcCommunicationsAppliance": ("IfcCommunicationsAppliance", None),
+    "IfcInputDevice":             ("IfcCommunicationsAppliance", "InputDevice"),
+    "IfcElectricAppliance":       ("IfcElectricAppliance",     None),
+    "IfcSanitaryTerminal":        ("IfcSanitaryTerminal",      None),
+}
+
+
+def _add_furniture(ifc, owner_history, body_ctx, storey, mesh, name, position, scale,
+                    ifc_class="IfcFurniture", category=None, dimensions=None):
+    """Add one furniture item with real triangulated mesh geometry.
+
+    ifc_class is the IFC4 entity type to instantiate (IfcChair, IfcTable, ...).
+    If the requested class is unknown, falls back to IfcFurnishingElement.
+    Adds a Pset_FurnitureCommon property set with the SCS category and
+    measured dimensions when supplied."""
     import ifcopenshell
     import ifcopenshell.guid as guid
     import numpy as np
@@ -134,19 +162,61 @@ def _add_furniture(ifc, owner_history, body_ctx, storey, mesh, name, position, s
         RelativePlacement=ifc.createIfcAxis2Placement3D(Location=loc)
     )
 
-    furniture = ifc.createIfcFurniture(
+    # Pick the entity class and the ObjectType label (canonical class name
+    # for the BIM scheduler when the entity itself is generic IfcFurniture).
+    cls, object_type = IFC4_ENTITY_MAP.get(ifc_class, (IFC4_FALLBACK_ENTITY, None))
+    factory = getattr(ifc, f"create{cls}", None)
+    if factory is None:
+        cls = IFC4_FALLBACK_ENTITY
+        object_type = None
+        factory = getattr(ifc, f"create{cls}")
+
+    kwargs = dict(
         GlobalId=guid.new(),
         OwnerHistory=owner_history,
         Name=str(name),
         ObjectPlacement=placement,
-        Representation=product_shape
+        Representation=product_shape,
     )
+    if object_type:
+        kwargs["ObjectType"] = object_type
+    try:
+        furniture = factory(**kwargs)
+    except Exception:
+        # Some IFC4 entities don't accept ObjectType in the positional signature
+        kwargs.pop("ObjectType", None)
+        furniture = factory(**kwargs)
     ifc.createIfcRelContainedInSpatialStructure(
         GlobalId=guid.new(),
         OwnerHistory=owner_history,
         RelatedElements=[furniture],
         RelatingStructure=storey
     )
+
+    # Attach Pset_FurnitureCommon with SCS-specific properties and measured
+    # dimensions so they survive into Revit/BIM Vision schedules.
+    if dimensions or category:
+        props = []
+        if category:
+            props.append(ifc.createIfcPropertySingleValue(
+                Name="Category", NominalValue=ifc.createIfcText(str(category))
+            ))
+        if dimensions:
+            for key in ("height", "width", "depth"):
+                if dimensions.get(key) is not None:
+                    props.append(ifc.createIfcPropertySingleValue(
+                        Name=f"Measured_{key.capitalize()}_m",
+                        NominalValue=ifc.createIfcReal(float(dimensions[key]))
+                    ))
+        if props:
+            pset = ifc.createIfcPropertySet(
+                GlobalId=guid.new(), OwnerHistory=owner_history,
+                Name="Pset_SCS_DetectionMetadata", HasProperties=props
+            )
+            ifc.createIfcRelDefinesByProperties(
+                GlobalId=guid.new(), OwnerHistory=owner_history,
+                RelatedObjects=[furniture], RelatingPropertyDefinition=pset
+            )
     return furniture
 
 
@@ -193,9 +263,12 @@ def save_ifc_project(objects_list, output_ifc):
                 name=obj.get("name", f"Object_{added}"),
                 position=obj.get("position", [0, 0, 0]),
                 scale=obj.get("scale", [1, 1, 1]),
+                ifc_class=obj.get("ifcClass") or obj.get("ifc_class") or "IfcFurniture",
+                category=obj.get("category"),
+                dimensions=obj.get("dimensions"),
             )
             added += 1
-            log(f"Added '{obj.get('name')}' — {len(mesh.faces)} faces", "info")
+            log(f"Added '{obj.get('name')}' as {obj.get('ifcClass') or 'IfcFurniture'} — {len(mesh.faces)} faces", "info")
 
         ifc.write(output_ifc)
         ifc_size = os.path.getsize(output_ifc)

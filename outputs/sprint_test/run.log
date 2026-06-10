@@ -1,0 +1,126 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+loaded image: backend\triposr\examples\chair.png  size=(512, 512)  device=cuda
+
+=== DETR ResNet-50 (detr_r50) ===
+Loading weights:   0%|          | 0/530 [00:00<?, ?it/s]Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 530/530 [00:00<00:00, 6841.50it/s]
+[transformers] [1mDetrForObjectDetection LOAD REPORT[0m from: facebook/detr-resnet-50
+Key                                                            | Status     |  | 
+---------------------------------------------------------------+------------+--+-
+model.backbone.model.layer4.0.downsample.1.num_batches_tracked | UNEXPECTED |  | 
+model.backbone.model.layer2.0.downsample.1.num_batches_tracked | UNEXPECTED |  | 
+model.backbone.model.layer3.0.downsample.1.num_batches_tracked | UNEXPECTED |  | 
+model.backbone.model.layer1.0.downsample.1.num_batches_tracked | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+C:\Users\dinos\AppData\Local\Programs\Python\Python313\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\dinos\.cache\huggingface\hub\models--facebook--detr-resnet-101. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+  1 detections   latency=7612 ms   peak VRAM=344 MB
+    chair  0.979
+
+=== DETR ResNet-101 (detr_r101) ===
+Loading weights:   0%|          | 0/785 [00:00<?, ?it/s]Loading weights:  77%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258b  | 605/785 [00:00<00:00, 6031.97it/s]Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 785/785 [00:00<00:00, 5902.83it/s]
+[transformers] [1mDetrForObjectDetection LOAD REPORT[0m from: facebook/detr-resnet-101
+Key                                                            | Status     |  | 
+---------------------------------------------------------------+------------+--+-
+model.backbone.model.layer4.0.downsample.1.num_batches_tracked | UNEXPECTED |  | 
+model.backbone.model.layer2.0.downsample.1.num_batches_tracked | UNEXPECTED |  | 
+model.backbone.model.layer3.0.downsample.1.num_batches_tracked | UNEXPECTED |  | 
+model.backbone.model.layer1.0.downsample.1.num_batches_tracked | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+C:\Users\dinos\AppData\Local\Programs\Python\Python313\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\dinos\.cache\huggingface\hub\models--PekingU--rtdetr_r101vd_coco_o365. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+  1 detections   latency=67355 ms   peak VRAM=425 MB
+    chair  1.0
+
+=== RT-DETR R101 VD (rt_detr) ===
+Loading weights:   0%|          | 0/1019 [00:00<?, ?it/s]Loading weights:  68%|\u2588\u2588\u2588\u2588\u2588\u2588\u258a   | 694/1019 [00:00<00:00, 6933.25it/s]Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1019/1019 [00:00<00:00, 7046.32it/s]
+C:\Users\dinos\AppData\Local\Programs\Python\Python313\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\dinos\.cache\huggingface\hub\models--jozhang97--deta-swin-large. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+C:\Users\dinos\AppData\Local\Programs\Python\Python313\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\dinos\.cache\huggingface\hub\models--IDEA-Research--grounding-dino-base. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+  1 detections   latency=15249 ms   peak VRAM=426 MB
+    chair  0.952
+
+=== DETA Swin-Large (deta) ===
+  ERROR: Unrecognized image processor in jozhang97/deta-swin-large. Should have a `image_processor_type` key in its preprocessor_config.json of config.json, or one of the following `model_type` keys in its config.json: aria, beit, bit, blip, bridgetower, chameleon, chinese_clip, chmv2, clip, cohere2_vision, conditional_detr, convnext, deepseek_ocr2, deepseek_vl, deepseek_vl_hybrid, deformable_detr, deit, depth_pro, detr, dinov3_vit, dpt, efficientloftr, efficientnet, eomt, ernie4_5_vl_moe, flava, fuyu, gemma3, gemma4, gemma4_unified, glm46v, glm4v, glm_image, glmga, glpn, got_ocr2, grounding-dino, idefics, idefics2, idefics3, imagegpt, janus, layoutlmv2, layoutlmv3, levit, lfm2_vl, lightglue, llama4, llava, llava_next, llava_onevision, mask2former, maskformer, minicpmv4_6, mllama, mobilenet_v1, mobilenet_v2, mobilevit, nougat, oneformer, ovis2, owlv2, owlvit, paddleocr_vl, perceiver, perception_lm, phi4_multimodal, pi0, pix2struct, pixtral, poolformer, pp_chart2table, pp_doclayout_v2, pp_doclayout_v3, pp_formulanet, pp_lcnet, pp_ocrv5_server_det, pp_ocrv5_server_rec, pp_ocrv6_small_rec, prompt_depth_anything, pvt, qwen2_vl, rf_detr, rt_detr, sam, sam2, sam3, sapiens2, segformer, seggpt, siglip, siglip2, slanext, smolvlm, superglue, superpoint, swin2sr, textnet, tvp, uvdoc, video_llama_3, videomae, vilt, vit, vitmatte, vitpose, yolos, zoedepth, aimv2, aimv2_vision_model, align, altclip, aya_vision, blip-2, clipseg, colpali, colqwen2, convnextv2, cvt, data2vec-vision, deimv2, depth_anything, dinat, dinov2, donut-swin, edgetam, emu3, eomt_dinov3, exaone4_5, florence2, focalnet, gemma3n, git, granite4_vision, groupvit, hiera, ijepa, instructblip, internvl, kosmos-2, kosmos-2.5, layoutxlm, lighton_ocr, llava_next_video, lw_detr, metaclip_2, mgp-str, mistral3, mlcd, mm-grounding-dino, mobilevitv2, omdet-turbo, paligemma, pixio, pp_ocrv5_mobile_det, pp_ocrv5_mobile_rec, pp_ocrv6_medium_det, pp_ocrv6_small_det, pp_ocrv6_tiny_rec, pvt_v2, qianfan_ocr, qwen2_5_omni, qwen2_5_vl, qwen3_5, qwen3_5_moe, qwen3_omni_moe, qwen3_vl, regnet, resnet, sam2_video, sam3_lite_text, sam3_tracker, sam3_tracker_video, sam3_video, sam_hq, shieldgemma2, slanet, swiftformer, swin, swinv2, t5gemma2, t5gemma2_encoder, table-transformer, timesformer, timm_wrapper, trocr, udop, upernet, video_llava, vipllava, vit_mae, vit_msn, vivit, xclip
+  0 detections   latency=443 ms   peak VRAM=9 MB
+
+=== Grounding DINO base (grounding_dino) ===
+Loading weights:   0%|          | 0/1182 [00:00<?, ?it/s]Loading weights:  53%|\u2588\u2588\u2588\u2588\u2588\u258e    | 622/1182 [00:00<00:00, 6219.09it/s]Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 1182/1182 [00:00<00:00, 6614.95it/s]
+C:\Users\dinos\AppData\Local\Programs\Python\Python313\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\dinos\.cache\huggingface\hub\models--google--owlv2-large-patch14-ensemble. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+  ERROR: GroundingDinoProcessor.post_process_grounded_object_detection() got an unexpected keyword argument 'box_threshold'. Did you mean 'text_threshold'?
+  0 detections   latency=36742 ms   peak VRAM=1736 MB
+
+=== OWLv2 large ensemble (owlv2) ===
+Loading weights:   0%|          | 0/610 [00:00<?, ?it/s]Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 610/610 [00:00<00:00, 7846.94it/s]
+C:\Users\dinos\AppData\Local\Programs\Python\Python313\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\dinos\.cache\huggingface\hub\models--microsoft--Florence-2-large. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+[transformers] A new version of the following files was downloaded from https://huggingface.co/microsoft/Florence-2-large:
+- processing_florence2.py
+. Make sure to double-check they do not contain any added malicious code. To avoid downloading new versions of the code file, you can pin a revision.
+[transformers] `Florence2Processor` defines `image_processor_class = 'CLIPImageProcessor'`, which is deprecated. Register the correct mapping in `AutoImageProcessor` instead.
+C:\Users\dinos\AppData\Local\Programs\Python\Python313\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\dinos\.cache\huggingface\hub\models--shi-labs--oneformer_ade20k_swin_large. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+C:\Users\dinos\AppData\Local\Programs\Python\Python313\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\dinos\.cache\huggingface\hub\datasets--shi-labs--oneformer_demo. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+  ERROR: 'Owlv2Processor' object has no attribute 'post_process_object_detection'
+  0 detections   latency=65588 ms   peak VRAM=2020 MB
+
+=== Florence-2 large (florence) ===
+  ERROR: 'Florence2LanguageConfig' object has no attribute 'forced_bos_token_id'
+  0 detections   latency=2640 ms   peak VRAM=9 MB
+
+=== OneFormer ADE20K Swin-L (oneformer) ===
+Loading weights:   0%|          | 0/802 [00:00<?, ?it/s]Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 802/802 [00:00<00:00, 21890.26it/s]
+[transformers] [1mOneFormerForUniversalSegmentation LOAD REPORT[0m from: shi-labs/oneformer_ade20k_swin_large
+Key                                                                                                                      | Status     | 
+-------------------------------------------------------------------------------------------------------------------------+------------+-
+model.pixel_level_module.encoder.swin.encoder.layers.{0, 1, 2, 3}.blocks.{0...17}.attention.self.relative_position_index | UNEXPECTED | 
+model.pixel_level_module.encoder.swin.layernorm.weight                                                                   | MISSING    | 
+model.pixel_level_module.encoder.swin.layernorm.bias                                                                     | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] `label_ids_to_fuse` unset. No instance will be fused.
+C:\Users\dinos\AppData\Local\Programs\Python\Python313\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\dinos\.cache\huggingface\hub\models--google--siglip2-so400m-patch14-384. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+[transformers] Model config: bos_token_id must be `None` or an integer within the vocabulary (between 0 and 31999), got 49406. This may result in unexpected behavior.
+[transformers] Model config: eos_token_id must be `None` or an integer within the vocabulary (between 0 and 31999), got 49407. This may result in unexpected behavior.
+  3 detections   latency=35883 ms   peak VRAM=1437 MB
+    wall  0.996
+    chair  0.999
+    floor  0.981
+
+=== SigLIP 2 so400m (siglip) ===
+Loading weights:   0%|          | 0/888 [00:00<?, ?it/s]Loading weights:  67%|\u2588\u2588\u2588\u2588\u2588\u2588\u258b   | 593/888 [00:00<00:00, 5920.36it/s]Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 888/888 [00:00<00:00, 6091.34it/s]
+C:\Users\dinos\AppData\Local\Programs\Python\Python313\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\dinos\.cache\huggingface\hub\models--facebook--dinov2-large. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+  5 detections   latency=177655 ms   peak VRAM=4415 MB
+    office chair  0.0
+    table  0.0
+    lamp  0.0
+    desk  0.0
+    monitor  0.0
+
+=== DINOv2-Large (dinov2) ===
+Loading weights:   0%|          | 0/439 [00:00<?, ?it/s]Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 439/439 [00:00<00:00, 6374.37it/s]
+  1 detections   latency=41280 ms   peak VRAM=1213 MB
+    <embedding>  1.163
+
+wrote outputs\sprint_test\detection_benchmark.csv
+wrote overlays to outputs\sprint_test\detection_overlays/

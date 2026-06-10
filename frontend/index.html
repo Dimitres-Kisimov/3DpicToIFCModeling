@@ -18,12 +18,16 @@
             <!-- Image Upload -->
             <div class="sidebar-section">
                 <h3>1. Upload Image</h3>
-                <div class="upload-box">
+                <div class="upload-box" id="dropZone">
                     <input type="file" id="imageInput" accept="image/*" class="file-input">
                     <label for="imageInput" class="upload-label">
                         <span>📷 Choose Image</span>
+                        <small style="display:block;margin-top:0.3rem;opacity:0.7;">or drag &amp; drop a photo here</small>
                     </label>
                 </div>
+                <button id="useSampleBtn" class="btn btn-small" style="margin-top:0.4rem;width:100%;">
+                    🪑 Use sample chair
+                </button>
                 <div id="imagePreview" class="image-preview"></div>
             </div>
 
