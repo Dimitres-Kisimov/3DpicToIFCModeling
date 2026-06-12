@@ -622,36 +622,13 @@ def _try_triposr_fallback(image_path: str, h_m: float, w_m: float, d_m: float,
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
-        # 3. Component filtering
-        comps = mesh.split(only_watertight=False)
-        if comps:
-            total_faces = sum(len(c.faces) for c in comps)
-            kept = []
-            for c in comps:
-                ratio = len(c.faces) / total_faces if total_faces else 0
-                if ratio < 0.005:
-                    continue
-                ext_c = c.bounding_box.extents
-                if ext_c.max() > 0:
-                    compactness = ext_c.min() / ext_c.max()
-                    if compactness < 0.04 and ratio < 0.05:
-                        continue
-                kept.append(c)
-            if kept:
-                mesh = trimesh.util.concatenate(kept)
-
-        mesh.apply_translation(-mesh.bounding_box.centroid)
-
-        # 4. Orientation fix — TripoSR sometimes outputs upside down
-        if mesh.vertices[:, 1].mean() > 0.05:
-            R = trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0])
-            mesh.apply_transform(R)
-
-        # 5. Humphrey smoothing (preserves volume better than Laplacian)
-        try:
-            trimesh.smoothing.filter_humphrey(mesh, iterations=5, beta=0.5)
-        except Exception:
-            pass
+        # 3-5. Centralised post-processing — relaxed component filter that
+        # keeps vertical thin pieces (chair / table / lamp legs), mirror
+        # symmetry across X = 0 to fix per-leg drift, vertex merge,
+        # Humphrey smoothing. All steps are bounded — failures pass through.
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from _triposr_postprocess import clean_triposr_mesh
+        mesh = clean_triposr_mesh(mesh)
 
         # 6. Scale to measured dimensions
         ext = mesh.bounding_box.extents

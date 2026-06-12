@@ -105,45 +105,14 @@ def generate_mesh_triposr(image_path, output_path):
         meshes = model.extract_mesh(scene_codes, True, resolution=mc_resolution)
         mesh = meshes[0]
 
-        # ── Post-processing ──────────────────────────────────────────────────
-
-        # 1. Component filtering — keep significant parts, remove spikes/noise
-        components = mesh.split(only_watertight=False)
-        if components:
-            total_faces = sum(len(c.faces) for c in components)
-            kept = []
-            for c in components:
-                face_ratio = len(c.faces) / total_faces
-                if face_ratio < 0.005:
-                    continue  # too small — floating debris
-                # Reject needle-like spike artifacts by checking aspect ratio
-                extents = c.bounding_box.extents
-                if extents.max() > 0:
-                    compactness = extents.min() / extents.max()
-                    if compactness < 0.04 and face_ratio < 0.05:
-                        continue  # spike with low mass — artifact
-                kept.append(c)
-
-            if kept:
-                mesh = trimesh.util.concatenate(kept)
-                log(f"Kept {len(kept)}/{len(components)} components, {len(mesh.faces)} faces", "info")
-
-        # 2. Center mesh at origin
-        mesh.apply_translation(-mesh.bounding_box.centroid)
-
-        # 3. Orientation fix — TripoSR sometimes outputs upside-down
-        #    Heuristic: if vertex mass is above Y=0 (heavy top = upside down), flip
-        centroid_y = mesh.vertices[:, 1].mean()
-        if centroid_y > 0.05:
-            R = trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0])
-            mesh.apply_transform(R)
-            log("Applied orientation correction (flipped)", "info")
-
-        # 4. Humphrey smoothing — preserves volume and sharp edges better than
-        #    Laplacian. beta=0.5 pulls each vertex back toward original position
-        #    after each smooth pass, preventing shrinkage and corner rounding.
-        trimesh.smoothing.filter_humphrey(mesh, iterations=5, beta=0.5)
-        log("Mesh smoothed (Humphrey)", "info")
+        # ── Centralised post-processing ──────────────────────────────────────
+        # Relaxed component filter (keeps vertical thin legs) + mirror symmetry
+        # across X = 0 (no per-leg drift) + vertex merge + Humphrey smoothing.
+        # All steps live in _triposr_postprocess.py so the cascade fallback in
+        # run_detect_and_place.py uses the same logic.
+        from _triposr_postprocess import clean_triposr_mesh
+        mesh = clean_triposr_mesh(mesh)
+        log(f"Post-processed: {len(mesh.faces)} faces", "info")
 
         # 5. Apply PBR material — dominant color via k-means (k=3) on SAM2 mask
         #    More accurate than mean: picks the actual object color, not a
