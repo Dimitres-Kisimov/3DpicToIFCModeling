@@ -24,7 +24,10 @@ Tunable via env vars for production sites that want different behaviour:
                                     this many times either lateral extent
                                     for a "vertical thin" component to be
                                     kept regardless of face-count)
-  SCS_TRIPOSR_MIRROR                default '1' (set '0' to disable)
+  SCS_TRIPOSR_MIRROR                default '0' (set '1' to enable; only
+                                    safe if you know the input is X-axis
+                                    aligned — TripoSR's output orientation
+                                    is not stable across inputs)
   SCS_TRIPOSR_SMOOTH_ITER           default 5
 
 Licence: MIT (matches TripoSR).
@@ -61,8 +64,14 @@ def _filter_components_keep_legs(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
         return mesh
 
     keep_vert_ratio = float(os.environ.get("SCS_TRIPOSR_KEEP_VERTICAL_RATIO", "2.0"))
+    # Main component's lateral bounding box — used to reject "vertical spikes"
+    # that are far from the chair body (sideways shards).
+    main = max(components, key=lambda c: len(c.faces))
+    main_bb_min = main.bounding_box.bounds[0]
+    main_bb_max = main.bounding_box.bounds[1]
     kept = []
-    dropped_summary = {"true_debris": 0, "horizontal_spike": 0, "ok_main": 0, "ok_leg": 0}
+    dropped_summary = {"true_debris": 0, "horizontal_spike": 0, "ok_main": 0, "ok_leg": 0,
+                       "stray_spike": 0}
 
     for c in components:
         face_ratio = len(c.faces) / total_faces
@@ -80,17 +89,29 @@ def _filter_components_keep_legs(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
         if face_ratio >= 0.10:
             kept.append(c); dropped_summary["ok_main"] += 1
             continue
-        if is_vertical_thin and face_ratio >= 0.0005:
-            kept.append(c); dropped_summary["ok_leg"] += 1
+        # A "leg" candidate must be vertical-thin AND its centroid must lie
+        # inside the main component's horizontal footprint, AND it must have
+        # enough face count to be a real structure (raised from 0.0005 to
+        # 0.005 — spike fragments are typically below 0.002).
+        if is_vertical_thin and face_ratio >= 0.005:
+            cent = c.bounding_box.centroid
+            inside_xy = (
+                main_bb_min[0] <= cent[0] <= main_bb_max[0]
+                and main_bb_min[1] <= cent[1] <= main_bb_max[1]
+            )
+            if inside_xy:
+                kept.append(c); dropped_summary["ok_leg"] += 1
+                continue
+            dropped_summary["stray_spike"] += 1
             continue
-        if face_ratio < 0.002:
+        if face_ratio < 0.005:
             dropped_summary["true_debris"] += 1
             continue
         compactness = ext.min() / ext.max()
-        if compactness < 0.02 and face_ratio < 0.05:
+        if compactness < 0.04 and face_ratio < 0.05:
             dropped_summary["horizontal_spike"] += 1
             continue
-        # Default: keep it (less aggressive than the original filter)
+        # Default: keep it
         kept.append(c)
 
     if not kept:
@@ -100,7 +121,8 @@ def _filter_components_keep_legs(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
         f"[triposr-postproc] components: kept {len(kept)}/{len(components)} "
         f"(main={dropped_summary['ok_main']}, leg-like={dropped_summary['ok_leg']}, "
         f"dropped debris={dropped_summary['true_debris']}, "
-        f"horizontal-spike={dropped_summary['horizontal_spike']})",
+        f"horizontal-spike={dropped_summary['horizontal_spike']}, "
+        f"stray-spike={dropped_summary['stray_spike']})",
         flush=True,
     )
     return joined
@@ -133,7 +155,7 @@ def _mirror_symmetry_x(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
     """Pick the side of the mesh with more triangles, mirror it onto the
     other side. Removes per-leg left/right drift while preserving the
     silhouette characteristic of the input photograph."""
-    if not bool(int(os.environ.get("SCS_TRIPOSR_MIRROR", "1"))):
+    if not bool(int(os.environ.get("SCS_TRIPOSR_MIRROR", "0"))):
         return mesh
 
     faces = mesh.faces
@@ -215,7 +237,16 @@ def clean_triposr_mesh(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
     Trimesh ready for scaling + PBR-colour application + GLB export.
 
     Idempotent in the worst case — every internal step gracefully degrades
-    to a pass-through on error, so calling twice is safe."""
+    to a pass-through on error, so calling twice is safe.
+
+    Master skip switch: SCS_TRIPOSR_SKIP_POSTPROC=1 returns input unchanged.
+    Enabled by default while TRELLIS is the real quality path — TripoSR's
+    raw output is the documented baseline and any stage here is a tuning
+    knob, not a correctness requirement."""
+    if bool(int(os.environ.get("SCS_TRIPOSR_SKIP_POSTPROC", "1"))):
+        print("[triposr-postproc] skipped (SCS_TRIPOSR_SKIP_POSTPROC=1)", flush=True)
+        # Still centre at origin — downstream scaling depends on it.
+        return _safe("center", _center, mesh)
     mesh = _safe("filter_components", _filter_components_keep_legs, mesh)
     mesh = _safe("center", _center, mesh)
     mesh = _safe("orient_upright", _orient_upright, mesh)

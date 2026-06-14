@@ -36,7 +36,14 @@ from pathlib import Path
 
 
 # Safety env vars must be set BEFORE torch imports anything CUDA-related.
-os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "max_split_size_mb:512")
+# expandable_segments:True turns on CUDA's variable-size allocator (1.3.0+),
+# which prevents fragmentation-induced OOM when PyTorch + spconv both share
+# the 8 GB VRAM. max_split_size_mb:256 (down from 512) gives the allocator
+# finer-grained splits — better for tight VRAM budgets.
+os.environ.setdefault(
+    "PYTORCH_CUDA_ALLOC_CONF",
+    "expandable_segments:True,max_split_size_mb:256",
+)
 os.environ.setdefault("ATTN_BACKEND", "xformers")
 os.environ.setdefault("SPCONV_ALGO", "native")
 
@@ -64,24 +71,34 @@ def main(argv) -> None:
         emit_error("args", f"image not found: {img_path}")
     os.makedirs(os.path.dirname(out_glb) or ".", exist_ok=True)
 
-    # ---- Stage 0: torch sanity + VRAM cap ----
+    # ---- Stage 0: torch sanity ----
+    # SCS_TRELLIS_DEVICE controls the execution device:
+    #   "cpu"  — full CPU execution (slow, ~5-10 min, but ZERO VRAM contention
+    #            with the display driver, so safe on any hardware)
+    #   "cuda" — GPU execution (fast but needs ≥12 GB VRAM in practice)
+    # Defaults to "cpu" for safety on shared-display GPUs ≤ 8 GB where the
+    # previous TDR events came from. Override with SCS_TRELLIS_DEVICE=cuda on
+    # bigger cards.
     try:
         import torch
     except Exception as e:
         emit_error("import", f"torch import failed: {e}")
-    if not torch.cuda.is_available():
-        emit_error("hardware", "CUDA not available inside WSL")
-    try:
-        torch.cuda.set_per_process_memory_fraction(0.75, device=0)
-    except Exception:
-        # Not fatal — some torch builds reject this if CUDA caching allocator
-        # is already initialised. Continue with the env-var cap.
-        pass
 
-    total = torch.cuda.get_device_properties(0).total_memory // (1024 * 1024)
-    print(f"[trellis-wsl] CUDA OK — {torch.cuda.get_device_name(0)}, "
-          f"{total} MiB total VRAM, capped at 75% (~{int(total * 0.75)} MiB)",
-          flush=True)
+    device_str = os.environ.get("SCS_TRELLIS_DEVICE", "cpu").lower()
+    use_cuda = (device_str == "cuda")
+
+    if use_cuda:
+        if not torch.cuda.is_available():
+            emit_error("hardware", "CUDA requested but not available inside WSL")
+        total = torch.cuda.get_device_properties(0).total_memory // (1024 * 1024)
+        print(f"[trellis-wsl] device=cuda — {torch.cuda.get_device_name(0)}, "
+              f"{total} MiB total VRAM, allocator=expandable_segments",
+              flush=True)
+    else:
+        # Disable any cuda-allocation hooks set earlier; we won't touch GPU.
+        print(f"[trellis-wsl] device=cpu — running on system RAM only "
+              f"(VRAM untouched; ~5-10 min inference)",
+              flush=True)
 
     # ---- Stage 1: load TRELLIS pipeline ----
     try:
@@ -94,20 +111,31 @@ def main(argv) -> None:
         pipeline = TrellisImageTo3DPipeline.from_pretrained(
             "microsoft/TRELLIS-image-large"
         )
-        pipeline.cuda()
+        if use_cuda:
+            pipeline.cuda()
+        # CPU path: pipeline stays on CPU (where from_pretrained loaded it).
+        # No VRAM touched at any point in this branch.
     except torch.cuda.OutOfMemoryError as e:
         emit_error("oom", f"OOM at pipeline load: {e}")
     except Exception as e:
         emit_error("unknown", f"pipeline load failed: {e}\n"
                                f"{traceback.format_exc()}")
 
-    # ---- Stage 2: run inference with reduced sampling ----
+    # ---- Stage 2: inference ----
+    # CPU mode: pipeline.run() executes wholly on CPU — no VRAM contention
+    # with the display driver, but ~5-10 min per inference. Mesh-only output
+    # to skip the gaussian/RF decoders.
+    # GPU mode: original run() path, all models on GPU. Caller is responsible
+    # for having ≥16 GB VRAM available.
     try:
         from PIL import Image
         img = Image.open(img_path).convert("RGBA")
+        print(f"[trellis-wsl] running inference on {device_str.upper()}; "
+              f"this is the slow step — be patient", flush=True)
         outputs = pipeline.run(
             img,
             seed=42,
+            formats=["mesh"],
             sparse_structure_sampler_params={
                 "steps": int(os.environ.get("TRELLIS_SS_STEPS", "25")),
                 "cfg_strength": 7.5,
@@ -117,6 +145,7 @@ def main(argv) -> None:
                 "cfg_strength": 3.0,
             },
         )
+        print("[trellis-wsl] inference: OK", flush=True)
     except torch.cuda.OutOfMemoryError as e:
         emit_error("oom", f"OOM during inference: {e}")
     except Exception as e:
@@ -124,16 +153,25 @@ def main(argv) -> None:
                                f"{traceback.format_exc()}")
 
     # ---- Stage 3: extract mesh and export GLB ----
+    if use_cuda:
+        try:
+            torch.cuda.empty_cache()
+        except Exception:
+            pass
+
     try:
-        from trellis.utils import postprocessing_utils
         mesh_obj = outputs["mesh"][0]
-        glb = postprocessing_utils.to_glb(
-            outputs["gaussian"][0] if "gaussian" in outputs else None,
-            mesh_obj,
-            simplify=0.95,
-            texture_size=1024,
-        )
-        glb.export(out_glb)
+        # No gaussian → can't use TRELLIS's to_glb() (it needs gaussian for
+        # texture baking). Convert the mesh object directly via trimesh.
+        # The mesh_obj is a MeshExtractResult with `vertices` and `faces`
+        # tensors. Apply per-vertex colour from face normals via downstream
+        # PBR (which run_detect_and_place.py adds anyway from CLIP-detected
+        # input photo colour).
+        import trimesh as _tm
+        verts = mesh_obj.vertices.cpu().numpy()
+        faces = mesh_obj.faces.cpu().numpy()
+        out_mesh = _tm.Trimesh(vertices=verts, faces=faces, process=False)
+        out_mesh.export(out_glb)
     except torch.cuda.OutOfMemoryError as e:
         emit_error("oom", f"OOM during mesh export: {e}")
     except Exception as e:

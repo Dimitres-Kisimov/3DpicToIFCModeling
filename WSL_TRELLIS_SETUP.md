@@ -417,3 +417,63 @@ The branches form a progression — each one builds on the last and represents a
 ---
 
 *End of document. Prepared 2026-06-10 with AI engineering assistance from Claude Opus 4.7 (Anthropic). The TRELLIS installation step was running in the background at the time of writing — verification against a successful end-to-end inference is captured in the commit message of `feat/trellis-wsl-fallback`.*
+
+---
+
+## Appendix A — End-to-end inference verification (2026-06-14)
+
+Install and verification was completed on 2026-06-14 with seven distinct smoke tests against a chair photograph on the SCS development hardware (Windows 11, RTX 4070 Laptop with **8 GB VRAM** shared with the display, 64 GB system RAM, Ubuntu-22.04 WSL distro with /dev/dxg passthrough). **Conclusion: TRELLIS-image-large is non-functional on this hardware class.** Microsoft's effective minimum is ≥ 16 GB of *dedicated* VRAM (i.e., on a card that does not also drive the display).
+
+### A.1 What works
+
+The install itself is correct and reusable. Verified components on the `trellis` conda env at `/opt/conda/envs/trellis`:
+
+- PyTorch 2.4.0 with CUDA 11.8 + MKL 2023.1.0 (the 2025.0 → 2023.1 downgrade was needed because PyTorch 2.4.0 links against `iJIT_NotifyEvent` which mkl ≥ 2024.1 no longer exports)
+- xformers 0.0.27.post2+cu118
+- spconv 2.3.8 (cu118 wheel)
+- kaolin 0.18.0 (from NVIDIA's `torch-2.4.0_cu121.html` wheel index)
+- `from trellis.pipelines import TrellisImageTo3DPipeline` succeeds
+- TRELLIS-image-large weights downloaded from HuggingFace (~3 GB, cached at `~/.cache/huggingface/hub`)
+- DINOv2-vitl14 weights downloaded (~1.13 GB, cached at `~/.cache/torch/hub`)
+
+### A.2 What doesn't work, and why
+
+| # | Configuration | Failure |
+|---|---|---|
+| 1 | GPU, default pipeline.run(), 75% VRAM cap | OOM at spconv mesh extraction — 954 MiB free when spconv tried 98 MiB chunk |
+| 2 | GPU + `expandable_segments:True` + 55% VRAM cap | PyTorch 2.4 internal assert: expandable_segments incompatible with `set_per_process_memory_fraction()` |
+| 3 | GPU + `expandable_segments:True`, no fraction cap | OOM at `slat_decoder_mesh` (CUDA driver-level, not caching-allocator) |
+| 4 | GPU + `formats=["mesh"]` only | Same OOM at `slat_decoder_mesh` — three format decoders weren't the problem |
+| 5 | GPU + mid-stage CPU offload between sampling steps | Device mismatch — `pipeline.cuda()` doesn't move all internal tensors |
+| 6 | GPU + batch CPU offload right before mesh decode | **Display driver TDR** — moving 3 GB of weights out of VRAM tripped the Windows 2-second driver watchdog; WSL distro got killed; no log flush |
+| 7 | Full CPU execution (SCS_TRELLIS_DEVICE=cpu) | `xformers.ops.memory_efficient_attention` has no CPU kernel; DINOv2's attention layer hard-imports it; TRELLIS's own `SPARSE_ATTN_BACKEND` is restricted to `xformers`/`flash_attn` at [trellis/modules/sparse/__init__.py:23](file:///root/TRELLIS/trellis/modules/sparse/__init__.py) — neither supports CPU |
+
+### A.3 Why we stopped
+
+Test 6 was the genuine warning: a driver-level TDR is one step short of a display freeze or BSOD. The Microsoft team's architectural decision to hard-code `xformers`/`flash_attn` in the sparse-attention dispatcher means there is no clean monkey-patch path to CPU execution without modifying TRELLIS source. The reward for further work (an MIT-licensed generative path) was real, but the path to get there on shared-display 8 GB hardware ranged from "uncertain, lots of patching" to "unsafe for the machine."
+
+### A.4 Current state of the cascade
+
+- `SCS_TRELLIS_ENABLED` default flipped from `1` → `0` in [backend/python-scripts/run_detect_and_place.py](backend/python-scripts/run_detect_and_place.py). On default settings the TRELLIS row in the UI stays grey, the cascade goes ABO retrieval → TripoSR → primitive.
+- All install scripts ([backend/python-scripts/install_trellis_wsl.sh](backend/python-scripts/install_trellis_wsl.sh), [backend/python-scripts/fix_trellis_mkl.sh](backend/python-scripts/fix_trellis_mkl.sh), [backend/python-scripts/verify_trellis.py](backend/python-scripts/verify_trellis.py)) remain in place — re-runnable on a fresh machine.
+- The adapter [backend/python-scripts/run_trellis_wsl.py](backend/python-scripts/run_trellis_wsl.py) supports both `SCS_TRELLIS_DEVICE=cuda` (the original path) and `=cpu` (the CPU-only variant); the latter doesn't run end-to-end on the current TRELLIS release but is preserved for the day Microsoft fixes the sparse-attention CPU path.
+- The cascade hook `_try_trellis_wsl_fallback` in [run_detect_and_place.py:473](backend/python-scripts/run_detect_and_place.py#L473) remains wired correctly; setting `SCS_TRELLIS_ENABLED=1` is the only thing needed to bring the row online on bigger hardware.
+
+### A.5 How to bring TRELLIS online when better hardware is available
+
+On a workstation with ≥16 GB of dedicated VRAM (a discrete card that does not drive the display — e.g. an RTX 4080 16 GB, 4090 24 GB, A4000 16 GB, A5000 24 GB), running the SCS pipeline with:
+
+```powershell
+$env:SCS_TRELLIS_ENABLED = "1"
+node backend/server.js
+```
+
+…makes the cascade attempt TRELLIS first. No code changes required. The WSL install procedure in §3 onwards remains the canonical setup script; the smoke-test script `backend/python-scripts/smoke_test_trellis.sh` is the verification step.
+
+### A.6 Production shipping quality (2026-06-14)
+
+The TripoSR-based fallback is the de facto production generator. Verified on the SCS executive-chair test photograph: produces a recognizable mesh with leather colour, visible armrests, padded back, and a five-spoke wheeled base. Lower quality than TRELLIS would have been (single-view limitations: occasional sideways orientation, no baked photo texture, simpler topology), but it ships consistently every time, takes ~23 seconds, and never risks the display driver.
+
+---
+
+*Appendix A added 2026-06-14 after seven smoke tests confirmed the hardware ceiling. Updated by Dimitres Kisimov with Claude Opus 4.7.*

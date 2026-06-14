@@ -478,7 +478,7 @@ def _try_trellis_wsl_fallback(image_path: str, h_m: float, w_m: float,
     Returns ("trellis-oom"|"trellis-timeout"|"trellis-failed", None) on
     failure — caller then tries the TripoSR fallback.
     """
-    if not bool(int(os.environ.get("SCS_TRELLIS_ENABLED", "1"))):
+    if not bool(int(os.environ.get("SCS_TRELLIS_ENABLED", "0"))):
         return "trellis-disabled", None
 
     import subprocess
@@ -754,7 +754,7 @@ def run(image_path: str, output_glb: str):
         mesh = None
         mesh_source = None
 
-        if bool(int(os.environ.get("SCS_TRELLIS_ENABLED", "1"))):
+        if bool(int(os.environ.get("SCS_TRELLIS_ENABLED", "0"))):
             mesh_source, mesh = _try_trellis_wsl_fallback(
                 image_path, h_m, w_m, d_m, colour_rgb
             )
