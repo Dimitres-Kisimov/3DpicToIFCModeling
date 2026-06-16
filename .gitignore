@@ -44,3 +44,12 @@ uploads/
 outputs/
 data/mesh_library_abo/_listings_work/
 backend/trellis/
+
+# Vendored upstream model repos (cloned to WSL/local at runtime — too big for git)
+backend/sam3d/
+backend/InstantMesh/
+backend/TRELLIS/
+
+# Office lock files
+~$*.docx
+~$*.xlsx
