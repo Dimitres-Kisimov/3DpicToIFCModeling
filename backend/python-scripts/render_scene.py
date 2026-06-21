@@ -42,6 +42,15 @@ def floorplan(room, items, path):
     fig, ax = plt.subplots(figsize=(9.5, 9.5 * D / W))
     ax.set_facecolor("#fafaf8")
     ax.add_patch(Rectangle((0, 0), W, D, fill=False, lw=2.4, ec="#2b2b2b"))
+    # obstacles (columns / semi-walls) and door keep-clear zones
+    for ob in room.get("obstacles", []):
+        ax.add_patch(Rectangle((ob["x"], ob["z"]), ob["width"], ob["depth"],
+                               facecolor="#7a7a7e", ec="#333", hatch="xx", lw=1))
+    for dr in room.get("doors", []):
+        ax.add_patch(Rectangle((dr["x"], dr["z"]), dr["width"], dr["depth"],
+                               facecolor="#5a9bf0", ec="#2a6abf", lw=1, alpha=0.35))
+        ax.text(dr["x"] + dr["width"] / 2, dr["z"] + dr["depth"] / 2, "door\nkeep clear",
+                ha="center", va="center", fontsize=7, color="#1a3a6a")
     handles = []
     for i, it in enumerate(items, 1):
         w, d = _wd(it)

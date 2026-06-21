@@ -234,10 +234,14 @@ def _resolve_layout(room: dict, objects: list):
                             "depth": d + extra_d, "category": o.get("category", "")})
         meta[o["id"]] = {"w": w, "d": d, "extra_d": extra_d}
 
+    # columns/semi-walls + door keep-clear zones become fixed solver keep-outs
+    keepouts = list(room.get("obstacles", [])) + list(room.get("doors", []))
     try:
         import spatial_layout
-        placements = spatial_layout.layout_room(room, solver_objs)["placements"]
-        solver = "ortools-cpsat"
+        placements = spatial_layout.layout_room(room, solver_objs, obstacles=keepouts)["placements"]
+        # all placed -> real solve; any placed=False -> overpacked (won't fit)
+        solver = "ortools-cpsat" if all(p.get("placed", True) for p in placements) \
+            else "infeasible-overpacked"
     except Exception as exc:
         print(f"[build_room_scene] solver unavailable ({exc}); grid fallback", file=sys.stderr)
         placements = _grid_fallback(room, solver_objs)
@@ -321,11 +325,31 @@ def _room_shell(room: dict):
     wall_back.apply_translation([w / 2, h / 2, t / 2])
     wall_left = trimesh.creation.box(extents=[t, h, d])
     wall_left.apply_translation([t / 2, h / 2, d / 2])
-    return {
+    parts = {
         "room-floor": (_coloured(floor, [0.82, 0.80, 0.76]), "Floor", "IfcSlab"),
         "room-wall-back": (_coloured(wall_back, [0.90, 0.90, 0.88]), "Wall (back)", "IfcWall"),
         "room-wall-left": (_coloured(wall_left, [0.90, 0.90, 0.88]), "Wall (left)", "IfcWall"),
     }
+    # columns / semi-walls (corner-origin rectangles, matching the solver keep-outs)
+    for i, ob in enumerate(room.get("obstacles", [])):
+        ox, oz = float(ob["x"]), float(ob["z"])
+        ow, od = float(ob["width"]), float(ob["depth"])
+        kind = ob.get("kind", "column")
+        oh = h if kind == "column" else min(h, float(ob.get("height", 1.2)))
+        box = trimesh.creation.box(extents=[ow, oh, od])
+        box.apply_translation([ox + ow / 2, oh / 2, oz + od / 2])
+        parts[f"room-obstacle-{i}"] = (_coloured(box, [0.55, 0.55, 0.58]),
+                                       "Column" if kind == "column" else "Partition",
+                                       "IfcColumn" if kind == "column" else "IfcWall")
+    # door keep-clear zones — thin blue floor patch (never built on)
+    for i, dr in enumerate(room.get("doors", [])):
+        dx, dz = float(dr["x"]), float(dr["z"])
+        dw, dd = float(dr["width"]), float(dr["depth"])
+        patch = trimesh.creation.box(extents=[dw, 0.02, dd])
+        patch.apply_translation([dx + dw / 2, 0.012, dz + dd / 2])
+        parts[f"room-door-{i}"] = (_coloured(patch, [0.35, 0.6, 0.95]),
+                                   "Door clearance", "IfcDoor")
+    return parts
 
 
 # ---------------------------------------------------------------------------

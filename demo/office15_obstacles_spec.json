@@ -1,0 +1,350 @@
+{
+  "room": {
+    "width": 8.0,
+    "depth": 6.0,
+    "height": 3.0,
+    "name": "Office (15 items)",
+    "type": "office",
+    "obstacles": [
+      {
+        "x": 3.7,
+        "z": 2.6,
+        "width": 0.5,
+        "depth": 0.5,
+        "kind": "column"
+      }
+    ],
+    "doors": [
+      {
+        "x": 3.2,
+        "z": 5.0,
+        "width": 0.9,
+        "depth": 1.0
+      }
+    ]
+  },
+  "objects": [
+    {
+      "id": "desk-A",
+      "name": "Desk A",
+      "category": "desk",
+      "ifc_class": "IfcTable",
+      "dimensions": {
+        "height": 0.74,
+        "width": 1.4,
+        "depth": 0.7
+      },
+      "colour_rgb": [
+        0.55,
+        0.38,
+        0.25
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/desk_B07GFWW5JZ.glb"
+    },
+    {
+      "id": "chair-A",
+      "name": "Task Chair A",
+      "category": "office_chair",
+      "ifc_class": "IfcChair",
+      "dimensions": {
+        "height": 1.1,
+        "width": 0.6,
+        "depth": 0.6
+      },
+      "colour_rgb": [
+        0.15,
+        0.15,
+        0.18
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/office_chair_B07DBH52YB.glb",
+      "anchor": {
+        "to": "desk-A",
+        "relation": "in_front"
+      }
+    },
+    {
+      "id": "monitor-A",
+      "name": "Monitor A",
+      "category": "monitor",
+      "ifc_class": "IfcAudioVisualAppliance",
+      "dimensions": {
+        "height": 0.45,
+        "width": 0.55,
+        "depth": 0.18
+      },
+      "colour_rgb": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "source": "SCS primitive",
+      "license": "Apache-2.0",
+      "anchor": {
+        "to": "desk-A",
+        "relation": "on_top",
+        "offset": [
+          0,
+          -0.18
+        ]
+      }
+    },
+    {
+      "id": "desklamp-A",
+      "name": "Desk Lamp A",
+      "category": "lamp",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 0.5,
+        "width": 0.18,
+        "depth": 0.18
+      },
+      "colour_rgb": [
+        0.3,
+        0.3,
+        0.32
+      ],
+      "source": "SCS primitive",
+      "license": "Apache-2.0",
+      "anchor": {
+        "to": "desk-A",
+        "relation": "on_top",
+        "offset": [
+          -0.55,
+          -0.2
+        ]
+      }
+    },
+    {
+      "id": "desk-B",
+      "name": "Desk B",
+      "category": "desk",
+      "ifc_class": "IfcTable",
+      "dimensions": {
+        "height": 0.74,
+        "width": 1.4,
+        "depth": 0.7
+      },
+      "colour_rgb": [
+        0.55,
+        0.38,
+        0.25
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/desk_B07GFFQZRQ.glb"
+    },
+    {
+      "id": "chair-B",
+      "name": "Task Chair B",
+      "category": "office_chair",
+      "ifc_class": "IfcChair",
+      "dimensions": {
+        "height": 1.1,
+        "width": 0.6,
+        "depth": 0.6
+      },
+      "colour_rgb": [
+        0.15,
+        0.15,
+        0.18
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/office_chair_B076HDDMKM.glb",
+      "anchor": {
+        "to": "desk-B",
+        "relation": "in_front"
+      }
+    },
+    {
+      "id": "monitor-B",
+      "name": "Monitor B",
+      "category": "monitor",
+      "ifc_class": "IfcAudioVisualAppliance",
+      "dimensions": {
+        "height": 0.45,
+        "width": 0.55,
+        "depth": 0.18
+      },
+      "colour_rgb": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "source": "SCS primitive",
+      "license": "Apache-2.0",
+      "anchor": {
+        "to": "desk-B",
+        "relation": "on_top",
+        "offset": [
+          0,
+          -0.18
+        ]
+      }
+    },
+    {
+      "id": "filing-cabinet",
+      "name": "Filing Cabinet",
+      "category": "filing_cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.32,
+        "width": 0.45,
+        "depth": 0.6
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/cabinet_B07GFL6W68.glb"
+    },
+    {
+      "id": "storage-cabinet",
+      "name": "Storage Cabinet",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 1.0,
+        "depth": 0.45
+      },
+      "colour_rgb": [
+        0.72,
+        0.72,
+        0.74
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/cabinet_B07C41C1C8.glb"
+    },
+    {
+      "id": "bookshelf",
+      "name": "Bookshelf",
+      "category": "bookshelf",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.5,
+        "width": 0.9,
+        "depth": 0.4
+      },
+      "colour_rgb": [
+        0.6,
+        0.45,
+        0.3
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/bookshelf_B00NUS53CY.glb"
+    },
+    {
+      "id": "sofa",
+      "name": "Sofa",
+      "category": "sofa",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 0.85,
+        "width": 2.0,
+        "depth": 0.9
+      },
+      "colour_rgb": [
+        0.3,
+        0.35,
+        0.45
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/sofa_B07DBGHYG6.glb"
+    },
+    {
+      "id": "coffee-table",
+      "name": "Coffee Table",
+      "category": "coffee_table",
+      "ifc_class": "IfcTable",
+      "dimensions": {
+        "height": 0.45,
+        "width": 1.1,
+        "depth": 0.6
+      },
+      "colour_rgb": [
+        0.5,
+        0.35,
+        0.22
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/table_B07H8V49GP.glb",
+      "anchor": {
+        "to": "sofa",
+        "relation": "in_front"
+      }
+    },
+    {
+      "id": "lounge-stool",
+      "name": "Lounge Stool",
+      "category": "stool",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 0.45,
+        "width": 0.4,
+        "depth": 0.4
+      },
+      "colour_rgb": [
+        0.4,
+        0.3,
+        0.25
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/stool_B07B79GMHH.glb",
+      "anchor": {
+        "to": "coffee-table",
+        "relation": "beside"
+      }
+    },
+    {
+      "id": "floor-lamp",
+      "name": "Floor Lamp",
+      "category": "lamp",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.6,
+        "width": 0.4,
+        "depth": 0.4
+      },
+      "colour_rgb": [
+        0.85,
+        0.8,
+        0.6
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/lamp_B07B4Z9PL9.glb"
+    },
+    {
+      "id": "side-table",
+      "name": "Side Table",
+      "category": "side_table",
+      "ifc_class": "IfcTable",
+      "dimensions": {
+        "height": 0.55,
+        "width": 0.5,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.5,
+        0.35,
+        0.22
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0",
+      "glb": "data/mesh_library_abo/table_B07GFWF2CX.glb"
+    }
+  ]
+}

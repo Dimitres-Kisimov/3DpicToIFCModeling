@@ -52,10 +52,12 @@ def _get_clearance(obj):
     return obj.get("clearance") or CLEARANCE_PRESETS.get(obj.get("category", ""), CLEARANCE_PRESETS["default"])
 
 
-def _solve_layout_ortools(room, objects):
+def _solve_layout_ortools(room, objects, obstacles=None):
     """
     CP-SAT integer programming placement.
     Discretises the room into a 10 cm grid.
+    obstacles: fixed keep-out rectangles [{x, z, width, depth}] (metres) — columns,
+    semi-walls, and door keep-clear zones. Nothing may overlap them.
     Returns list of {id, x, z, rotation} placements.
     """
     try:
@@ -112,10 +114,18 @@ def _solve_layout_ortools(room, objects):
 
         placements.append({"obj": obj, "x": x, "z": z, "w": w, "d": d, "rot": rot, "ix": ix, "iz": iz})
 
-    # No-overlap constraint across all furniture pairs
+    # Fixed keep-out rectangles: columns, semi-walls, and door keep-clear zones.
+    ob_ix, ob_iz = [], []
+    for k, ob in enumerate(obstacles or []):
+        ox = max(0, int(float(ob["x"]) * SCALE)); oz = max(0, int(float(ob["z"]) * SCALE))
+        ow = max(1, int(float(ob["width"]) * SCALE)); od = max(1, int(float(ob["depth"]) * SCALE))
+        ob_ix.append(model.NewFixedSizeIntervalVar(ox, ow, f"obx_{k}"))
+        ob_iz.append(model.NewFixedSizeIntervalVar(oz, od, f"obz_{k}"))
+
+    # No-overlap across all furniture pairs AND fixed obstacles
     model.AddNoOverlap2D(
-        [p["ix"] for p in placements],
-        [p["iz"] for p in placements],
+        [p["ix"] for p in placements] + ob_ix,
+        [p["iz"] for p in placements] + ob_iz,
     )
 
     # Ergonomic perimeter affinity: pull large/storage items toward the walls,
@@ -184,12 +194,14 @@ def _fallback_stack_layout(room, objects):
     return result
 
 
-def layout_room(room, objects):
-    log(f"Room: {room['width']}m × {room['depth']}m, {len(objects)} objects", "info")
-    placements = _solve_layout_ortools(room, objects)
+def layout_room(room, objects, obstacles=None):
+    log(f"Room: {room['width']}m × {room['depth']}m, {len(objects)} objects, "
+        f"{len(obstacles or [])} obstacles", "info")
+    placements = _solve_layout_ortools(room, objects, obstacles)
     return {
         "room": room,
         "placements": placements,
+        "obstacles": obstacles or [],
         "solver": "ortools-cpsat",
         "object_count": len(placements),
     }

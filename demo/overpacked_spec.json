@@ -1,0 +1,330 @@
+{
+  "room": {
+    "width": 4.0,
+    "depth": 3.0,
+    "height": 3.0,
+    "name": "Tiny room"
+  },
+  "objects": [
+    {
+      "id": "box-0",
+      "name": "Item 0",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-1",
+      "name": "Item 1",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-2",
+      "name": "Item 2",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-3",
+      "name": "Item 3",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-4",
+      "name": "Item 4",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-5",
+      "name": "Item 5",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-6",
+      "name": "Item 6",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-7",
+      "name": "Item 7",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-8",
+      "name": "Item 8",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-9",
+      "name": "Item 9",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-10",
+      "name": "Item 10",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-11",
+      "name": "Item 11",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-12",
+      "name": "Item 12",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-13",
+      "name": "Item 13",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-14",
+      "name": "Item 14",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-15",
+      "name": "Item 15",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-16",
+      "name": "Item 16",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-17",
+      "name": "Item 17",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-18",
+      "name": "Item 18",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    },
+    {
+      "id": "box-19",
+      "name": "Item 19",
+      "category": "cabinet",
+      "ifc_class": "IfcFurniture",
+      "dimensions": {
+        "height": 1.2,
+        "width": 0.8,
+        "depth": 0.5
+      },
+      "colour_rgb": [
+        0.6,
+        0.6,
+        0.62
+      ]
+    }
+  ]
+}
