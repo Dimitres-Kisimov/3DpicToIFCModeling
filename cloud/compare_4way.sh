@@ -7,8 +7,11 @@
 #   SAM 3D Objects SAM Licence     (best-effort: recent repo, entrypoint may differ)
 #
 # Target box : RunPod A40 48GB, template "PyTorch 2.4 / CUDA 11.8", Ubuntu, /workspace persistent.
-# Usage      : bash compare_4way.sh /workspace/input.png
-# Deliverable: /workspace/comparison/comparison_report.html  + the 4 GLBs in that folder.
+# Usage      : bash compare_4way.sh /workspace/photo.png        # one phone photo
+#              for f in /workspace/photos/*.jpg; do bash compare_4way.sh "$f"; done   # a batch
+# Deliverable: /workspace/comparison/<photo>/comparison_report.html + the 4 GLBs per photo.
+# Multi-photo : installs (repos + venvs) live in /workspace and are reused, so the FIRST
+#              photo pays the ~60 min build; every photo after it is just inference (minutes).
 #
 # Design notes:
 #   * NO `set -e` — every model is isolated; one failing must not kill the others.
@@ -160,7 +163,7 @@ PY
 # ----------------------------------------------------------------------------
 # stage plumbing
 # ----------------------------------------------------------------------------
-mkvenv(){ python -m venv "$ENVS/$1" --system-site-packages; }
+mkvenv(){ [ -d "$ENVS/$1" ] || python -m venv "$ENVS/$1" --system-site-packages; }
 
 start_vram(){ : > "$LOGS/vram_$1.log"; ( while true; do
   nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits >> "$LOGS/vram_$1.log" 2>/dev/null; sleep 1; done ) & echo $!; }

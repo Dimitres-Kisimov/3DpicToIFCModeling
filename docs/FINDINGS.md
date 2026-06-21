@@ -42,6 +42,16 @@ Run the demo: `powershell -ExecutionPolicy Bypass -File demo\run_demo.ps1`
    on a capped-paid cloud GPU (Sim A).
 6. **Cost (Heilbronn).** ~**€185/mo** on Hetzner GEX44, **€0 licence royalties**,
    GDPR-clean (German DC). Full model in `docs/COST_MODEL.md`.
+7. **Single-photo generation (the hard step) — runs, but has a ceiling.** TripoSR
+   generated a dense mesh from one chair photo in **~105 s on the 6.4 GB laptop GPU**
+   (670k faces). So photo→3D of a user's *actual* object is feasible, BUT single-view
+   reconstruction hallucinates the unseen back/sides — usable for client visualization,
+   not for faithful BIM-grade geometry (consistent with the prior critical-analysis
+   paper). Levers: multi-view photos (biggest), background removal (done), texture
+   projection, and SAM 3D/TRELLIS on 32 GB. **Quantifying real quality across all four
+   generators is exactly what Sim A (`cloud/compare_4way.sh`) measures.** Note: IFC/BIM
+   compliance rides on detection + dimensions, not mesh fidelity — so it's more tractable
+   than perfect geometry.
 
 ## Licence posture (commercial-safe only)
 Permissive MIT/Apache/BSD; no non-commercial, no revenue caps, no EU exclusion.
