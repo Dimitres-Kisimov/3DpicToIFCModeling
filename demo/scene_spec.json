@@ -1,0 +1,124 @@
+{
+  "room": {
+    "width": 6.0,
+    "depth": 4.0,
+    "height": 3.0,
+    "name": "Office Room"
+  },
+  "objects": [
+    {
+      "id": "furniture-1",
+      "name": "Furniture",
+      "category": "furniture",
+      "ifc_class": "IfcFurnishingElement",
+      "dimensions": {
+        "height": 0.891,
+        "width": 0.592,
+        "depth": 0.562
+      },
+      "glb": "demo\\meshes\\01_chair.glb",
+      "colour_rgb": [
+        0.963,
+        0.929,
+        0.749
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "desk-1",
+      "name": "Desk",
+      "category": "desk",
+      "ifc_class": "IfcCommunicationsAppliance",
+      "dimensions": {
+        "height": 0.309,
+        "width": 0.381,
+        "depth": 0.293
+      },
+      "glb": "demo\\meshes\\02_desk.glb",
+      "colour_rgb": [
+        0.115,
+        0.101,
+        0.09
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "furniture-2",
+      "name": "Furniture",
+      "category": "furniture",
+      "ifc_class": "IfcFurnishingElement",
+      "dimensions": {
+        "height": 0.891,
+        "width": 0.592,
+        "depth": 0.562
+      },
+      "glb": "demo\\meshes\\03_table.glb",
+      "colour_rgb": [
+        0.963,
+        0.929,
+        0.749
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "furniture-3",
+      "name": "Furniture",
+      "category": "furniture",
+      "ifc_class": "IfcFurnishingElement",
+      "dimensions": {
+        "height": 2.21,
+        "width": 1.635,
+        "depth": 1.554
+      },
+      "glb": "demo\\meshes\\04_bookshelf.glb",
+      "colour_rgb": [
+        0.163,
+        0.131,
+        0.107
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "furniture-4",
+      "name": "Furniture",
+      "category": "furniture",
+      "ifc_class": "IfcFurnishingElement",
+      "dimensions": {
+        "height": 2.882,
+        "width": 1.061,
+        "depth": 1.008
+      },
+      "glb": "demo\\meshes\\05_lamp.glb",
+      "colour_rgb": [
+        0.127,
+        0.067,
+        0.065
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "desk-2",
+      "name": "Desk",
+      "category": "desk",
+      "ifc_class": "IfcCommunicationsAppliance",
+      "dimensions": {
+        "height": 0.309,
+        "width": 0.381,
+        "depth": 0.293
+      },
+      "glb": "demo\\meshes\\06_cabinet.glb",
+      "colour_rgb": [
+        0.115,
+        0.101,
+        0.09
+      ],
+      "source": "Amazon Berkeley Objects (ABO)",
+      "license": "CC-BY-4.0"
+    }
+  ]
+}

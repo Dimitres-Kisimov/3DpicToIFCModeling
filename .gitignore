@@ -44,3 +44,16 @@ uploads/
 outputs/
 data/mesh_library_abo/_listings_work/
 backend/trellis/
+
+# SCS demo build artifacts (regenerable)
+demo/out/
+demo/meshes/
+
+# Large datasets / copies kept out of git
+data/office_images/
+data/demo_photos/
+data/furniture_library/
+models/
+
+# Office lock files
+~$*

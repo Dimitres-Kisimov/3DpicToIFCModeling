@@ -90,8 +90,14 @@ def _solve_layout_ortools(room, objects):
         model.Add(d == fd).OnlyEnforceIf(rot.Not())
         model.Add(d == fw).OnlyEnforceIf(rot)
 
-        ix = model.NewIntervalVar(x, w, x + w, f"ix_{obj['id']}")
-        iz = model.NewIntervalVar(z, d, z + d, f"iz_{obj['id']}")
+        # ortools 9.15 requires the interval end to be a single affine var,
+        # not a sum expression — bind explicit end vars.
+        ex = model.NewIntVar(WALL_MARGIN, room_w, f"ex_{obj['id']}")
+        ez = model.NewIntVar(WALL_MARGIN, room_d, f"ez_{obj['id']}")
+        model.Add(ex == x + w)
+        model.Add(ez == z + d)
+        ix = model.NewIntervalVar(x, w, ex, f"ix_{obj['id']}")
+        iz = model.NewIntervalVar(z, d, ez, f"iz_{obj['id']}")
 
         placements.append({"obj": obj, "x": x, "z": z, "w": w, "d": d, "rot": rot, "ix": ix, "iz": iz})
 
