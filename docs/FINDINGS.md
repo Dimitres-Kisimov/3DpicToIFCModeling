@@ -31,10 +31,15 @@ Run the demo: `powershell -ExecutionPolicy Bypass -File demo\run_demo.ps1`
 2. **Retrieval works and is the clean path.** DINOv2 + FAISS over the 400-mesh **ABO**
    catalog (CC-BY-4.0) returns real product furniture; with retrieval forced, no
    generative model is needed. `faiss-cpu 1.14.3` installs on Python 3.14.
-3. **Functional layout matters.** Pure CP-SAT packing (no-overlap + clearances) does not
-   make office sense. Added **functional anchoring** — chair → desk (in front, facing),
-   monitor → desk (on top) — for human-sensible workstations. Extensible to facing,
-   circulation paths, zones, and natural-language briefs ("meeting room for 8").
+3. **Functional layout matters (simulated room v1).** Pure CP-SAT packing doesn't make
+   office sense. The layout engine now does: **functional anchoring** (chair→desk,
+   monitor/lamp→desk, coffee-table→sofa, stool→coffee-table); **group-footprint
+   reservation** so grouped items never collide; **wall-affinity** (desks/storage/sofa
+   hug the walls, centre stays open for circulation); **seat-facing** (each chair's
+   forward is detected from its geometry and turned to face the desk); **ergonomic
+   dimensioning** (meshes scaled to standard sizes) and small inter-item clearances.
+   Validated on a **15-item office** (2 workstations + storage + lounge + accents).
+   Next: circulation aisles, natural-language briefs ("meeting room for 8").
 4. **Mesh orientation.** ABO GLBs are glTF **Y-up**; only the procedural primitives are
    Z-up. Fixed a double-rotation that tipped furniture onto its side.
 5. **Local hardware.** RTX 4050 Laptop, **6.4 GB VRAM** — runs detection + retrieval +

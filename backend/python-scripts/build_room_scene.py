@@ -152,6 +152,10 @@ def _object_mesh(obj: dict) -> trimesh.Trimesh:
     if not is_glb:
         # procedural primitives are Z-up; glTF/GLB meshes are already Y-up
         mesh.apply_transform(_ROTX_NEG90)
+    # scale to the object's real (ergonomic) dimensions: X=width, Y=height, Z=depth
+    ext = mesh.extents
+    if all(e > 1e-6 for e in ext):
+        mesh.apply_scale([w / ext[0], h / ext[1], d / ext[2]])
     return _coloured(mesh, obj.get("colour_rgb", [0.6, 0.6, 0.62]))
 
 
@@ -171,6 +175,29 @@ def _place(mesh: trimesh.Trimesh, position, rotation_deg_y: float,
     return m
 
 
+def _chair_forward_xz(obj):
+    """Native forward (backrest -> seat-front) of a seat mesh in its Y-up XZ plane,
+    so we can turn the chair to face the desk regardless of the source mesh's
+    orientation. Backrest = upper mass at the rear; seat-front is the opposite way."""
+    try:
+        m = _object_mesh(obj)
+        v = m.vertices
+        y = v[:, 1]
+        y0, y1 = float(y.min()), float(y.max())
+        h = y1 - y0
+        if h < 1e-6:
+            return (0.0, 1.0)
+        back = v[y > y0 + 0.6 * h][:, [0, 2]]   # backrest (upper band)
+        seat = v[y < y0 + 0.5 * h][:, [0, 2]]   # seat (lower band)
+        if len(back) < 10 or len(seat) < 10:
+            return (0.0, 1.0)
+        fwd = seat.mean(axis=0) - back.mean(axis=0)   # back -> front
+        n = float((fwd[0] ** 2 + fwd[1] ** 2) ** 0.5)
+        return (float(fwd[0] / n), float(fwd[1] / n)) if n > 1e-6 else (0.0, 1.0)
+    except Exception:
+        return (0.0, 1.0)
+
+
 def _resolve_layout(room: dict, objects: list):
     """Solve free-standing objects with CP-SAT, then place 'anchored' objects
     functionally relative to their anchor — chair in front of desk (facing it),
@@ -179,37 +206,108 @@ def _resolve_layout(room: dict, objects: list):
     Anchor spec on an object: {"anchor": {"to": "<id>", "relation": "in_front"|"on_top"|"beside"}}
     """
     by_id = {o["id"]: o for o in objects}
+    cw, ch = float(room["width"]), float(room["depth"])
+    cx, cz = cw / 2.0, ch / 2.0
+    GAP = 0.12
+
+    direct = {}
+    for o in objects:
+        a = o.get("anchor")
+        if a:
+            direct.setdefault(a["to"], []).append(o)
     free = [o for o in objects if not o.get("anchor")]
-    anchored = [o for o in objects if o.get("anchor")]
-    placements, solver = _placements(room, free)
-    pos = {p["id"]: p for p in placements}
-    cx, cz = float(room["width"]) / 2.0, float(room["depth"]) / 2.0
-    for o in anchored:
-        a = o["anchor"]
-        ref = pos.get(a.get("to"))
+
+    # Reserve each group's full footprint in the solve: a desk's in-front chair and
+    # a parent's beside-child expand its solver box, so groups can't collide.
+    solver_objs, meta = [], {}
+    for o in free:
+        w = float(o["dimensions"]["width"]); d = float(o["dimensions"]["depth"])
+        extra_d = 0.0; extra_w = 0.0; front_w = w
+        for c in direct.get(o["id"], []):
+            rel = c["anchor"].get("relation", "in_front")
+            cwd = float(c["dimensions"]["width"]); cdd = float(c["dimensions"]["depth"])
+            if rel == "in_front":
+                extra_d = max(extra_d, GAP + cdd); front_w = max(front_w, cwd)
+            elif rel == "beside":
+                extra_w += GAP + cwd
+        solver_objs.append({"id": o["id"], "width": max(w, front_w) + extra_w,
+                            "depth": d + extra_d, "category": o.get("category", "")})
+        meta[o["id"]] = {"w": w, "d": d, "extra_d": extra_d}
+
+    try:
+        import spatial_layout
+        placements = spatial_layout.layout_room(room, solver_objs)["placements"]
+        solver = "ortools-cpsat"
+    except Exception as exc:
+        print(f"[build_room_scene] solver unavailable ({exc}); grid fallback", file=sys.stderr)
+        placements = _grid_fallback(room, solver_objs)
+        solver = "grid-fallback"
+    box = {p["id"]: p for p in placements}
+    pos = {}
+
+    def _face(child, px, pz, ax, az):
+        target = math.degrees(math.atan2(ax - px, az - pz))   # child -> anchor
+        if "chair" in child.get("category", ""):
+            fx, fz = _chair_forward_xz(child)
+            return target - math.degrees(math.atan2(fx, fz))  # seat-front -> anchor
+        return target
+
+    for o in free:
+        b = box.get(o["id"])
+        if b is None:
+            continue
+        m = meta[o["id"]]
+        bx, _, bz = b["position"]
+        rot = (b.get("rotation") or [0, 0, 0])[1]
+        along_z = (round(rot / 90) % 2 == 0)
+        # anchor at the wall end of the reserved box; "front" points to the room
+        if along_z:
+            front = 1.0 if cz > bz else -1.0
+            ax, az = bx, bz - front * m["extra_d"] / 2.0
+        else:
+            front = 1.0 if cx > bx else -1.0
+            ax, az = bx - front * m["extra_d"] / 2.0, bz
+        pos[o["id"]] = {"id": o["id"], "position": [ax, 0.0, az],
+                        "rotation": [0, rot, 0], "placed": True}
+        for c in direct.get(o["id"], []):
+            rel = c["anchor"].get("relation", "in_front")
+            cdd = float(c["dimensions"]["depth"]); cwd = float(c["dimensions"]["width"])
+            if rel == "on_top":
+                ox, oz = (c["anchor"].get("offset", [0.0, 0.0]) + [0.0, 0.0])[:2]
+                pos[c["id"]] = {"id": c["id"], "position": [ax + float(ox), 0.0, az + float(oz)],
+                                "rotation": [0, rot, 0],
+                                "elevation": float(o["dimensions"]["height"]), "placed": True}
+            elif rel == "beside":
+                off = m["w"] / 2 + cwd / 2 + 0.1
+                px, pz = (ax + off, az) if along_z else (ax, az + off)
+                pos[c["id"]] = {"id": c["id"], "position": [px, 0.0, pz],
+                                "rotation": [0, rot, 0], "placed": True}
+            else:  # in_front — toward the room, seat facing the anchor
+                off = m["d"] / 2 + GAP + cdd / 2
+                px, pz = (ax, az + front * off) if along_z else (ax + front * off, az)
+                pos[c["id"]] = {"id": c["id"], "position": [px, 0.0, pz],
+                                "rotation": [0, _face(c, px, pz, ax, az), 0], "placed": True}
+
+    # nested children (e.g. stool beside coffee-table) — place after their parent
+    for o in [x for x in objects if x.get("anchor") and x["id"] not in pos]:
+        a = o["anchor"]; ref = pos.get(a["to"])
         if ref is None:
             continue
-        rx, _, rz = ref["position"]
-        ad = by_id[a["to"]]["dimensions"]
-        od = o["dimensions"]
+        rx, _, rz = ref["position"]; rrot = (ref.get("rotation") or [0, 0, 0])[1]
+        ad = by_id[a["to"]]["dimensions"]; od = o["dimensions"]
         rel = a.get("relation", "in_front")
         if rel == "on_top":
-            pos[o["id"]] = {"id": o["id"], "position": [rx, 0.0, rz],
-                            "rotation": ref.get("rotation", [0, 0, 0]),
-                            "elevation": float(ad["height"]), "placed": True}
+            ox, oz = (a.get("offset", [0.0, 0.0]) + [0.0, 0.0])[:2]
+            pos[o["id"]] = {"id": o["id"], "position": [rx + float(ox), 0.0, rz + float(oz)],
+                            "rotation": [0, rrot, 0], "elevation": float(ad["height"]), "placed": True}
         elif rel == "beside":
             off = float(ad["width"]) / 2 + float(od["width"]) / 2 + 0.1
             pos[o["id"]] = {"id": o["id"], "position": [rx + off, 0.0, rz],
-                            "rotation": [0, 0, 0], "placed": True}
-        else:  # in_front — on the desk's open (room-centre) side, facing it
-            dx, dz = cx - rx, cz - rz
-            n = math.hypot(dx, dz) or 1.0
-            dx, dz = dx / n, dz / n
-            off = float(ad["depth"]) / 2 + float(od["depth"]) / 2 + 0.12
-            yaw = math.degrees(math.atan2(-dx, -dz))
-            pos[o["id"]] = {"id": o["id"],
-                            "position": [rx + dx * off, 0.0, rz + dz * off],
-                            "rotation": [0, yaw, 0], "placed": True}
+                            "rotation": [0, rrot, 0], "placed": True}
+        else:
+            off = float(ad["depth"]) / 2 + float(od["depth"]) / 2 + GAP
+            pos[o["id"]] = {"id": o["id"], "position": [rx, 0.0, rz + off],
+                            "rotation": [0, _face(o, rx, rz + off, rx, rz), 0], "placed": True}
     return pos, solver
 
 

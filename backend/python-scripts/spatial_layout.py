@@ -24,16 +24,27 @@ sys.path.insert(0, str(Path(__file__).parent))
 from inference_base import log, error_exit, success_exit
 
 # Clearance presets by object category (metres)
+# Small buffers only: the chair/circulation space is reserved separately via group
+# footprints, and wall-affinity keeps the room centre open — so these are just
+# minimum gaps between neighbouring items, not full circulation envelopes.
 CLEARANCE_PRESETS = {
-    "chair":             0.50,
-    "desk":              0.80,
-    "conference_table":  1.00,
-    "sofa":              0.60,
-    "bookshelf":         0.30,
-    "filing_cabinet":    0.30,
-    "printer":           0.40,
-    "plant":             0.20,
-    "default":           0.40,
+    "chair":             0.10,
+    "office_chair":      0.10,
+    "desk":              0.15,
+    "conference_table":  0.30,
+    "table":             0.15,
+    "coffee_table":      0.15,
+    "side_table":        0.10,
+    "sofa":              0.20,
+    "stool":             0.10,
+    "bookshelf":         0.10,
+    "cabinet":           0.20,   # door/drawer swing
+    "filing_cabinet":    0.20,
+    "printer":           0.15,
+    "lamp":              0.10,
+    "monitor":           0.05,
+    "plant":             0.10,
+    "default":           0.15,
 }
 
 
@@ -106,6 +117,24 @@ def _solve_layout_ortools(room, objects):
         [p["ix"] for p in placements],
         [p["iz"] for p in placements],
     )
+
+    # Ergonomic perimeter affinity: pull large/storage items toward the walls,
+    # keeping the room centre open for circulation.
+    PERIMETER = {"desk", "cabinet", "filing_cabinet", "storage_cabinet",
+                 "bookshelf", "sofa", "side_table"}
+    wall_terms = []
+    for p in placements:
+        if p["obj"].get("category") in PERIMETER:
+            x, z, w, d = p["x"], p["z"], p["w"], p["d"]
+            dr = model.NewIntVar(0, room_w, f"dr_{p['obj']['id']}")
+            db = model.NewIntVar(0, room_d, f"db_{p['obj']['id']}")
+            model.Add(dr == room_w - x - w)
+            model.Add(db == room_d - z - d)
+            md = model.NewIntVar(0, max(room_w, room_d), f"wall_{p['obj']['id']}")
+            model.AddMinEquality(md, [x, dr, z, db])
+            wall_terms.append(md)
+    if wall_terms:
+        model.Minimize(sum(wall_terms))
 
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = 30.0
