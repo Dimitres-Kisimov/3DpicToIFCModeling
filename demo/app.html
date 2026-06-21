@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCS — Room Population</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg:#1b1e24; --panel:#23272f; --line:#343a44; --accent:#2f81f7; --txt:#e6e9ef; --muted:#9aa3b2; }
+  html, body { height: 100%; font-family: 'Segoe UI', system-ui, sans-serif; color: var(--txt); background: var(--bg); }
+  #app { display: grid; grid-template-rows: auto 1fr; height: 100%; }
+  header { display: flex; align-items: center; gap: 14px; padding: 10px 18px; background: var(--panel); border-bottom: 1px solid var(--line); }
+  header h1 { font-size: 15px; font-weight: 600; }
+  header .sub { font-size: 12px; color: var(--muted); }
+  main { display: grid; grid-template-columns: 320px 1fr 360px; min-height: 0; }
+  aside { background: var(--panel); overflow: auto; }
+  #controls { border-right: 1px solid var(--line); padding: 14px; }
+  #tablepanel { border-left: 1px solid var(--line); display: grid; grid-template-rows: auto 1fr auto; }
+  .grp { margin-bottom: 16px; }
+  .grp h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 8px; }
+  label { font-size: 12px; color: var(--muted); display: block; margin: 6px 0 2px; }
+  input, select { width: 100%; background: #2b313b; border: 1px solid var(--line); color: var(--txt); padding: 6px 8px; border-radius: 6px; font-size: 13px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 6px; align-items: end; }
+  .chk { display: flex; align-items: center; gap: 6px; font-size: 13px; margin-top: 8px; }
+  .chk input { width: auto; }
+  .catrow { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .catrow small { color: var(--muted); }
+  .step { display: flex; align-items: center; gap: 8px; }
+  .step b { min-width: 16px; text-align: center; }
+  button { background: #2b313b; border: 1px solid var(--line); color: var(--txt); padding: 6px 10px; border-radius: 6px; font-size: 13px; cursor: pointer; }
+  button:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; width: 100%; padding: 10px; font-weight: 600; margin-top: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip { background: #2b313b; border: 1px solid var(--line); border-radius: 12px; padding: 3px 9px; font-size: 11px; cursor: pointer; }
+  .total { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  #stage { position: relative; background: linear-gradient(180deg,#2a2f38 0%, #161a20 100%); }
+  #cv { width: 100%; height: 100%; }
+  #msg { position: absolute; top: 12px; left: 12px; right: 12px; background: #0009; padding: 8px 12px; border-radius: 6px; font-size: 13px; z-index: 5; }
+  #msg.bad { background: #5a1d1dcc; }
+  .toolbar { position: absolute; bottom: 12px; left: 12px; display: flex; gap: 8px; z-index: 5; }
+  .panel-head { padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 13px; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { position: sticky; top: 0; background: #2b313b; text-align: left; padding: 7px 10px; color: var(--muted); border-bottom: 1px solid var(--line); }
+  tbody td { padding: 7px 10px; border-bottom: 1px solid var(--line); }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; border: 1px solid #0006; }
+  .ifc { color: var(--accent); font-family: ui-monospace, monospace; font-size: 11px; }
+  .panel-foot { padding: 10px 16px; border-top: 1px solid var(--line); display: flex; gap: 8px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>SCS · Room Population</h1>
+    <span class="sub">pick a room + items → AI ergonomic layout → 3D + IFC</span>
+  </header>
+  <main>
+    <aside id="controls">
+      <div class="grp">
+        <h2>Room</h2>
+        <div class="row2">
+          <div><label>Width (m)</label><input id="rw" type="number" value="8" min="2" step="0.5"></div>
+          <div><label>Depth (m)</label><input id="rd" type="number" value="6" min="2" step="0.5"></div>
+        </div>
+        <label>Type</label>
+        <select id="rtype"><option value="office">Office</option><option value="living">Living</option><option value="workspace">Workspace</option></select>
+        <div class="chk"><input id="rada" type="checkbox"><label style="margin:0">ADA accessible (wider aisles)</label></div>
+      </div>
+      <div class="grp">
+        <h2>Catalog — select up to 20</h2>
+        <div id="catalog"></div>
+        <div class="total">Selected: <b id="total" style="color:var(--muted)">0</b> / 20</div>
+      </div>
+      <div class="grp">
+        <h2>Obstacles & doors</h2>
+        <div class="row3"><div><label>col x</label><input id="colx" type="number" value="4" step="0.1"></div><div><label>z</label><input id="colz" type="number" value="3" step="0.1"></div><div><label>size</label><input id="cols" type="number" value="0.4" step="0.1"></div><button id="add-col">+col</button></div>
+        <div class="row3"><div><label>door x</label><input id="dox" type="number" value="3.5" step="0.1"></div><div><label>z</label><input id="doz" type="number" value="5.1" step="0.1"></div><div><label>width</label><input id="dow" type="number" value="0.9" step="0.1"></div><button id="add-door">+door</button></div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <button class="primary" id="gen">Generate layout</button>
+    </aside>
+    <div id="stage">
+      <div id="msg">Pick a room and items, then Generate.</div>
+      <canvas id="cv"></canvas>
+      <div class="toolbar"><button id="fit">Fit</button><button id="walls">Walls</button></div>
+    </div>
+    <aside id="tablepanel">
+      <div class="panel-head">Object table <span id="meta" style="color:var(--muted);font-weight:400"></span></div>
+      <div style="overflow:auto"><table><thead><tr><th>Object</th><th>IFC type</th><th>W×D×H</th></tr></thead><tbody id="rows"></tbody></table></div>
+      <div class="panel-foot"><button id="csv">Export CSV</button><button id="ifc">Export IFC</button></div>
+    </aside>
+  </main>
+</div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

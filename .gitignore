@@ -57,3 +57,6 @@ models/
 
 # Office lock files
 ~$*
+
+# app build output
+demo/app_out/

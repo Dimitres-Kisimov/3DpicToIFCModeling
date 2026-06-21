@@ -1,0 +1,9 @@
+# SCS room-population app — core runtime deps (the layout/IFC/viewer path; no GPU).
+# The scan path (photo -> object) additionally needs torch, transformers, timm, faiss-cpu, rembg.
+flask
+ortools
+trimesh
+ifcopenshell
+matplotlib
+numpy
+pillow
