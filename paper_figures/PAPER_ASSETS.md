@@ -33,8 +33,8 @@ want them separately instead of the side-by-side `_montage.png`.
    Chamfer/F-score, the single-view ceiling. (4-way bake-off table pending the RunPod run.)
 
 ## Composite plate
-`results_plate.png` tiles all panels (a--i) into one journal-style page
-(`egin{figure*}` block in `figures.tex`). Regenerate with `make_results_plate.py`.
+`results_plate.png` tiles all panels (a–i) into one journal-style page (full-width
+`figure*` block in `figures.tex`). Regenerate with `make_results_plate.py`.
 
 ## Reproduce everything
 ```
