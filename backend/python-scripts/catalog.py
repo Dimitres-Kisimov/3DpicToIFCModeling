@@ -41,6 +41,11 @@ ABO_CATEGORIES = {"desk", "office_chair", "cabinet", "bookshelf", "sofa", "table
 MESH_BORROW = {"coffee_table": "table", "side_table": "table", "filing_cabinet": "cabinet"}
 
 
+# hand-picked clean default mesh per category (avoids e.g. open wire-frame bookshelves
+# that render as airy cages). Used as index 0 for that category.
+PREFERRED = {"bookshelf": "bookshelf_B07PPNNCM2.glb"}
+
+
 def _manifest():
     global _MANIFEST
     if _MANIFEST is None:
@@ -66,6 +71,9 @@ def _abo_glb(category, idx):
     items = [e for e in _manifest() if e.get("category") == category]
     if not items:
         return None
+    pref = PREFERRED.get(category)
+    if pref:   # float the hand-picked clean mesh to index 0
+        items = sorted(items, key=lambda e: 0 if e["glb"] == pref else 1)
     return str(ABO_DIR / items[idx % len(items)]["glb"])
 
 

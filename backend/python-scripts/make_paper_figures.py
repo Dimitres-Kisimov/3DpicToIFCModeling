@@ -101,20 +101,51 @@ def _pick_3d_view(rdir: Path) -> Path | None:
     return None
 
 
+def _font(size):
+    from PIL import ImageFont
+    for name in ("arialbd.ttf", "arial.ttf", "DejaVuSans-Bold.ttf", "DejaVuSans.ttf"):
+        try:
+            return ImageFont.truetype(name, size)
+        except Exception:
+            continue
+    return ImageFont.load_default()
+
+
 def _montage(plan: Path, view: Path, out: Path, title: str):
-    """Stitch the floor plan (left) + 3D view (right) into one paper panel."""
-    from PIL import Image
+    """Stitch the floor plan (left) + 3D view (right) into one titled paper panel."""
+    from PIL import Image, ImageDraw
     imgs = [Image.open(p).convert("RGB") for p in (plan, view) if p and p.exists()]
     if not imgs:
         return False
     h = min(im.height for im in imgs)
     imgs = [im.resize((int(im.width * h / im.height), h)) for im in imgs]
-    pad = 24
+    pad, bar = 24, 46
     W = sum(im.width for im in imgs) + pad * (len(imgs) + 1)
-    canvas = Image.new("RGB", (W, h + pad * 2), "white")
+    canvas = Image.new("RGB", (W, h + pad + bar), "white")
+    d = ImageDraw.Draw(canvas)
+    d.rectangle([0, 0, W, bar], fill="#23272f")
+    d.text((pad, bar // 2), title, fill="white", font=_font(22), anchor="lm")
     x = pad
     for im in imgs:
-        canvas.paste(im, (x, pad)); x += im.width + pad
+        canvas.paste(im, (x, bar)); x += im.width + pad
+    canvas.save(out)
+    return True
+
+
+def _contact_sheet(panels, out: Path, cols=2):
+    """Tile the per-figure montages into a single overview sheet (paper 'Figure 1')."""
+    from PIL import Image
+    imgs = [Image.open(p).convert("RGB") for p in panels if Path(p).exists()]
+    if not imgs:
+        return False
+    w = min(im.width for im in imgs)
+    imgs = [im.resize((w, int(im.height * w / im.width))) for im in imgs]
+    rows = (len(imgs) + cols - 1) // cols
+    rh = max(im.height for im in imgs); pad = 18
+    canvas = Image.new("RGB", (cols * w + pad * (cols + 1), rows * rh + pad * (rows + 1)), "white")
+    for i, im in enumerate(imgs):
+        r, c = divmod(i, cols)
+        canvas.paste(im, (pad + c * (w + pad), pad + r * (rh + pad)))
     canvas.save(out)
     return True
 
@@ -173,6 +204,7 @@ def main():
              "|---|--------|----------|------|-------|--------|--------------|"]
     latex = ["% Auto-generated figure blocks for the paper. \\graphicspath{{paper_figures/}}",
              "% Each montage = labelled floor plan (left) + coloured 3D render (right).", ""]
+    panels = []
 
     for i, (name, crit, room, picks, caption) in enumerate(VARIATIONS, 1):
         tag = f"fig{i:02d}_{name}"
@@ -197,8 +229,11 @@ def main():
                 shutil.copy(plan, OUT / f"{tag}_plan.png")
             if view:
                 shutil.copy(view, OUT / f"{tag}_3d.png")
+            mtitle = f"Fig {i} — {name.replace('_', ' ').title()}   ·   {crit}"
             montaged = _montage(OUT / f"{tag}_plan.png", OUT / f"{tag}_3d.png",
-                                OUT / f"{tag}_montage.png", tag)
+                                OUT / f"{tag}_montage.png", mtitle)
+            if montaged:
+                panels.append(OUT / f"{tag}_montage.png")
             feasible = "OK" if solver == "ortools-cpsat" else f"**{solver}**"
             room_s = f'{room["width"]}x{room["depth"]} {room["type"]}'
             index.append(f"| {i} | `{tag}` | {crit} | {room_s} | {n_items} | {feasible} | {caption} |")
@@ -216,6 +251,12 @@ def main():
             index.append(f"| {i} | `{tag}` | {crit} | - | - | ERROR | {exc} |")
             print(f"[{i}/{len(VARIATIONS)}] {tag} FAILED: {exc}", file=sys.stderr)
             traceback.print_exc()
+
+    # overview contact sheet (paper "Figure 1": all scenes at a glance)
+    if _contact_sheet(panels, OUT / "fig00_overview.png", cols=2):
+        index.insert(5, "| 0 | `fig00_overview` | all | - | - | - | "
+                        "Overview contact sheet: all layout scenes at a glance. |")
+        print(f"[overview] contact sheet -> fig00_overview.png ({len(panels)} panels)")
 
     # extra figure: capacity-boundary sweep (C4/C7, quantitative)
     try:
