@@ -51,15 +51,35 @@ def normalize(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
     return m
 
 
-def _icp_align(src: trimesh.Trimesh, dst: trimesh.Trimesh, n=2000) -> trimesh.Trimesh:
-    """Refine src onto dst with ICP on sampled points (handles arbitrary recon pose)."""
-    try:
-        sp = src.sample(n)
-        T, _, _ = trimesh.registration.icp(sp, dst, max_iterations=40)
-        out = src.copy(); out.apply_transform(T)
-        return out
-    except Exception:
-        return src
+def _seed_rotations():
+    """Coarse initial orientations to seed ICP — reconstructions come out in an
+    arbitrary canonical frame (commonly yaw-rotated or flipped), and ICP only
+    refines locally, so we must try several starts and keep the best."""
+    seeds = []
+    for axis in ([0, 1, 0], [1, 0, 0], [0, 0, 1]):
+        for ang in (0.0, np.pi / 2, np.pi, 3 * np.pi / 2):
+            seeds.append(trimesh.transformations.rotation_matrix(ang, axis))
+    return seeds
+
+
+def _icp_align(src: trimesh.Trimesh, dst: trimesh.Trimesh, n=3000) -> trimesh.Trimesh:
+    """Align src onto dst: try several seed rotations, ICP-refine each, keep the one
+    whose points sit closest to dst (robust to arbitrary reconstruction pose)."""
+    dst_pts = dst.sample(n)
+    dtree = cKDTree(dst_pts)
+    best_T, best_err = np.eye(4), np.inf
+    for R in _seed_rotations():
+        try:
+            sp = trimesh.transform_points(src.sample(n), R)
+            T, _, _ = trimesh.registration.icp(sp, dst_pts, max_iterations=30)
+            moved = trimesh.transform_points(sp, T)
+            err = float(dtree.query(moved)[0].mean())
+            if err < best_err:
+                best_err, best_T = err, T @ R
+        except Exception:
+            continue
+    out = src.copy(); out.apply_transform(best_T)
+    return out
 
 
 def _metrics(a_pts, b_pts, tau):

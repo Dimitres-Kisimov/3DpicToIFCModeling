@@ -63,3 +63,6 @@ demo/app_out/
 
 # paper figure scratch (full scene builds + GLBs)
 paper_figures/_work/
+
+# photo->3D eval scratch (rendered photos + recon GLBs)
+eval_out/
