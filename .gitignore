@@ -60,3 +60,6 @@ models/
 
 # app build output
 demo/app_out/
+
+# paper figure scratch (full scene builds + GLBs)
+paper_figures/_work/

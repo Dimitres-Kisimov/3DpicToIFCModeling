@@ -100,24 +100,27 @@ def view3d(room, items, path, azim, elev, label):
     fig.savefig(path, dpi=150, bbox_inches="tight"); plt.close(fig)
 
 
+def _hex2rgb(h):
+    h = (h or "#9a9a9a").lstrip("#")
+    return np.array([int(h[i:i + 2], 16) / 255.0 for i in (0, 2, 4)])
+
+
 def meshrender(out_dir, room, path):
-    """Render the real furniture meshes from scene.glb with the room as a
-    non-occluding wireframe (walls solid would hide everything in matplotlib)."""
+    """Render the real furniture meshes from scene.glb, one object at a time so each
+    keeps its catalog colour (ABO GLBs store colour as textures, which don't survive a
+    merge — so we colour per-object from schedule.json's material_hex instead of grey).
+    The room is drawn as a non-occluding wireframe."""
+    import json as _json
     import trimesh
     from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
     W, D, H = room["width"], room["depth"], room.get("height", 3.0)
     scene = trimesh.load(str(out_dir / "scene.glb"))
-    for g in [n for n in list(scene.geometry) if n.startswith("room-")]:
-        scene.delete_geometry(g)
-    mesh = scene.to_geometry()
-    tris = mesh.triangles[:, :, [0, 2, 1]]   # world (x, y-up, z) -> plot (x, z, y)
-    light = np.array([0.4, 0.85, 0.5]); light /= np.linalg.norm(light)
-    shade = np.clip(mesh.face_normals @ light, 0, 1) * 0.6 + 0.4
     try:
-        fc = mesh.visual.face_colors[:, :3] / 255.0
+        sched = _json.loads((out_dir / "schedule.json").read_text(encoding="utf-8"))
+        colmap = {it["id"]: it.get("material_hex", "#9a9a9a") for it in sched.get("items", [])}
     except Exception:
-        fc = np.full((len(tris), 3), 0.6)
-    colors = np.clip(fc * shade[:, None], 0, 1)
+        colmap = {}
+    light = np.array([0.4, 0.85, 0.5]); light /= np.linalg.norm(light)
 
     fig = plt.figure(figsize=(11, 7)); ax = fig.add_subplot(111, projection="3d")
     # floor + room wireframe (plot coords: x=X, y=Z, z=Y-up)
@@ -129,11 +132,24 @@ def meshrender(out_dir, room, path):
              (0, 4), (1, 5), (2, 6), (3, 7)]
     ax.add_collection3d(Line3DCollection([[c[a], c[b]] for a, b in edges],
                                          colors="#9a9a9a", linewidths=1.0))
-    ax.add_collection3d(Poly3DCollection(tris, facecolors=colors, edgecolor="none"))
+
+    # one Poly3DCollection per object, coloured by its catalog material
+    for node in scene.graph.nodes_geometry:
+        T, gname = scene.graph[node]
+        if gname is None or gname.startswith("room-"):
+            continue
+        g = scene.geometry[gname].copy(); g.apply_transform(T)
+        col = next((colmap[k] for k in colmap if node == k or gname == k or node.startswith(k)), None)
+        rgb = _hex2rgb(col)
+        tris = g.triangles[:, :, [0, 2, 1]]   # world (x, y-up, z) -> plot (x, z, y)
+        shade = np.clip(g.face_normals @ light, 0, 1) * 0.6 + 0.4
+        colors = np.clip(rgb[None, :] * shade[:, None], 0, 1)
+        ax.add_collection3d(Poly3DCollection(tris, facecolors=colors, edgecolor="none"))
+
     ax.set_xlim(0, W); ax.set_ylim(0, D); ax.set_zlim(0, H)
     ax.set_box_aspect((W, D, H))
     ax.view_init(elev=24, azim=-62); ax.set_axis_off()
-    ax.set_title("Office room — real furniture, AI-placed", fontweight="bold", color=_TXT)
+    ax.set_title("Room — real furniture, AI-placed", fontweight="bold", color=_TXT)
     fig.savefig(path, dpi=150, bbox_inches="tight"); plt.close(fig)
 
 

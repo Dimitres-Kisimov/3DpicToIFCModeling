@@ -35,6 +35,10 @@ CATALOG_META = {
 }
 # categories with real ABO meshes; the rest fall back to procedural primitives
 ABO_CATEGORIES = {"desk", "office_chair", "cabinet", "bookshelf", "sofa", "table", "stool", "lamp"}
+# categories without their own ABO mesh borrow a visually-similar one (scaled to their
+# own ergonomic dims), so they render as real furniture instead of plain placeholders.
+# (monitor stays a clean procedural box — there is no sensible ABO stand-in.)
+MESH_BORROW = {"coffee_table": "table", "side_table": "table", "filing_cabinet": "cabinet"}
 
 
 def _manifest():
@@ -51,8 +55,9 @@ def list_catalog():
         counts[e.get("category", "?")] = counts.get(e.get("category", "?"), 0) + 1
     out = []
     for c, (ifc, dims, _col) in sorted(CATALOG_META.items()):
+        src = c if c in ABO_CATEGORIES else MESH_BORROW.get(c)
         out.append({"category": c, "label": c.replace("_", " ").title(), "ifc_class": ifc,
-                    "abo": c in ABO_CATEGORIES, "abo_count": counts.get(c, 0),
+                    "abo": src is not None, "abo_count": counts.get(src or c, 0),
                     "dims_hwd": dims})
     return out
 
@@ -79,9 +84,10 @@ def build_scene_spec(room: dict, picks: list) -> dict:
             o = {"id": oid, "name": cat.replace("_", " ").title(), "category": cat,
                  "ifc_class": ifc, "dimensions": {"height": h, "width": w, "depth": d},
                  "colour_rgb": col, "source": "SCS primitive", "license": "Apache-2.0"}
-            if cat in ABO_CATEGORIES:
-                i = abo_idx.get(cat, 0); abo_idx[cat] = i + 1
-                glb = _abo_glb(cat, i)
+            src = cat if cat in ABO_CATEGORIES else MESH_BORROW.get(cat)
+            if src:
+                i = abo_idx.get(src, 0); abo_idx[src] = i + 1
+                glb = _abo_glb(src, i)
                 if glb:
                     o["glb"] = glb
                     o["source"] = "Amazon Berkeley Objects (ABO)"; o["license"] = "CC-BY-4.0"
