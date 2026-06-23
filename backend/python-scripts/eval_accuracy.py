@@ -95,7 +95,8 @@ def _metrics(a_pts, b_pts, tau):
             "acc_mean": round(float(da.mean()), 6), "cov_mean": round(float(db.mean()), 6)}
 
 
-def evaluate(gt_mesh, recon_mesh, n=50000, tau=0.02, align=True) -> dict:
+def evaluate(gt_mesh, recon_mesh, n=50000, tau=0.02, align=True, seed=0) -> dict:
+    np.random.seed(seed)   # deterministic surface sampling -> reproducible metrics
     gt = normalize(gt_mesh)
     rc = normalize(recon_mesh)
     if align:

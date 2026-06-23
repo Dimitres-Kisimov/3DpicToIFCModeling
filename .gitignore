@@ -66,3 +66,7 @@ paper_figures/_work/
 
 # photo->3D eval scratch (rendered photos + recon GLBs)
 eval_out/
+
+# bake-off scratch (rendered photos + recon GLBs)
+bakeoff_in/
+bakeoff_out/

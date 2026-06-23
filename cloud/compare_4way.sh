@@ -7,8 +7,12 @@
 #   SAM 3D Objects SAM Licence     (best-effort: recent repo, entrypoint may differ)
 #
 # Target box : RunPod A40 48GB, template "PyTorch 2.4 / CUDA 11.8", Ubuntu, /workspace persistent.
-# Usage      : bash compare_4way.sh /workspace/photo.png        # one phone photo
+# Usage      : bash compare_4way.sh /workspace/photo.png                 # one phone photo
+#              bash compare_4way.sh /workspace/photo.png /workspace/gt.glb  # + accuracy scoring
 #              for f in /workspace/photos/*.jpg; do bash compare_4way.sh "$f"; done   # a batch
+# Scoring    : pass an ABO ground-truth mesh as arg 2 to get Chamfer/F-score per model
+#              (uses backend/python-scripts/eval_accuracy.py — same metric as the local
+#              harness). For the ABO-as-GT protocol, render photos with eval_bakeoff.py.
 # Deliverable: /workspace/comparison/<photo>/comparison_report.html + the 4 GLBs per photo.
 # Multi-photo : installs (repos + venvs) live in /workspace and are reused, so the FIRST
 #              photo pays the ~60 min build; every photo after it is just inference (minutes).
@@ -22,7 +26,11 @@
 set -u
 
 INPUT="${1:-/workspace/input.png}"
+GT_MESH="${2:-}"      # optional ABO ground-truth mesh -> enables Chamfer/F-score scoring
 ROOT=/workspace
+# reuse the validated accuracy metric from the repo (no code duplication)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+EVAL_PY="${SCS_EVAL_PY:-$SCRIPT_DIR/../backend/python-scripts/eval_accuracy.py}"
 REPOS="$ROOT/repos"
 ENVS="$ROOT/envs"
 OUT="$ROOT/comparison"
@@ -37,7 +45,7 @@ fi
 cp "$INPUT" "$OUT/input.png" 2>/dev/null || true
 
 STATS="$OUT/stats.csv"
-echo "model,status,seconds,peak_vram_mb,verts,faces,filesize_bytes,glb" > "$STATS"
+echo "model,status,seconds,peak_vram_mb,verts,faces,filesize_bytes,chamfer,fscore,glb" > "$STATS"
 
 log(){ echo -e "\n=== [$(date +%H:%M:%S)] $* ==="; }
 
@@ -52,7 +60,9 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y \
 
 pip install -q --upgrade pip >/dev/null 2>&1
 log "Installing headless renderer (pyrender/EGL) into base python — see $LOGS/render_setup.log"
-pip install -q pyrender trimesh imageio numpy pillow >"$LOGS/render_setup.log" 2>&1
+pip install -q pyrender trimesh imageio numpy pillow scipy >"$LOGS/render_setup.log" 2>&1
+[ -n "$GT_MESH" ] && [ -f "$EVAL_PY" ] && echo "scoring ENABLED: GT=$GT_MESH via $EVAL_PY" \
+  || echo "scoring DISABLED (no GT mesh / eval_accuracy.py not found) — geometry stats only"
 
 export CUDA_HOME="${CUDA_HOME:-/usr/local/cuda}"
 export PATH="$CUDA_HOME/bin:$PATH"
@@ -131,8 +141,10 @@ for r in rows:
       <span class="badge" style="background:{badge}">{r["status"].upper()}</span></div>
       {img}
       <div class="meta">{dl} &middot; <a href="logs/{m}.log">log</a></div></div>''')
+    ch = r.get("chamfer") or "-"; fs = r.get("fscore") or "-"
     trows.append(f'''<tr><td>{m}</td><td>{r["status"]}</td><td>{r["seconds"]}s</td>
-      <td>{r["peak_vram_mb"]} MB</td><td>{fmt(r["verts"])}</td><td>{fmt(r["faces"])}</td><td>{mb(r["filesize_bytes"])}</td></tr>''')
+      <td>{r["peak_vram_mb"]} MB</td><td>{fmt(r["verts"])}</td><td>{fmt(r["faces"])}</td><td>{mb(r["filesize_bytes"])}</td>
+      <td>{ch}</td><td>{fs}</td></tr>''')
 inp = '<img src="input.png" style="height:200px;border:1px solid #ccc;border-radius:6px">' if os.path.exists(os.path.join(OUT,"input.png")) else ""
 doc = f'''<!doctype html><meta charset=utf-8><title>4-way single-image-to-3D comparison</title>
 <style>
@@ -153,7 +165,7 @@ th:first-child,td:first-child{{text-align:left}} thead{{background:#f0f0f0}}
 <div><b>Input:</b><br>{inp}</div>
 <div class=grid>{''.join(cards)}</div>
 <h2>Stats</h2>
-<table><thead><tr><th>model</th><th>status</th><th>time</th><th>peak VRAM</th><th>verts</th><th>faces</th><th>file</th></tr></thead>
+<table><thead><tr><th>model</th><th>status</th><th>time</th><th>peak VRAM</th><th>verts</th><th>faces</th><th>file</th><th>chamfer&darr;</th><th>F@.02&uarr;</th></tr></thead>
 <tbody>{''.join(trows)}</tbody></table>
 <div class=note>peak VRAM = whole-GPU max during that stage (nvidia-smi, 1 Hz). BUILD FAILED rows: open the log for the exact error.</div>'''
 open(os.path.join(OUT, "comparison_report.html"), "w", encoding="utf-8").write(doc)
@@ -170,16 +182,21 @@ start_vram(){ : > "$LOGS/vram_$1.log"; ( while true; do
 peak_vram(){ sort -n "$LOGS/vram_$1.log" 2>/dev/null | tail -1; }
 
 emit(){ # model status seconds vram glb
-  local m="$1" s="$2" sec="$3" vram="$4" glb="$5" verts=0 faces=0 size=0
+  local m="$1" s="$2" sec="$3" vram="$4" glb="$5" verts=0 faces=0 size=0 chamfer="" fscore=""
   if [ -n "$glb" ] && [ -f "$glb" ]; then
     size=$(stat -c%s "$glb" 2>/dev/null || echo 0)
     read verts faces < <(python "$OUT/mesh_stats.py" "$glb" 2>/dev/null || echo "0 0")
     cp "$glb" "$OUT/$m.glb" 2>/dev/null || true
     python "$OUT/render_views.py" "$OUT/$m.glb" "$OUT/${m}.png" >>"$LOGS/render_$m.log" 2>&1 || true
+    # accuracy vs ground truth (same metric as the local harness) when GT provided
+    if [ -n "$GT_MESH" ] && [ -f "$GT_MESH" ] && [ -f "$EVAL_PY" ]; then
+      read chamfer fscore < <(python "$EVAL_PY" "$GT_MESH" "$OUT/$m.glb" 2>>"$LOGS/score_$m.log" \
+        | python -c "import sys,json; d=json.load(sys.stdin); print(d['chamfer'], d['fscore'])" 2>/dev/null || echo " ")
+    fi
   else
     s="failed"
   fi
-  echo "$m,$s,$sec,${vram:-0},$verts,$faces,$size,$OUT/$m.glb" >> "$STATS"
+  echo "$m,$s,$sec,${vram:-0},$verts,$faces,$size,${chamfer:-},${fscore:-},$OUT/$m.glb" >> "$STATS"
 }
 
 run_stage(){ # model
