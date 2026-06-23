@@ -92,8 +92,8 @@ function closePicker() {
   }
   $("picker").style.display = "none"; pickerCat = null;
 }
-$("picker-close").onclick = closePicker;
-$("picker-done").onclick = closePicker;
+{ const b = $("picker-close"); if (b) b.onclick = closePicker; }
+{ const b = $("picker-done"); if (b) b.onclick = closePicker; }
 
 function total() { return Object.values(counts).reduce((a, b) => a + b, 0); }
 function updateTotal() { const t = total(); $("total").textContent = t; $("total").style.color = t > 20 ? "#e05a5a" : "var(--muted)"; }

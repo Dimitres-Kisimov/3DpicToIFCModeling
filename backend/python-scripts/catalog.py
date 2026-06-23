@@ -91,9 +91,12 @@ def _glb_by_id(category, mesh_id):
 
 
 def list_items(category):
-    """All selectable meshes in a category (for the per-item picker): id, thumbnail, dims."""
+    """All selectable meshes in a category (for the per-item picker): id, thumbnail, dims.
+    Borrowed categories (coffee_table, side_table, filing_cabinet) show their source
+    category's meshes, matching what build_scene_spec instantiates."""
+    src = category if category in ABO_CATEGORIES else MESH_BORROW.get(category, category)
     out = []
-    for e in _cat_items(category):
+    for e in _cat_items(src):
         md = e.get("mesh_dimensions_m", {}) or {}
         out.append({"id": e.get("source_id") or e.get("id"), "thumb": e.get("thumb"),
                     "product_type": e.get("product_type"),
