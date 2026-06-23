@@ -78,19 +78,33 @@
         <div class="chips" id="chips"></div>
       </div>
       <button class="primary" id="gen">Generate layout</button>
+      <button id="reset" style="width:100%;margin-top:6px">Reset everything</button>
     </aside>
     <div id="stage">
       <div id="msg">Pick a room and items, then Generate.</div>
       <canvas id="cv"></canvas>
-      <div class="toolbar"><button id="fit">Fit</button><button id="walls">Walls</button></div>
+      <div class="toolbar"><button id="lock">🔒 Locked</button><button id="fit">Fit</button><button id="walls">Walls</button></div>
     </div>
     <aside id="tablepanel">
       <div class="panel-head">Object table <span id="meta" style="color:var(--muted);font-weight:400"></span></div>
       <div style="overflow:auto"><table><thead><tr><th>Object</th><th>IFC type</th><th>W×D×H</th></tr></thead><tbody id="rows"></tbody></table></div>
-      <div class="panel-foot"><button id="csv">Export CSV</button><button id="ifc">Export IFC</button></div>
+      <div class="panel-foot"><button id="csv">Export CSV</button><button id="glb">Export GLB</button><button id="ifc">Export IFC</button></div>
     </aside>
   </main>
 </div>
-<script type="module" src="app.js"></script>
+<script>
+  // Surface any module load/runtime error on-screen instead of failing silently.
+  window.addEventListener("error", (e) => {
+    const m = document.getElementById("msg");
+    const t = (e.error && e.error.stack) || e.message || String(e);
+    if (m) { m.textContent = "JS ERROR: " + t; m.className = "bad"; }
+  });
+  window.addEventListener("unhandledrejection", (e) => {
+    const m = document.getElementById("msg");
+    const r = e.reason && (e.reason.stack || e.reason.message) || String(e.reason);
+    if (m) { m.textContent = "ASYNC ERROR: " + r; m.className = "bad"; }
+  });
+</script>
+<script type="module" src="app.js?v=8"></script>
 </body>
 </html>

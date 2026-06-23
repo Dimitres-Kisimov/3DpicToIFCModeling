@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import sys
+import shutil
 import traceback
 from pathlib import Path
 
@@ -31,8 +32,26 @@ import build_room_scene       # noqa: E402
 import build_room_ifc         # noqa: E402
 import render_scene           # noqa: E402
 
-OUT = REPO / "demo" / "app_out"
+OUT = REPO / "demo" / "app_out"    # SCRATCH preview dir — wiped on reset/startup; never a saved deliverable
 app = Flask(__name__, static_folder=None)
+
+
+def _clear_scratch():
+    """Remove all generated preview files. Nothing the user generates persists —
+    the scene only lives here transiently for the live preview. A real save only
+    happens when the user clicks Export (which downloads to their machine)."""
+    if OUT.exists():
+        for p in OUT.iterdir():
+            try:
+                shutil.rmtree(p) if p.is_dir() else p.unlink()
+            except Exception:
+                pass
+
+
+@app.after_request
+def _no_cache(resp):
+    resp.headers["Cache-Control"] = "no-store, max-age=0"   # dev: always fresh JS/assets
+    return resp
 
 
 @app.get("/api/catalog")
@@ -81,9 +100,18 @@ def api_generate():
         return jsonify({"ok": False, "error": str(exc), "trace": traceback.format_exc()}), 500
 
 
+@app.post("/api/reset")
+def api_reset():
+    """Discard the current preview — restart clean, nothing kept on disk."""
+    _clear_scratch()
+    return jsonify({"ok": True})
+
+
 @app.get("/out/<path:p>")
 def out_files(p):
-    return send_from_directory(OUT, p)
+    resp = send_from_directory(OUT, p)
+    resp.headers["Cache-Control"] = "no-store, max-age=0"   # always refetch on regenerate
+    return resp
 
 
 @app.get("/")
@@ -100,5 +128,6 @@ def static_files(p):
 
 
 if __name__ == "__main__":
+    _clear_scratch()   # start with a clean slate — no leftover preview from a previous run
     print("SCS app on http://localhost:8000/")
     app.run(host="127.0.0.1", port=8000, debug=False)
