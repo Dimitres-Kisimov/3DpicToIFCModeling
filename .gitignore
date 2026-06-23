@@ -70,3 +70,6 @@ eval_out/
 # bake-off scratch (rendered photos + recon GLBs)
 bakeoff_in/
 bakeoff_out/
+
+# generated colored catalog previews (regenerate via make_previews.py)
+data/mesh_library_abo/*.preview.png

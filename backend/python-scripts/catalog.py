@@ -98,7 +98,9 @@ def list_items(category):
     out = []
     for e in _cat_items(src):
         md = e.get("mesh_dimensions_m", {}) or {}
+        preview = Path(e["glb"]).stem + ".preview.png"   # clean colour render, if present
         out.append({"id": e.get("source_id") or e.get("id"), "thumb": e.get("thumb"),
+                    "preview": preview if (ABO_DIR / preview).exists() else None,
                     "product_type": e.get("product_type"),
                     "dims_m": [md.get("x"), md.get("y"), md.get("z")],
                     "faces": e.get("faces")})

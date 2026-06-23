@@ -69,7 +69,7 @@ async function openPicker(category) {
     const dim = d[0] ? `${d[0]}×${d[1]}×${d[2]} m` : "";
     const cell = document.createElement("div");
     cell.className = "thumb" + (sel.has(it.id) ? " sel" : "");
-    cell.innerHTML = `<img src="/thumb/${it.thumb}" loading="lazy"><div>${it.id}</div><div>${dim}</div>`;
+    cell.innerHTML = `<img src="/thumb/${it.preview || it.thumb}" loading="lazy"><div>${it.id}</div><div>${dim}</div>`;
     cell.onclick = () => {
       if (sel.has(it.id)) sel.delete(it.id); else if (sel.size < 20) sel.add(it.id);
       cell.classList.toggle("sel", sel.has(it.id));
