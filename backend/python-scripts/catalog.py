@@ -67,14 +67,39 @@ def list_catalog():
     return out
 
 
-def _abo_glb(category, idx):
+def _cat_items(category):
     items = [e for e in _manifest() if e.get("category") == category]
-    if not items:
-        return None
     pref = PREFERRED.get(category)
     if pref:   # float the hand-picked clean mesh to index 0
         items = sorted(items, key=lambda e: 0 if e["glb"] == pref else 1)
+    return items
+
+
+def _abo_glb(category, idx):
+    items = _cat_items(category)
+    if not items:
+        return None
     return str(ABO_DIR / items[idx % len(items)]["glb"])
+
+
+def _glb_by_id(category, mesh_id):
+    """Resolve a specific mesh by its ASIN/source_id (or glb name) within a category."""
+    for e in _cat_items(category):
+        if mesh_id in (e.get("source_id"), e.get("glb"), e.get("id")):
+            return str(ABO_DIR / e["glb"])
+    return None
+
+
+def list_items(category):
+    """All selectable meshes in a category (for the per-item picker): id, thumbnail, dims."""
+    out = []
+    for e in _cat_items(category):
+        md = e.get("mesh_dimensions_m", {}) or {}
+        out.append({"id": e.get("source_id") or e.get("id"), "thumb": e.get("thumb"),
+                    "product_type": e.get("product_type"),
+                    "dims_m": [md.get("x"), md.get("y"), md.get("z")],
+                    "faces": e.get("faces")})
+    return out
 
 
 def build_scene_spec(room: dict, picks: list) -> dict:
@@ -87,18 +112,24 @@ def build_scene_spec(room: dict, picks: list) -> dict:
         if not meta:
             continue
         ifc, (h, w, d), col = meta
-        for k in range(int(p.get("count", 1))):
+        src = cat if cat in ABO_CATEGORIES else MESH_BORROW.get(cat)
+        ids = p.get("ids") or []          # specific chosen meshes (ASINs)
+        count = len(ids) if ids else int(p.get("count", 1))
+        for k in range(count):
             oid = f"{cat}-{k + 1}"
             o = {"id": oid, "name": cat.replace("_", " ").title(), "category": cat,
                  "ifc_class": ifc, "dimensions": {"height": h, "width": w, "depth": d},
                  "colour_rgb": col, "source": "SCS primitive", "license": "Apache-2.0"}
-            src = cat if cat in ABO_CATEGORIES else MESH_BORROW.get(cat)
-            if src:
+            glb = None
+            if ids:                        # user chose this exact mesh
+                glb = _glb_by_id(src or cat, ids[k])
+                o["mesh_id"] = ids[k]
+            elif src:                      # auto-assign by index
                 i = abo_idx.get(src, 0); abo_idx[src] = i + 1
                 glb = _abo_glb(src, i)
-                if glb:
-                    o["glb"] = glb
-                    o["source"] = "Amazon Berkeley Objects (ABO)"; o["license"] = "CC-BY-4.0"
+            if glb:
+                o["glb"] = glb
+                o["source"] = "Amazon Berkeley Objects (ABO)"; o["license"] = "CC-BY-4.0"
             objs.append(o)
             inst.setdefault(cat, []).append(oid)
 

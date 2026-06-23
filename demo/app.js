@@ -34,24 +34,75 @@ async function loadCatalog() {
     counts[c.category] = 0;
     const row = document.createElement("div");
     row.className = "catrow";
+    const browse = c.abo ? `<button class="browse" data-browse="${c.category}">⋯ pick (${c.abo_count})</button>` : "";
     row.innerHTML =
       `<span>${c.label} <small>${c.abo ? "· ABO" : "· prim"}</small></span>` +
-      `<span class="step"><button data-c="${c.category}" data-d="-1">−</button>` +
+      `<span class="step">${browse}<button data-c="${c.category}" data-d="-1">−</button>` +
       `<b id="n-${c.category}">0</b><button data-c="${c.category}" data-d="1">+</button></span>`;
     el.appendChild(row);
   });
   el.addEventListener("click", (e) => {
+    const br = e.target.closest("button[data-browse]");
+    if (br) { openPicker(br.dataset.browse); return; }
     const b = e.target.closest("button[data-c]"); if (!b) return;
     const c = b.dataset.c;
     counts[c] = Math.max(0, counts[c] + (+b.dataset.d));
+    chosen[c] = [];                       // manual count overrides any specific picks
     $("n-" + c).textContent = counts[c];
     updateTotal();
   });
 }
 
+// specific-mesh selection from the 400: chosen[category] = [ASIN, ...]
+const chosen = {};
+let pickerCat = null;
+
+async function openPicker(category) {
+  pickerCat = category;
+  $("picker-title").textContent = "Choose " + category.replace("_", " ") + " — pick specific items";
+  const grid = $("picker-grid"); grid.innerHTML = "Loading…";
+  const items = await (await fetch("/api/items/" + category)).json();
+  const sel = new Set(chosen[category] || []);
+  grid.innerHTML = "";
+  items.forEach((it) => {
+    const d = it.dims_m || [];
+    const dim = d[0] ? `${d[0]}×${d[1]}×${d[2]} m` : "";
+    const cell = document.createElement("div");
+    cell.className = "thumb" + (sel.has(it.id) ? " sel" : "");
+    cell.innerHTML = `<img src="/thumb/${it.thumb}" loading="lazy"><div>${it.id}</div><div>${dim}</div>`;
+    cell.onclick = () => {
+      if (sel.has(it.id)) sel.delete(it.id); else if (sel.size < 20) sel.add(it.id);
+      cell.classList.toggle("sel", sel.has(it.id));
+      chosen[category] = [...sel];
+      $("picker-count").textContent = sel.size;
+    };
+    grid.appendChild(cell);
+  });
+  $("picker-count").textContent = sel.size;
+  $("picker").style.display = "flex";
+}
+
+function closePicker() {
+  // a specific selection sets that category's count and shows it on the row
+  if (pickerCat) {
+    const n = (chosen[pickerCat] || []).length;
+    counts[pickerCat] = n;
+    const nb = $("n-" + pickerCat); if (nb) nb.textContent = n;
+    updateTotal();
+  }
+  $("picker").style.display = "none"; pickerCat = null;
+}
+$("picker-close").onclick = closePicker;
+$("picker-done").onclick = closePicker;
+
 function total() { return Object.values(counts).reduce((a, b) => a + b, 0); }
 function updateTotal() { const t = total(); $("total").textContent = t; $("total").style.color = t > 20 ? "#e05a5a" : "var(--muted)"; }
-function items() { return Object.entries(counts).filter(([, n]) => n > 0).map(([category, count]) => ({ category, count })); }
+function items() {
+  return Object.entries(counts).filter(([, n]) => n > 0).map(([category, count]) => {
+    const ids = chosen[category];
+    return (ids && ids.length) ? { category, ids } : { category, count };
+  });
+}
 
 function renderChips() {
   const el = $("chips"); el.innerHTML = "";
@@ -90,6 +141,7 @@ function reset() {
     counts[c] = 0;
     const n = $("n-" + c); if (n) n.textContent = "0";
   });
+  Object.keys(chosen).forEach((c) => delete chosen[c]);   // clear specific-item picks
   updateTotal();
   // obstacles & doors
   obstacles.length = 0; doors.length = 0; renderChips();

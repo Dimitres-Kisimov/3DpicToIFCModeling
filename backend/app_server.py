@@ -59,6 +59,16 @@ def api_catalog():
     return jsonify(catalog.list_catalog())
 
 
+@app.get("/api/items/<category>")
+def api_items(category):
+    return jsonify(catalog.list_items(category))
+
+
+@app.get("/thumb/<path:fn>")
+def thumb(fn):
+    return send_from_directory(catalog.ABO_DIR, fn)
+
+
 @app.post("/api/generate")
 def api_generate():
     try:
@@ -70,7 +80,7 @@ def api_generate():
             if body.get(key):
                 room[key] = body[key]
         picks = body.get("items", [])
-        total = sum(int(p.get("count", 1)) for p in picks)
+        total = sum(len(p["ids"]) if p.get("ids") else int(p.get("count", 1)) for p in picks)
         if total == 0:
             return jsonify({"ok": False, "error": "select at least one item"}), 400
         if total > 20:
