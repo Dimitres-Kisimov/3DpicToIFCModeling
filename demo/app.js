@@ -17,7 +17,7 @@ try {
   gltf = new GLTFLoaderPlugin(viewer);
 } catch (e) {
   console.error("WebGL viewer unavailable:", e);
-  setTimeout(() => setMsg("3D preview off (no WebGL — close other tabs / enable hardware acceleration, then refresh). You can still pick items, Generate, and Export IFC/CSV.", true), 0);
+  setTimeout(() => setMsg("Live 3D off (no WebGL) — a rendered image of the room will be shown after you Generate. Tip: close other tabs / enable hardware acceleration for the interactive 3D.", true), 0);
 }
 let model = null, wallsVisible = true, lastItems = [];
 const counts = {};
@@ -131,6 +131,7 @@ $("gen").onclick = async () => {
     setMsg(d.message, !d.feasible);
     $("meta").textContent = `· ${d.items.length} items · ${d.room.width}×${d.room.depth} m · ${d.solver}`;
     loadScene(d.glb);
+    setRender(d.render);
     renderTable(d.items);
   } catch (e) { setMsg("Request failed: " + e, true); }
 };
@@ -161,6 +162,22 @@ function reset() {
   setMsg("Reset. Nothing is saved until you Export. Pick items, then Generate.");
 }
 { const b = $("reset"); if (b) b.onclick = reset; }
+
+// Server-rendered room image — a reliable visualization that needs no WebGL.
+// Shown automatically when the live 3D viewer is unavailable; toggle with the 🖼 button.
+function setRender(render) {
+  const img = $("vfallback"), btn = $("imgview");
+  if (!render) { return; }
+  img.src = render + "?t=" + Date.now();
+  btn.style.display = "";
+  if (!gltf) showImage(true);   // no WebGL → show the rendered image
+}
+function showImage(on) {
+  const img = $("vfallback"); if (!img) return;
+  img.style.display = on ? "block" : "none";
+  const btn = $("imgview"); if (btn) btn.textContent = on ? "🧊 3D" : "🖼 Image";
+}
+{ const b = $("imgview"); if (b) b.onclick = () => showImage($("vfallback").style.display === "none"); }
 
 function loadScene(glb) {
   if (!gltf) return;   // no WebGL viewer — skip preview, table/IFC/CSV still work

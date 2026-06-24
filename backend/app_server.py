@@ -102,10 +102,15 @@ def api_generate():
         feasible = res["solver"] == "ortools-cpsat"
         msg = "Placed all items." if feasible else \
             "Doesn't fit — remove items or enlarge the room."
+        # server-rendered images (no WebGL needed) — reliable fallback for the 3D preview
+        renders = OUT / "renders"
+        render = "/out/renders/furniture3d.png" if (renders / "furniture3d.png").exists() else None
+        floorplan = "/out/renders/floorplan.png" if (renders / "floorplan.png").exists() else None
         return jsonify({"ok": True, "feasible": feasible, "solver": res["solver"],
                         "message": msg, "items": sched["items"], "room": sched["room"],
                         "glb": "/out/scene.glb", "ifc": "/out/scene.ifc",
-                        "metamodel": "/out/metamodel.json"})
+                        "metamodel": "/out/metamodel.json",
+                        "render": render, "floorplan": floorplan})
     except Exception as exc:
         return jsonify({"ok": False, "error": str(exc), "trace": traceback.format_exc()}), 500
 
