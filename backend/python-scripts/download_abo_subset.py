@@ -74,6 +74,12 @@ SCS_CATEGORY_MAP = {
     "LAMP":            "lamp",
     "LIGHT_FIXTURE":   "lamp",
     "HOME_LIGHTING_AND_LAMPS": "lamp",
+
+    # Decor / accessory categories added 2026-06-29 (enumerated counts WITH a 3D model):
+    "PLANTER":         "planter",        # 182 meshes
+    "HOME_MIRROR":     "mirror",         # 109 meshes
+    "CLOCK":           "clock",          #   8 meshes
+    "PICTURE_FRAME":   "picture_frame",  #   7 meshes
 }
 
 

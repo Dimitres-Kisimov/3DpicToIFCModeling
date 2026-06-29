@@ -136,8 +136,14 @@ def _monitor_mesh(h, w, d):
 
 
 def _laptop_mesh(h, w, d):
-    base = trimesh.creation.box(extents=[w, d, max(h, 0.02)])
-    return base
+    # open laptop: thin keyboard deck + a screen hinged at the rear edge, tilted back
+    parts = []
+    base = trimesh.creation.box(extents=[w, d, h * 0.10])
+    base.apply_translation([0, 0, h * 0.05]); parts.append(base)
+    screen = trimesh.creation.box(extents=[w, h * 0.05, h * 0.95])
+    screen.apply_transform(trimesh.transformations.rotation_matrix(np.radians(15), [1, 0, 0]))
+    screen.apply_translation([0, -d / 2 + h * 0.05, h * 0.5]); parts.append(screen)
+    return trimesh.util.concatenate(parts)
 
 
 def _box_mesh(h, w, d):
@@ -203,6 +209,7 @@ CATEGORY_MESH_BUILDERS = {
     "bookshelf":    _bookshelf_mesh,
     "lamp":         _lamp_mesh,
     "monitor":      _monitor_mesh,
+    "laptop":       _laptop_mesh,
 }
 
 

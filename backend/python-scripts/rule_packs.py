@@ -25,7 +25,8 @@ _CLEARANCES = {
     "default": 0.15, "chair": 0.10, "office_chair": 0.10, "desk": 0.15,
     "table": 0.15, "coffee_table": 0.15, "side_table": 0.10, "sofa": 0.20,
     "stool": 0.10, "bookshelf": 0.10, "cabinet": 0.20, "filing_cabinet": 0.20,
-    "lamp": 0.10, "monitor": 0.05, "plant": 0.10,
+    "lamp": 0.10, "monitor": 0.05, "plant": 0.10, "laptop": 0.05,
+    "planter": 0.10, "mirror": 0.05, "clock": 0.05, "picture_frame": 0.05,
 }
 
 _BASE = {
@@ -42,10 +43,12 @@ ROOM_TYPES = {
         "area_per_person": 6.0,     # 5.5-6.5 m2/workstation (Neufert/BCO)
         "min_aisle": 1.00,
         "perimeter": {"desk", "cabinet", "filing_cabinet", "storage_cabinet",
-                      "bookshelf", "sofa", "side_table"},
+                      "bookshelf", "sofa", "side_table",
+                      "mirror", "picture_frame", "clock", "planter"},
         "groups": [   # (child_category, anchor_category, relation)
             ("office_chair", "desk", "in_front"),
             ("monitor", "desk", "on_top"),
+            ("laptop", "desk", "on_top"),
             ("lamp", "desk", "on_top"),
         ],
     },
@@ -64,10 +67,12 @@ ROOM_TYPES = {
         **_BASE,
         "area_per_person": 7.0,
         "min_aisle": 1.20,
-        "perimeter": {"desk", "cabinet", "filing_cabinet", "bookshelf", "side_table"},
+        "perimeter": {"desk", "cabinet", "filing_cabinet", "bookshelf", "side_table",
+                      "mirror", "picture_frame", "clock", "planter"},
         "groups": [
             ("office_chair", "desk", "in_front"),
             ("monitor", "desk", "on_top"),
+            ("laptop", "desk", "on_top"),
         ],
     },
 }

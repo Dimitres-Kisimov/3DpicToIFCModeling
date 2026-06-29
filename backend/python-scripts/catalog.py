@@ -32,12 +32,19 @@ CATALOG_META = {
     "stool":          ("IfcFurniture",             (0.45, 0.4, 0.4),  [0.40, 0.30, 0.25]),
     "lamp":           ("IfcFurniture",             (1.60, 0.4, 0.4),  [0.85, 0.80, 0.60]),
     "monitor":        ("IfcAudioVisualAppliance",  (0.45, 0.55, 0.18),[0.10, 0.10, 0.10]),
+    "laptop":         ("IfcAudioVisualAppliance",  (0.25, 0.34, 0.24),[0.20, 0.20, 0.22]),
+    "planter":        ("IfcFurniture",             (0.60, 0.40, 0.40),[0.25, 0.45, 0.25]),
+    "mirror":         ("IfcFurniture",             (1.20, 0.60, 0.05),[0.80, 0.85, 0.90]),
+    "clock":          ("IfcFurniture",             (0.30, 0.30, 0.05),[0.90, 0.90, 0.90]),
+    "picture_frame":  ("IfcFurniture",             (0.50, 0.40, 0.04),[0.45, 0.32, 0.20]),
 }
 # categories with real ABO meshes; the rest fall back to procedural primitives
-ABO_CATEGORIES = {"desk", "office_chair", "cabinet", "bookshelf", "sofa", "table", "stool", "lamp"}
+ABO_CATEGORIES = {"desk", "office_chair", "cabinet", "bookshelf", "sofa", "table", "stool", "lamp",
+                  "planter", "mirror", "clock", "picture_frame"}
 # categories without their own ABO mesh borrow a visually-similar one (scaled to their
 # own ergonomic dims), so they render as real furniture instead of plain placeholders.
-# (monitor stays a clean procedural box — there is no sensible ABO stand-in.)
+# (monitor + laptop stay clean procedural meshes — ABO has no electronics: its 3D subset
+#  is furniture/home-goods, so there are 0 monitor/laptop/keyboard meshes to fetch.)
 MESH_BORROW = {"coffee_table": "table", "side_table": "table", "filing_cabinet": "cabinet"}
 
 
