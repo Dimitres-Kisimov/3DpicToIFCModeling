@@ -32,6 +32,12 @@ MODEL_ORDER = ["triposr_sam2", "triposr_rembg"] + cloud_models + ["abo_gt"]
 LABELS = {"triposr_sam2": "TripoSR·SAM2", "triposr_rembg": "TripoSR·rembg", "triposg": "TripoSG",
           "trellis": "TRELLIS", "trellis2": "TRELLIS.2", "instantmesh": "InstantMesh",
           "sam3d": "SAM 3D", "abo_gt": "ABO mesh (truth)"}
+# Per-model display orientation correction (front-facing). Scores are ICP-aligned so rotation does
+# NOT change F-scores — this only fixes the VIEW. TRELLIS emits Z-up meshes → -90deg about X = front.
+# TripoSG/ABO already front; TripoSR is too rough for orientation to matter (blob from any angle).
+import trimesh.transformations as _tf
+_rx90 = _tf.rotation_matrix(np.radians(-90), [1, 0, 0])   # Z-up mesh -> front-facing
+MODEL_ROT = {"trellis": _rx90, "instantmesh": _rx90}      # both emit top-down/Z-up meshes
 print("models in gallery:", MODEL_ORDER)
 
 # ---- Phase 1: score + copy GLBs (NO rendering — always completes) ------------
@@ -51,7 +57,15 @@ for it in MAN:
         gp = glbs.get(m)
         if not gp or not Path(gp).exists():
             continue
-        shutil.copy(gp, ASSETS / f"{key}_{m}.glb")
+        dest = ASSETS / f"{key}_{m}.glb"
+        rot = MODEL_ROT.get(m)
+        if rot is not None:
+            try:
+                mm = trimesh.load(gp, force="mesh"); mm.apply_transform(rot); mm.export(dest)
+            except Exception:
+                shutil.copy(gp, dest)
+        else:
+            shutil.copy(gp, dest)
         present.append(m)
         if m == "abo_gt":
             scores[m] = 1.0
@@ -91,8 +105,11 @@ def cell(it, m):
     fl = "F=1.00" if m == "abo_gt" else (f"F={s:.2f}" if isinstance(s, float) else "")
     cls = "win" if m == "abo_gt" else "gen"
     poster = f' poster="assets/{k}_input.png"'  # input as the loading placeholder
+    # radius 175% + min-orbit floor + narrow FOV so the WHOLE piece stays in frame with margin
+    # while it auto-rotates (105% clipped corners on wide objects as they spun).
     mv = (f'<model-viewer src="assets/{k}_{m}.glb"{poster} camera-controls auto-rotate '
-          f'auto-rotate-delay="1500" rotation-per-second="22deg" camera-orbit="0deg 76deg 105%" '
+          f'auto-rotate-delay="1500" rotation-per-second="22deg" camera-orbit="0deg 76deg 175%" '
+          f'min-camera-orbit="auto auto 150%" field-of-view="28deg" '
           f'interaction-prompt="none" shadow-intensity="0.6" exposure="1.1"></model-viewer>')
     return f'<div class="cell"><h4 class="{cls}">{lab}</h4>{mv}<span class="f">{fl}</span></div>'
 

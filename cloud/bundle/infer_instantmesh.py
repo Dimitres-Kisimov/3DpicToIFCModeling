@@ -24,8 +24,8 @@ print(f"[instantmesh] running run.py on {len(items)} inputs (loads model once) .
 t0 = time.time()
 try:
     subprocess.run(
-        ["python", "run.py", "configs/instant-mesh-base.yaml", stage,
-         "--output_path", run_out, "--no_rembg"],
+        [sys.executable, "run.py", "configs/instant-mesh-base.yaml", stage,
+         "--output_path", run_out, "--no_rembg"],   # sys.executable = the venv python (NOT bare 'python')
         cwd=REPO, check=False)
 except Exception as e:
     print(f"[instantmesh] run.py error: {e!r}", flush=True); traceback.print_exc()

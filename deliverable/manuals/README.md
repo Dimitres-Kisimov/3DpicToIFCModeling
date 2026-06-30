@@ -14,8 +14,8 @@ CUDA 12.8**, 120 GB disk, Ubuntu, 160 vCPU. (An A100 80 GB works for all of thes
 |---|---|---|---|---|---|
 | 1 | **TripoSG** | MIT | ✅ **WORKS** — 10/10 meshes | **0.393** | [TripoSG.md](TripoSG.md) |
 | 2 | **TRELLIS-image-large** | MIT | ✅ **WORKS** — 10/10 meshes (mesh-only) | **0.347** | [TRELLIS.md](TRELLIS.md) |
-| 3 | **SAM 3D Objects** | SAM License | 🟡 installed, kaolin ABI blocker | tbd | [SAM3D.md](SAM3D.md) |
-| 4 | **InstantMesh** | Apache-2.0 | ⏳ pending (needs nvdiffrast) | tbd | [InstantMesh.md](InstantMesh.md) |
+| 3 | **SAM 3D Objects** | SAM License | 🟡 deps fixed, loading model (flash_attn) | tbd | [SAM3D.md](SAM3D.md) |
+| 4 | **InstantMesh** | Apache-2.0 | ✅ **WORKS** — 10/10 meshes | **0.328** | [InstantMesh.md](InstantMesh.md) |
 | 5 | **TRELLIS.2-4B** | MIT | ⏳ pending (separate repo) | tbd | [TRELLIS2.md](TRELLIS2.md) |
 | — | TripoSR | MIT | ✅ baseline (run locally) | 0.278/0.295 | (see investigation report) |
 
