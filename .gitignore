@@ -82,3 +82,13 @@ outputs/abo_test*/*.png
 deliverable/*.zip
 deliverable/abo_gallery*/
 # keep: outputs/abo_test*/{scores,results}.json, deliverable/*.csv, deliverable/all_scores.json
+
+# cloud benchmark heavy artifacts — keep code + findings in git, not the binaries
+deliverable/cloud_results/
+deliverable/cloud_gallery/assets/
+deliverable/cloud_bundle/
+deliverable/cloud_bundle.tar.gz
+*.bundle
+deliverable_SCS_*.zip
+_hf_scout/
+.claude/

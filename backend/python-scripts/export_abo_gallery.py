@@ -69,7 +69,7 @@ def build_rows(interactive: bool):
                 def panel(label, cls, glb, png, extra=""):
                     return (f'<div class="cell"><h4 class="{cls}">{label}{extra}</h4>'
                             f'<model-viewer src="assets/{glb}" poster="assets/{png}" '
-                            f'camera-controls auto-rotate></model-viewer></div>')
+                            f'camera-controls auto-rotate auto-rotate-delay="2500" rotation-per-second="18deg" camera-orbit="0deg 76deg 105%" interaction-prompt="none"></model-viewer></div>')
                 out.append('<div class="model">'
                     + f'<div class="cell"><h4>Input</h4><img src="assets/{b}_input.png"></div>'
                     + panel("TripoSR&middot;SAM2", "bad", f"{b}_sam2.glb", f"{b}_sam2.png", f_label(b, "sam2"))

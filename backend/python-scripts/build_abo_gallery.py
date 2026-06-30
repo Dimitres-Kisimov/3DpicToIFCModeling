@@ -21,9 +21,9 @@ for t, items in by_type.items():
         b = r["base"]
         rows.append(f'''<div class="model">
   <div class="cell"><h4>Input (ABO screenshot)</h4><img src="{FOLDER}/{b}_input.png"></div>
-  <div class="cell"><h4 class="bad">TripoSR · SAM2</h4><model-viewer src="{FOLDER}/{b}_sam2.glb" poster="{FOLDER}/{b}_sam2.png" camera-controls auto-rotate></model-viewer><small>{r["faces_sam2"]:,} faces</small></div>
-  <div class="cell"><h4 class="bad">TripoSR · rembg</h4><model-viewer src="{FOLDER}/{b}_rembg.glb" poster="{FOLDER}/{b}_rembg.png" camera-controls auto-rotate></model-viewer><small>{r["faces_rembg"]:,} faces</small></div>
-  <div class="cell"><h4 class="win">ABO mesh (ground truth)</h4><model-viewer src="{FOLDER}/{b}_abo.glb" poster="{FOLDER}/{b}_abo.png" camera-controls auto-rotate></model-viewer><small>real catalog mesh</small></div>
+  <div class="cell"><h4 class="bad">TripoSR · SAM2</h4><model-viewer src="{FOLDER}/{b}_sam2.glb" poster="{FOLDER}/{b}_sam2.png" camera-controls auto-rotate auto-rotate-delay="2500" rotation-per-second="18deg" camera-orbit="0deg 76deg 105%" interaction-prompt="none"></model-viewer><small>{r["faces_sam2"]:,} faces</small></div>
+  <div class="cell"><h4 class="bad">TripoSR · rembg</h4><model-viewer src="{FOLDER}/{b}_rembg.glb" poster="{FOLDER}/{b}_rembg.png" camera-controls auto-rotate auto-rotate-delay="2500" rotation-per-second="18deg" camera-orbit="0deg 76deg 105%" interaction-prompt="none"></model-viewer><small>{r["faces_rembg"]:,} faces</small></div>
+  <div class="cell"><h4 class="win">ABO mesh (ground truth)</h4><model-viewer src="{FOLDER}/{b}_abo.glb" poster="{FOLDER}/{b}_abo.png" camera-controls auto-rotate auto-rotate-delay="2500" rotation-per-second="18deg" camera-orbit="0deg 76deg 105%" interaction-prompt="none"></model-viewer><small>real catalog mesh</small></div>
 </div>''')
 
 html = f'''<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">

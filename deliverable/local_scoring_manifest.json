@@ -1,0 +1,92 @@
+[
+  {
+    "key": "bed",
+    "type": "bed",
+    "gt": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_polyhaven\\bed_01_abo.glb",
+    "triposr_sam2_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_polyhaven\\bed_01_sam2.glb",
+    "triposr_rembg_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_polyhaven\\bed_01_rembg.glb",
+    "triposr_sam2_f_local": 0.2083,
+    "triposr_rembg_f_local": 0.4277
+  },
+  {
+    "key": "bookshelf",
+    "type": "bookshelf",
+    "gt": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\bookshelf_21_abo.glb",
+    "triposr_sam2_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\bookshelf_21_sam2.glb",
+    "triposr_rembg_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\bookshelf_21_rembg.glb",
+    "triposr_sam2_f_local": 0.178,
+    "triposr_rembg_f_local": 0.5461
+  },
+  {
+    "key": "cabinet",
+    "type": "cabinet",
+    "gt": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_cats\\cabinet_01_abo.glb",
+    "triposr_sam2_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_cats\\cabinet_01_sam2.glb",
+    "triposr_rembg_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_cats\\cabinet_01_rembg.glb",
+    "triposr_sam2_f_local": 0.194,
+    "triposr_rembg_f_local": 0.0244
+  },
+  {
+    "key": "chair",
+    "type": "chair",
+    "gt": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_polyhaven\\chair_09_abo.glb",
+    "triposr_sam2_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_polyhaven\\chair_09_sam2.glb",
+    "triposr_rembg_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_polyhaven\\chair_09_rembg.glb",
+    "triposr_sam2_f_local": 0.2713,
+    "triposr_rembg_f_local": 0.2186
+  },
+  {
+    "key": "desk",
+    "type": "desk",
+    "gt": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\desk_06_abo.glb",
+    "triposr_sam2_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\desk_06_sam2.glb",
+    "triposr_rembg_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\desk_06_rembg.glb",
+    "triposr_sam2_f_local": 0.1353,
+    "triposr_rembg_f_local": 0.0921
+  },
+  {
+    "key": "lamp",
+    "type": "lamp",
+    "gt": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_cats\\lamp_11_abo.glb",
+    "triposr_sam2_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_cats\\lamp_11_sam2.glb",
+    "triposr_rembg_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_cats\\lamp_11_rembg.glb",
+    "triposr_sam2_f_local": 0.3358,
+    "triposr_rembg_f_local": 0.2307
+  },
+  {
+    "key": "office_chair",
+    "type": "office_chair",
+    "gt": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\office_chair_01_abo.glb",
+    "triposr_sam2_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\office_chair_01_sam2.glb",
+    "triposr_rembg_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\office_chair_01_rembg.glb",
+    "triposr_sam2_f_local": 0.4848,
+    "triposr_rembg_f_local": 0.3798
+  },
+  {
+    "key": "sofa",
+    "type": "sofa",
+    "gt": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\sofa_16_abo.glb",
+    "triposr_sam2_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\sofa_16_sam2.glb",
+    "triposr_rembg_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\sofa_16_rembg.glb",
+    "triposr_sam2_f_local": 0.3317,
+    "triposr_rembg_f_local": 0.0
+  },
+  {
+    "key": "stool",
+    "type": "stool",
+    "gt": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_cats\\stool_06_abo.glb",
+    "triposr_sam2_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_cats\\stool_06_sam2.glb",
+    "triposr_rembg_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test_cats\\stool_06_rembg.glb",
+    "triposr_sam2_f_local": 0.3198,
+    "triposr_rembg_f_local": 0.4723
+  },
+  {
+    "key": "table",
+    "type": "table",
+    "gt": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\table_11_abo.glb",
+    "triposr_sam2_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\table_11_sam2.glb",
+    "triposr_rembg_glb": "C:\\Users\\dimik\\3DpicToIFCModeling\\outputs\\abo_test\\table_11_rembg.glb",
+    "triposr_sam2_f_local": 0.2881,
+    "triposr_rembg_f_local": 0.5204
+  }
+]
