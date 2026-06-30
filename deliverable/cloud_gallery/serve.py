@@ -6,5 +6,5 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 PORT = 8900
 webbrowser.open(f"http://127.0.0.1:{PORT}/index.html")
 print(f"Serving SCS single-image->3D gallery at http://127.0.0.1:{PORT}/index.html")
-print("(needs internet once for the model-viewer library; Ctrl+C to stop)")
+print("(model-viewer is vendored locally — works fully offline; Ctrl+C to stop)")
 socketserver.TCPServer(("127.0.0.1", PORT), http.server.SimpleHTTPRequestHandler).serve_forever()
