@@ -17,14 +17,13 @@ BUNDLE = os.path.dirname(os.path.abspath(manifest_path))
 CLONE = "/workspace/repos/SAM3D"
 
 # --- foreground mask (SAM 3D takes image + mask) ------------------------------
-from rembg import remove, new_session
-_sess = new_session("u2net")
+# Our inputs are rendered on a WHITE background, so threshold it directly — avoids a
+# rembg/onnxruntime dependency conflict with SAM 3D's pinned (numpy 1.26.4) environment.
 def rgba_and_mask(path):
-    img = Image.open(path)
-    rgba = img if img.mode == "RGBA" else remove(img, session=_sess).convert("RGBA")
-    arr = np.array(rgba)
-    mask = Image.fromarray((arr[:, :, 3] > 128).astype(np.uint8) * 255, mode="L")
-    return rgba, mask
+    img = Image.open(path).convert("RGB")
+    arr = np.array(img)
+    fg = (np.abs(arr.astype(int) - 255).sum(2) > 30).astype(np.uint8)
+    return arr, fg  # Meta merge_mask_to_rgba expects numpy RGB image + numpy 0/1 mask
 
 # --- locate the downloaded checkpoint config ----------------------------------
 def find_pipeline_yaml():
@@ -50,6 +49,22 @@ if not hasattr(_u3n, "depth_edge"):
         edge = (_maxf(d, size=kernel_size) - _minf(d, size=kernel_size)) > (rtol * np.abs(d) + (atol or 0.0))
         return (edge & np.asarray(mask, bool)) if mask is not None else edge
     _u3n.depth_edge = _depth_edge
+# --- utils3d viz-function shims (SceneVisualizer/image_mesh import these at module load;
+# they live in the pointmap-visualization path, NOT the mesh-decoder inference we call) -----
+import numpy as _np_shim
+def _nrm_edge(normals, *a, **k):
+    n = _np_shim.asarray(normals); return _np_shim.zeros(n.shape[:2], dtype=bool)
+def _pts2nrm(points, *a, **k):
+    p = _np_shim.asarray(points, dtype=_np_shim.float32); o = _np_shim.zeros_like(p); o[..., 2] = 1.0; return o
+def _img_uv(height, width, *a, **k):
+    u = (_np_shim.arange(width) + 0.5) / width; v = (_np_shim.arange(height) + 0.5) / height
+    uu, vv = _np_shim.meshgrid(u, v); return _np_shim.stack([uu, vv], -1).astype(_np_shim.float32)
+def _img_mesh(*a, **k):
+    raise NotImplementedError("image_mesh shim (viz-only, not used in mesh-decoder inference)")
+for _n, _fn in [("normals_edge", _nrm_edge), ("points_to_normals", _pts2nrm),
+                ("image_uv", _img_uv), ("image_mesh", _img_mesh)]:
+    if not hasattr(_u3n, _n):
+        setattr(_u3n, _n, _fn)
 print("[sam3d] importing Meta Inference ...", flush=True)
 from inference import Inference  # type: ignore
 
@@ -59,21 +74,68 @@ inference = Inference(pipe_yaml, compile=False)
 print(f"[sam3d] loaded. {len(items)} inputs.", flush=True)
 
 import trimesh
+
+def _to_trimesh(m):
+    """Coerce a SAM3D mesh-ish object (possibly a batch list) into trimesh.Trimesh."""
+    if isinstance(m, (list, tuple)):
+        m = m[0] if len(m) else None
+    if m is None:
+        return None
+    if isinstance(m, trimesh.Trimesh):
+        return m
+    if hasattr(m, "vertices") and hasattr(m, "faces"):
+        v, fc = m.vertices, m.faces
+        v = v.detach().cpu().numpy() if hasattr(v, "detach") else np.asarray(v)
+        fc = fc.detach().cpu().numpy() if hasattr(fc, "detach") else np.asarray(fc)
+        col = None
+        for attr in ("vertex_colors", "visual", "vertex_attrs"):
+            cc = getattr(m, attr, None)
+            if cc is not None and hasattr(cc, "__len__") and len(cc) == len(v):
+                col = cc.detach().cpu().numpy() if hasattr(cc, "detach") else np.asarray(cc)
+                break
+        return trimesh.Trimesh(vertices=v, faces=fc, vertex_colors=col, process=False)
+    if hasattr(m, "export"):
+        return m
+    return None
+
+_dumped = False
 for it in items:
     key = it["key"]; out = os.path.join(outdir, key + ".glb")
     if os.path.exists(out):
         print(f"[sam3d] skip {key} (exists)", flush=True); continue
     t0 = time.time()
     try:
-        rgba, mask = rgba_and_mask(os.path.join(BUNDLE, it["input"]))
-        output = inference(rgba, mask, seed=42)         # mesh-decoder path
-        mesh = output.get("mesh") or output.get("trimesh")
-        if mesh is None:
-            print(f"[sam3d] FAIL {key}: no mesh; keys={list(output.keys())}", flush=True); continue
-        if hasattr(mesh, "export"):
-            mesh.export(out)
+        arr, fg = rgba_and_mask(os.path.join(BUNDLE, it["input"]))
+        output = inference(arr, fg, seed=42)
+        if not _dumped:
+            if isinstance(output, dict):
+                print("[sam3d] OUTPUT KEYS:", list(output.keys()), flush=True)
+                for k, vv in output.items():
+                    info = f"  [{k}] {type(vv).__name__}"
+                    if isinstance(vv, (list, tuple)):
+                        info += f" len={len(vv)} elem0={type(vv[0]).__name__ if vv else None}"
+                        if vv and hasattr(vv[0], "vertices"):
+                            try: info += f" v={len(vv[0].vertices)} f={len(vv[0].faces)}"
+                            except Exception: pass
+                    if hasattr(vv, "shape"):
+                        info += f" shape={tuple(vv.shape)}"
+                    print(info, flush=True)
+            else:
+                print("[sam3d] OUTPUT TYPE:", type(output).__name__, flush=True)
+            _dumped = True
+        mesh = None
+        if isinstance(output, dict):
+            for k in ("mesh", "meshes", "trimesh", "glb", "geometry", "gaussian"):
+                if k in output and output[k] is not None:
+                    mesh = _to_trimesh(output[k])
+                    if mesh is not None:
+                        break
         else:
-            trimesh.Trimesh(np.asarray(mesh.vertices), np.asarray(mesh.faces)).export(out)
+            mesh = _to_trimesh(output)
+        if mesh is None:
+            ks = list(output.keys()) if isinstance(output, dict) else type(output).__name__
+            print(f"[sam3d] FAIL {key}: could not coerce mesh; out={ks}", flush=True); continue
+        mesh.export(out)
         print(f"[sam3d] OK {key} {time.time()-t0:.1f}s -> {out}", flush=True)
     except Exception as e:
         print(f"[sam3d] FAIL {key}: {e!r}", flush=True)

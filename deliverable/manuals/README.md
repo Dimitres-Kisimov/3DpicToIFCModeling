@@ -8,16 +8,19 @@ README-promised happy path.
 **Test environment:** RunPod **H200 (143 GB)**, template *RunPod PyTorch 2.8.0*, **torch 2.8.0+cu128,
 CUDA 12.8**, 120 GB disk, Ubuntu, 160 vCPU. (An A100 80 GB works for all of these too.)
 
-## Status board (updated 2026-06-30)
+## Status board (updated 2026-07-01)
 
 | # | Model | License | Status | Mean F@0.02 | Manual |
 |---|---|---|---|---|---|
 | 1 | **TripoSG** | MIT | ✅ **WORKS** — 10/10 meshes | **0.393** | [TripoSG.md](TripoSG.md) |
-| 2 | **TRELLIS-image-large** | MIT | ✅ **WORKS** — 10/10 meshes (mesh-only) | **0.347** | [TRELLIS.md](TRELLIS.md) |
-| 3 | **SAM 3D Objects** | SAM License | 🟡 deps fixed, loading model (flash_attn) | tbd | [SAM3D.md](SAM3D.md) |
+| 2 | **SAM 3D Objects** | SAM License | ✅ **WORKS** — 10/10 meshes (sdpa backend) | **0.368** | [SAM3D.md](SAM3D.md) |
+| 3 | **TRELLIS-image-large** | MIT | ✅ **WORKS** — 10/10 meshes (mesh-only) | **0.347** | [TRELLIS.md](TRELLIS.md) |
 | 4 | **InstantMesh** | Apache-2.0 | ✅ **WORKS** — 10/10 meshes | **0.328** | [InstantMesh.md](InstantMesh.md) |
-| 5 | **TRELLIS.2-4B** | MIT | ⏳ pending (separate repo) | tbd | [TRELLIS2.md](TRELLIS2.md) |
+| 5 | **TRELLIS.2-4B** | MIT | ⏳ deferred (separate repo) | tbd | [TRELLIS2.md](TRELLIS2.md) |
 | — | TripoSR | MIT | ✅ baseline (run locally) | 0.278/0.295 | (see investigation report) |
+
+**4 of 5 cloud generators working** (all but the deferred TRELLIS.2). Generator ranking:
+**TripoSG > SAM 3D > TRELLIS > InstantMesh > TripoSR.**
 
 Reference baselines for the same 10 furniture types: **TripoSR·SAM2 = 0.278, TripoSR·rembg = 0.295,
 ABO ground truth = 1.00.**
@@ -51,6 +54,16 @@ These five lessons recurred across all models. Internalize them and each manual 
    throwaway checks only.
 5. **`TORCH_CUDA_ARCH_LIST` must match the GPU.** H200 = **`9.0`** (Hopper sm_90); A100/A40 =
    `8.0;8.6`. Set it before compiling any extension or the kernels build for the wrong arch.
+6. **A compiled-attention dep (`flash_attn`) with the wrong-torch wheel fails as `ModuleNotFoundError`,
+   not an obvious ABI error.** `import flash_attn` → `undefined symbol: _ZN3c10…` (a `c10`/torch symbol)
+   means the prebuilt `.so` was built for a *different* torch. **Don't fight it** — most of these models
+   (TRELLIS lineage, SAM 3D) have an **`sdpa` attention backend** (pure-PyTorch `scaled_dot_product_
+   attention`, identical math, no compiled dep). Force it (`ATTN=sdpa`) and skip flash_attn entirely.
+7. **`pkill -f <scriptname>` from your launch command kills the launching shell.** If your SSH command
+   is `pkill -f infer_x; nohup python infer_x.py &`, the pkill pattern matches its *own* shell's command
+   line and kills it before `nohup` runs — the relaunch silently does nothing. Check `ps` first; only
+   kill by a pattern that can't match the launcher (or don't kill if nothing is running).
 
 **Meta-lesson:** every "model loads" ≠ "model produces a mesh." Loading and the final GLB-export step
-fail on *different* missing deps — test all the way to a written `.glb`.
+fail on *different* missing deps — test all the way to a written `.glb`. (SAM 3D alone needed **12
+distinct fixes** between "imports" and "writes a GLB" — see [SAM3D.md](SAM3D.md).)

@@ -37,7 +37,7 @@ LABELS = {"triposr_sam2": "TripoSR·SAM2", "triposr_rembg": "TripoSR·rembg", "t
 # TripoSG/ABO already front; TripoSR is too rough for orientation to matter (blob from any angle).
 import trimesh.transformations as _tf
 _rx90 = _tf.rotation_matrix(np.radians(-90), [1, 0, 0])   # Z-up mesh -> front-facing
-MODEL_ROT = {"trellis": _rx90, "instantmesh": _rx90}      # both emit top-down/Z-up meshes
+MODEL_ROT = {"trellis": _rx90, "instantmesh": _rx90, "sam3d": _rx90}  # all emit top-down/Z-up meshes
 print("models in gallery:", MODEL_ORDER)
 
 # ---- Phase 1: score + copy GLBs (NO rendering — always completes) ------------
