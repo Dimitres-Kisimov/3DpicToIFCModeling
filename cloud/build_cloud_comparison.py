@@ -10,7 +10,7 @@ Phase 1 — enable with SCS_RENDER_STILLS=1 (off by default; trimesh/pyglet is u
 Outputs deliverable/cloud_gallery/: index.html (interactive, spinning, front-facing) + cloud_scores.csv
 (+ gallery_static.html if stills enabled).
 """
-import sys, os, io, csv, shutil
+import sys, os, io, csv, gc, shutil
 from pathlib import Path
 import numpy as np
 import trimesh
@@ -59,12 +59,17 @@ for it in MAN:
             continue
         dest = ASSETS / f"{key}_{m}.glb"
         rot = MODEL_ROT.get(m)
-        if rot is not None:
-            try:
-                mm = trimesh.load(gp, force="mesh"); mm.apply_transform(rot); mm.export(dest)
-            except Exception:
-                shutil.copy(gp, dest)
-        else:
+        try:
+            mm = trimesh.load(gp, force="mesh")
+            if rot is not None:
+                mm.apply_transform(rot)
+            # Decimate high-poly DISPLAY copies for a fast, portable gallery (TripoSG/TRELLIS emit
+            # 1-2 M-face meshes). Scoring uses the full-res cloud_results mesh (gp) below, so this
+            # does NOT change any F-score — it only lightens what model-viewer loads.
+            if hasattr(mm, "faces") and len(mm.faces) > 200000:
+                mm = mm.simplify_quadric_decimation(face_count=150000)
+            mm.export(dest)
+        except Exception:
             shutil.copy(gp, dest)
         present.append(m)
         if m == "abo_gt":
@@ -79,6 +84,7 @@ for it in MAN:
                 print(f"  score FAIL {m}/{key}: {e}")
     items.append({"key": key, "type": t, "scores": scores, "present": present})
     print(f"  {key}: " + "  ".join(f"{m}={scores.get(m)}" for m in present))
+    gc.collect()  # free the per-item full-res meshes (TripoSG/TRELLIS run 1-2 M faces) before the next item
 
 with open(OUT / "cloud_scores.csv", "w", newline="", encoding="utf-8") as f:
     w = csv.DictWriter(f, fieldnames=["key", "type", "model", "fscore", "chamfer"]); w.writeheader(); w.writerows(rows)
@@ -122,9 +128,12 @@ for t, its in by_type.items():
         cells += [cell(it, m) for m in MODEL_ORDER if m in it["present"]]
         rowsel.append(f'<div class="model">{"".join(cells)}</div>')
 sumline = " · ".join(f"{LABELS.get(m,m)} F={means[m]:.3f}" for m in MODEL_ORDER if m in means)
+# Prefer a vendored model-viewer (offline / recreate-at-will); fall back to the CDN if not present.
+mv_src = "assets/model-viewer.min.js" if (ASSETS / "model-viewer.min.js").exists() else \
+         "https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
 html = ('<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
         '<title>SCS single-image→3D — interactive comparison</title>'
-        '<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>'
+        f'<script type="module" src="{mv_src}"></script>'
         f'<style>{CSS}</style></head><body>'
         f'<h1>Single-image → 3D: model comparison <small>{len(items)} furniture types · same 2D input, same '
         'ABO ground truth, same metric · every panel front-facing (camera-orbit 0/76), drag to orbit · auto-spins</small></h1>'
