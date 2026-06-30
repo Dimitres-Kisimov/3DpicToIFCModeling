@@ -25,8 +25,11 @@ print("EXPORT:", res)
 f = ifcopenshell.open(out_ifc)
 tfs = f.by_type("IfcTriangulatedFaceSet")
 ents = []
-for cls in ("IfcChair", "IfcTable", "IfcFurniture", "IfcFurnishingElement"):
-    ents += [e.is_a() for e in f.by_type(cls)]
+for cls in ("IfcFurniture", "IfcFurnishingElement", "IfcChair", "IfcTable"):
+    try:  # IfcChair/IfcTable aren't IFC4 entity types — mapped to IfcFurniture on export
+        ents += [e.is_a() for e in f.by_type(cls)]
+    except Exception:
+        pass
 hierarchy = bool(f.by_type("IfcProject") and f.by_type("IfcBuildingStorey"))
 print(f"SCHEMA: {f.schema}")
 print(f"IfcProject: {len(f.by_type('IfcProject'))}  IfcBuildingStorey: {len(f.by_type('IfcBuildingStorey'))}")

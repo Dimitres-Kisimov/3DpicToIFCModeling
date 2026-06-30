@@ -92,3 +92,6 @@ deliverable/cloud_bundle.tar.gz
 deliverable_SCS_*.zip
 _hf_scout/
 .claude/
+
+# local-only session handoff (contains live pod connection — do not push)
+deliverable/SESSION_HANDOFF_CLOUD_RUN.md

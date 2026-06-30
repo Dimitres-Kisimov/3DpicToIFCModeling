@@ -37,9 +37,19 @@ for it in items:
     try:
         img = Image.open(os.path.join(BUNDLE, it["input"])).convert("RGB")
         r = pipe.run(img, seed=42)                       # deterministic seed for reproducibility
-        glb = postprocessing_utils.to_glb(r["gaussian"][0], r["mesh"][0],
-                                          simplify=0.95, texture_size=1024)
-        glb.export(out)
+        try:
+            glb = postprocessing_utils.to_glb(r["gaussian"][0], r["mesh"][0],
+                                              simplify=0.95, texture_size=1024)
+            glb.export(out)
+        except Exception as ex:
+            # mesh-only fallback — skips the diff_gaussian_rasterization texture bake.
+            # Geometry is what we score (F-score) and what the grey gallery stills show.
+            import trimesh
+            m = r["mesh"][0]
+            v = m.vertices.detach().cpu().numpy()
+            f = m.faces.detach().cpu().numpy()
+            trimesh.Trimesh(v, f).export(out)
+            print(f"[trellis] {key}: mesh-only export (no texture: {type(ex).__name__})", flush=True)
         print(f"[trellis] OK {key} {time.time()-t0:.1f}s -> {out}", flush=True)
     except Exception as e:
         print(f"[trellis] FAIL {key}: {e!r}", flush=True)
