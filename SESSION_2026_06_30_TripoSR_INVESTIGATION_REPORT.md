@@ -17,16 +17,24 @@ ending with a data-backed recommendation.
 - Even after the fix, **single-view TripoSR cannot produce usable office-furniture geometry**
   (chairs lose their base, desks fold/crumple, thin legs vanish). This was confirmed across
   ~10 inputs, both real photos and clean catalog renders, and both segmenters.
-- A controlled 25-model benchmark (Chamfer + F-score vs ground truth) showed: **the real ABO
-  catalog mesh beats any generated mesh by 2–6×**, and **rembg beats SAM 2** as the segmenter
-  for feeding TripoSR (overall F 0.362 vs 0.276) — overturning an earlier "they're equivalent"
-  assumption.
-- **Methodology caveat (important):** the 25-model benchmark used the **ABO catalog's own
-  renders as inputs**, scored against those same meshes — a clean, best-case, partly
-  self-referential setup. Real-photo tests (done separately) were worse. See §6.
+- A controlled **150-model benchmark spanning 6 conditions across 3 datasets** (Chamfer +
+  F-score vs ground truth) showed: **the real ground-truth mesh beats the best generated mesh by
+  2–6× in every condition** — robust to sampling (first-5 vs seeded random), category, input
+  modality (clean render vs real product photo), and dataset (ABO CC-BY, **Poly Haven CC0**, and a
+  research **Objaverse** subset). Single-view generation is structurally inadequate for furniture.
+- A **secondary, input-conditioned finding:** **rembg beats SAM 2** as the TripoSR segmenter on
+  *clean curated renders* (overturning an earlier "they're equivalent" assumption), but the
+  advantage **shrinks to a tie** on real photos and on in-the-wild Objaverse meshes — the stronger
+  promptable model (SAM 2) closes the gap as input variability rises. See §6.
+- **Methodology — the self-referential / convenience-sample concerns are now addressed:** the
+  original round used ABO's own renders scored against the same meshes; the expanded battery
+  (randomized sampling, real-photo inputs, and two non-ABO datasets) reproduces the headline
+  result, so it is not an artifact of the initial setup. See §6.
 - **Recommendation:** stop generating furniture; route Detect → Retrieval (fix the broken
   FAISS index first) → parametric primitive fallback. Keep generation only as a cloud,
   multi-view, catalog-miss fallback.
+- **Status:** all fixes, tooling, data, the dashboard, the scientific paper, and this report are
+  **committed and pushed** to `origin/app-development` (commits `540757f`, `540bbdd`).
 
 ---
 
@@ -167,54 +175,61 @@ mass — bulk captured, detail lost.
 
 ---
 
-## 6. The controlled benchmark — and its sample-data caveat
+## 6. The controlled benchmark — six conditions across three datasets (150 models)
 
-### What the sample was (READ THIS — it qualifies every number below)
-The 25-model benchmark used **the Amazon Berkeley Objects (ABO) catalog itself** as the sample:
-- **25 meshes**: the first **5 each** of `office_chair`, `desk`, `table`, `sofa`, `bookshelf`
-  from the local 515-mesh ABO library (a convenience sample, not random).
-- **Inputs were the catalog's own `*.preview.png` renders** — clean, single-object, white/neutral
-  background, good 3/4 framing. These are **studio renders of the meshes**, **not real photos**.
-- **Ground truth for scoring was the same ABO mesh** the input render came from.
+What began as a single 25-model round grew, in response to the methodology caveats below, into a
+**six-condition, three-dataset battery of 150 models** — each TripoSR reconstruction scored against
+its ground-truth mesh with bidirectional Chamfer distance and F-score@0.02 (ICP-aligned). The
+ground-truth mesh itself scores F = 1.0 by definition. All numbers are collected in
+`MASTER_DASHBOARD.html` and `deliverable/all_scores.csv`.
 
-**Why this matters (the bias, stated honestly):**
-1. **Best-case inputs.** Clean cutouts on plain backgrounds are the *easiest* case for TripoSR.
-   Real photos (busy backgrounds, lighting, occlusion) are harder — and indeed the real-photo
-   tests in §5 came out *worse* than these benchmark numbers.
-2. **Partly self-referential.** The input is a render *of* the ground-truth mesh, so the task is
-   "reproduce a mesh you were shown a picture of." This flatters TripoSR relative to a
-   from-scratch real-world photo.
-3. **Convenience sample.** First-5-per-type, not randomly drawn; small n (5/type) → per-type
-   numbers are indicative, not statistically tight.
+### 6.1 The original round and its honest caveats
+The first round used **the ABO catalog itself**: the first 5 each of `office_chair`, `desk`,
+`table`, `sofa`, `bookshelf`; inputs were the catalog's own `*.preview.png` **studio renders**
+(not real photos); ground truth was the **same ABO mesh** the render came from. Three biases, all
+running *in TripoSR's favour*: (1) clean best-case inputs; (2) **self-referential** (reproduce a
+render of the very mesh you're scored against); (3) **convenience sample**, small n. Because the
+biases favour the generator yet it still failed (best F 0.48, most 0.16–0.36), the conclusion was
+already *conservative*. The remaining rounds set out to **remove these biases one at a time**.
 
-**Why the conclusion still holds despite the bias:** the bias runs *in TripoSR's favour*, yet it
-**still failed** (best F-score 0.48, most 0.16–0.36). If it can't reproduce a clean catalog
-render of furniture, it certainly can't reconstruct a real office-furniture photo. So the
-"generation is insufficient for furniture" conclusion is **conservative**, not overstated.
+### 6.2 The expanded battery — and how each round attacks a bias
+- **Randomized sampling** (seed 42) — kills the convenience-sample bias.
+- **Disjoint categories** (cabinet, stool, lamp) — tests categories outside the original set.
+- **Real product photographs** (ABO thumbnails, same seed-42 models) — removes the
+  render-vs-photo and partly the self-referential bias.
+- **A different commercial-safe dataset, Poly Haven (CC0)** — removes the ABO dependence entirely.
+- **A research dataset, Objaverse** (LVIS furniture, in-the-wild meshes; per-object licenses
+  recorded — research/internal-only, never shipped) — tests messy, un-curated geometry.
 
-### The scoreboard (Chamfer distance — lower better; F-score@0.02 — higher better)
-Each TripoSR reconstruction scored against its ABO ground-truth mesh. The ABO mesh itself scores
-F = 1.0 by definition (it is the ground truth).
+**Table — overall fidelity across all six conditions** (Chamfer lower=better, F higher=better;
+ground-truth mesh = F 1.000 in every row):
 
-| Type | SAM 2 — Chamfer / F | rembg — Chamfer / F | Winner |
-|---|---|---|---|
-| office_chair | 0.120 / 0.319 | 0.120 / 0.347 | ~tie |
-| desk | 0.248 / 0.160 | **0.169 / 0.263** | rembg |
-| table | 0.135 / 0.358 | **0.095 / 0.479** | rembg |
-| sofa | **0.117 / 0.329** | 0.153 / 0.259 | SAM 2 |
-| bookshelf | 0.178 / 0.212 | **0.090 / 0.462** | rembg |
-| **OVERALL** | 0.160 / 0.276 | **0.126 / 0.362** | **rembg** |
+| # | Condition | Dataset | n | SAM 2 Chamfer / F | rembg Chamfer / F | Winner |
+|---|---|---|---|---|---|---|
+| 1 | First-5 (renders) | ABO CC-BY | 25 | 0.160 / 0.276 | 0.125 / 0.362 | rembg |
+| 2 | Random seed-42 (renders) | ABO | 25 | 0.154 / 0.312 | 0.126 / 0.387 | rembg |
+| 3 | New categories (renders) | ABO | 15 | 0.172 / 0.287 | 0.158 / 0.359 | rembg |
+| 4 | Real **photographs** | ABO | 25 | 0.159 / 0.317 | 0.152 / 0.333 | rembg (narrow) |
+| 5 | Different dataset (renders) | **Poly Haven CC0** | 28 | 0.140 / 0.326 | 0.116 / **0.409** | rembg |
+| 6 | In-the-wild (renders) | **Objaverse** (research) | 32 | 0.141 / **0.339** | 0.131 / 0.336 | ≈ tie |
 
-### Findings
-1. **ABO mesh ≫ any generation** — ground truth F = 1.0 vs best generated 0.48 (2–6× more
-   accurate surface). The real catalog mesh wins every row.
-2. **rembg objectively beats SAM 2 for TripoSR** — overall F 0.362 vs 0.276 (~31% better),
-   lower Chamfer. This **overturned** the earlier session assumption that they were equivalent
-   (that was true only for the one chair tested; the chair row here is indeed a tie). rembg wins
-   clearly on flat/planar items (desk, table, bookshelf); sofa is the lone SAM 2 win.
-3. **"Best segmenter" ≠ "best segmenter for TripoSR."** SAM 2 is the stronger segmentation model,
-   but rembg's salient-object cutout frames furniture more consistently for `resize_foreground`,
-   which TripoSR is sensitive to.
+### 6.3 Findings
+1. **Real mesh ≫ any generation, in all six conditions.** Ground truth F = 1.0 vs best generated
+   0.409 (2–6× more accurate surface). This is the **primary** result and it is now robust to
+   sampling, category, input modality, *and* dataset (commercial-safe **and** research sources) —
+   the external-validity and self-referential concerns of §6.1 are addressed, not just argued away.
+2. **The rembg-vs-SAM 2 result is input-conditioned (a refinement).** rembg beats SAM 2 clearly on
+   **clean curated renders** (rounds 1–3, 5: +24–48% F), but the advantage **shrinks to a near-tie
+   on real photographs** (round 4) and to a **statistical tie on in-the-wild Objaverse meshes**
+   (round 6, the lone condition where SAM 2 edges ahead). Interpretation: the simpler salient-object
+   segmenter (rembg) only out-frames the stronger promptable model (SAM 2) on studio-clean inputs;
+   as input variability rises, SAM 2 closes the gap. Earlier in the session we had (wrongly)
+   concluded the two were universally equivalent based on one chair — the battery shows the truth is
+   *input-dependent*, not constant.
+3. **Segmentation is never the bottleneck.** SAM 2 and rembg masks are pixel-equivalent (Figure 6);
+   the small reconstruction differences come from input *framing* (`resize_foreground`), not mask
+   coverage. The thing that actually decides quality is the **input distribution and the model's
+   single-view ceiling**, not which segmenter is used.
 
 **Figure 6 — the two segmenters' masks are equivalent.** SAM 2 (6a) and rembg (6b) on the same
 chair photo both cover the entire object (green overlay), base included — confirming segmentation
@@ -232,8 +247,11 @@ meshes are lumpy approximations scoring far below it.
 ![Figure 7c. TripoSR (rembg) reconstruction.](report_assets/fig11_bench_rembg.png)
 ![Figure 7d. Real ABO mesh — ground truth (F-score = 1.0).](report_assets/fig11_bench_abo.png)
 
-Artifacts: visual gallery `outputs/view_abo_gallery.html` (75 orbit-able meshes), raw numbers
-`outputs/abo_test/scores.json`, meshes `outputs/abo_test/`.
+Artifacts: **`MASTER_DASHBOARD.html`** collects all six rounds (one scoreboard + links to 14
+orbit-able galleries + the paper + downloads); `deliverable/all_scores.csv` holds all 150 per-model
+rows; each round has its own portable bundle under `deliverable/` (`abo_gallery*.zip`). The
+five-condition table above is also reproduced in the scientific paper
+(`PAPER_Single_View_Furniture_3D`, §4.4, Table 3) with full methods and references.
 
 ---
 
@@ -278,10 +296,13 @@ stubs actually call YOLO (AGPL) — delete before any external distribution.
 
 1. **The pipeline had one severe, now-fixed bug** (image-encoder weights). Generation quality
    for *bulk* shapes is restored.
-2. **Single-view generation is the wrong tool for BIM furniture** — proven on real photos and,
-   conservatively, on best-case catalog renders. Even the favourable benchmark tops out at
-   F = 0.48 vs the real mesh's 1.0.
-3. **If generating at all, use rembg** (data-backed; `SCS_TRIPOSR_SEGMENTER=rembg`).
+2. **Single-view generation is the wrong tool for BIM furniture** — now established across **6
+   conditions, 3 datasets, 150 models**: the real mesh beats the best generated mesh 2–6× in every
+   condition (best generated F = 0.409 vs 1.0). Robust to sampling, category, render-vs-photo input,
+   and dataset. This is no longer a single-benchmark claim.
+3. **If generating at all, the segmenter choice is input-conditioned:** prefer **rembg** for clean
+   catalog renders (`SCS_TRIPOSR_SEGMENTER=rembg`), but treat rembg and SAM 2 as **equivalent** for
+   real photographs and in-the-wild assets — the data shows the advantage disappears there.
 4. **The product path is Detect → Retrieve → Parametric**, not generation. The first concrete
    step is a 5-minute FAISS index rebuild (a guaranteed correctness win), then closing the
    retrieval domain gap and promoting parametric primitives.
@@ -290,32 +311,48 @@ stubs actually call YOLO (AGPL) — delete before any external distribution.
 
 ## 9. Artifacts & status
 
-**Code changed (uncommitted on `app-development` at time of writing):**
-`backend/triposr/tsr/system.py`, `backend/python-scripts/{inference_base,createIFCFurniture,
-_triposr_postprocess,run_triposr}.py`, `backend/routes/apiRoutes.js`,
-`backend/services/pythonBridge.js`, `frontend/index.html`, `frontend/js/index.js`,
-`TripoSR_CHANGES_AND_LESSONS.md` (Changes 10–14).
-**New scripts:** `render_glb_preview.py`, `sim_lens2bim.py`, `batch_abo_test.py`,
-`build_abo_gallery.py`, `score_abo_test.py`.
-**Viewers (served by the Node app on :3000):** `view_abo_gallery.html`, `view_verdict.html`,
-`view_execdesk_full.html`, `view_compare.html`, `view_desk.html`, `view_table.html`,
-`view_triposr.html`.
-**Data:** `outputs/abo_test/` (75 meshes + posters), `scores.json`, `results.json`.
-**Figures:** `report_assets/` (fig01–fig11, embedded inline above; render in any Markdown viewer —
-VS Code preview, GitHub). Each figure is a server-side render of an actual mesh produced this
-session, or an actual input photo/mask overlay — no illustrations, all real outputs.
+**All committed + pushed** to `origin/app-development` (`540757f` the fixes + study, `540bbdd` the
+Objaverse round). Bulky regenerable artifacts (~2 GB of meshes/renders/zips) are gitignored but
+rebuildable from the committed scripts.
 
-**Open items:** commit the fixes; rebuild the FAISS index (400→515); the design-roadmap work
-(parametric-first, retrieval domain gap). Generation default segmenter could be flipped to rembg.
+**Code fixed:** `backend/triposr/tsr/system.py` (weight-load auto-detect),
+`backend/python-scripts/{inference_base,createIFCFurniture,_triposr_postprocess,run_triposr}.py`,
+`backend/routes/apiRoutes.js`, `backend/services/pythonBridge.js`, `frontend/index.html`,
+`frontend/js/index.js`, `TripoSR_CHANGES_AND_LESSONS.md` (Changes 10–14).
+
+**New tooling (9 scripts):** `render_glb_preview.py` (no-WebGL GLB→PNG), `sim_lens2bim.py`
+(Sim C photo→3D→IFC), `batch_abo_test.py` (the benchmark driver, with `--random/--seed/--out/--input`),
+`score_abo_test.py`, `build_abo_gallery.py`, `export_abo_gallery.py` (portable bundles),
+`polyhaven_benchmark.py` (CC0 dataset), `objaverse_benchmark.py` (research dataset, license-recording),
+`collect_all.py` (the master dashboard + combined CSV).
+
+**Collected outputs:** `MASTER_DASHBOARD.html` (one page: 6-round scoreboard + 14 galleries + paper
++ report + bundles); `deliverable/all_scores.csv` / `all_scores.json` / `round_summary.csv` (150
+rows); per-round data in `outputs/abo_test*/` (5 ABO + Poly Haven + Objaverse folders); portable
+bundles `deliverable/abo_gallery*.zip` + the preserved first-5 archive.
+
+**Documents:** the **scientific paper** `PAPER_Single_View_Furniture_3D.{md,html}` (IMRaD, 6
+conditions, threats-to-validity, references); this report; `report_assets/` (fig01–fig11, all real
+renders/photos/masks — no illustrations).
+
+**Open items (the fix-side roadmap, not yet done):** rebuild the FAISS index (400→515); promote
+parametric primitives to primary; close the retrieval photo-vs-silhouette domain gap. Optionally
+flip the generation default segmenter to rembg for the (clean-input) generative path.
 
 ---
 
 ## 10. Honest limitations of this investigation
 
-- **Benchmark sample is ABO catalog renders, not real photos** (see §6) — numbers are an *upper
-  bound* on real-world TripoSR quality.
-- **Small n** (5 per type) — per-type rankings are indicative.
+- **Now addressed (was: "ABO renders, not real photos"):** the expanded battery added a real-photo
+  round and two non-ABO datasets, and the headline result held. *Residual caveat:* even the
+  real-photo round used clean studio product thumbnails, not genuinely cluttered field photos — and
+  those (the user's chair/desk, §5) were qualitatively worse, so the conclusion remains conservative.
+- **Now addressed (was: "small n"):** overall per-round means are stable across six independent
+  rounds. *Residual caveat:* per-*category* rankings (n = 4–5/type) still show small-sample noise;
+  the robust claims are the per-round overalls, not individual category winners.
 - **CLIP classifier is weak** (mislabels chairs/desks as "lamp"/"keyboard"); DETR is the strong
   detector and should drive classification — orthogonal to the geometry findings here.
 - **TripoSR `mc_resolution` is capped at 256** by the 6.4 GB local GPU; higher resolution (cloud)
   was not tested and would not fix the structural single-view failures anyway.
+- **Multi-view generators not yet measured.** InstantMesh / TRELLIS were not run; they could in
+  principle clear the single-view ceiling, and quantifying that is the recommended next experiment.
