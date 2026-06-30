@@ -117,3 +117,35 @@ abo_test_polyhaven,Poly Haven CC0 (different dataset),table,table_25,0.096771,0.
 abo_test_polyhaven,Poly Haven CC0 (different dataset),table,table_26,0.162308,0.3335,0.030126,0.7256
 abo_test_polyhaven,Poly Haven CC0 (different dataset),table,table_27,0.160001,0.2388,0.053129,0.519
 abo_test_polyhaven,Poly Haven CC0 (different dataset),table,table_28,0.104361,0.366,0.106254,0.359
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),bed,bed_01,0.128126,0.2517,0.094357,0.3605
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),bed,bed_02,0.207707,0.1284,0.176428,0.2469
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),bed,bed_03,0.090364,0.3793,0.121502,0.3248
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),bed,bed_04,0.096583,0.3856,0.19873,0.0875
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),bookshelf,bookshelf_05,0.18028,0.2869,0.17297,0.2684
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),bookshelf,bookshelf_06,0.249719,0.0476,0.140378,0.2744
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),bookshelf,bookshelf_07,0.040545,0.6083,0.042823,0.5894
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),bookshelf,bookshelf_08,0.11047,0.3836,0.10434,0.4095
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),cabinet,cabinet_09,0.038764,0.5877,0.037872,0.5848
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),cabinet,cabinet_10,0.030554,0.7956,0.030808,0.7958
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),cabinet,cabinet_11,0.116652,0.5357,0.063931,0.4588
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),cabinet,cabinet_12,0.036909,0.6779,0.043152,0.5891
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),chair,chair_13,0.175841,0.2263,0.174309,0.2246
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),chair,chair_14,0.101543,0.3322,0.10138,0.3378
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),chair,chair_15,0.236519,0.0553,0.21435,0.0689
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),chair,chair_16,0.227971,0.0492,0.226772,0.0655
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),lamp,lamp_17,0.195425,0.3034,0.211559,0.1845
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),lamp,lamp_18,0.159726,0.2859,0.16984,0.2713
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),lamp,lamp_19,0.170792,0.1741,0.135671,0.1843
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),lamp,lamp_20,0.053436,0.5037,0.142912,0.2602
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),sofa,sofa_21,0.168077,0.2336,0.172503,0.2359
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),sofa,sofa_22,0.131693,0.3011,0.141499,0.2231
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),sofa,sofa_23,0.160832,0.2427,0.203602,0.1669
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),sofa,sofa_24,0.204936,0.2041,0.195764,0.1368
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),stool,stool_25,0.163774,0.1959,0.167054,0.1862
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),stool,stool_26,0.227971,0.0492,0.226772,0.0655
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),stool,stool_27,0.120245,0.4206,0.092741,0.4707
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),stool,stool_28,0.032102,0.7282,0.025724,0.8061
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),table,table_29,0.051838,0.5748,0.065245,0.4145
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),table,table_30,0.114616,0.5909,0.027942,0.8137
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),table,table_31,0.332406,0.1205,0.228154,0.0935
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),table,table_32,0.16746,0.1942,0.051186,0.5601

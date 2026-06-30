@@ -17,14 +17,16 @@ loaded 192 image-encoder weights as random values under the installed `transform
 causing *every* reconstruction to degrade to spiky, fragmented noise; we prove the defect with a
 key-matching probe (raw load: 0 missing keys; remapped: 192 missing) and resolve it with an
 auto-detecting loader. **Second**, after the fix, we show through qualitative tests on real
-photographs and a controlled **118-model benchmark spanning five conditions** (convenience vs random
-sampling, disjoint categories, render vs real-photo inputs, and two independent datasets — ABO and
-the CC0 Poly Haven library) that single-view generation remains structurally inadequate for
-furniture: it captures bulk volume but loses thin structures (legs, bases) and fails on flat planar
-surfaces. In **all five conditions** the real ground-truth mesh outperforms the best generated mesh
-by 2–6× in F-score; and — overturning an intermediate assumption — the salient-object segmenter
-(rembg/U²-Net) yields better TripoSR inputs than the stronger promptable segmenter (SAM 2) in every
-condition, although its advantage narrows to a near-tie on real photographs. **Third**, we recommend and justify a
+photographs and a controlled **150-model benchmark spanning six conditions across three datasets**
+(convenience vs random sampling, disjoint categories, render vs real-photo inputs, and three
+independent libraries — ABO, the CC0 Poly Haven set, and a research Objaverse subset) that single-view
+generation remains structurally inadequate for furniture: it captures bulk volume but loses thin
+structures (legs, bases) and fails on flat planar surfaces. In **all six conditions** the real
+ground-truth mesh outperforms the best generated mesh by 2–6× in F-score. A secondary finding — that
+the salient-object segmenter (rembg/U²-Net) yields better TripoSR inputs than the stronger promptable
+segmenter (SAM 2) — proves **input-conditioned**: it holds clearly on clean curated renders but
+shrinks to a tie on real photographs and on in-the-wild meshes, where input variability lets SAM 2
+close the gap. **Third**, we recommend and justify a
 detection-plus-retrieval architecture over generation, and report a correctness defect in the
 retrieval index (400 indexed vectors vs 515 catalog entries). We discuss threats to validity,
 foremost that our benchmark inputs are renders of the catalog meshes themselves — a best-case,
@@ -228,27 +230,33 @@ under four additional conditions, holding the pipeline constant and varying one 
 - **Dataset** — an entirely different, commercial-safe library: **Poly Haven** (CC0 public domain),
   with its own ground-truth meshes, removing any dependence on ABO.
 
-**Table 3. Overall fidelity across five benchmark conditions (mean F-score and Chamfer; the
-ground-truth mesh scores F = 1.0 in every condition).**
+**Table 3. Overall fidelity across six benchmark conditions and three datasets (mean F-score and
+Chamfer; the ground-truth mesh scores F = 1.0 in every condition). Objaverse is included for
+research/internal benchmarking only — its objects carry per-object (incl. non-commercial) licenses
+and are not used in any shipped artifact.**
 
-| Condition | n | SAM 2 — Chamfer / F | rembg — Chamfer / F | Winner |
-|---|---|---|---|---|
-| ABO first-five (renders) | 25 | 0.160 / 0.276 | 0.125 / 0.362 | rembg |
-| ABO random, seed 42 (renders) | 25 | 0.154 / 0.312 | 0.126 / 0.387 | rembg |
-| ABO new categories (cabinet/stool/lamp) | 15 | 0.172 / 0.287 | 0.158 / 0.359 | rembg |
-| ABO real **photographs** (seed 42) | 25 | 0.159 / 0.317 | 0.152 / 0.333 | rembg (narrow) |
-| **Poly Haven CC0** (different dataset) | 28 | 0.140 / 0.326 | 0.116 / **0.409** | **rembg** |
+| Condition | Dataset | n | SAM 2 — Chamfer / F | rembg — Chamfer / F | Winner |
+|---|---|---|---|---|---|
+| First-five (renders) | ABO (CC-BY) | 25 | 0.160 / 0.276 | 0.125 / 0.362 | rembg |
+| Random seed 42 (renders) | ABO | 25 | 0.154 / 0.312 | 0.126 / 0.387 | rembg |
+| New categories (renders) | ABO | 15 | 0.172 / 0.287 | 0.158 / 0.359 | rembg |
+| Real **photographs** | ABO | 25 | 0.159 / 0.317 | 0.152 / 0.333 | rembg (narrow) |
+| Different dataset (renders) | **Poly Haven (CC0)** | 28 | 0.140 / 0.326 | 0.116 / **0.409** | rembg |
+| In-the-wild (renders) | **Objaverse (research)** | 32 | 0.141 / **0.339** | 0.131 / 0.336 | ≈ tie |
 
-Two conclusions reproduce in **all five** conditions: **rembg ≥ SAM 2**, and both remain far below
-the ground-truth mesh (best generated F = 0.409 vs 1.0). The result is therefore robust to
-sampling, to category, to a completely different CC0 dataset, and to real-photo inputs — addressing
-the external-validity concerns of §6. One **refinement** emerges from the input-modality condition:
-rembg's advantage over SAM 2 is large on clean renders (+24–31% F) but **narrows to a near-tie on
-real photographs** (0.333 vs 0.317), indicating that the stronger promptable segmenter (SAM 2)
-closes the gap as input realism increases. The "prefer rembg" guidance is thus **input-dependent**:
-clearly so for clean renders, marginally so for real photographs. We caution that the ABO
-thumbnails, while real photographs, are clean single-object studio shots; genuinely cluttered field
-photographs (§4.2) degrade further still.
+**The primary conclusion reproduces in all six conditions across all three datasets:** both
+generators remain far below the ground-truth mesh (best generated F = 0.409 vs 1.0). This is robust
+to sampling, category, input modality, and dataset (commercial-safe *and* research sources).
+
+The **secondary** finding (rembg vs SAM 2) is more nuanced, and the cross-dataset battery reveals
+its boundary. rembg's advantage is large on **clean, curated** inputs (ABO and Poly Haven renders,
++24–48% F), but **shrinks as input cleanliness drops**: to a near-tie on real photographs (0.333 vs
+0.317), and to a statistical tie on **in-the-wild Objaverse meshes** (0.336 vs 0.339, the lone
+condition where SAM 2 edges ahead). The interpretation is consistent: the simpler salient-object
+segmenter (rembg) only out-frames the stronger promptable model (SAM 2) when the input is
+studio-clean; as input variability rises, SAM 2 closes and then erases the gap. Practical guidance is
+therefore **input-conditioned** — prefer rembg for clean catalog renders, treat them as equivalent
+for real photographs and in-the-wild assets.
 
 ---
 

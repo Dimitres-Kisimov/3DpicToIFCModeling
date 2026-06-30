@@ -19,6 +19,7 @@ ROUNDS = [
     ("abo_test_cats",     "ABO new categories (cabinet/stool/lamp)"),
     ("abo_test_realphoto","ABO real product PHOTOS (seed-42)"),
     ("abo_test_polyhaven","Poly Haven CC0 (different dataset)"),
+    ("abo_test_objaverse","Objaverse in-the-wild (research/internal-only)"),
 ]
 
 # ---- gather every model row -------------------------------------------------

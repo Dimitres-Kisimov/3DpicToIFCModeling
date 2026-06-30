@@ -1179,6 +1179,326 @@
       "sam2_fscore": 0.366,
       "rembg_chamfer": 0.106254,
       "rembg_fscore": 0.359
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "bed",
+      "base": "bed_01",
+      "sam2_chamfer": 0.128126,
+      "sam2_fscore": 0.2517,
+      "rembg_chamfer": 0.094357,
+      "rembg_fscore": 0.3605
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "bed",
+      "base": "bed_02",
+      "sam2_chamfer": 0.207707,
+      "sam2_fscore": 0.1284,
+      "rembg_chamfer": 0.176428,
+      "rembg_fscore": 0.2469
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "bed",
+      "base": "bed_03",
+      "sam2_chamfer": 0.090364,
+      "sam2_fscore": 0.3793,
+      "rembg_chamfer": 0.121502,
+      "rembg_fscore": 0.3248
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "bed",
+      "base": "bed_04",
+      "sam2_chamfer": 0.096583,
+      "sam2_fscore": 0.3856,
+      "rembg_chamfer": 0.19873,
+      "rembg_fscore": 0.0875
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "bookshelf",
+      "base": "bookshelf_05",
+      "sam2_chamfer": 0.18028,
+      "sam2_fscore": 0.2869,
+      "rembg_chamfer": 0.17297,
+      "rembg_fscore": 0.2684
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "bookshelf",
+      "base": "bookshelf_06",
+      "sam2_chamfer": 0.249719,
+      "sam2_fscore": 0.0476,
+      "rembg_chamfer": 0.140378,
+      "rembg_fscore": 0.2744
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "bookshelf",
+      "base": "bookshelf_07",
+      "sam2_chamfer": 0.040545,
+      "sam2_fscore": 0.6083,
+      "rembg_chamfer": 0.042823,
+      "rembg_fscore": 0.5894
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "bookshelf",
+      "base": "bookshelf_08",
+      "sam2_chamfer": 0.11047,
+      "sam2_fscore": 0.3836,
+      "rembg_chamfer": 0.10434,
+      "rembg_fscore": 0.4095
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "cabinet",
+      "base": "cabinet_09",
+      "sam2_chamfer": 0.038764,
+      "sam2_fscore": 0.5877,
+      "rembg_chamfer": 0.037872,
+      "rembg_fscore": 0.5848
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "cabinet",
+      "base": "cabinet_10",
+      "sam2_chamfer": 0.030554,
+      "sam2_fscore": 0.7956,
+      "rembg_chamfer": 0.030808,
+      "rembg_fscore": 0.7958
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "cabinet",
+      "base": "cabinet_11",
+      "sam2_chamfer": 0.116652,
+      "sam2_fscore": 0.5357,
+      "rembg_chamfer": 0.063931,
+      "rembg_fscore": 0.4588
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "cabinet",
+      "base": "cabinet_12",
+      "sam2_chamfer": 0.036909,
+      "sam2_fscore": 0.6779,
+      "rembg_chamfer": 0.043152,
+      "rembg_fscore": 0.5891
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "chair",
+      "base": "chair_13",
+      "sam2_chamfer": 0.175841,
+      "sam2_fscore": 0.2263,
+      "rembg_chamfer": 0.174309,
+      "rembg_fscore": 0.2246
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "chair",
+      "base": "chair_14",
+      "sam2_chamfer": 0.101543,
+      "sam2_fscore": 0.3322,
+      "rembg_chamfer": 0.10138,
+      "rembg_fscore": 0.3378
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "chair",
+      "base": "chair_15",
+      "sam2_chamfer": 0.236519,
+      "sam2_fscore": 0.0553,
+      "rembg_chamfer": 0.21435,
+      "rembg_fscore": 0.0689
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "chair",
+      "base": "chair_16",
+      "sam2_chamfer": 0.227971,
+      "sam2_fscore": 0.0492,
+      "rembg_chamfer": 0.226772,
+      "rembg_fscore": 0.0655
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "lamp",
+      "base": "lamp_17",
+      "sam2_chamfer": 0.195425,
+      "sam2_fscore": 0.3034,
+      "rembg_chamfer": 0.211559,
+      "rembg_fscore": 0.1845
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "lamp",
+      "base": "lamp_18",
+      "sam2_chamfer": 0.159726,
+      "sam2_fscore": 0.2859,
+      "rembg_chamfer": 0.16984,
+      "rembg_fscore": 0.2713
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "lamp",
+      "base": "lamp_19",
+      "sam2_chamfer": 0.170792,
+      "sam2_fscore": 0.1741,
+      "rembg_chamfer": 0.135671,
+      "rembg_fscore": 0.1843
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "lamp",
+      "base": "lamp_20",
+      "sam2_chamfer": 0.053436,
+      "sam2_fscore": 0.5037,
+      "rembg_chamfer": 0.142912,
+      "rembg_fscore": 0.2602
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "sofa",
+      "base": "sofa_21",
+      "sam2_chamfer": 0.168077,
+      "sam2_fscore": 0.2336,
+      "rembg_chamfer": 0.172503,
+      "rembg_fscore": 0.2359
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "sofa",
+      "base": "sofa_22",
+      "sam2_chamfer": 0.131693,
+      "sam2_fscore": 0.3011,
+      "rembg_chamfer": 0.141499,
+      "rembg_fscore": 0.2231
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "sofa",
+      "base": "sofa_23",
+      "sam2_chamfer": 0.160832,
+      "sam2_fscore": 0.2427,
+      "rembg_chamfer": 0.203602,
+      "rembg_fscore": 0.1669
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "sofa",
+      "base": "sofa_24",
+      "sam2_chamfer": 0.204936,
+      "sam2_fscore": 0.2041,
+      "rembg_chamfer": 0.195764,
+      "rembg_fscore": 0.1368
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "stool",
+      "base": "stool_25",
+      "sam2_chamfer": 0.163774,
+      "sam2_fscore": 0.1959,
+      "rembg_chamfer": 0.167054,
+      "rembg_fscore": 0.1862
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "stool",
+      "base": "stool_26",
+      "sam2_chamfer": 0.227971,
+      "sam2_fscore": 0.0492,
+      "rembg_chamfer": 0.226772,
+      "rembg_fscore": 0.0655
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "stool",
+      "base": "stool_27",
+      "sam2_chamfer": 0.120245,
+      "sam2_fscore": 0.4206,
+      "rembg_chamfer": 0.092741,
+      "rembg_fscore": 0.4707
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "stool",
+      "base": "stool_28",
+      "sam2_chamfer": 0.032102,
+      "sam2_fscore": 0.7282,
+      "rembg_chamfer": 0.025724,
+      "rembg_fscore": 0.8061
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "table",
+      "base": "table_29",
+      "sam2_chamfer": 0.051838,
+      "sam2_fscore": 0.5748,
+      "rembg_chamfer": 0.065245,
+      "rembg_fscore": 0.4145
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "table",
+      "base": "table_30",
+      "sam2_chamfer": 0.114616,
+      "sam2_fscore": 0.5909,
+      "rembg_chamfer": 0.027942,
+      "rembg_fscore": 0.8137
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "table",
+      "base": "table_31",
+      "sam2_chamfer": 0.332406,
+      "sam2_fscore": 0.1205,
+      "rembg_chamfer": 0.228154,
+      "rembg_fscore": 0.0935
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "type": "table",
+      "base": "table_32",
+      "sam2_chamfer": 0.16746,
+      "sam2_fscore": 0.1942,
+      "rembg_chamfer": 0.051186,
+      "rembg_fscore": 0.5601
     }
   ],
   "summary": [
@@ -1231,6 +1551,16 @@
       "sam2_chamfer": 0.14,
       "rembg_chamfer": 0.116,
       "winner": "rembg"
+    },
+    {
+      "round": "abo_test_objaverse",
+      "label": "Objaverse in-the-wild (research/internal-only)",
+      "n": 32,
+      "sam2_F": 0.339,
+      "rembg_F": 0.336,
+      "sam2_chamfer": 0.141,
+      "rembg_chamfer": 0.131,
+      "winner": "SAM2"
     }
   ]
 }

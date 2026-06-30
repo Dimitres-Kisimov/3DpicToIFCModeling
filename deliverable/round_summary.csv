@@ -4,3 +4,4 @@ abo_test_random,ABO random seed-42 (renders),25,0.312,0.387,0.154,0.126,rembg
 abo_test_cats,ABO new categories (cabinet/stool/lamp),15,0.287,0.359,0.172,0.158,rembg
 abo_test_realphoto,ABO real product PHOTOS (seed-42),25,0.317,0.333,0.159,0.152,rembg
 abo_test_polyhaven,Poly Haven CC0 (different dataset),28,0.326,0.409,0.14,0.116,rembg
+abo_test_objaverse,Objaverse in-the-wild (research/internal-only),32,0.339,0.336,0.141,0.131,SAM2
