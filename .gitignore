@@ -73,3 +73,12 @@ bakeoff_out/
 
 # generated colored catalog previews (regenerate via make_previews.py)
 data/mesh_library_abo/*.preview.png
+
+# --- benchmark artifacts (2026-06-30 study): bulky + regenerable ---
+# Regenerate meshes/renders via backend/python-scripts/batch_abo_test.py + polyhaven_benchmark.py
+# Regenerate galleries/bundles via build_abo_gallery.py / export_abo_gallery.py
+outputs/abo_test*/*.glb
+outputs/abo_test*/*.png
+deliverable/*.zip
+deliverable/abo_gallery*/
+# keep: outputs/abo_test*/{scores,results}.json, deliverable/*.csv, deliverable/all_scores.json

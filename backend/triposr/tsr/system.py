@@ -68,31 +68,38 @@ class TSR(BaseModule):
         model = cls(cfg)
         ckpt = torch.load(weight_path, map_location="cpu", weights_only=False)
 
-        # === SCS PATCH (2026-06-10) ===
-        # TripoSR's published weights use the legacy HuggingFace transformers
-        # ViT naming (transformers 4.x: encoder.layer.N.attention.attention.*).
-        # The rest of the SCS pipeline depends on transformers 5.x (which uses
-        # layers.N.attention.q_proj.*) for DETR / Depth Anything / DINOv2.
-        # Remap the legacy keys at load time so TripoSR works without
-        # downgrading the global transformers version.
-        # Remapper lives in backend/python-scripts/_tsr_state_dict_remap.py
-        try:
-            import sys as _sys
-            import os as _os
-            _scs_scripts = _os.path.abspath(_os.path.join(
-                _os.path.dirname(__file__), "..", "..", "python-scripts"
-            ))
-            if _scs_scripts not in _sys.path:
-                _sys.path.insert(0, _scs_scripts)
-            from _tsr_state_dict_remap import remap_tsr_state_dict
-            ckpt = remap_tsr_state_dict(ckpt)
-        except Exception as _e:
-            print(f"[tsr] state_dict remapper not applied ({_e}); "
-                  "loading may fail on transformers 5.x", flush=True)
-
-        # Allow strict=False because the remap may surface a few unexpected /
-        # missing keys (e.g. num_batches_tracked, which transformers ignores).
+        # === SCS PATCH (2026-06-10, fixed 2026-06-30) ===
+        # TripoSR's published weights use the legacy HF ViT naming
+        # (encoder.layer.N.attention.attention.*). Whether the *installed*
+        # transformers exposes that legacy naming or the newer
+        # (layers.N.attention.q_proj.*) naming varies by version, so AUTO-DETECT
+        # instead of remapping unconditionally: load the raw checkpoint first and
+        # only apply the legacy->new remap if the raw load actually misses the
+        # image_tokenizer weights.
+        #
+        # WHY: on transformers 5.5.4 the ViT keeps the LEGACY naming, so the raw
+        # checkpoint loads with 0 missing keys. The old code remapped every time,
+        # which renamed 192 image_tokenizer keys to names the model doesn't have
+        # -> the image encoder silently ran on RANDOM weights -> every
+        # reconstruction came out as spiky garbage. (Pre-2026-06-10 builds had no
+        # remap and worked; this restores that behaviour adaptively.)
         result = model.load_state_dict(ckpt, strict=False)
+        if any("image_tokenizer" in k for k in result.missing_keys):
+            print("[tsr] raw load missed image_tokenizer keys -> applying "
+                  "legacy->5.x remap", flush=True)
+            try:
+                import sys as _sys
+                import os as _os
+                _scs_scripts = _os.path.abspath(_os.path.join(
+                    _os.path.dirname(__file__), "..", "..", "python-scripts"
+                ))
+                if _scs_scripts not in _sys.path:
+                    _sys.path.insert(0, _scs_scripts)
+                from _tsr_state_dict_remap import remap_tsr_state_dict
+                result = model.load_state_dict(remap_tsr_state_dict(ckpt), strict=False)
+            except Exception as _e:
+                print(f"[tsr] state_dict remapper not applied ({_e})", flush=True)
+
         if result.missing_keys:
             print(f"[tsr] missing_keys: {len(result.missing_keys)}, "
                   f"first few: {result.missing_keys[:3]}", flush=True)

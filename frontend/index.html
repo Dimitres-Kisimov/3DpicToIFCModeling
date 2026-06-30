@@ -67,6 +67,11 @@
             <!-- Generate Button -->
             <div class="sidebar-section">
                 <h3>3. Generate 3D Model</h3>
+                <label for="engineSelect" class="pipe-label" style="display:block;margin-bottom:6px;">Engine</label>
+                <select id="engineSelect" style="width:100%;margin-bottom:10px;padding:6px;">
+                    <option value="detect" selected>Detect + Retrieve (default, BIM path)</option>
+                    <option value="triposr">TripoSR — generative 3D (solid mesh)</option>
+                </select>
                 <button id="generateBtn" class="btn btn-primary" disabled>
                     ⚙️ Generate
                 </button>

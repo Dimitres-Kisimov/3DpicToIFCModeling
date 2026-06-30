@@ -177,12 +177,15 @@ if (generateBtn) {
 
     generateBtn.disabled = true;
     resetPipeStatus();
-    ['detect', 'depth', 'retrieve'].forEach(s => setPipeStatus(s, 'active'));
+    const engine = (document.getElementById('engineSelect')?.value) || 'detect';
+    const activeStages = engine === 'triposr' ? ['detect', 'depth', 'fallback']
+                                              : ['detect', 'depth', 'retrieve'];
+    activeStages.forEach(s => setPipeStatus(s, 'active'));
     const progressContainer = document.getElementById('progressContainer');
     progressContainer.style.display = 'block';
 
     try {
-      const result = await generateModel(selectedImage, 'detect');
+      const result = await generateModel(selectedImage, engine);
       console.log('[app] Pipeline result:', result);
       applyPipelineResult(result);
       const glbPath = result.glb;

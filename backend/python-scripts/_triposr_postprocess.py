@@ -239,18 +239,23 @@ def clean_triposr_mesh(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
     Idempotent in the worst case — every internal step gracefully degrades
     to a pass-through on error, so calling twice is safe.
 
-    Master skip switch: SCS_TRIPOSR_SKIP_POSTPROC=1 returns input unchanged.
-    Enabled by default while TRELLIS is the real quality path — TripoSR's
-    raw output is the documented baseline and any stage here is a tuning
-    knob, not a correctness requirement."""
-    if bool(int(os.environ.get("SCS_TRIPOSR_SKIP_POSTPROC", "1"))):
-        print("[triposr-postproc] skipped (SCS_TRIPOSR_SKIP_POSTPROC=1)", flush=True)
-        # Still centre at origin — downstream scaling depends on it.
-        return _safe("center", _center, mesh)
+    Debris filtering + centering always run: raw TripoSR emits thousands of
+    tiny floating fragments (4000+ observed), which is broken output for any
+    viewer/IFC, not a tuning knob. The heavier, more opinionated stages
+    (orientation, mirror-symmetry, merge, smoothing — some historically flaky)
+    stay behind SCS_TRIPOSR_SKIP_POSTPROC (default "1" = skip those only)."""
+    # Always-on correctness baseline: drop floating debris, then centre.
     mesh = _safe("filter_components", _filter_components_keep_legs, mesh)
     mesh = _safe("center", _center, mesh)
+    if bool(int(os.environ.get("SCS_TRIPOSR_SKIP_POSTPROC", "1"))):
+        print("[triposr-postproc] debris filtered; heavier stages skipped "
+              "(SCS_TRIPOSR_SKIP_POSTPROC=1)", flush=True)
+        return mesh
     mesh = _safe("orient_upright", _orient_upright, mesh)
-    mesh = _safe("mirror_symmetry_x", _mirror_symmetry_x, mesh)
+    # mirror-symmetry is historically brittle (reverted once) — opt-in only.
+    if bool(int(os.environ.get("SCS_TRIPOSR_MIRROR", "0"))):
+        mesh = _safe("mirror_symmetry_x", _mirror_symmetry_x, mesh)
     mesh = _safe("merge_close", _merge_close, mesh)
     mesh = _safe("smooth", _smooth, mesh)
+    print("[triposr-postproc] full clean-up applied (orient + merge + smooth)", flush=True)
     return mesh

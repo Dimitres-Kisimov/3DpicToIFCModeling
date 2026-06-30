@@ -94,7 +94,7 @@ def create_ifc_furniture(glb_path, output_ifc, object_info=None):
             label=label,
         )
 
-        with open(output_ifc, "w") as f:
+        with open(output_ifc, "w", encoding="utf-8") as f:
             f.write(ifc_content)
 
         ifc_size = os.path.getsize(output_ifc)

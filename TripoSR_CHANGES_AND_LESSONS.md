@@ -265,3 +265,131 @@ xeokit viewer → IFC export
 | No material differentiation | Hunyuan3D-2 — outputs separate PBR material maps (albedo, roughness, metallic, normal) | Sprint 7 |
 | Single averaged color | Texture baking with UV unwrapping (requires xatlas — no Python 3.14 wheel yet) | Blocked |
 | Object type / surface material recognition | YOLO fine-tuned classifier + material lookup table per object type | Sprint 4 |
+
+---
+
+# 2026-06-29 session — SAM2, metric-scale fixes, IFC encoding, and the Lens2BIM local sim
+
+*Authors: Dimi (engineering). These extend the pipeline above; the inline rembg /
+Laplacian / component-filter steps from Changes 3–9 now live behind SAM2 and the
+centralised `_triposr_postprocess.py` (post-processing currently **default-off**,
+`SCS_TRIPOSR_SKIP_POSTPROC` defaults to "1", because the topology-editing steps
+were flaky — see Change 9).*
+
+## Change 10 — SAM2 segmentation adopted (the upgrade predicted in Change 3)
+
+**File:** `backend/python-scripts/run_triposr.py` (`_segment_foreground`)
+
+Change 3's lesson said SAM2 would give cleaner masks than rembg. It's now the
+primary segmenter (`sam2.1_hiera_tiny`, centre-point grid prompt), with **rembg as
+the fallback** if SAM2 fails. Measured coverage on test objects: 99.4% (filing
+cabinet stub), 23.9% (chair on white). Dominant colour is now picked by **k-means
+(k=3)** on the SAM2 mask instead of a plain mean — avoids the warm-tone background
+leak that skewed early meshes yellow.
+
+**Lesson learned:** the Change 3 prediction held — SAM2 edges are materially cleaner
+than rembg, and a mask good enough to drive both the geometry *and* the colour
+k-means is worth the extra weight file.
+
+## Change 11 — Metric-scale estimation: two bugs fixed
+
+**File:** `backend/python-scripts/inference_base.py` (`estimate_metric_scale`)
+
+Single-image depth (Depth-Anything-V2) is used to estimate real-world dimensions
+for the IFC. Two defects, both found by actually running it:
+
+1. **Crash — `boolean index did not match… size 256 vs 300`.** The SAM2 mask passed
+   in by `run_triposr` has already been through `resize_foreground`, so its shape
+   ≠ the original image. The code resized the mask by `depth_shape / original_image_shape`,
+   producing a 300-row mask indexed against a 256-row depth map. **Fix:** resize the
+   mask from its **own** shape to the depth shape.
+2. **Height was always 1.0 m.** The old formula `prior * (pixel_h/H_img) * (H_img/pixel_h)`
+   algebraically cancels to `prior` — so every object got the flat 1.0 m fallback even
+   when it didn't crash. **Fix:** a per-category height prior (`_HEIGHT_PRIORS`, keyed
+   on the CLIP label — e.g. office_chair 1.05 m, desk 0.74 m, filing_cabinet 1.32 m)
+   with **width derived from the object's pixel aspect ratio** and depth from the
+   relative depth extent. The CLIP label is now threaded in from `run_triposr`.
+
+**Lesson learned:** (a) never resize a mask against the *original* image dims once
+something upstream has already reshaped it — resize against its own shape. (b) Watch
+for formulas that algebraically collapse to a constant; "it returns a plausible
+number" hid a no-op for a long time. A monocular image has no absolute scale, so an
+explicit category prior is the honest model, not a depth-derived "measurement".
+
+## Change 12 — IFC writer crashed on Windows (`cp1252` vs UTF-8)
+
+**File:** `backend/python-scripts/createIFCFurniture.py`
+
+`open(output_ifc, "w")` used Python's platform default encoding, which on this
+Windows box is `cp1252`. The IFC header contains an em-dash (—), so **every IFC
+export raised `UnicodeEncodeError`** — not just the sim. **Fix:** `open(..., "w",
+encoding="utf-8")`.
+
+**Lesson learned:** on Windows, always pass `encoding="utf-8"` to `open()` for any
+text the program generates. The default is locale-dependent and will silently work
+in ASCII tests, then crash the first time a non-ASCII glyph (em-dash, ×, °) appears.
+
+## Change 13 — Lens2BIM: Sim C (Local) Photo → 3D → IFC
+
+**File:** `backend/python-scripts/sim_lens2bim.py` (new)
+
+A single named, locally-runnable simulation that chains the whole commercial-safe
+pipeline per photo: **SAM2 → TripoSR (256³, GPU) → fine-tuned CLIP → metric scale →
+IFC4**, writing a `.glb` + `.ifc` + `summary.json` per run. Fits the 6.4 GB RTX 4050
+(TripoSR only — the 16/32 GB cloud models of the Sim A bake-off can't run here).
+First green run: `chair.png` → 1.27 M-face GLB + valid IFC4 in **25.8 s**.
+
+**Lesson learned (the honest one):** the pipeline mechanics are sound, but the
+**fine-tuned CLIP is the weak link** — it called the chair a "lamp" (11%), so the IFC
+got the *Lighting* category and the lamp height prior (1.5 m) instead of a chair's
+~1.05 m. Geometry is only as trustworthy as the label feeding the IFC. This is the
+same "detection is the weak link" finding from `docs/FINDINGS.md` #1, now reproduced
+end-to-end: the next real quality lever is a better office-object classifier, not more
+mesh post-processing.
+
+## Change 14 — THE big one: a state-dict remap was loading the image encoder with random weights
+
+**File:** `backend/triposr/tsr/system.py` (+ `_tsr_state_dict_remap.py`)
+**Severity:** critical — silently corrupted **every** TripoSR reconstruction since 2026-06-10.
+
+**Symptom:** every photo (chair, hamburger, anything) reconstructed as a spiky,
+fragmented blob — thousands of disconnected components, unrecognisable. Post-processing,
+segmentation, smoothing, and input quality were all ruled out by experiment (old code,
+frame-filling demos, and correct masks all still blobbed).
+
+**Root cause:** the `SCS PATCH (2026-06-10)` in `system.py` ran `remap_tsr_state_dict`
+**unconditionally**, on the assumption that transformers 5.x renamed the ViT keys from
+the legacy `encoder.layer.N.attention.attention.query` to `layers.N.attention.q_proj`.
+But the installed **transformers 5.5.4 keeps the LEGACY naming** for this ViT. So:
+
+```
+model expects:        image_tokenizer.model.encoder.layer.0.attention.attention.query.weight  (legacy)
+RAW checkpoint load:  missing=0   unexpected=0     ← perfect
+REMAPPED (old code):  missing=192 unexpected=192   ← 192 image-encoder tensors never loaded
+```
+
+`load_state_dict(strict=False)` swallowed the mismatch, so **192 image-tokenizer tensors
+kept their random init**. A randomly-initialised image encoder emits meaningless features
+→ a meaningless density field → spiky garbage, deterministically, for every input.
+
+**Why "the April 28 version worked":** April 28 predates the June-10 remap shim entirely,
+so it loaded the weights raw (0 missing) and reconstructed cleanly. The regression was the
+patch, not the model, the marching-cubes swap, or the inputs.
+
+**Fix:** auto-detect instead of remapping blind — `load_state_dict` raw first, and only
+apply the legacy→5.x remap if the raw load actually misses `image_tokenizer` keys. After
+the fix, chair.png reconstructs as **one clean solid component (seat + back + 4 legs)**
+vs. 1,297 fragments before.
+
+**Lessons learned:**
+1. **`strict=False` on `load_state_dict` is a silent footgun.** It will happily leave a
+   whole sub-network on random weights and never raise. Always assert
+   `len(missing_keys) == 0` (or log + fail) for weights you *know* must load.
+2. **Don't translate weights on an assumption about a library version — verify against the
+   actual model.** A two-line `load_state_dict(raw)` probe (missing=0?) would have caught
+   this on day one. Auto-detect beats a hard-coded version assumption.
+3. **Garbage output far downstream (a blobby mesh) can trace all the way back to weight
+   loading.** We chased post-processing, segmentation, and inputs first; the real cause was
+   the very first step. Check that the model loaded correctly before blaming the algorithm.
+4. The user's "an old version worked" memory was the highest-signal clue — a working
+   reference point bisects the regression faster than any forward debugging.

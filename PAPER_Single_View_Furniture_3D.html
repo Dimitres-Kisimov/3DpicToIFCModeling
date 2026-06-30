@@ -1,0 +1,417 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Paper</title><style>
+body{max-width:820px;margin:0 auto;padding:34px 40px;font-family:Georgia,"Times New Roman",serif;line-height:1.55;color:#111;text-align:justify}
+h1{font-size:25px;text-align:center;line-height:1.25;border:none}
+h2{font-size:18px;border-bottom:1px solid #ccc;padding-bottom:3px;margin-top:30px}
+h3{font-size:15px;margin-top:20px}
+em{color:#333}
+p>em:only-child{display:block;text-align:center;font-size:13px;color:#444;margin:2px 0 16px}
+img{max-width:32%;margin:4px 3px;border:1px solid #bbb;border-radius:4px;vertical-align:top}
+table{border-collapse:collapse;margin:12px auto;font-size:13.5px;font-family:system-ui,sans-serif}
+th,td{border:1px solid #bbb;padding:5px 10px;text-align:left}
+th{background:#eee}
+code{background:#f0f0f0;padding:1px 4px;border-radius:3px;font-size:13px}
+pre{background:#f6f8fa;padding:10px;border-radius:5px;overflow:auto;text-align:left}
+hr{border:none;border-top:1px solid #ddd;margin:18px 0}
+</style></head><body><h1>When Generation Fails: An Empirical Study of Single-View 3D Reconstruction for BIM-Grade Office-Furniture Modeling</h1>
+<p><strong>Dimitres Kisimov</strong> — SCS
+<em>Engineering and analysis conducted with AI assistance (Claude Code).</em>
+<strong>Date:</strong> 30 June 2026</p>
+<hr />
+<h2>Abstract</h2>
+<p>Single-image-to-3D neural reconstruction promises to turn a photograph of an object into a
+3D mesh suitable for Building Information Modeling (BIM). We present an empirical study of one
+such system — a TripoSR-based pipeline — applied to office furniture, motivated by the
+observation that it produced unusable geometry. We make three contributions. <strong>First</strong>, we
+identify and fix a previously undiagnosed defect: an unconditional state-dictionary key remap
+loaded 192 image-encoder weights as random values under the installed <code>transformers</code> 5.5.4,
+causing <em>every</em> reconstruction to degrade to spiky, fragmented noise; we prove the defect with a
+key-matching probe (raw load: 0 missing keys; remapped: 192 missing) and resolve it with an
+auto-detecting loader. <strong>Second</strong>, after the fix, we show through qualitative tests on real
+photographs and a controlled <strong>118-model benchmark spanning five conditions</strong> (convenience vs random
+sampling, disjoint categories, render vs real-photo inputs, and two independent datasets — ABO and
+the CC0 Poly Haven library) that single-view generation remains structurally inadequate for
+furniture: it captures bulk volume but loses thin structures (legs, bases) and fails on flat planar
+surfaces. In <strong>all five conditions</strong> the real ground-truth mesh outperforms the best generated mesh
+by 2–6× in F-score; and — overturning an intermediate assumption — the salient-object segmenter
+(rembg/U²-Net) yields better TripoSR inputs than the stronger promptable segmenter (SAM 2) in every
+condition, although its advantage narrows to a near-tie on real photographs. <strong>Third</strong>, we recommend and justify a
+detection-plus-retrieval architecture over generation, and report a correctness defect in the
+retrieval index (400 indexed vectors vs 515 catalog entries). We discuss threats to validity,
+foremost that our benchmark inputs are renders of the catalog meshes themselves — a best-case,
+partially self-referential setup whose bias favours the generator, making our negative conclusion
+conservative.</p>
+<p><strong>Keywords:</strong> single-view 3D reconstruction, TripoSR, BIM, IFC, image segmentation, mesh retrieval,
+Chamfer distance, F-score, reproducibility, empirical software study.</p>
+<hr />
+<h2>1. Introduction</h2>
+<p>Photogrammetric and learned single-view reconstruction methods are increasingly proposed as a
+front end for digital-twin and BIM workflows: a field worker photographs an object, and a model
+produces a 3D mesh that is classified and exported to the Industry Foundation Classes (IFC) [10].
+The appeal is obvious — no manual CAD modelling, no catalogue dependency. The risk is equally
+obvious: single-view methods must hallucinate the unseen majority of an object's surface.</p>
+<p>This paper studies a production pipeline built around TripoSR [1], a transformer-based
+single-image reconstructor, in the context of office-furniture capture for a commercial BIM tool.
+The work began as a debugging effort — reconstructions were unusable — and developed into a
+controlled empirical evaluation of <em>whether single-view generation is the right tool at all</em> for
+this domain.</p>
+<p><strong>Contributions.</strong>
+1. <strong>A root-cause analysis of a silent weight-loading defect</strong> (§4.1) that rendered every
+   reconstruction meaningless, with a falsification methodology that ruled out the usual suspects
+   (post-processing, segmentation, input quality) before locating the true cause.
+2. <strong>A controlled benchmark</strong> (§3.4–§4.3, §5) of generated meshes against ground-truth catalog
+   meshes across five furniture categories, using Chamfer distance and F-score, including the
+   counter-intuitive finding that a weaker segmentation model produces better generator inputs.
+3. <strong>An evidence-based architectural recommendation</strong> (§7) — detection + retrieval + parametric
+   fallback over generation — plus a verified correctness defect in the retrieval index.
+4. <strong>An explicit threats-to-validity analysis</strong> (§6) of the benchmark's self-referential sampling.</p>
+<hr />
+<h2>2. Background and Related Work</h2>
+<p><strong>Single-view 3D generation.</strong> TripoSR [1] predicts a triplane-conditioned density field from one
+RGB image and extracts a surface by Marching Cubes [9]. Like all single-view methods it is
+ill-posed for occluded geometry. Multi-view large-reconstruction models such as InstantMesh [11]
+and TRELLIS [12] mitigate this by synthesising several views before reconstruction.</p>
+<p><strong>Foreground segmentation.</strong> Reconstruction quality depends on isolating the object. We compare two
+segmenters: <em>rembg</em>, a salient-object detector based on U²-Net [3] that returns the dominant
+foreground without prompting; and <em>SAM 2</em> [2], a promptable model that segments whatever spatial
+prompt it is given. SAM 2 is the stronger general model, but, as we show, "stronger segmenter" does
+not imply "better generator input."</p>
+<p><strong>Detection, depth, and retrieval.</strong> The pipeline also contains a DETR detector [5] for object
+classification, Depth-Anything-V2 [6] for monocular metric scale, and a DINOv2 [4] + FAISS [8]
+retrieval stage over the Amazon Berkeley Objects (ABO) catalog [7], whose CC-BY-4.0 meshes serve
+both as retrieval targets and, in this study, as ground truth.</p>
+<p><strong>Evaluation metrics.</strong> We use bidirectional Chamfer distance and F-score at a distance threshold
+τ = 0.02 on normalised, ICP-aligned surface samples — standard measures for 3D reconstruction
+fidelity.</p>
+<hr />
+<h2>3. System and Methods</h2>
+<h3>3.1 Pipeline under study</h3>
+<p>The system maps a photograph to an IFC element via: foreground segmentation → TripoSR
+reconstruction (Marching Cubes at 256³ on the local GPU) → mesh post-processing (component filter,
+orientation, smoothing) → metric scaling → optional IFC export. A parallel non-generative path
+performs DETR detection, Depth-Anything scaling, and DINOv2/FAISS retrieval of a catalog mesh.</p>
+<h3>3.2 The defect under study</h3>
+<p>The reconstruction subsystem loads published TripoSR weights through a checkpoint key-remap that
+was intended to bridge a <code>transformers</code> ViT naming change. We treat the correctness of this load
+as the first object of study (§4.1).</p>
+<h3>3.3 Datasets</h3>
+<p>Two input regimes are used:
+- <strong>Real photographs (qualitative, §4.2):</strong> an executive office chair, an executive L-desk
+  (both real product photos with cluttered backgrounds), and a plush toy.
+- <strong>Catalog-render benchmark (quantitative, §4.3):</strong> 25 meshes drawn from the local 515-mesh ABO
+  library — the first five of each of five categories (<code>office_chair</code>, <code>desk</code>, <code>table</code>, <code>sofa</code>,
+  <code>bookshelf</code>). For each mesh, the model's own clean studio <strong>preview render</strong> (single object,
+  neutral background) is used as the reconstruction input, and the <strong>same mesh</strong> serves as ground
+  truth. The implications of this design are analysed in §6.</p>
+<h3>3.4 Metrics and procedure</h3>
+<p>Each generated mesh is scored against its ground-truth ABO mesh with Chamfer distance and
+F-score@0.02 after normalisation and multi-seed ICP alignment (n = 20,000 surface samples). Each
+benchmark object is reconstructed twice — once with SAM 2, once with rembg — holding all
+post-processing identical via an engine switch, so the segmenter is the only varied factor.</p>
+<h3>3.5 Apparatus</h3>
+<p>Local GPU: NVIDIA RTX 4050 Laptop (6.4 GB), constraining Marching Cubes to 256³. Software:
+<code>transformers</code> 5.5.4, <code>trimesh</code>, <code>scikit-image</code> Marching Cubes (Lewiner) [14]. All meshes,
+posters, and numeric results are archived for reproducibility (Appendix A).</p>
+<hr />
+<h2>4. Results</h2>
+<h3>4.1 A silent weight-loading defect collapses all reconstructions</h3>
+<p>Every input — simple or complex, real or synthetic — produced a spiky, multi-thousand-component
+blob (Figure 1). We falsified the common explanations in turn: re-enabling post-processing did not
+help; SAM 2 and rembg masks were shown to be pixel-equivalent (Figure 6); a frame-filling
+reference image also failed; and running the historical (pre-defect) code produced an even worse
+result, excluding a recent logic regression.</p>
+<p>The cause was a checkpoint key-remap applied <strong>unconditionally</strong>. Under the installed
+<code>transformers</code> 5.5.4, the image-encoder ViT retains the <em>legacy</em> parameter naming, so the remap
+renamed the checkpoint <em>away</em> from what the model expected. A key-matching probe is decisive
+(Table 1): the raw checkpoint matches the model exactly (0 missing keys), whereas the remapped
+checkpoint mismatches 192 image-encoder tensors, which <code>load_state_dict(strict=False)</code> silently
+left at random initialisation. A randomly-initialised image encoder emits meaningless features,
+producing meaningless geometry deterministically.</p>
+<p><strong>Table 1. Key-matching probe of the TripoSR checkpoint against the instantiated model.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Load strategy</th>
+<th>Missing keys</th>
+<th>Unexpected keys</th>
+<th>Image-encoder loaded</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raw checkpoint (no remap)</td>
+<td>0</td>
+<td>0</td>
+<td>correct</td>
+</tr>
+<tr>
+<td>Remapped (defective code)</td>
+<td>192</td>
+<td>192</td>
+<td><strong>192 random tensors</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The fix loads the raw checkpoint first and applies the remap only if the raw load actually misses
+image-encoder keys. Post-fix, the canonical chair input reconstructs as a single clean component
+(Figure 2) versus 1,297 fragments before.</p>
+<p><img alt="Figure 1. TripoSR output BEFORE the fix: spiky, fragmented noise (canonical chair input)." src="report_assets/fig01_blob_before_fix.png" /></p>
+<p><em>Figure 1. Reconstruction before the fix — the image encoder runs on random weights.</em></p>
+<p><img alt="Figure 2. TripoSR output AFTER the fix: a single clean component (seat, back, four legs)." src="report_assets/fig02_chair_after_fix.png" /></p>
+<p><em>Figure 2. Reconstruction after the fix — bulk geometry restored from the same input.</em></p>
+<h3>4.2 Qualitative behaviour on real photographs</h3>
+<p>With the encoder repaired, we evaluated real-world inputs. The pipeline reconstructs <strong>bulk
+volume</strong> but <strong>loses thin structures</strong> and <strong>fails on flat planar furniture</strong>. A real executive
+desk (Figure 3a) reconstructs as a lumpy blob under SAM 2 (3b) and a folded slab under rembg (3c)
+— neither resembles a desk. A hairpin-leg table retains its top but loses its legs into a solid
+block (Figure 4). A plush toy reconstructs as a clean but featureless rounded mass (Figure 5).</p>
+<p><img alt="Figure 3a. Input: real executive-desk photograph." src="report_assets/fig05_execdesk_input.png" />
+<img alt="Figure 3b. Reconstruction (SAM 2): lumpy blob." src="report_assets/fig06_execdesk_sam2.png" />
+<img alt="Figure 3c. Reconstruction (rembg): folded slab." src="report_assets/fig07_execdesk_rembg.png" /></p>
+<p><em>Figure 3. Real executive-desk photo (a) and its TripoSR reconstructions under SAM 2 (b) and
+rembg (c). Neither is usable.</em></p>
+<p><img alt="Figure 4. Hairpin table: tabletop reconstructs; thin legs are filled into a solid block." src="report_assets/fig10_hairpin_table.png" /></p>
+<p><em>Figure 4. Thin-structure loss — the legs are absent.</em></p>
+<p><img alt="Figure 5. Plush-toy reconstruction: clean rounded mass, no surface detail." src="report_assets/fig09_yoshi.png" /></p>
+<p><em>Figure 5. Bulk captured, detail lost.</em></p>
+<h3>4.3 Quantitative benchmark</h3>
+<p>Table 2 reports mean Chamfer distance and F-score for the 25-model benchmark, by category and
+overall, for each segmenter. The ground-truth ABO mesh scores F = 1.0 by definition. Figure 7
+shows one representative row.</p>
+<p><strong>Table 2. Reconstruction fidelity vs ABO ground truth (lower Chamfer = better; higher F = better).
+Five models per category; n = 20,000 samples; ICP-aligned.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>SAM 2 — Chamfer / F</th>
+<th>rembg — Chamfer / F</th>
+<th>Better segmenter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>office_chair</td>
+<td>0.120 / 0.319</td>
+<td>0.120 / 0.347</td>
+<td>~tie</td>
+</tr>
+<tr>
+<td>desk</td>
+<td>0.248 / 0.160</td>
+<td><strong>0.169 / 0.263</strong></td>
+<td>rembg</td>
+</tr>
+<tr>
+<td>table</td>
+<td>0.135 / 0.358</td>
+<td><strong>0.095 / 0.479</strong></td>
+<td>rembg</td>
+</tr>
+<tr>
+<td>sofa</td>
+<td><strong>0.117 / 0.329</strong></td>
+<td>0.153 / 0.259</td>
+<td>SAM 2</td>
+</tr>
+<tr>
+<td>bookshelf</td>
+<td>0.178 / 0.212</td>
+<td><strong>0.090 / 0.462</strong></td>
+<td>rembg</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td>0.160 / 0.276</td>
+<td><strong>0.126 / 0.362</strong></td>
+<td><strong>rembg</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Two results stand out. (i) The <strong>real catalog mesh dominates any generated mesh</strong>: ground-truth
+F = 1.0 against a best generated F = 0.48, i.e. 2–6× more accurate surface. (ii) <strong>rembg
+outperforms SAM 2</strong> as the generator's segmenter overall (F 0.362 vs 0.276), winning clearly on
+the flat/planar categories (desk, table, bookshelf), tying on chairs, and losing only on sofas.</p>
+<p><img alt="Figure 7a. Benchmark input: ABO office-chair render." src="report_assets/fig11_bench_input.png" />
+<img alt="Figure 7b. TripoSR (SAM 2)." src="report_assets/fig11_bench_sam2.png" />
+<img alt="Figure 7c. TripoSR (rembg)." src="report_assets/fig11_bench_rembg.png" />
+<img alt="Figure 7d. Real ABO mesh (ground truth, F = 1.0)." src="report_assets/fig11_bench_abo.png" /></p>
+<p><em>Figure 7. One benchmark row: input render (a), the two reconstructions (b, c), and the
+ground-truth mesh (d). The generated meshes are lumpy approximations of the crisp real mesh.</em></p>
+<h3>4.4 Robustness across sampling, category, input modality, and dataset</h3>
+<p>To establish that §4.3 is not an artifact of any single design choice, we repeated the benchmark
+under four additional conditions, holding the pipeline constant and varying one factor at a time
+(Table 3, 118 models total):</p>
+<ul>
+<li><strong>Sampling</strong> — a fresh seeded random sample (seed 42) of different models per category, vs the
+  first-five convenience sample.</li>
+<li><strong>Category</strong> — a disjoint set of categories (cabinet, stool, lamp) not in the main benchmark.</li>
+<li><strong>Input modality</strong> — real ABO product <em>photographs</em> (the catalog thumbnails) instead of clean
+  studio renders, on the identical seed-42 models.</li>
+<li><strong>Dataset</strong> — an entirely different, commercial-safe library: <strong>Poly Haven</strong> (CC0 public domain),
+  with its own ground-truth meshes, removing any dependence on ABO.</li>
+</ul>
+<p><strong>Table 3. Overall fidelity across five benchmark conditions (mean F-score and Chamfer; the
+ground-truth mesh scores F = 1.0 in every condition).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>n</th>
+<th>SAM 2 — Chamfer / F</th>
+<th>rembg — Chamfer / F</th>
+<th>Winner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ABO first-five (renders)</td>
+<td>25</td>
+<td>0.160 / 0.276</td>
+<td>0.125 / 0.362</td>
+<td>rembg</td>
+</tr>
+<tr>
+<td>ABO random, seed 42 (renders)</td>
+<td>25</td>
+<td>0.154 / 0.312</td>
+<td>0.126 / 0.387</td>
+<td>rembg</td>
+</tr>
+<tr>
+<td>ABO new categories (cabinet/stool/lamp)</td>
+<td>15</td>
+<td>0.172 / 0.287</td>
+<td>0.158 / 0.359</td>
+<td>rembg</td>
+</tr>
+<tr>
+<td>ABO real <strong>photographs</strong> (seed 42)</td>
+<td>25</td>
+<td>0.159 / 0.317</td>
+<td>0.152 / 0.333</td>
+<td>rembg (narrow)</td>
+</tr>
+<tr>
+<td><strong>Poly Haven CC0</strong> (different dataset)</td>
+<td>28</td>
+<td>0.140 / 0.326</td>
+<td>0.116 / <strong>0.409</strong></td>
+<td><strong>rembg</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Two conclusions reproduce in <strong>all five</strong> conditions: <strong>rembg ≥ SAM 2</strong>, and both remain far below
+the ground-truth mesh (best generated F = 0.409 vs 1.0). The result is therefore robust to
+sampling, to category, to a completely different CC0 dataset, and to real-photo inputs — addressing
+the external-validity concerns of §6. One <strong>refinement</strong> emerges from the input-modality condition:
+rembg's advantage over SAM 2 is large on clean renders (+24–31% F) but <strong>narrows to a near-tie on
+real photographs</strong> (0.333 vs 0.317), indicating that the stronger promptable segmenter (SAM 2)
+closes the gap as input realism increases. The "prefer rembg" guidance is thus <strong>input-dependent</strong>:
+clearly so for clean renders, marginally so for real photographs. We caution that the ABO
+thumbnails, while real photographs, are clean single-object studio shots; genuinely cluttered field
+photographs (§4.2) degrade further still.</p>
+<hr />
+<h2>5. Discussion</h2>
+<p><strong>Why generation fails for furniture.</strong> Office furniture combines two adversarial properties for
+single-view reconstruction: thin repeated structures (legs, casters, star-bases) that fall below
+the Marching-Cubes voxel scale, and large untextured planar surfaces (tops, panels) that provide no
+photometric cue for depth. The unseen back of the object — the majority of its surface — is
+hallucinated. These are properties of the <em>problem</em>, not of any tunable stage; we separately
+confirmed that segmentation, smoothing, and component filtering do not address them.</p>
+<p><strong>Why the weaker segmenter wins.</strong> SAM 2 produces masks at least as good as rembg (Figure 6), yet
+rembg yields better reconstructions (Table 2). The difference is not mask <em>coverage</em> but mask
+<em>framing</em>: the reconstruction crops to the mask's bounding box and rescales, and rembg's
+salient-object cutout produces a more consistent bounding box for planar furniture, to which
+TripoSR is sensitive. "Best segmentation model" and "best generator front-end" are distinct
+objectives.</p>
+<p><img alt="Figure 6a. SAM 2 mask overlay — whole chair captured." src="report_assets/fig03_sam2_mask.png" />
+<img alt="Figure 6b. rembg mask overlay — whole chair captured." src="report_assets/fig04_rembg_mask.png" /></p>
+<p><em>Figure 6. The two segmenters' masks are equivalent in coverage; the reconstruction gap is a
+framing effect, not a segmentation-quality effect.</em></p>
+<p><strong>BIM correctness rides on classification, not photorealism.</strong> A BIM element needs a correct class
+and correct metric dimensions far more than a photoreal surface. DETR classified the desk as a
+table (IfcTable) at 90.7% confidence with plausible metric dimensions — the BIM-critical content —
+while the generated mesh was unusable. This reframes the objective from "reconstruct the surface"
+to "classify and dimension the object, then supply geometry from a reliable source."</p>
+<hr />
+<h2>6. Threats to Validity</h2>
+<p><strong>Construct / internal validity — self-referential benchmark inputs.</strong> The benchmark's inputs are
+the catalog's own <strong>studio renders</strong>, and the <strong>same meshes</strong> are the ground truth. This biases the
+task <em>in the generator's favour</em> in three ways: (i) inputs are clean, single-object, neutral-background
+images — the easiest possible case, unlike real photographs; (ii) the task reduces to "reproduce a
+mesh you were shown a render of," rather than reconstructing an unseen real object; (iii) sampling is
+by convenience (first five per category), with small n = 5. We <strong>partially retire this third threat
+in §4.4</strong> by reproducing the headline result on an independent seeded random sample, where the
+overall ranking and the generation-vs-retrieval gap persist; per-category rankings nonetheless remain
+indicative rather than statistically tight at this n. Crucially, because every remaining bias favours
+the generator yet it still fails (best F = 0.48 ≪ 1.0), the central negative conclusion is
+<strong>conservative</strong>: a method that
+cannot reproduce a clean render of furniture will not reconstruct a real photograph of it, as the
+qualitative real-photo results (§4.2) independently confirm.</p>
+<p><strong>External validity.</strong> §4.4 substantially strengthens external validity: the headline result holds
+on an independent CC0 dataset (Poly Haven), across disjoint categories, and on real photographs,
+not only on the ABO first-five sample. Remaining limits: findings are specific to <em>furniture-scale</em>
+objects and to TripoSR at 256³ on a 6.4 GB GPU. They do not speak to higher Marching-Cubes
+resolutions or to multi-view methods, which are out of scope and addressed only as future work.</p>
+<p><strong>Measurement validity.</strong> Chamfer/F-score depend on ICP alignment and random surface sampling; we
+mitigate variance with multi-seed alignment and 20,000 samples but do not report confidence
+intervals at this n.</p>
+<hr />
+<h2>7. Recommended Architecture</h2>
+<p>The evidence supports replacing generation with a <strong>detection-and-retrieval</strong> pipeline for
+furniture: DETR classification (reliable) → Depth-Anything metric dimensions → DINOv2/FAISS
+retrieval of a real catalog mesh (Figure 8), with a <strong>parametric primitive</strong> at the detected
+dimensions as a deterministic fallback, and single-view generation retired (or used only as a
+cloud, multi-view, catalog-miss fallback).</p>
+<p>We additionally report a <strong>correctness defect in the retrieval index</strong>: the FAISS index contains
+400 vectors while the catalog manifest lists 515 entries, leaving 115 meshes unsearchable and
+mis-indexing any match on rows ≥ 400. Rebuilding the index is a prerequisite for the retrieval
+path and an immediate correctness win. A second, separable issue is a domain gap between
+background-laden query crops and clean catalog embeddings, addressable by segmenting the query
+before embedding.</p>
+<p><img alt="Figure 8. Retrieved ABO mesh — clean, watertight, BIM-ready — for the desk query of Figure 3a." src="report_assets/fig08_retrieved_abo_mesh.png" /></p>
+<p><em>Figure 8. The retrieval output for the same desk query that generation failed on (Figures 3b–c):
+a clean, watertight mesh. This is the recommended geometry source.</em></p>
+<hr />
+<h2>8. Conclusion and Future Work</h2>
+<p>A single silent weight-loading defect, not the algorithm, was responsible for the most visible
+failures, underscoring that downstream artefacts can trace to model initialisation; we recommend
+asserting zero missing keys for weights that must load. Once corrected, single-view TripoSR was
+shown — qualitatively on real photos and quantitatively on a generator-favourable benchmark — to be
+structurally inadequate for BIM-grade furniture, while a real catalog mesh outperforms it by 2–6×.
+For practitioners forced to generate, rembg is the better front-end than SAM 2. The actionable path
+is detection plus retrieval, contingent on repairing the retrieval index. Future work: a multi-view
+generative bake-off (InstantMesh, TRELLIS) on cloud hardware to quantify whether multi-view methods
+clear the single-view ceiling, and a multi-photo photogrammetric pilot for out-of-catalog objects.</p>
+<hr />
+<h2>Acknowledgements</h2>
+<p>Engineering, experiments, and drafting were carried out with AI assistance (Claude Code). All
+figures are server-side renders of meshes produced in this study or unaltered input photographs and
+mask overlays; none are illustrations.</p>
+<h2>References</h2>
+<p>[1] D. Tochilkin et al., "TripoSR: Fast 3D Object Reconstruction from a Single Image," Stability AI / Tripo AI, 2024. arXiv:2403.02151. (MIT licence.)
+[2] N. Ravi et al., "SAM 2: Segment Anything in Images and Videos," Meta AI, 2024.
+[3] X. Qin et al., "U²-Net: Going Deeper with Nested U-Structure for Salient Object Detection," <em>Pattern Recognition</em>, 2020. (Backend of the <em>rembg</em> library.)
+[4] M. Oquab et al., "DINOv2: Learning Robust Visual Features without Supervision," Meta AI, 2023.
+[5] N. Carion et al., "End-to-End Object Detection with Transformers (DETR)," <em>ECCV</em>, 2020.
+[6] L. Yang et al., "Depth Anything V2," 2024.
+[7] J. Collins et al., "ABO: Dataset and Benchmarks for Real-World 3D Object Understanding (Amazon Berkeley Objects)," <em>CVPR</em>, 2022. (CC-BY-4.0.)
+[8] J. Johnson, M. Douze, H. Jégou, "Billion-Scale Similarity Search with GPUs (FAISS)," <em>IEEE Trans. Big Data</em>, 2019.
+[9] W. E. Lorensen, H. E. Cline, "Marching Cubes: A High Resolution 3D Surface Construction Algorithm," <em>SIGGRAPH</em>, 1987.
+[10] buildingSMART International, "Industry Foundation Classes (IFC4)," ISO 16739-1:2018.
+[11] J. Xu et al., "InstantMesh: Efficient 3D Mesh Generation from a Single Image with Sparse-View Large Reconstruction Models," 2024. (Apache-2.0.)
+[12] J. Xiang et al., "Structured 3D Latents for Scalable and Versatile 3D Generation (TRELLIS)," Microsoft, 2024. (MIT.)
+[13] S. van der Walt et al., "scikit-image: Image Processing in Python," <em>PeerJ</em>, 2014. (Marching Cubes, Lewiner variant.)
+[14] T. Lewiner et al., "Efficient Implementation of Marching Cubes' Cases with Topological Guarantees," <em>Journal of Graphics Tools</em>, 2003.</p>
+<hr />
+<h2>Appendix A. Reproducibility / Artifacts</h2>
+<ul>
+<li><strong>Code (defect fix and tooling):</strong> <code>backend/triposr/tsr/system.py</code> (auto-detecting loader);
+  <code>backend/python-scripts/{inference_base, createIFCFurniture, _triposr_postprocess, run_triposr}.py</code>;
+  <code>backend/python-scripts/{batch_abo_test, build_abo_gallery, score_abo_test, render_glb_preview}.py</code>.</li>
+<li><strong>Benchmark data:</strong> <code>outputs/abo_test/</code> (75 meshes + posters), <code>outputs/abo_test/results.json</code>,
+  <code>outputs/abo_test/scores.json</code>.</li>
+<li><strong>Interactive viewers (served at :3000):</strong> <code>outputs/view_abo_gallery.html</code> (75 orbit-able meshes).</li>
+<li><strong>Figures:</strong> <code>report_assets/</code> (fig01–fig11), all real outputs of this study.</li>
+<li><strong>Environment:</strong> RTX 4050 Laptop 6.4 GB; <code>transformers</code> 5.5.4; Marching Cubes 256³.</li>
+</ul></body></html>

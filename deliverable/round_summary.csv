@@ -1,0 +1,6 @@
+round,label,n,sam2_F,rembg_F,sam2_chamfer,rembg_chamfer,winner
+abo_test,ABO first-5 (renders),25,0.276,0.362,0.16,0.125,rembg
+abo_test_random,ABO random seed-42 (renders),25,0.312,0.387,0.154,0.126,rembg
+abo_test_cats,ABO new categories (cabinet/stool/lamp),15,0.287,0.359,0.172,0.158,rembg
+abo_test_realphoto,ABO real product PHOTOS (seed-42),25,0.317,0.333,0.159,0.152,rembg
+abo_test_polyhaven,Poly Haven CC0 (different dataset),28,0.326,0.409,0.14,0.116,rembg

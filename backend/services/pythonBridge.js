@@ -74,7 +74,16 @@ function executePythonScript(scriptName, args = [], options = {}) {
           try {
             jsonOutput = JSON.parse(stdout);
           } catch (e) {
-            // Not JSON, treat as plain text
+            // stdout may carry non-JSON noise before the final result line
+            // (e.g. the transformers "CLIPModel LOAD REPORT" prints to stdout).
+            // Scan from the end for the last parseable JSON object.
+            const lines = stdout.split(/\r?\n/);
+            for (let i = lines.length - 1; i >= 0; i--) {
+              const ln = lines[i].trim();
+              if (ln.startsWith('{') && ln.endsWith('}')) {
+                try { jsonOutput = JSON.parse(ln); break; } catch (_) { /* keep scanning */ }
+              }
+            }
           }
         }
 

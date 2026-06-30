@@ -1,0 +1,418 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>TripoSR Investigation Report</title>
+<style>
+body{max-width:900px;margin:0 auto;padding:24px 28px;font-family:system-ui,sans-serif;line-height:1.5;color:#1a1a1a}
+img{max-width:48%;margin:6px 4px;border:1px solid #ccc;border-radius:6px;vertical-align:top}
+table{border-collapse:collapse;margin:10px 0;font-size:14px}
+th,td{border:1px solid #ccc;padding:5px 9px;text-align:left}
+th{background:#f3f3f3}
+code{background:#f3f3f3;padding:1px 4px;border-radius:3px}
+pre{background:#f6f8fa;padding:12px;border-radius:6px;overflow:auto}
+h1,h2{border-bottom:1px solid #ddd;padding-bottom:4px}
+h2{margin-top:28px}
+</style></head><body>
+<h1 id="triposr-photo3d-furniture-investigation-full-report">TripoSR / Photo→3D Furniture Investigation — Full Report</h1>
+<p><strong>Date:</strong> 2026-06-30
+<strong>Repo:</strong> <code>C:\Users\dimik\3DpicToIFCModeling</code> (branch <code>app-development</code>)
+<strong>Author:</strong> Dimi, with Claude Code (engineering + analysis)
+<strong>Scope:</strong> Diagnose why TripoSR produced unusable 3D meshes, fix what was fixable, and
+empirically establish what the photo→3D pipeline can and cannot do for office furniture —
+ending with a data-backed recommendation.</p>
+<hr />
+<h2 id="0-executive-summary">0. Executive summary</h2>
+<ul>
+<li>A <strong>single critical bug</strong> was making <em>every</em> TripoSR reconstruction garbage: a state-dict
+  remap (added 2026-06-10) loaded the image encoder with <strong>192 random weights</strong>. <strong>Fixed</strong> —
+  reconstructions went from spiky 1,000-fragment blobs to clean single-component meshes.</li>
+<li>Even after the fix, <strong>single-view TripoSR cannot produce usable office-furniture geometry</strong>
+  (chairs lose their base, desks fold/crumple, thin legs vanish). This was confirmed across
+  ~10 inputs, both real photos and clean catalog renders, and both segmenters.</li>
+<li>A controlled 25-model benchmark (Chamfer + F-score vs ground truth) showed: <strong>the real ABO
+  catalog mesh beats any generated mesh by 2–6×</strong>, and <strong>rembg beats SAM 2</strong> as the segmenter
+  for feeding TripoSR (overall F 0.362 vs 0.276) — overturning an earlier "they're equivalent"
+  assumption.</li>
+<li><strong>Methodology caveat (important):</strong> the 25-model benchmark used the <strong>ABO catalog's own
+  renders as inputs</strong>, scored against those same meshes — a clean, best-case, partly
+  self-referential setup. Real-photo tests (done separately) were worse. See §6.</li>
+<li><strong>Recommendation:</strong> stop generating furniture; route Detect → Retrieval (fix the broken
+  FAISS index first) → parametric primitive fallback. Keep generation only as a cloud,
+  multi-view, catalog-miss fallback.</li>
+</ul>
+<hr />
+<h2 id="1-how-the-session-started">1. How the session started</h2>
+<p>The user returned to the SCS "3DpicToIFCModeling" project (photo → object detection → 3D mesh
+→ IFC/BIM → room layout) wanting to continue work on TripoSR, the single-image-to-3D model.
+The immediate symptom: meshes looked wrong. What followed was a deep diagnosis.</p>
+<hr />
+<h2 id="2-the-headline-bug-image-encoder-weights-loaded-as-random-noise">2. The headline bug — image-encoder weights loaded as random noise</h2>
+<h3 id="symptom">Symptom</h3>
+<p>Every photo (chair, hamburger, desk — anything) reconstructed as a <strong>spiky, fragmented blob</strong>
+with hundreds to thousands of disconnected components. Unrecognisable.</p>
+<h3 id="how-we-ruled-out-the-usual-suspects-each-falsified-by-experiment">How we ruled out the usual suspects (each falsified by experiment)</h3>
+<ol>
+<li><strong>Post-processing</strong> — re-enabled the debris filter + smoothing; still a blob.</li>
+<li><strong>Segmentation</strong> — SAM 2's mask was proven pixel-equivalent to rembg's (both captured the
+   whole object); not the cause.</li>
+<li><strong>Input quality</strong> — a frame-filling demo (<code>hamburger.png</code>) <em>also</em> blobbed → systemic, not
+   input-specific.</li>
+<li><strong>The old code</strong> — running the actual April-28 version produced an <em>even worse</em> blob, so it
+   wasn't a recent regression in <code>run_triposr.py</code> logic.</li>
+</ol>
+<h3 id="root-cause-proven">Root cause (proven)</h3>
+<p>The <code>SCS PATCH (2026-06-10)</code> in <code>backend/triposr/tsr/system.py</code> ran <code>remap_tsr_state_dict</code>
+(<code>backend/python-scripts/_tsr_state_dict_remap.py</code>) <strong>unconditionally</strong>, on the assumption that
+transformers 5.x renamed the ViT attention keys (<code>encoder.layer.N.attention.attention.query</code> →
+<code>layers.N.attention.q_proj</code>). But the <strong>installed transformers 5.5.4 keeps the LEGACY naming</strong>
+for this ViT. So the remap renamed the checkpoint <em>away</em> from what the model wanted:</p>
+<pre><code>model expects:        image_tokenizer.model.encoder.layer.0.attention.attention.query.weight   (legacy)
+RAW checkpoint load:      missing=0    unexpected=0     ← perfect
+REMAPPED (old code):      missing=192  unexpected=192   ← 192 image-encoder tensors never loaded
+</code></pre>
+<p><code>load_state_dict(strict=False)</code> silently swallowed the mismatch, leaving <strong>192 image-tokenizer
+tensors on random initialisation</strong>. A randomly-initialised image encoder emits meaningless
+features → meaningless density field → spiky garbage, deterministically, for every input.</p>
+<p><strong>Why "the April-28 version worked":</strong> April 28 predates the June-10 remap entirely, so it
+loaded the weights raw (0 missing) and reconstructed cleanly. (Git: <code>544a72f</code> Apr 21 first
+TripoSR integration; <code>9348655</code> Apr 28 GPU+quality; remap added 2026-06-10; transformers now
+5.5.4.) The user's memory of a working April build was the single highest-signal clue.</p>
+<h3 id="fix">Fix</h3>
+<p><code>system.py</code> now <strong>auto-detects</strong>: load the raw checkpoint first, and only apply the remap if the
+raw load actually misses <code>image_tokenizer</code> keys. After the fix, <code>chair.png</code> reconstructs as one
+clean solid component (seat + back + 4 legs) vs 1,297 fragments before.</p>
+<p><strong>Figure 1 — before the fix</strong> (<code>chair.png</code>, post-processing on, image-encoder weights
+mis-loaded): spiky, fragmented garbage.</p>
+<p><img alt="Figure 1. TripoSR output BEFORE the weight-load fix — a spiky blob (chair.png input)." src="report_assets/fig01_blob_before_fix.png" /></p>
+<p><strong>Figure 2 — after the fix</strong> (same input, encoder now loading real weights): one clean
+component with seat, back and four legs.</p>
+<p><img alt="Figure 2. TripoSR output AFTER the weight-load fix — a recognisable chair (chair.png input)." src="report_assets/fig02_chair_after_fix.png" /></p>
+<h3 id="lessons">Lessons</h3>
+<ul>
+<li><code>load_state_dict(strict=False)</code> is a silent footgun — assert <code>missing_keys == 0</code> for weights
+  that must load.</li>
+<li>Don't translate weights on an assumption about a library version — verify against the actual
+  model (a 2-line probe would have caught this on day one).</li>
+<li>Garbage far downstream (a blobby mesh) can trace all the way back to weight loading. Check the
+  model loaded correctly <em>before</em> blaming the algorithm.</li>
+</ul>
+<hr />
+<h2 id="3-other-bugs-fixed-this-session">3. Other bugs fixed this session</h2>
+<table>
+<thead>
+<tr>
+<th>Fix</th>
+<th>File</th>
+<th>What it was</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Metric-scale crash</strong></td>
+<td><code>inference_base.py</code></td>
+<td>SAM 2 mask (post-<code>resize_foreground</code>) was resized by <code>depth_shape / original_image_shape</code> → 256-vs-300 boolean-index crash. Fixed to resize from the mask's own shape.</td>
+</tr>
+<tr>
+<td><strong>Metric-scale always 1.0 m</strong></td>
+<td><code>inference_base.py</code></td>
+<td>The height formula algebraically cancelled to the prior constant. Replaced with a per-category height prior + width from pixel aspect ratio.</td>
+</tr>
+<tr>
+<td><strong>UTF-8 IFC crash</strong></td>
+<td><code>createIFCFurniture.py</code></td>
+<td><code>open(..., "w")</code> used Windows <code>cp1252</code>; the IFC header's em-dash crashed <em>every</em> IFC export. Now writes UTF-8.</td>
+</tr>
+<tr>
+<td><strong>Debris filter off by default</strong></td>
+<td><code>_triposr_postprocess.py</code></td>
+<td>Made component filtering + centering always-on (raw TripoSR emits 1,000s of fragments); heavier/flaky stages stay behind <code>SCS_TRIPOSR_SKIP_POSTPROC</code>.</td>
+</tr>
+<tr>
+<td><strong>Bridge JSON parse</strong></td>
+<td><code>pythonBridge.js</code></td>
+<td>transformers' CLIP load-report prints to stdout, breaking <code>JSON.parse</code>; now scans for the final JSON line.</td>
+</tr>
+<tr>
+<td><strong>TripoSR not reachable in UI</strong></td>
+<td><code>apiRoutes.js</code>, <code>index.html</code>, <code>index.js</code></td>
+<td><code>/api/generate</code> forced detect-and-place for <em>all</em> models; added an Engine selector + a real <code>model==='triposr'</code> route so the web app can run TripoSR.</td>
+</tr>
+<tr>
+<td><strong><code>SCS_TRIPOSR_SEGMENTER</code> switch</strong></td>
+<td><code>run_triposr.py</code></td>
+<td>Force <code>sam2</code> or <code>rembg</code> so the two can be A/B-tested with identical post-processing.</td>
+</tr>
+</tbody>
+</table>
+<p>New tools written: <code>render_glb_preview.py</code> (server-side GLB→PNG, no WebGL), <code>sim_lens2bim.py</code>
+(Sim C local photo→3D→IFC), <code>batch_abo_test.py</code>, <code>build_abo_gallery.py</code>, <code>score_abo_test.py</code>.</p>
+<hr />
+<h2 id="4-the-dots-in-the-browser-detour-separate-issue-webgl">4. The "dots in the browser" detour (separate issue: WebGL)</h2>
+<p>For a long stretch, results looked like a <strong>point cloud</strong> in the browser. Root cause: this
+machine's <strong>Firefox WebGL is degraded</strong> — it can't draw large 32-bit-indexed meshes, so xeokit
+fell back to rendering vertices as points ("dots"); Edge (WebGL2) renders them fine, and Windows
+3D Viewer always did. Mitigation: a no-WebGL <strong>server-side PNG renderer</strong> (<code>render_glb_preview.py</code>)
+plus <code>&lt;model-viewer&gt;</code> pages with the PNG as a poster fallback. This was orthogonal to the mesh
+quality problem but cost real time to untangle.</p>
+<hr />
+<h2 id="5-does-triposr-work-for-furniture-capability-tests-on-real-inputs">5. Does TripoSR work for furniture? (capability tests on REAL inputs)</h2>
+<p>After the weight fix, we tested real-world-style inputs:</p>
+<table>
+<thead>
+<tr>
+<th>Input (real photo / studio demo)</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chair.png</code> (simple studio cutout)</td>
+<td>✅ recognisable chair (seat + back + 4 legs)</td>
+</tr>
+<tr>
+<td>User's <strong>office chair</strong> (real product photo)</td>
+<td>❌ blob, base lost</td>
+</tr>
+<tr>
+<td><strong>Yoshi plush</strong> (real photo)</td>
+<td>⚠️ rounded mass, no detail</td>
+</tr>
+<tr>
+<td><code>hamburger.png</code></td>
+<td>✅ (post-fix) recognisable</td>
+</tr>
+<tr>
+<td>Catalog <strong>hairpin table</strong> render</td>
+<td>⚠️ top OK, thin legs gone (filled solid)</td>
+</tr>
+<tr>
+<td>Catalog <strong>panel desk</strong> render</td>
+<td>❌ crumpled blob</td>
+</tr>
+<tr>
+<td>User's <strong>executive L-desk</strong> (real photo)</td>
+<td>❌ blob / folded slab</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pattern:</strong> TripoSR reconstructs <strong>bulk volume</strong> acceptably but <strong>loses thin structures</strong>
+(chair bases/casters, table/desk legs) and <strong>fails on flat planar furniture</strong> (no texture for
+depth, open spans under tops). We verified this is the <strong>single-view + marching-cubes ceiling</strong>,
+not fixable by segmentation, smoothing, or component filtering — each was tried and ruled out.</p>
+<p><strong>Figure 3 — a real-photo desk (the actual SCS use case).</strong> Input photo (3a); TripoSR under
+SAM 2 (3b) and rembg (3c). Neither resembles a desk — one is a lumpy blob, the other a folded
+slab. This is <em>worse</em> than the catalog-render benchmark in §6, as expected for real photos.</p>
+<p><img alt="Figure 3a. Input: user's real executive-desk photo." src="report_assets/fig05_execdesk_input.png" />
+<img alt="Figure 3b. TripoSR (SAM 2) reconstruction of the desk — lumpy blob." src="report_assets/fig06_execdesk_sam2.png" />
+<img alt="Figure 3c. TripoSR (rembg) reconstruction of the desk — folded slab." src="report_assets/fig07_execdesk_rembg.png" /></p>
+<p><strong>Figure 4 — thin-structure loss.</strong> A hairpin-leg table (catalog render input): the top
+reconstructs, but the thin legs are filled into a solid block — the legs simply are not present.</p>
+<p><img alt="Figure 4. Hairpin table — tabletop reconstructs, thin legs lost (filled solid)." src="report_assets/fig10_hairpin_table.png" /></p>
+<p><strong>Figure 5 — a real plush toy</strong> (Yoshi photo): reconstructs as a clean but featureless rounded
+mass — bulk captured, detail lost.</p>
+<p><img alt="Figure 5. Yoshi plush real-photo reconstruction — rounded mass, no detail." src="report_assets/fig09_yoshi.png" /></p>
+<hr />
+<h2 id="6-the-controlled-benchmark-and-its-sample-data-caveat">6. The controlled benchmark — and its sample-data caveat</h2>
+<h3 id="what-the-sample-was-read-this-it-qualifies-every-number-below">What the sample was (READ THIS — it qualifies every number below)</h3>
+<p>The 25-model benchmark used <strong>the Amazon Berkeley Objects (ABO) catalog itself</strong> as the sample:
+- <strong>25 meshes</strong>: the first <strong>5 each</strong> of <code>office_chair</code>, <code>desk</code>, <code>table</code>, <code>sofa</code>, <code>bookshelf</code>
+  from the local 515-mesh ABO library (a convenience sample, not random).
+- <strong>Inputs were the catalog's own <code>*.preview.png</code> renders</strong> — clean, single-object, white/neutral
+  background, good 3/4 framing. These are <strong>studio renders of the meshes</strong>, <strong>not real photos</strong>.
+- <strong>Ground truth for scoring was the same ABO mesh</strong> the input render came from.</p>
+<p><strong>Why this matters (the bias, stated honestly):</strong>
+1. <strong>Best-case inputs.</strong> Clean cutouts on plain backgrounds are the <em>easiest</em> case for TripoSR.
+   Real photos (busy backgrounds, lighting, occlusion) are harder — and indeed the real-photo
+   tests in §5 came out <em>worse</em> than these benchmark numbers.
+2. <strong>Partly self-referential.</strong> The input is a render <em>of</em> the ground-truth mesh, so the task is
+   "reproduce a mesh you were shown a picture of." This flatters TripoSR relative to a
+   from-scratch real-world photo.
+3. <strong>Convenience sample.</strong> First-5-per-type, not randomly drawn; small n (5/type) → per-type
+   numbers are indicative, not statistically tight.</p>
+<p><strong>Why the conclusion still holds despite the bias:</strong> the bias runs <em>in TripoSR's favour</em>, yet it
+<strong>still failed</strong> (best F-score 0.48, most 0.16–0.36). If it can't reproduce a clean catalog
+render of furniture, it certainly can't reconstruct a real office-furniture photo. So the
+"generation is insufficient for furniture" conclusion is <strong>conservative</strong>, not overstated.</p>
+<h3 id="the-scoreboard-chamfer-distance-lower-better-f-score002-higher-better">The scoreboard (Chamfer distance — lower better; F-score@0.02 — higher better)</h3>
+<p>Each TripoSR reconstruction scored against its ABO ground-truth mesh. The ABO mesh itself scores
+F = 1.0 by definition (it is the ground truth).</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>SAM 2 — Chamfer / F</th>
+<th>rembg — Chamfer / F</th>
+<th>Winner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>office_chair</td>
+<td>0.120 / 0.319</td>
+<td>0.120 / 0.347</td>
+<td>~tie</td>
+</tr>
+<tr>
+<td>desk</td>
+<td>0.248 / 0.160</td>
+<td><strong>0.169 / 0.263</strong></td>
+<td>rembg</td>
+</tr>
+<tr>
+<td>table</td>
+<td>0.135 / 0.358</td>
+<td><strong>0.095 / 0.479</strong></td>
+<td>rembg</td>
+</tr>
+<tr>
+<td>sofa</td>
+<td><strong>0.117 / 0.329</strong></td>
+<td>0.153 / 0.259</td>
+<td>SAM 2</td>
+</tr>
+<tr>
+<td>bookshelf</td>
+<td>0.178 / 0.212</td>
+<td><strong>0.090 / 0.462</strong></td>
+<td>rembg</td>
+</tr>
+<tr>
+<td><strong>OVERALL</strong></td>
+<td>0.160 / 0.276</td>
+<td><strong>0.126 / 0.362</strong></td>
+<td><strong>rembg</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="findings">Findings</h3>
+<ol>
+<li><strong>ABO mesh ≫ any generation</strong> — ground truth F = 1.0 vs best generated 0.48 (2–6× more
+   accurate surface). The real catalog mesh wins every row.</li>
+<li><strong>rembg objectively beats SAM 2 for TripoSR</strong> — overall F 0.362 vs 0.276 (~31% better),
+   lower Chamfer. This <strong>overturned</strong> the earlier session assumption that they were equivalent
+   (that was true only for the one chair tested; the chair row here is indeed a tie). rembg wins
+   clearly on flat/planar items (desk, table, bookshelf); sofa is the lone SAM 2 win.</li>
+<li><strong>"Best segmenter" ≠ "best segmenter for TripoSR."</strong> SAM 2 is the stronger segmentation model,
+   but rembg's salient-object cutout frames furniture more consistently for <code>resize_foreground</code>,
+   which TripoSR is sensitive to.</li>
+</ol>
+<p><strong>Figure 6 — the two segmenters' masks are equivalent.</strong> SAM 2 (6a) and rembg (6b) on the same
+chair photo both cover the entire object (green overlay), base included — confirming segmentation
+is <em>not</em> the bottleneck. The reconstruction difference comes from input <em>framing</em>, not coverage.</p>
+<p><img alt="Figure 6a. SAM 2 mask overlay — whole chair captured." src="report_assets/fig03_sam2_mask.png" />
+<img alt="Figure 6b. rembg mask overlay — whole chair captured." src="report_assets/fig04_rembg_mask.png" /></p>
+<p><strong>Figure 7 — one benchmark row (office_chair).</strong> Input catalog render (7a); TripoSR·SAM 2 (7b);
+TripoSR·rembg (7c); the real ABO mesh = ground truth (7d). The real mesh is crisp; both generated
+meshes are lumpy approximations scoring far below it.</p>
+<p><img alt="Figure 7a. Benchmark input — ABO office-chair render." src="report_assets/fig11_bench_input.png" />
+<img alt="Figure 7b. TripoSR (SAM 2) reconstruction." src="report_assets/fig11_bench_sam2.png" />
+<img alt="Figure 7c. TripoSR (rembg) reconstruction." src="report_assets/fig11_bench_rembg.png" />
+<img alt="Figure 7d. Real ABO mesh — ground truth (F-score = 1.0)." src="report_assets/fig11_bench_abo.png" /></p>
+<p>Artifacts: visual gallery <code>outputs/view_abo_gallery.html</code> (75 orbit-able meshes), raw numbers
+<code>outputs/abo_test/scores.json</code>, meshes <code>outputs/abo_test/</code>.</p>
+<hr />
+<h2 id="7-the-fix-side-analysis-design-exploration">7. The fix-side analysis (design exploration)</h2>
+<p>A separate multi-agent design exploration assessed five avenues against SCS constraints
+(commercial-safe licences only; 6.4 GB local / capped cloud GPU; BIM-grade IFC goal), grounded
+in the live repo. Verified findings:</p>
+<ul>
+<li><strong>FAISS index is desynced — confirmed live:</strong> <code>data/mesh_library_abo/index.faiss</code> has
+  <strong>ntotal = 400</strong>, but <code>manifest.json</code> has <strong>515</strong> entries. The 115 decor meshes (planter/
+  mirror/clock/picture_frame added earlier) are <strong>unsearchable</strong>, and any hit on rows ≥ 400
+  indexes the <strong>wrong</strong> mesh. This is a correctness bug, fixable in ~5 min (<code>build_abo_index.py</code>).</li>
+<li><strong>The "no executive desk in the catalog" belief is false</strong> — 50 desks (incl. ~1.6 m executive
+  widths) are indexed. The desk retrieval failed on the <strong>photo-vs-silhouette embedding gap</strong>
+  (the query embeds the raw photo crop incl. background), not a missing mesh.</li>
+</ul>
+<p><strong>Figure 8 — what retrieval pulls</strong> (the catalog's best match for the desk photo of Figure 3a):
+a clean, watertight, BIM-ready ABO mesh — the opposite of the generated blobs in Figures 3b–3c.
+This is the path forward for furniture.</p>
+<p><img alt="Figure 8. Retrieved ABO mesh — clean, watertight, BIM-ready (vs the generated blobs)." src="report_assets/fig08_retrieved_abo_mesh.png" />
+- <strong>Parametric primitives are buried</strong> — <code>_build_primitive_mesh</code> is only reached <em>after</em>
+  retrieval + TRELLIS + TripoSR all fail; the clean deterministic path is gated behind the
+  broken ones.</p>
+<h3 id="ranked-roadmap">Ranked roadmap</h3>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Avenue</th>
+<th>Effort</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Parametric primitives → primary</strong> for office furniture (class + metric dims from DETR/Depth-Anything)</td>
+<td>low</td>
+<td>Do now</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Fix retrieval</strong> — rebuild index (5 min), segment query before embedding, re-tune threshold</td>
+<td>low–med</td>
+<td>Do now</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Multi-photo / photogrammetry</strong> (COLMAP/pycolmap BSD + Open3D) for out-of-catalog objects</td>
+<td>med</td>
+<td>Pilot later</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Multi-view generative bake-off</strong> (InstantMesh Apache-2.0 / TRELLIS MIT) on capped cloud</td>
+<td>med</td>
+<td>Run once for a number; catalog-miss fallback only</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Squeeze single-view TripoSR</strong></td>
+<td>—</td>
+<td><strong>Wrong investment — stop</strong></td>
+</tr>
+</tbody>
+</table>
+<p>License traps flagged: OpenMVS (AGPL), and the existing <code>run_instantmesh.py</code>/<code>run_stablefast3d.py</code>
+stubs actually call YOLO (AGPL) — delete before any external distribution.</p>
+<hr />
+<h2 id="8-conclusions">8. Conclusions</h2>
+<ol>
+<li><strong>The pipeline had one severe, now-fixed bug</strong> (image-encoder weights). Generation quality
+   for <em>bulk</em> shapes is restored.</li>
+<li><strong>Single-view generation is the wrong tool for BIM furniture</strong> — proven on real photos and,
+   conservatively, on best-case catalog renders. Even the favourable benchmark tops out at
+   F = 0.48 vs the real mesh's 1.0.</li>
+<li><strong>If generating at all, use rembg</strong> (data-backed; <code>SCS_TRIPOSR_SEGMENTER=rembg</code>).</li>
+<li><strong>The product path is Detect → Retrieve → Parametric</strong>, not generation. The first concrete
+   step is a 5-minute FAISS index rebuild (a guaranteed correctness win), then closing the
+   retrieval domain gap and promoting parametric primitives.</li>
+</ol>
+<hr />
+<h2 id="9-artifacts-status">9. Artifacts &amp; status</h2>
+<p><strong>Code changed (uncommitted on <code>app-development</code> at time of writing):</strong>
+<code>backend/triposr/tsr/system.py</code>, <code>backend/python-scripts/{inference_base,createIFCFurniture,
+_triposr_postprocess,run_triposr}.py</code>, <code>backend/routes/apiRoutes.js</code>,
+<code>backend/services/pythonBridge.js</code>, <code>frontend/index.html</code>, <code>frontend/js/index.js</code>,
+<code>TripoSR_CHANGES_AND_LESSONS.md</code> (Changes 10–14).
+<strong>New scripts:</strong> <code>render_glb_preview.py</code>, <code>sim_lens2bim.py</code>, <code>batch_abo_test.py</code>,
+<code>build_abo_gallery.py</code>, <code>score_abo_test.py</code>.
+<strong>Viewers (served by the Node app on :3000):</strong> <code>view_abo_gallery.html</code>, <code>view_verdict.html</code>,
+<code>view_execdesk_full.html</code>, <code>view_compare.html</code>, <code>view_desk.html</code>, <code>view_table.html</code>,
+<code>view_triposr.html</code>.
+<strong>Data:</strong> <code>outputs/abo_test/</code> (75 meshes + posters), <code>scores.json</code>, <code>results.json</code>.
+<strong>Figures:</strong> <code>report_assets/</code> (fig01–fig11, embedded inline above; render in any Markdown viewer —
+VS Code preview, GitHub). Each figure is a server-side render of an actual mesh produced this
+session, or an actual input photo/mask overlay — no illustrations, all real outputs.</p>
+<p><strong>Open items:</strong> commit the fixes; rebuild the FAISS index (400→515); the design-roadmap work
+(parametric-first, retrieval domain gap). Generation default segmenter could be flipped to rembg.</p>
+<hr />
+<h2 id="10-honest-limitations-of-this-investigation">10. Honest limitations of this investigation</h2>
+<ul>
+<li><strong>Benchmark sample is ABO catalog renders, not real photos</strong> (see §6) — numbers are an <em>upper
+  bound</em> on real-world TripoSR quality.</li>
+<li><strong>Small n</strong> (5 per type) — per-type rankings are indicative.</li>
+<li><strong>CLIP classifier is weak</strong> (mislabels chairs/desks as "lamp"/"keyboard"); DETR is the strong
+  detector and should drive classification — orthogonal to the geometry findings here.</li>
+<li><strong>TripoSR <code>mc_resolution</code> is capped at 256</strong> by the 6.4 GB local GPU; higher resolution (cloud)
+  was not tested and would not fix the structural single-view failures anyway.</li>
+</ul></body></html>

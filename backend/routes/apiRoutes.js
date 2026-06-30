@@ -116,15 +116,46 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
     }
 
     const imagePath = req.file.path;
+    const requested = (model || '').toLowerCase();
+
+    // 'triposr' runs the real generative pipeline (run_triposr.py via the adapter);
+    // every other model routes through the empirically-validated detection +
+    // primitive/retrieval pipeline (the default product path).
+    if (requested === 'triposr') {
+      logger.info('GENERATE', 'Starting TripoSR generative pipeline', { imagePath });
+      const t = await triposrAdapter.runTripoSR(imagePath, config.OUTPUT_DIR);
+      const md = t.metadata || {};
+      logger.info('GENERATE', 'TripoSR pipeline complete', {
+        glbUrl: t.glbUrl, label: md.object_label,
+        confidence: md.clip_confidence, faces: md.faces, glbSize: md.glbSize,
+      });
+      return res.json({
+        success: true,
+        model: 'triposr',
+        requestedModel: requested,
+        glb: t.glbUrl,
+        glbPath: t.glbPath,
+        detection: {
+          coco_label: md.object_label,
+          label: md.object_label,
+          confidence: md.clip_confidence,
+        },
+        category: md.ifc_category,
+        ifcClass: md.ifc_class,
+        dimensions_m: md.estimated_dimensions_m,
+        dimension_source: 'depth_anything_v2_metric',
+        mesh_source: 'triposr',
+        metadata: {
+          method: md.method,
+          faces: md.faces,
+          glbSize: md.glbSize,
+          device: md.device,
+        },
+      });
+    }
+
     logger.info('GENERATE', `Starting detection pipeline (requested model: ${model})`, { imagePath });
-
-    // All three legacy generative adapters (instantmesh, stablefast3d, triposr)
-    // are currently broken on transformers 5.10.2. We route every request
-    // through the empirically-validated detection + primitive-library pipeline
-    // until the retrieval-against-ABO library is wired (sprints S3-S5).
     const result = await runDetectAndPlace(imagePath, config.OUTPUT_DIR);
-
-    // Keep uploaded image for debugging — small footprint and useful for QA.
 
     logger.info('GENERATE', 'detection pipeline complete', {
       glbUrl: result.glbUrl,
@@ -137,7 +168,7 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
     return res.json({
       success: true,
       model: 'detect-and-place',
-      requestedModel: (model || '').toLowerCase(),
+      requestedModel: requested,
       glb: result.glbUrl,
       glbPath: result.glbPath,
       detection: result.detection,

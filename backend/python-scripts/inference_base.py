@@ -208,12 +208,35 @@ def classify_object_clip(image_path):
         }
 
 
-def estimate_metric_scale(image_path, mask_rgba=None):
+# Typical real-world height (m) per object category. Monocular images carry no
+# absolute scale, so we anchor on the classified object's typical height and derive
+# width from its pixel aspect ratio. Keys are normalised (lowercase, no underscores).
+_HEIGHT_PRIORS = {
+    "chair": 1.0, "office chair": 1.05, "armchair": 0.95, "stool": 0.45,
+    "desk": 0.74, "table": 0.74, "coffee table": 0.45, "side table": 0.55,
+    "sofa": 0.85, "couch": 0.85, "bed": 0.6,
+    "cabinet": 1.2, "filing cabinet": 1.32, "wardrobe": 2.0,
+    "bookshelf": 1.5, "shelf": 1.5,
+    "lamp": 1.5, "light": 1.5, "monitor": 0.45, "laptop": 0.25,
+    "computer": 0.45, "refrigerator": 1.7, "door": 2.0, "window": 1.2,
+    "toilet": 0.4, "planter": 0.6, "mirror": 1.2, "clock": 0.3,
+    "picture frame": 0.5, "default": 1.0,
+}
+
+
+def _height_prior(category):
+    if not category:
+        return _HEIGHT_PRIORS["default"]
+    key = str(category).lower().replace("_", " ").strip()
+    return _HEIGHT_PRIORS.get(key, _HEIGHT_PRIORS["default"])
+
+
+def estimate_metric_scale(image_path, mask_rgba=None, category=None):
     """
-    Use Depth Anything V2 (Apache 2.0) to estimate relative object dimensions.
-    Returns estimated height/width/depth in metres using a known-object prior.
-    The metric model gives relative depth in a 0-1 normalised space; we use
-    average furniture priors to convert to approximate real-world metres.
+    Use Depth Anything V2 (Apache 2.0) to estimate object dimensions in metres.
+    `category` (e.g. the CLIP label) selects a real-world height prior; width is
+    derived from the object's pixel aspect ratio and depth from the relative
+    depth extent. Returns {height_m, width_m, depth_m}.
     """
     try:
         import numpy as np
@@ -237,48 +260,49 @@ def estimate_metric_scale(image_path, mask_rgba=None):
 
         depth = depth.astype(np.float32)
 
-        # Use SAM2 mask if provided to focus on the object
+        # Use SAM2 mask if provided to focus on the object. The mask may be at a
+        # different resolution than the depth map (run_triposr passes the mask
+        # AFTER resize_foreground), so resize from the mask's OWN shape to the
+        # depth shape — NOT from the original image size (that was the 256-vs-300
+        # boolean-index mismatch bug).
         if mask_rgba is not None:
-            mask_arr = np.array(mask_rgba)[:, :, 3] > 64
             from scipy.ndimage import zoom as scipy_zoom
+            mask_arr = np.array(mask_rgba)[:, :, 3] > 64
+            m_h0, m_w0 = mask_arr.shape
             mh, mw = depth.shape
             mask_resized = scipy_zoom(mask_arr.astype(np.float32),
-                                      (mh / H_img, mw / W_img), order=1) > 0.5
+                                      (mh / m_h0, mw / m_w0), order=1) > 0.5
+            if not mask_resized.any():
+                raise ValueError("Empty mask after resize")
             object_depth = depth[mask_resized]
-            # Bounding box of the mask to estimate pixel height/width
             rows = np.any(mask_resized, axis=1)
             cols = np.any(mask_resized, axis=0)
             rmin, rmax = np.where(rows)[0][[0, -1]]
             cmin, cmax = np.where(cols)[0][[0, -1]]
-            pixel_h = rmax - rmin
-            pixel_w = cmax - cmin
+            pixel_h = max(int(rmax - rmin), 1)
+            pixel_w = max(int(cmax - cmin), 1)
         else:
             object_depth = depth.ravel()
-            pixel_h = H_img
-            pixel_w = W_img
+            pixel_h, pixel_w = depth.shape
 
-        if len(object_depth) == 0:
+        if object_depth.size == 0:
             raise ValueError("Empty depth region")
 
         depth_range = float(object_depth.max() - object_depth.min())
 
-        # Normalise pixel dimensions to image fraction, then scale by a
-        # furniture-average height prior of 1.0 m so IFC gets plausible values.
-        fraction_h = pixel_h / H_img
-        fraction_w = pixel_w / W_img
-        prior_height_m = 1.0  # conservative furniture average
+        # Anchor on the category's typical height; derive width from the object's
+        # pixel aspect ratio, and depth from the relative depth extent.
+        prior_height_m = _height_prior(category)
+        aspect = pixel_w / pixel_h                       # width : height in pixels
+        est_h = float(np.clip(prior_height_m, 0.1, 3.0))
+        est_w = float(np.clip(prior_height_m * aspect, 0.1, 3.0))
+        rel_depth = float(np.clip(depth_range / (depth.max() + 1e-8), 0.1, 1.0))
+        est_d = float(np.clip(rel_depth * est_w, 0.1, 3.0))
 
-        est_h = round(prior_height_m * fraction_h * (H_img / max(pixel_h, 1)), 2)
-        est_w = round(prior_height_m * fraction_w * (W_img / max(pixel_w, 1)), 2)
-        est_d = round(float(np.clip(depth_range / (depth.max() + 1e-8), 0.1, 1.0)), 2)
-
-        # Clamp to sensible furniture range: 0.1 m – 3.0 m
-        est_h = float(np.clip(est_h, 0.1, 3.0))
-        est_w = float(np.clip(est_w, 0.1, 3.0))
-        est_d = float(np.clip(est_d * est_w, 0.1, 3.0))
-
-        log(f"Estimated dimensions — H:{est_h}m  W:{est_w}m  D:{est_d}m", "info")
-        return {"height_m": est_h, "width_m": est_w, "depth_m": est_d}
+        log(f"Estimated dims (prior '{category or 'default'}'={prior_height_m}m, "
+            f"aspect {aspect:.2f}) — H:{est_h:.2f}m W:{est_w:.2f}m D:{est_d:.2f}m", "info")
+        return {"height_m": round(est_h, 2), "width_m": round(est_w, 2),
+                "depth_m": round(est_d, 2)}
 
     except Exception as e:
         log(f"Scale estimation failed ({e}), using defaults", "warn")

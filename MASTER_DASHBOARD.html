@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>SCS TripoSR Study — Master Dashboard</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:1000px;margin:0 auto;padding:24px 30px;color:#1a1a1a}
+h1{border-bottom:2px solid #333;padding-bottom:6px} h2{margin-top:26px}
+table{border-collapse:collapse;margin:10px 0;font-size:14px} th,td{border:1px solid #ccc;padding:6px 11px;text-align:left} th{background:#f0f0f0}
+a{color:#1565c0;text-decoration:none} a:hover{text-decoration:underline}
+.cards{display:flex;flex-wrap:wrap;gap:8px} .card{border:1px solid #ddd;border-radius:8px;padding:8px 12px;background:#fafafa}
+small{color:#777}
+</style></head><body>
+<h1>SCS Photo&rarr;3D Study &mdash; Master Dashboard</h1>
+<p><small>One collected index of every benchmark round, gallery, document, and download produced in this study.</small></p>
+
+<h2>Benchmark scoreboard (all rounds)</h2>
+<p><small>F-score vs ground-truth mesh (higher=better); Chamfer (lower=better). Ground-truth mesh itself = F 1.000 in every row.</small></p>
+<table><tr><th>Round</th><th>n</th><th>SAM2 F</th><th>rembg F</th><th>SAM2 Chamfer</th><th>rembg Chamfer</th><th>Winner</th></tr>
+<tr><td>ABO first-5 (renders)</td><td>25</td><td>0.276</td><td>0.362</td><td>0.160</td><td>0.125</td><td><b style="color:#2e7d32">rembg</b></td></tr>
+<tr><td>ABO random seed-42 (renders)</td><td>25</td><td>0.312</td><td>0.387</td><td>0.154</td><td>0.126</td><td><b style="color:#2e7d32">rembg</b></td></tr>
+<tr><td>ABO new categories (cabinet/stool/lamp)</td><td>15</td><td>0.287</td><td>0.359</td><td>0.172</td><td>0.158</td><td><b style="color:#2e7d32">rembg</b></td></tr>
+<tr><td>ABO real product PHOTOS (seed-42)</td><td>25</td><td>0.317</td><td>0.333</td><td>0.159</td><td>0.152</td><td><b style="color:#2e7d32">rembg</b></td></tr>
+<tr><td>Poly Haven CC0 (different dataset)</td><td>28</td><td>0.326</td><td>0.409</td><td>0.140</td><td>0.116</td><td><b style="color:#2e7d32">rembg</b></td></tr>
+</table>
+<p><small>Raw per-model numbers: <a href="deliverable/all_scores.csv">all_scores.csv</a> &middot;
+<a href="deliverable/all_scores.json">all_scores.json</a> &middot;
+<a href="deliverable/round_summary.csv">round_summary.csv</a></small></p>
+
+<h2>Interactive galleries (drag to orbit)</h2>
+<div class="cards">
+<div class="card"><a href="outputs/view_abo_gallery.html">view_abo_gallery</a></div>
+<div class="card"><a href="outputs/view_abo_test_cats.html">view_abo_test_cats</a></div>
+<div class="card"><a href="outputs/view_abo_test_polyhaven.html">view_abo_test_polyhaven</a></div>
+<div class="card"><a href="outputs/view_abo_test_random.html">view_abo_test_random</a></div>
+<div class="card"><a href="outputs/view_abo_test_realphoto.html">view_abo_test_realphoto</a></div>
+<div class="card"><a href="outputs/view_compare.html">view_compare</a></div>
+<div class="card"><a href="outputs/view_desk.html">view_desk</a></div>
+<div class="card"><a href="outputs/view_execdesk.html">view_execdesk</a></div>
+<div class="card"><a href="outputs/view_execdesk_full.html">view_execdesk_full</a></div>
+<div class="card"><a href="outputs/view_table.html">view_table</a></div>
+<div class="card"><a href="outputs/view_triposr.html">view_triposr</a></div>
+<div class="card"><a href="outputs/view_userchair.html">view_userchair</a></div>
+<div class="card"><a href="outputs/view_verdict.html">view_verdict</a></div>
+</div>
+
+<h2>Documents</h2>
+<div class="cards">
+<div class="card"><a href="PAPER_Single_View_Furniture_3D.html">Scientific paper (HTML)</a></div>
+<div class="card"><a href="PAPER_Single_View_Furniture_3D.md">paper (markdown)</a></div>
+<div class="card"><a href="SESSION_2026_06_30_TripoSR_INVESTIGATION_REPORT.html">Investigation report</a></div>
+</div>
+
+<h2>Portable download bundles (deliverable/)</h2>
+<div class="cards">
+<div class="card"><a href="deliverable/abo_gallery.zip">abo_gallery.zip</a> <small>80 MB</small></div>
+<div class="card"><a href="deliverable/abo_gallery_cats.zip">abo_gallery_cats.zip</a> <small>47 MB</small></div>
+<div class="card"><a href="deliverable/abo_gallery_polyhaven.zip">abo_gallery_polyhaven.zip</a> <small>81 MB</small></div>
+<div class="card"><a href="deliverable/abo_gallery_random.zip">abo_gallery_random.zip</a> <small>99 MB</small></div>
+<div class="card"><a href="deliverable/abo_gallery_realphoto.zip">abo_gallery_realphoto.zip</a> <small>128 MB</small></div>
+<div class="card"><a href="deliverable/ABO_TEST_SAM2_vs_rembg_first5_2026-06-30.zip">ABO_TEST_SAM2_vs_rembg_first5_2026-06-30.zip</a> <small>80 MB</small></div>
+</div>
+</body></html>

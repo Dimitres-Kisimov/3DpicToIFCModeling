@@ -16,8 +16,23 @@ SAM2_CHECKPOINT = str(Path(__file__).parent.parent.parent / "models" / "sam2" / 
 SAM2_CONFIG = "configs/sam2.1/sam2.1_hiera_t.yaml"
 
 
+def _rembg_foreground(image_path):
+    """rembg (U^2-Net) salient-object cutout -> RGBA PIL image."""
+    import rembg
+    from io import BytesIO
+    from PIL import Image as _Image
+    cut_bytes = rembg.remove(open(image_path, "rb").read())
+    # rembg returns PNG-encoded bytes; downstream resize_foreground() wants PIL RGBA
+    return _Image.open(BytesIO(cut_bytes)).convert("RGBA")
+
+
 def _segment_foreground(image_path):
-    """SAM2 segmentation with rembg fallback."""
+    """Foreground segmentation. SCS_TRIPOSR_SEGMENTER selects the engine:
+    'sam2' (default — SAM2, rembg fallback) or 'rembg' (force rembg). Forcing
+    rembg lets us A/B the segmenter with the SAME post-processing."""
+    if os.environ.get("SCS_TRIPOSR_SEGMENTER", "sam2").lower() == "rembg":
+        log("Segmenter: rembg (forced via SCS_TRIPOSR_SEGMENTER)", "info")
+        return _rembg_foreground(image_path)
     try:
         import torch
         import numpy as np
@@ -55,13 +70,7 @@ def _segment_foreground(image_path):
 
     except Exception as e:
         log(f"SAM2 failed ({e}), using rembg", "warn")
-        import rembg
-        from io import BytesIO
-        from PIL import Image as _Image
-        cut_bytes = rembg.remove(open(image_path, "rb").read())
-        # rembg returns PNG-encoded bytes when given bytes input;
-        # downstream resize_foreground() expects a PIL RGBA image
-        return _Image.open(BytesIO(cut_bytes)).convert("RGBA")
+        return _rembg_foreground(image_path)
 
 
 def generate_mesh_triposr(image_path, output_path):
@@ -152,7 +161,8 @@ def generate_mesh_triposr(image_path, output_path):
         # Improvement 2 & 3: CLIP classification + metric scale estimation
         from inference_base import classify_object_clip, estimate_metric_scale
         clip_result = classify_object_clip(image_path)
-        scale = estimate_metric_scale(image_path, mask_rgba=img_rgba)
+        scale = estimate_metric_scale(image_path, mask_rgba=img_rgba,
+                                      category=clip_result.get("label"))
 
         # Scale the mesh to estimated real-world dimensions
         try:
