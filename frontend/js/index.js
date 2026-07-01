@@ -270,16 +270,23 @@ if (exportIfcBtn) {
       const ifcPath = await window.exporterModule.exportSceneToIFC(sceneObjects);
       // Trigger browser download of the exported IFC file
       if (ifcPath) {
-        const filename = ifcPath.split('/').pop() || 'export.ifc';
+        // Handle BOTH forward and back slashes (Windows server paths use '\') and use the
+        // server URL directly when it's already a /outputs/.. path.
+        const filename = ifcPath.split(/[\\/]/).pop() || 'export.ifc';
+        const href = ifcPath.startsWith('/') ? ifcPath : `/outputs/${filename}`;
         const link = document.createElement('a');
-        link.href = `/outputs/${filename}`;
+        link.href = href;
         link.download = filename;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        showSuccess(`IFC downloaded: ${filename}`);
+      } else {
+        showError('Export returned no file — check the server log');
       }
     } catch (error) {
       console.error('[app] Export error:', error);
+      showError('Export failed', error);
     } finally {
       exportIfcBtn.disabled = false;
     }

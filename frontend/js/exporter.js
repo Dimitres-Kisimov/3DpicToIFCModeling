@@ -55,8 +55,8 @@ async function exportSceneToIFC(sceneObjects) {
     }
 
     showSuccess('IFC exported successfully');
-    console.log('[exporter] IFC exported:', data.ifcPath);
-    return data.ifcPath;
+    console.log('[exporter] IFC exported:', data.ifcUrl || data.ifcPath);
+    return data.ifcUrl || data.ifcPath;   // prefer the server URL (/outputs/..) over the raw OS path
   } catch (error) {
     showError('IFC export failed', error);
     throw error;
