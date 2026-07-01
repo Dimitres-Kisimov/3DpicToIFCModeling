@@ -61,6 +61,8 @@
         <select id="building"><option value="">— single room (below) —</option></select>
         <div id="building-rooms" style="margin-top:8px"></div>
         <button class="primary" id="populate" style="display:none">Populate building</button>
+        <button id="saveBuilding" style="display:none;width:100%;margin-top:6px">💾 Save layout (download GLB)</button>
+        <div id="draghint" style="display:none;font-size:11px;color:var(--muted);margin-top:6px">Tip: click a furniture piece in the 3D view and drag it across the floor to reposition.</div>
       </div>
       <div class="grp" id="singleroom">
         <h2>Room</h2>
@@ -136,6 +138,6 @@
     if (m) { m.textContent = "ASYNC ERROR: " + r; m.className = "bad"; }
   });
 </script>
-<script type="module" src="app.js?v=13"></script>
+<script type="module" src="app.js?v=14"></script>
 </body>
 </html>

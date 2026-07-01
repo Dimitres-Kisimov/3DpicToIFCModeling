@@ -165,27 +165,51 @@ def api_building_rooms(bid):
 
 @app.post("/api/building/<bid>/populate")
 def api_building_populate(bid):
-    """Run the ergonomic populate on the building with the caller's per-room picks."""
+    """Ergonomic populate with the caller's per-room picks -> shell.glb + separate movable pieces."""
     b = _building(bid)
     if not b:
         return jsonify({"error": "unknown building"}), 404
-    import subprocess
+    import subprocess, shutil
     picks = (request.get_json(force=True) or {}).get("picks", {})
     OUT.mkdir(parents=True, exist_ok=True)
     picks_path = OUT / "building_picks.json"
     picks_path.write_text(json.dumps(picks), encoding="utf-8")
-    out_glb = OUT / "building.glb"
+    mov = OUT / "bldg"
+    shutil.rmtree(mov, ignore_errors=True)
     try:
         r = subprocess.run([sys.executable, str(SCRIPTS / "populate_building.py"), b["ifc"],
-                            str(out_glb), "--picks", str(picks_path)],
+                            str(OUT / "_ignore.glb"), "--picks", str(picks_path), "--movable", str(mov)],
                            capture_output=True, text=True, timeout=600)
         res = json.loads(r.stdout.strip().splitlines()[-1])
+        man = json.loads((mov / "furniture.json").read_text(encoding="utf-8"))
     except Exception as exc:
         return jsonify({"ok": False, "error": f"{exc}"}), 500
-    return jsonify({"ok": True, "glb": "/out/building.glb",
+    pieces = [{"id": p["id"], "category": p["category"], "glb": f"/out/bldg/{p['glb']}", "pos": p["pos"]}
+              for p in man.get("pieces", [])]
+    return jsonify({"ok": True, "shell": "/out/bldg/shell.glb", "pieces": pieces,
                     "placed": res.get("furniture_placed"), "rooms": res.get("rooms_populated"),
-                    "clashes": res.get("furniture_furniture_clashes"),
-                    "schedule": res.get("schedule", [])})
+                    "clashes": res.get("furniture_furniture_clashes"), "schedule": res.get("schedule", [])})
+
+
+@app.post("/api/building/<bid>/save")
+def api_building_save(bid):
+    """Merge the current (possibly re-dragged) piece positions + shell into a downloadable GLB."""
+    import trimesh
+    positions = (request.get_json(force=True) or {}).get("positions", {})   # {piece_id: [x,y,z]}
+    mov = OUT / "bldg"
+    if not (mov / "shell.glb").exists():
+        return jsonify({"ok": False, "error": "populate first"}), 400
+    try:
+        scene = trimesh.load(str(mov / "shell.glb"), force="scene")
+        man = json.loads((mov / "furniture.json").read_text(encoding="utf-8"))
+        for p in man.get("pieces", []):
+            g = trimesh.load(str(mov / p["glb"]), force="mesh")
+            g.apply_translation(positions.get(p["id"], p["pos"]))
+            scene.add_geometry(g, node_name=p["id"])
+        scene.export(str(OUT / "building_final.glb"))
+    except Exception as exc:
+        return jsonify({"ok": False, "error": f"{exc}"}), 500
+    return jsonify({"ok": True, "glb": "/out/building_final.glb"})
 
 
 @app.post("/api/reset")

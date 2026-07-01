@@ -288,6 +288,74 @@ function roomCard(r) {
   return card;
 }
 
+// --- building 3D: separate movable pieces (drag-to-reposition) ---
+const bPieces = {};   // id -> {model, pos:[x,y,z], category, glb}
+let bShell = null, bSelected = null, bDragging = false;
+
+function clearBuilding() {
+  if (bShell) { try { bShell.destroy(); } catch (e) {} bShell = null; }
+  Object.values(bPieces).forEach((p) => { try { p.model.destroy(); } catch (e) {} });
+  for (const k in bPieces) delete bPieces[k];
+  bSelected = null;
+}
+
+function loadBuilding(shellUrl, pieces) {
+  if (!gltf) { setMsg("3D viewer unavailable (no WebGL)", true); return; }
+  clearBuilding();
+  bShell = gltf.load({ id: "b-shell", src: shellUrl + "?t=" + Date.now(), edges: true });
+  if (bShell) bShell.on("loaded", () => { try { viewer.cameraFlight.jumpTo(bShell); } catch (e) {} });
+  pieces.forEach((pc) => {
+    const model = gltf.load({ id: "bp-" + pc.id, src: pc.glb + "?t=" + Date.now(), position: pc.pos.slice() });
+    if (model) { model.on("error", (e) => console.warn("piece load error", pc.id, e)); bPieces[pc.id] = { model, pos: pc.pos.slice(), category: pc.category, glb: pc.glb }; }
+  });
+}
+
+function pieceIdFromPick(pr) {
+  if (!pr || !pr.entity) return null;
+  const mid = (pr.entity.model && pr.entity.model.id) || pr.entity.id || "";
+  return String(mid).startsWith("bp-") ? String(mid).slice(3) : null;
+}
+
+if (viewer) {
+  const cv = $("cv");
+  cv.addEventListener("pointerdown", (e) => {
+    if (!Object.keys(bPieces).length) return;
+    const rect = cv.getBoundingClientRect();
+    const pid = pieceIdFromPick(viewer.scene.pick({ canvasPos: [e.clientX - rect.left, e.clientY - rect.top] }));
+    if (pid && bPieces[pid]) { bSelected = pid; bDragging = true; try { cc.active = false; } catch (_) {} setMsg("Dragging " + bPieces[pid].category + " — release to drop it."); }
+  });
+  cv.addEventListener("pointermove", (e) => {
+    if (!bDragging || !bSelected) return;
+    const rect = cv.getBoundingClientRect();
+    const pr = viewer.scene.pick({ canvasPos: [e.clientX - rect.left, e.clientY - rect.top], pickSurface: true });
+    if (pr && pr.worldPos) { const p = bPieces[bSelected]; p.pos = [pr.worldPos[0], p.pos[1], pr.worldPos[2]]; try { p.model.position = p.pos; } catch (_) {} }
+  });
+  const endDrag = () => {
+    if (bDragging && bSelected) {
+      const p = bPieces[bSelected];           // reload at final position so the move is guaranteed to show
+      try { p.model.destroy(); } catch (_) {}
+      p.model = gltf.load({ id: "bp-" + bSelected, src: p.glb + "?r=" + Date.now(), position: p.pos.slice() });
+      setMsg("Moved " + p.category + ". Drag more, or Save layout to keep it.");
+    }
+    bDragging = false; try { cc.active = !camLocked; } catch (_) {}
+  };
+  cv.addEventListener("pointerup", endDrag);
+  cv.addEventListener("pointerleave", endDrag);
+}
+
+const saveBtn = $("saveBuilding");
+if (saveBtn) saveBtn.onclick = async () => {
+  const positions = {}; Object.entries(bPieces).forEach(([id, p]) => { positions[id] = p.pos; });
+  setMsg("Saving layout & building the export GLB…");
+  try {
+    const r = await fetch(`/api/building/${currentBuilding}/save`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ positions }) });
+    const d = await r.json();
+    if (!d.ok) { setMsg("Save failed: " + d.error, true); return; }
+    setMsg("✓ Saved. Downloading building GLB…");
+    downloadBlob("building.glb", await (await fetch(d.glb + "?t=" + Date.now())).blob());
+  } catch (e) { setMsg("Save error: " + e, true); }
+};
+
 populateBtn.onclick = async () => {
   setMsg("Populating building — ergonomic solver routing around walls/beams (~30–60 s)…");
   populateBtn.disabled = true;
@@ -297,8 +365,9 @@ populateBtn.onclick = async () => {
     });
     const d = await r.json();
     if (!d.ok) { setMsg("Populate failed: " + (d.error || "unknown"), true); return; }
-    setMsg(`✓ Placed ${d.placed} pieces across ${d.rooms} rooms · ${d.clashes} clashes`, d.clashes > 0);
-    loadScene(d.glb + "?t=" + Date.now());
+    setMsg(`✓ ${d.placed} pieces · ${d.rooms} rooms · ${d.clashes} clashes — click a piece and drag to reposition.`, d.clashes > 0);
+    loadBuilding(d.shell, d.pieces || []);
+    if (saveBtn) saveBtn.style.display = "";
     const tb = $("rows"); if (tb) {
       tb.innerHTML = "";
       (d.schedule || []).forEach((s) => {

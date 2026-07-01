@@ -120,12 +120,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("ifc"); ap.add_argument("out")
     ap.add_argument("--picks", default="")
+    ap.add_argument("--movable", default="")   # dir: emit shell.glb + per-piece GLBs + furniture.json
     args = ap.parse_args()
 
     picks = json.load(open(args.picks, encoding="utf-8")) if args.picks else {}
     f = ifcopenshell.open(args.ifc)
     s = ifcopenshell.geom.settings(); s.set(s.USE_WORLD_COORDS, True)
     assets = load_assets()
+    movdir = Path(args.movable) if args.movable else None
+    if movdir is not None:
+        movdir.mkdir(parents=True, exist_ok=True)
+    movable = []
     obstacle_rects = footprint_rects(f, s, OBSTACLE_TYPES)
     door_rects = footprint_rects(f, s, ["IfcDoor"])
 
@@ -228,16 +233,31 @@ def main():
                 ex_, ey_ = float(m.extents[0]), float(m.extents[1])
                 cx += (ey_ - ex_) / 2
                 cz += (ex_ - ey_) / 2
-            g2 = m.copy()
-            if yaw:
-                g2.apply_transform(trimesh.transformations.rotation_matrix(np.radians(yaw), [0, 0, 1]))
-            b = g2.bounds
-            wx, wy = x0 + cx, y0 + cz
-            g2.apply_translation([wx - (b[0][0] + b[1][0]) / 2, wy - (b[0][1] + b[1][1]) / 2, fz - b[0][2]])
-            scene.add_geometry(g2, node_name=f"{name}-{p['id']}-{placed}")
-            fb = g2.bounds
-            boxes.append((fb[0][0], fb[1][0], fb[0][1], fb[1][1]))
-            room_cats.append(p["id"].rsplit("-", 1)[0])
+            wx, wy, cat = x0 + cx, y0 + cz, p["id"].rsplit("-", 1)[0]
+            if movdir is not None:
+                # export the piece centred at footprint origin (base at 0), Y-up; the viewer positions
+                # it — so each piece is a separate, movable object (drag-to-reposition).
+                piece = m.copy()
+                if yaw:
+                    piece.apply_transform(trimesh.transformations.rotation_matrix(np.radians(yaw), [0, 0, 1]))
+                pb = piece.bounds
+                piece.apply_translation([-(pb[0][0] + pb[1][0]) / 2, -(pb[0][1] + pb[1][1]) / 2, -pb[0][2]])
+                piece.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))  # Z-up->Y-up
+                gname = f"piece_{placed}.glb"
+                piece.export(str(movdir / gname))
+                movable.append({"id": f"{cat}-{placed}", "room": name, "category": cat, "glb": gname,
+                                "pos": [round(wx, 3), round(fz, 3), round(-wy, 3)]})   # Y-up world
+                boxes.append((wx - m.extents[0] / 2, wx + m.extents[0] / 2, wy - m.extents[1] / 2, wy + m.extents[1] / 2))
+            else:
+                g2 = m.copy()
+                if yaw:
+                    g2.apply_transform(trimesh.transformations.rotation_matrix(np.radians(yaw), [0, 0, 1]))
+                b = g2.bounds
+                g2.apply_translation([wx - (b[0][0] + b[1][0]) / 2, wy - (b[0][1] + b[1][1]) / 2, fz - b[0][2]])
+                scene.add_geometry(g2, node_name=f"{name}-{cat}-{placed}")
+                fb = g2.bounds
+                boxes.append((fb[0][0], fb[1][0], fb[0][1], fb[1][1]))
+            room_cats.append(cat)
             placed += 1
         for i in range(len(boxes)):
             for j in range(i + 1, len(boxes)):
@@ -248,11 +268,16 @@ def main():
                          "placed": len(boxes), "items": room_cats})
         rooms_done += 1
 
-    scene.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))
-    scene.export(args.out)
+    scene.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))   # -> Y-up
     import os
-    print(json.dumps({"ok": True, "out": args.out, "kb": os.path.getsize(args.out) // 1024,
-                      "shell_elements": n_shell, "rooms_populated": rooms_done,
+    if movdir is not None:
+        scene.export(str(movdir / "shell.glb"))            # scene holds only the shell in movable mode
+        (movdir / "furniture.json").write_text(json.dumps({"pieces": movable}), encoding="utf-8")
+        out_info = {"shell": "shell.glb", "movable_pieces": len(movable)}
+    else:
+        scene.export(args.out)
+        out_info = {"out": args.out, "kb": os.path.getsize(args.out) // 1024}
+    print(json.dumps({"ok": True, **out_info, "shell_elements": n_shell, "rooms_populated": rooms_done,
                       "furniture_placed": placed, "items_too_big_skipped": skipped_items,
                       "furniture_furniture_clashes": clashes, "schedule": schedule}))
 
