@@ -1,0 +1,29 @@
+{
+  "building": "SCS Office Complex",
+  "storeys": 2,
+  "rooms": 5,
+  "instances": 47,
+  "unique_assets_used": [
+    "bookshelf__triposg",
+    "cabinet__sam3d",
+    "chair__sam3d",
+    "desk__trellis",
+    "lamp__instantmesh",
+    "office_chair__sam3d",
+    "sofa__sam3d",
+    "stool__triposg",
+    "table__instantmesh"
+  ],
+  "categories": [
+    "bookshelf",
+    "cabinet",
+    "chair",
+    "desk",
+    "lamp",
+    "office_chair",
+    "sofa",
+    "stool",
+    "table"
+  ],
+  "instancing_ratio": "47 instances from 9 unique meshes"
+}

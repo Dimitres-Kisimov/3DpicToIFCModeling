@@ -1,0 +1,26 @@
+{
+  "name": "SCS Office Complex",
+  "storey_height": 3.5,
+  "storeys": [
+    {
+      "name": "Ground Floor",
+      "rooms": [
+        {"name": "Reception", "type": "office", "width": 6, "depth": 5, "height": 3,
+         "objects": [{"category": "sofa", "qty": 2}, {"category": "table", "qty": 1}, {"category": "lamp", "qty": 2}]},
+        {"name": "Open Office", "type": "office", "width": 9, "depth": 7, "height": 3,
+         "objects": [{"category": "desk", "qty": 6}, {"category": "office_chair", "qty": 6}, {"category": "cabinet", "qty": 3}]},
+        {"name": "Library", "type": "office", "width": 6, "depth": 5, "height": 3,
+         "objects": [{"category": "bookshelf", "qty": 4}, {"category": "chair", "qty": 2}, {"category": "table", "qty": 1}]}
+      ]
+    },
+    {
+      "name": "Level 1",
+      "rooms": [
+        {"name": "Meeting Room", "type": "office", "width": 7, "depth": 5, "height": 3,
+         "objects": [{"category": "table", "qty": 1}, {"category": "office_chair", "qty": 8}]},
+        {"name": "Lounge", "type": "living", "width": 8, "depth": 6, "height": 3,
+         "objects": [{"category": "sofa", "qty": 3}, {"category": "stool", "qty": 4}, {"category": "lamp", "qty": 2}, {"category": "bookshelf", "qty": 2}]}
+      ]
+    }
+  ]
+}

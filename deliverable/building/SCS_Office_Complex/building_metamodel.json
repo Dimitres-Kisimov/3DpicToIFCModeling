@@ -1,0 +1,356 @@
+{
+  "metaObjects": [
+    {
+      "id": "building",
+      "name": "SCS Office Complex",
+      "type": "IfcBuilding",
+      "parent": null
+    },
+    {
+      "id": "storey-0",
+      "name": "Ground Floor",
+      "type": "IfcBuildingStorey",
+      "parent": "building",
+      "elevation_m": 0.0
+    },
+    {
+      "id": "storey-0-room-0",
+      "name": "Reception",
+      "type": "IfcSpace",
+      "parent": "storey-0",
+      "room_origin_m": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "inst-00000",
+      "name": "Sofa",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-0"
+    },
+    {
+      "id": "inst-00001",
+      "name": "Sofa",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-0"
+    },
+    {
+      "id": "inst-00002",
+      "name": "Table",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-0"
+    },
+    {
+      "id": "inst-00003",
+      "name": "Lamp",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-0"
+    },
+    {
+      "id": "inst-00004",
+      "name": "Lamp",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-0"
+    },
+    {
+      "id": "storey-0-room-1",
+      "name": "Open Office",
+      "type": "IfcSpace",
+      "parent": "storey-0",
+      "room_origin_m": [
+        7.5,
+        0.0
+      ]
+    },
+    {
+      "id": "inst-00005",
+      "name": "Desk",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00006",
+      "name": "Desk",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00007",
+      "name": "Desk",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00008",
+      "name": "Desk",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00009",
+      "name": "Desk",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00010",
+      "name": "Desk",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00011",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00012",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00013",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00014",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00015",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00016",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00017",
+      "name": "Cabinet",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00018",
+      "name": "Cabinet",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "inst-00019",
+      "name": "Cabinet",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-1"
+    },
+    {
+      "id": "storey-0-room-2",
+      "name": "Library",
+      "type": "IfcSpace",
+      "parent": "storey-0",
+      "room_origin_m": [
+        18.0,
+        0.0
+      ]
+    },
+    {
+      "id": "inst-00020",
+      "name": "Bookshelf",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-2"
+    },
+    {
+      "id": "inst-00021",
+      "name": "Bookshelf",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-2"
+    },
+    {
+      "id": "inst-00022",
+      "name": "Bookshelf",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-2"
+    },
+    {
+      "id": "inst-00023",
+      "name": "Bookshelf",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-2"
+    },
+    {
+      "id": "inst-00024",
+      "name": "Chair",
+      "type": "IfcChair",
+      "parent": "storey-0-room-2"
+    },
+    {
+      "id": "inst-00025",
+      "name": "Chair",
+      "type": "IfcChair",
+      "parent": "storey-0-room-2"
+    },
+    {
+      "id": "inst-00026",
+      "name": "Table",
+      "type": "IfcFurniture",
+      "parent": "storey-0-room-2"
+    },
+    {
+      "id": "storey-1",
+      "name": "Level 1",
+      "type": "IfcBuildingStorey",
+      "parent": "building",
+      "elevation_m": 3.5
+    },
+    {
+      "id": "storey-1-room-0",
+      "name": "Meeting Room",
+      "type": "IfcSpace",
+      "parent": "storey-1",
+      "room_origin_m": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": "inst-00027",
+      "name": "Table",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-0"
+    },
+    {
+      "id": "inst-00028",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-1-room-0"
+    },
+    {
+      "id": "inst-00029",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-1-room-0"
+    },
+    {
+      "id": "inst-00030",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-1-room-0"
+    },
+    {
+      "id": "inst-00031",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-1-room-0"
+    },
+    {
+      "id": "inst-00032",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-1-room-0"
+    },
+    {
+      "id": "inst-00033",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-1-room-0"
+    },
+    {
+      "id": "inst-00034",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-1-room-0"
+    },
+    {
+      "id": "inst-00035",
+      "name": "Office Chair",
+      "type": "IfcChair",
+      "parent": "storey-1-room-0"
+    },
+    {
+      "id": "storey-1-room-1",
+      "name": "Lounge",
+      "type": "IfcSpace",
+      "parent": "storey-1",
+      "room_origin_m": [
+        8.5,
+        0.0
+      ]
+    },
+    {
+      "id": "inst-00036",
+      "name": "Sofa",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-1"
+    },
+    {
+      "id": "inst-00037",
+      "name": "Sofa",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-1"
+    },
+    {
+      "id": "inst-00038",
+      "name": "Sofa",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-1"
+    },
+    {
+      "id": "inst-00039",
+      "name": "Stool",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-1"
+    },
+    {
+      "id": "inst-00040",
+      "name": "Stool",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-1"
+    },
+    {
+      "id": "inst-00041",
+      "name": "Stool",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-1"
+    },
+    {
+      "id": "inst-00042",
+      "name": "Stool",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-1"
+    },
+    {
+      "id": "inst-00043",
+      "name": "Lamp",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-1"
+    },
+    {
+      "id": "inst-00044",
+      "name": "Lamp",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-1"
+    },
+    {
+      "id": "inst-00045",
+      "name": "Bookshelf",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-1"
+    },
+    {
+      "id": "inst-00046",
+      "name": "Bookshelf",
+      "type": "IfcFurniture",
+      "parent": "storey-1-room-1"
+    }
+  ]
+}

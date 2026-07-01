@@ -1,0 +1,48 @@
+instance_id,asset_id,category,storey,room,x,y,z,rotation_deg,scale,ifc_class,source,license
+inst-00000,sofa__sam3d,sofa,Ground Floor,Reception,1.042,0.0,0.744,0,1.0,IfcFurniture,sam3d,SAM License (Meta)
+inst-00001,sofa__sam3d,sofa,Ground Floor,Reception,2.643,0.0,0.744,90,1.0,IfcFurniture,sam3d,SAM License (Meta)
+inst-00002,table__instantmesh,table,Ground Floor,Reception,3.453,0.0,0.781,0,1.0,IfcFurniture,instantmesh,Apache-2.0
+inst-00003,lamp__instantmesh,lamp,Ground Floor,Reception,4.424,0.0,0.521,0,1.0,IfcFurniture,instantmesh,Apache-2.0
+inst-00004,lamp__instantmesh,lamp,Ground Floor,Reception,5.024,0.0,0.521,0,1.0,IfcFurniture,instantmesh,Apache-2.0
+inst-00005,desk__trellis,desk,Ground Floor,Open Office,15.542,0.0,5.71,0,1.0,IfcFurniture,trellis,MIT
+inst-00006,desk__trellis,desk,Ground Floor,Open Office,13.941,0.0,1.31,0,1.0,IfcFurniture,trellis,MIT
+inst-00007,desk__trellis,desk,Ground Floor,Open Office,13.341,0.0,6.31,90,1.0,IfcFurniture,trellis,MIT
+inst-00008,desk__trellis,desk,Ground Floor,Open Office,15.542,0.0,3.51,0,1.0,IfcFurniture,trellis,MIT
+inst-00009,desk__trellis,desk,Ground Floor,Open Office,15.542,0.0,1.31,0,1.0,IfcFurniture,trellis,MIT
+inst-00010,desk__trellis,desk,Ground Floor,Open Office,10.042,0.0,1.31,0,1.0,IfcFurniture,trellis,MIT
+inst-00011,office_chair__sam3d,office_chair,Ground Floor,Open Office,11.379,0.0,0.968,0,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00012,office_chair__sam3d,office_chair,Ground Floor,Open Office,8.279,0.0,0.968,90,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00013,office_chair__sam3d,office_chair,Ground Floor,Open Office,8.279,0.0,5.367,90,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00014,office_chair__sam3d,office_chair,Ground Floor,Open Office,8.279,0.0,2.067,90,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00015,office_chair__sam3d,office_chair,Ground Floor,Open Office,8.279,0.0,3.167,90,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00016,office_chair__sam3d,office_chair,Ground Floor,Open Office,8.279,0.0,4.268,90,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00017,cabinet__sam3d,cabinet,Ground Floor,Open Office,10.132,0.0,6.257,0,1.0,IfcFurniture,sam3d,SAM License (Meta)
+inst-00018,cabinet__sam3d,cabinet,Ground Floor,Open Office,8.532,0.0,6.257,0,1.0,IfcFurniture,sam3d,SAM License (Meta)
+inst-00019,cabinet__sam3d,cabinet,Ground Floor,Open Office,11.732,0.0,6.257,0,1.0,IfcFurniture,sam3d,SAM License (Meta)
+inst-00020,bookshelf__triposg,bookshelf,Ground Floor,Library,19.224,0.0,1.752,0,1.0,IfcFurniture,triposg,MIT
+inst-00021,bookshelf__triposg,bookshelf,Ground Floor,Library,19.224,0.0,3.152,90,1.0,IfcFurniture,triposg,MIT
+inst-00022,bookshelf__triposg,bookshelf,Ground Floor,Library,19.925,0.0,3.152,90,1.0,IfcFurniture,triposg,MIT
+inst-00023,bookshelf__triposg,bookshelf,Ground Floor,Library,21.225,0.0,3.152,90,1.0,IfcFurniture,triposg,MIT
+inst-00024,chair__sam3d,chair,Ground Floor,Library,21.384,0.0,2.411,90,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00025,chair__sam3d,chair,Ground Floor,Library,22.184,0.0,2.411,90,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00026,table__instantmesh,table,Ground Floor,Library,23.154,0.0,2.181,90,1.0,IfcFurniture,instantmesh,Apache-2.0
+inst-00027,table__instantmesh,table,Level 1,Meeting Room,5.154,3.5,0.781,0,1.0,IfcFurniture,instantmesh,Apache-2.0
+inst-00028,office_chair__sam3d,office_chair,Level 1,Meeting Room,0.879,3.5,0.968,0,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00029,office_chair__sam3d,office_chair,Level 1,Meeting Room,0.779,3.5,2.468,0,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00030,office_chair__sam3d,office_chair,Level 1,Meeting Room,0.779,3.5,3.968,0,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00031,office_chair__sam3d,office_chair,Level 1,Meeting Room,1.879,3.5,2.567,0,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00032,office_chair__sam3d,office_chair,Level 1,Meeting Room,2.979,3.5,2.567,0,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00033,office_chair__sam3d,office_chair,Level 1,Meeting Room,4.079,3.5,2.567,0,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00034,office_chair__sam3d,office_chair,Level 1,Meeting Room,5.179,3.5,2.567,0,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00035,office_chair__sam3d,office_chair,Level 1,Meeting Room,6.279,3.5,2.567,0,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00036,sofa__sam3d,sofa,Level 1,Lounge,16.143,3.5,4.744,90,1.0,IfcFurniture,sam3d,SAM License (Meta)
+inst-00037,sofa__sam3d,sofa,Level 1,Lounge,9.542,3.5,4.744,90,1.0,IfcFurniture,sam3d,SAM License (Meta)
+inst-00038,sofa__sam3d,sofa,Level 1,Lounge,9.542,3.5,0.744,90,1.0,IfcFurniture,sam3d,SAM License (Meta)
+inst-00039,stool__triposg,stool,Level 1,Lounge,9.007,3.5,2.103,0,1.0,IfcFurniture,triposg,MIT
+inst-00040,stool__triposg,stool,Level 1,Lounge,9.007,3.5,2.704,0,1.0,IfcFurniture,triposg,MIT
+inst-00041,stool__triposg,stool,Level 1,Lounge,9.007,3.5,3.304,0,1.0,IfcFurniture,triposg,MIT
+inst-00042,stool__triposg,stool,Level 1,Lounge,9.007,3.5,3.904,0,1.0,IfcFurniture,triposg,MIT
+inst-00043,lamp__instantmesh,lamp,Level 1,Lounge,9.624,3.5,2.121,0,1.0,IfcFurniture,instantmesh,Apache-2.0
+inst-00044,lamp__instantmesh,lamp,Level 1,Lounge,9.624,3.5,2.72,0,1.0,IfcFurniture,instantmesh,Apache-2.0
+inst-00045,bookshelf__triposg,bookshelf,Level 1,Lounge,10.724,3.5,5.452,0,1.0,IfcFurniture,triposg,MIT
+inst-00046,bookshelf__triposg,bookshelf,Level 1,Lounge,15.324,3.5,0.552,0,1.0,IfcFurniture,triposg,MIT

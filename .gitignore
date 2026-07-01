@@ -96,3 +96,6 @@ _hf_scout/
 # local-only session handoff (contains live pod connection — do not push)
 deliverable/SESSION_HANDOFF_CLOUD_RUN.md
 deliverable/cloud_gallery_export.zip
+
+# building-scale population: keep manifests/tables, ignore regenerable per-room GLBs
+deliverable/building/*/rooms/

@@ -1,0 +1,154 @@
+{
+  "assets": [
+    {
+      "asset_id": "bed__trellis",
+      "category": "bed",
+      "source_model": "trellis",
+      "fscore": 0.672,
+      "glb": "bed__trellis.glb",
+      "ifc_class": "IfcFurniture",
+      "dimensions_m": {
+        "width": 0.701,
+        "depth": 0.739,
+        "height": 0.55
+      },
+      "face_count": 10000,
+      "license": "MIT"
+    },
+    {
+      "asset_id": "bookshelf__triposg",
+      "category": "bookshelf",
+      "source_model": "triposg",
+      "fscore": 0.752,
+      "glb": "bookshelf__triposg.glb",
+      "ifc_class": "IfcFurniture",
+      "dimensions_m": {
+        "width": 1.849,
+        "depth": 0.505,
+        "height": 1.901
+      },
+      "face_count": 9999,
+      "license": "MIT"
+    },
+    {
+      "asset_id": "cabinet__sam3d",
+      "category": "cabinet",
+      "source_model": "sam3d",
+      "fscore": 0.725,
+      "glb": "cabinet__sam3d.glb",
+      "ifc_class": "IfcFurniture",
+      "dimensions_m": {
+        "width": 1.265,
+        "depth": 0.714,
+        "height": 1.201
+      },
+      "face_count": 10000,
+      "license": "SAM License (Meta)"
+    },
+    {
+      "asset_id": "chair__sam3d",
+      "category": "chair",
+      "source_model": "sam3d",
+      "fscore": 0.232,
+      "glb": "chair__sam3d.glb",
+      "ifc_class": "IfcChair",
+      "dimensions_m": {
+        "width": 0.768,
+        "depth": 0.622,
+        "height": 0.902
+      },
+      "face_count": 10000,
+      "license": "SAM License (Meta)"
+    },
+    {
+      "asset_id": "desk__trellis",
+      "category": "desk",
+      "source_model": "trellis",
+      "fscore": 0.126,
+      "glb": "desk__trellis.glb",
+      "ifc_class": "IfcFurniture",
+      "dimensions_m": {
+        "width": 1.383,
+        "depth": 1.92,
+        "height": 0.751
+      },
+      "face_count": 10000,
+      "license": "MIT"
+    },
+    {
+      "asset_id": "lamp__instantmesh",
+      "category": "lamp",
+      "source_model": "instantmesh",
+      "fscore": 0.326,
+      "glb": "lamp__instantmesh.glb",
+      "ifc_class": "IfcFurniture",
+      "dimensions_m": {
+        "width": 0.448,
+        "depth": 0.441,
+        "height": 1.55
+      },
+      "face_count": 10000,
+      "license": "Apache-2.0"
+    },
+    {
+      "asset_id": "office_chair__sam3d",
+      "category": "office_chair",
+      "source_model": "sam3d",
+      "fscore": 0.627,
+      "glb": "office_chair__sam3d.glb",
+      "ifc_class": "IfcChair",
+      "dimensions_m": {
+        "width": 0.958,
+        "depth": 1.335,
+        "height": 1.1
+      },
+      "face_count": 10000,
+      "license": "SAM License (Meta)"
+    },
+    {
+      "asset_id": "sofa__sam3d",
+      "category": "sofa",
+      "source_model": "sam3d",
+      "fscore": 0.25,
+      "glb": "sofa__sam3d.glb",
+      "ifc_class": "IfcFurniture",
+      "dimensions_m": {
+        "width": 1.285,
+        "depth": 0.688,
+        "height": 0.85
+      },
+      "face_count": 10000,
+      "license": "SAM License (Meta)"
+    },
+    {
+      "asset_id": "stool__triposg",
+      "category": "stool",
+      "source_model": "triposg",
+      "fscore": 0.993,
+      "glb": "stool__triposg.glb",
+      "ifc_class": "IfcFurniture",
+      "dimensions_m": {
+        "width": 0.414,
+        "depth": 0.407,
+        "height": 0.603
+      },
+      "face_count": 9999,
+      "license": "MIT"
+    },
+    {
+      "asset_id": "table__instantmesh",
+      "category": "table",
+      "source_model": "instantmesh",
+      "fscore": 0.814,
+      "glb": "table__instantmesh.glb",
+      "ifc_class": "IfcFurniture",
+      "dimensions_m": {
+        "width": 1.007,
+        "depth": 0.863,
+        "height": 0.752
+      },
+      "face_count": 10000,
+      "license": "Apache-2.0"
+    }
+  ]
+}
