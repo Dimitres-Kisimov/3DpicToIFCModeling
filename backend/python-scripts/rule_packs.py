@@ -88,9 +88,21 @@ def get_pack(room_type: str = "office", ada: bool = False) -> dict:
     return pack
 
 
-def clearance(pack: dict, category: str) -> float:
+def clearance(pack: dict, category: str, dims=None) -> float:
+    """Clearance for a category. Known categories use the table; unknown items fall back to a
+    FOOTPRINT-DERIVED value (pass dims as {'width','depth'} or (h, w, d)) so mixed catalogues —
+    ABO, AI-generated, other sources — get a sensible gap without a fixed category vocabulary."""
     cl = pack.get("clearances", _CLEARANCES)
-    return cl.get(category, cl.get("default", 0.15))
+    if category in cl:
+        return cl[category]
+    if dims:
+        if isinstance(dims, dict):
+            w, d = float(dims.get("width", 0.5)), float(dims.get("depth", 0.5))
+        else:
+            vals = list(dims) + [0.5, 0.5, 0.5]
+            w, d = float(vals[1]), float(vals[2])
+        return round(min(0.35, max(0.10, 0.10 + 0.12 * (max(w, d) - 0.5))), 3)
+    return cl.get("default", 0.15)
 
 
 def capacity_hint(pack: dict, room_w: float, room_d: float) -> int:

@@ -59,6 +59,7 @@ def _placements(room: dict, objects: list) -> list:
             "id": o["id"],
             "width": float(o["dimensions"]["width"]),
             "depth": float(o["dimensions"]["depth"]),
+            "height": float(o["dimensions"].get("height", 0.0)),  # lets the solver's tall-item wall rule fire
             "category": o.get("category", "default"),
         }
         for o in objects

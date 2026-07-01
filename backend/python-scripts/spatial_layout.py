@@ -48,8 +48,37 @@ CLEARANCE_PRESETS = {
 }
 
 
+# Categories that ergonomically belong against a wall (storage/large). Kept as a HINT only —
+# unknown items fall through to a geometry-derived rule so the solver is item-agnostic.
+_PERIMETER_CATS = {"desk", "cabinet", "filing_cabinet", "storage_cabinet", "bookshelf",
+                   "sofa", "side_table", "tv_stand", "wardrobe", "dresser", "bed", "shelf"}
+
+
 def _get_clearance(obj):
-    return obj.get("clearance") or CLEARANCE_PRESETS.get(obj.get("category", ""), CLEARANCE_PRESETS["default"])
+    """Minimum gap to neighbours, in metres. Explicit value wins; else a per-category preset;
+    else DERIVED FROM FOOTPRINT — bigger items get a bit more clearance. The derived fallback
+    means any item (ABO / AI-generated / other source, known category or not) gets a sensible
+    gap without relying on a fixed category vocabulary."""
+    if obj.get("clearance"):
+        return obj["clearance"]
+    cat = obj.get("category", "")
+    if cat in CLEARANCE_PRESETS:
+        return CLEARANCE_PRESETS[cat]
+    reach = max(float(obj.get("width", 0.5)), float(obj.get("depth", 0.5)))
+    return round(min(0.35, max(0.10, 0.10 + 0.12 * (reach - 0.5))), 3)
+
+
+def _is_perimeter(obj):
+    """Should this item hug a wall? Known storage/large categories do; for anything else we DERIVE
+    it from geometry — tall pieces (h >= 1.2 m) and elongated footprints (aspect >= 1.6, i.e. a clear
+    'back' that sits against a wall: desks, sofas, shelves, cabinets) are wall-affine, while low and
+    roughly-square pieces (tables, chairs, stools) stay free in the room. Works for any catalogue."""
+    if obj.get("category") in _PERIMETER_CATS:
+        return True
+    w, d = float(obj.get("width", 0.5)), float(obj.get("depth", 0.5))
+    h = float(obj.get("height", 0.0) or 0.0)
+    aspect = max(w, d) / max(1e-6, min(w, d))
+    return h >= 1.2 or aspect >= 1.6
 
 
 def _solve_layout_ortools(room, objects, obstacles=None):
@@ -128,13 +157,12 @@ def _solve_layout_ortools(room, objects, obstacles=None):
         [p["iz"] for p in placements] + ob_iz,
     )
 
-    # Ergonomic perimeter affinity: pull large/storage items toward the walls,
-    # keeping the room centre open for circulation.
-    PERIMETER = {"desk", "cabinet", "filing_cabinet", "storage_cabinet",
-                 "bookshelf", "sofa", "side_table"}
+    # Ergonomic perimeter affinity: pull wall-affine items (known storage/large categories OR,
+    # for unknown items, tall/elongated ones by geometry) toward the walls, keeping the room
+    # centre open for circulation. _is_perimeter makes this item-agnostic.
     wall_terms = []
     for p in placements:
-        if p["obj"].get("category") in PERIMETER:
+        if _is_perimeter(p["obj"]):
             x, z, w, d = p["x"], p["z"], p["w"], p["d"]
             dr = model.NewIntVar(0, room_w, f"dr_{p['obj']['id']}")
             db = model.NewIntVar(0, room_d, f"db_{p['obj']['id']}")
