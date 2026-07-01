@@ -99,3 +99,5 @@ deliverable/cloud_gallery_export.zip
 
 # building-scale population: keep manifests/tables, ignore regenerable per-room GLBs
 deliverable/building/*/rooms/
+deliverable/building/*/*.ifc
+deliverable/building/*/*.xkt
