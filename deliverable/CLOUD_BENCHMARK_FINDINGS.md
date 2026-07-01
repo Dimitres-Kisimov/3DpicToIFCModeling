@@ -87,6 +87,14 @@ office_chair = 794,200) — we **decimated to 150 k faces** (quadric, vertex-col
 gallery/scoring, which is still far too dense for BIM. For practical Revit/BIM use all generators must be
 **decimated (≈ ≤ 8 k faces)**. *"BIM-compliant: yes, after decimation."*
 
+**Demonstrated population (`cloud/build_ifc_catalog.py`):** the generated meshes export to a **standalone
+IFC4 furniture catalog** — full `IfcProject → Site → Building → Storey` hierarchy, each item an
+`IfcFurniture`/`IfcChair` with real `IfcTriangulatedFaceSet` geometry, re-validated with ifcopenshell. A
+**best-of-each** 10-item catalog (each item sourced from its highest-scoring model, decimated to 8 k faces)
+is a **2.4 MB** IFC4 file that loads in Revit/ArchiCAD. Notably the winners span **four models** (TripoSG
+×2, SAM 3D ×4, TRELLIS ×2, InstantMesh ×2) — concrete proof of the complementarity finding: the strongest
+deployable catalog is a *router*, not any single model.
+
 ## Finding C — deployment is the real barrier, not the models
 Getting these models to produce a single `.glb` took **5–9 distinct dependency fixes each** (torch/
 torchvision version war, build-isolation hiding torch, missing CUDA toolkit on PATH, pinned-commit deps,
