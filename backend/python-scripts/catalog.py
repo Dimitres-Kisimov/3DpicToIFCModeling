@@ -16,6 +16,10 @@ import rule_packs
 
 REPO = Path(__file__).resolve().parents[2]
 ABO_DIR = REPO / "data" / "mesh_library_abo"
+# user-generated furniture dropped into the app (photo->3D->IFC pipeline output).
+# Overlaid on top of the ABO catalog, flagged so the UI can badge them.
+GEN_DIR = REPO / "data" / "generated_assets"
+GEN_MANIFEST = GEN_DIR / "manifest.json"
 _MANIFEST = None
 
 # category -> (ifc_class, (height, width, depth) ergonomic dims, colour_rgb)
@@ -61,15 +65,22 @@ def _manifest():
 
 
 def list_catalog():
-    """Pickable categories with whether they're ABO-backed + how many ABO meshes exist."""
+    """Pickable categories with whether they're ABO-backed + how many ABO meshes exist,
+    plus how many user-generated items exist per category (so the UI can offer the
+    ⋯ picker even for categories with no ABO mesh)."""
     counts = {}
     for e in _manifest():
         counts[e.get("category", "?")] = counts.get(e.get("category", "?"), 0) + 1
+    gen_counts = {}
+    for e in _gen_manifest_items():
+        gc = e.get("category", "?")
+        gen_counts[gc] = gen_counts.get(gc, 0) + 1
     out = []
     for c, (ifc, dims, _col) in sorted(CATALOG_META.items()):
         src = c if c in ABO_CATEGORIES else MESH_BORROW.get(c)
         out.append({"category": c, "label": c.replace("_", " ").title(), "ifc_class": ifc,
                     "abo": src is not None, "abo_count": counts.get(src or c, 0),
+                    "generated_count": gen_counts.get(c, 0),
                     "dims_hwd": dims})
     return out
 
@@ -97,10 +108,51 @@ def _glb_by_id(category, mesh_id):
     return None
 
 
+def _gen_manifest_items():
+    """Raw entries from the generated-assets manifest; [] if missing/unreadable."""
+    try:
+        data = json.loads(GEN_MANIFEST.read_text(encoding="utf-8"))
+        return data.get("items", []) if isinstance(data, dict) else []
+    except Exception:
+        return []
+
+
+def _generated_items(category):
+    """User-generated meshes for a category, shaped like list_items() entries but flagged
+    generated. There is usually no thumbnail render — the frontend badge is the key
+    signal, so preview is None and the served GLB path is exposed for placement/preview."""
+    out = []
+    for e in _gen_manifest_items():
+        if e.get("category") != category:
+            continue
+        dims = e.get("dims_m") or [None, None, None]
+        fn = e.get("glb")
+        out.append({"id": e.get("id"), "thumb": None, "preview": None,
+                    "generated_glb": ("/api/generated/" + fn) if fn else None,
+                    "product_type": "GENERATED",
+                    "dims_m": list(dims) + [None] * (3 - len(dims)) if len(dims) < 3 else dims,
+                    "faces": None, "generated": True})
+    return out
+
+
+def _generated_glb_by_id(mesh_id):
+    """Absolute path to a generated asset's GLB by its manifest id; None if not found or
+    not a .glb (an .ifc-only generated item has no mesh to place)."""
+    for e in _gen_manifest_items():
+        if e.get("id") == mesh_id:
+            fn = e.get("glb") or ""
+            if fn.lower().endswith(".glb"):
+                p = GEN_DIR / fn
+                if p.exists():
+                    return str(p)
+    return None
+
+
 def list_items(category):
     """All selectable meshes in a category (for the per-item picker): id, thumbnail, dims.
     Borrowed categories (coffee_table, side_table, filing_cabinet) show their source
-    category's meshes, matching what build_scene_spec instantiates."""
+    category's meshes, matching what build_scene_spec instantiates.
+    User-generated items for the category are APPENDED after the ABO items."""
     src = category if category in ABO_CATEGORIES else MESH_BORROW.get(category, category)
     out = []
     for e in _cat_items(src):
@@ -111,6 +163,7 @@ def list_items(category):
                     "product_type": e.get("product_type"),
                     "dims_m": [md.get("x"), md.get("y"), md.get("z")],
                     "faces": e.get("faces")})
+    out.extend(_generated_items(category))   # additive overlay — badged in the UI
     return out
 
 
@@ -133,13 +186,20 @@ def build_scene_spec(room: dict, picks: list) -> dict:
                  "ifc_class": ifc, "dimensions": {"height": h, "width": w, "depth": d},
                  "colour_rgb": col, "source": "SCS primitive", "license": "Apache-2.0"}
             glb = None
+            gen_glb = None
             if ids:                        # user chose this exact mesh
                 glb = _glb_by_id(src or cat, ids[k])
+                if not glb:                # not an ABO id — maybe a user-generated asset
+                    gen_glb = _generated_glb_by_id(ids[k])
                 o["mesh_id"] = ids[k]
             elif src:                      # auto-assign by index
                 i = abo_idx.get(src, 0); abo_idx[src] = i + 1
                 glb = _abo_glb(src, i)
-            if glb:
+            if gen_glb:                    # generated item chosen — use its GLB, flag it
+                o["glb"] = gen_glb
+                o["generated"] = True
+                o["source"] = "SCS generated (photo->3D)"; o["license"] = "user-generated"
+            elif glb:
                 o["glb"] = glb
                 o["source"] = "Amazon Berkeley Objects (ABO)"; o["license"] = "CC-BY-4.0"
             objs.append(o)
