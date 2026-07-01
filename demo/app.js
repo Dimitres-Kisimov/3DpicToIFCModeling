@@ -237,3 +237,78 @@ $("walls").onclick = () => {
 };
 
 setLock(true);   // start static; guarded so it can never break init
+
+// ============================================================================
+// BUILDING POPULATION — load a real architectural IFC, choose furniture per room
+// ============================================================================
+const buildingSel = $("building"), buildingRooms = $("building-rooms"), populateBtn = $("populate");
+let currentBuilding = "", roomPicks = {}, allCategories = [];
+
+async function loadBuildings() {
+  try {
+    const bs = await (await fetch("/api/buildings")).json();
+    bs.forEach((b) => { const o = document.createElement("option"); o.value = b.id; o.textContent = b.name; buildingSel.appendChild(o); });
+  } catch (e) { console.warn("buildings load failed", e); }
+}
+
+buildingSel.onchange = async () => {
+  currentBuilding = buildingSel.value;
+  buildingRooms.innerHTML = ""; roomPicks = {};
+  const sr = $("singleroom"); if (sr) sr.style.opacity = currentBuilding ? ".45" : "1";
+  if (!currentBuilding) { populateBtn.style.display = "none"; return; }
+  buildingRooms.innerHTML = "Loading rooms…";
+  try {
+    const data = await (await fetch(`/api/building/${currentBuilding}/rooms`)).json();
+    allCategories = data.categories || [];
+    buildingRooms.innerHTML = "";
+    data.rooms.forEach((r) => { roomPicks[r.name] = [...r.suggested]; buildingRooms.appendChild(roomCard(r)); });
+    populateBtn.style.display = "";
+    setMsg(`${data.rooms.length} rooms loaded — edit furniture per room, then Populate.`);
+  } catch (e) { buildingRooms.innerHTML = ""; setMsg("Rooms load failed: " + e, true); }
+};
+
+function roomCard(r) {
+  const card = document.createElement("div"); card.className = "roomcard";
+  card.innerHTML = `<div class="roomhdr"><b>${r.name}</b> <small>${r.type} · ${r.area} m²</small></div>` +
+    `<div class="roomchips"></div>` +
+    `<select class="roomadd"><option value="">+ add item…</option>` +
+    allCategories.map((c) => `<option value="${c}">${c.replace(/_/g, " ")}</option>`).join("") + `</select>`;
+  const chips = card.querySelector(".roomchips");
+  const render = () => {
+    chips.innerHTML = "";
+    roomPicks[r.name].forEach((c, i) => {
+      const chip = document.createElement("span"); chip.className = "chip"; chip.textContent = c.replace(/_/g, " ") + " ✕";
+      chip.onclick = () => { roomPicks[r.name].splice(i, 1); render(); };
+      chips.appendChild(chip);
+    });
+    if (!roomPicks[r.name].length) { const e = document.createElement("small"); e.style.color = "var(--muted)"; e.textContent = "(empty)"; chips.appendChild(e); }
+  };
+  render();
+  card.querySelector(".roomadd").onchange = (e) => { if (e.target.value) { roomPicks[r.name].push(e.target.value); e.target.value = ""; render(); } };
+  return card;
+}
+
+populateBtn.onclick = async () => {
+  setMsg("Populating building — ergonomic solver routing around walls/beams (~30–60 s)…");
+  populateBtn.disabled = true;
+  try {
+    const r = await fetch(`/api/building/${currentBuilding}/populate`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ picks: roomPicks }),
+    });
+    const d = await r.json();
+    if (!d.ok) { setMsg("Populate failed: " + (d.error || "unknown"), true); return; }
+    setMsg(`✓ Placed ${d.placed} pieces across ${d.rooms} rooms · ${d.clashes} clashes`, d.clashes > 0);
+    loadScene(d.glb + "?t=" + Date.now());
+    const tb = $("rows"); if (tb) {
+      tb.innerHTML = "";
+      (d.schedule || []).forEach((s) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${s.room}</td><td class="ifc">${s.type}</td><td>${s.placed}/${s.items.length} placed</td>`;
+        tb.appendChild(tr);
+      });
+    }
+  } catch (e) { setMsg("Populate error: " + e, true); }
+  finally { populateBtn.disabled = false; }
+};
+
+loadBuildings();

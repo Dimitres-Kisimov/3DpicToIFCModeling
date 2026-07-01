@@ -115,6 +115,79 @@ def api_generate():
         return jsonify({"ok": False, "error": str(exc), "trace": traceback.format_exc()}), 500
 
 
+# ---------------------------------------------------------------------------
+# Building population: load a REAL architectural IFC, pick furniture per room, populate.
+# ---------------------------------------------------------------------------
+import populate_building as pop   # noqa: E402
+
+_BUILDINGS = [{"id": "duplex", "name": "Duplex Apartment",
+               "ifc": str(REPO / "sample_buildings" / "Duplex_Architecture.ifc")}]
+
+
+def _building(bid):
+    return next((b for b in _BUILDINGS if b["id"] == bid), None)
+
+
+@app.get("/api/buildings")
+def api_buildings():
+    return jsonify([{"id": b["id"], "name": b["name"]} for b in _BUILDINGS])
+
+
+@app.get("/api/building/<bid>/rooms")
+def api_building_rooms(bid):
+    """Every furnishable room in the building with its type, area, and a space-aware suggestion."""
+    b = _building(bid)
+    if not b:
+        return jsonify({"error": "unknown building"}), 404
+    import ifcopenshell, ifcopenshell.geom, numpy as np
+    f = ifcopenshell.open(b["ifc"])
+    s = ifcopenshell.geom.settings(); s.set(s.USE_WORLD_COORDS, True)
+    assets = pop.load_assets()
+    seen, rooms = set(), []
+    for sp in f.by_type("IfcSpace"):
+        name = (sp.LongName or sp.Name or "").strip()
+        rt = pop.room_type(name)
+        if rt is None or name in seen:
+            continue
+        try:
+            g = ifcopenshell.geom.create_shape(s, sp)
+            v = np.array(g.geometry.verts).reshape(-1, 3)
+        except Exception:
+            continue
+        W, D = v[:, 0].max() - v[:, 0].min(), v[:, 1].max() - v[:, 1].min()
+        if W < 1.2 or D < 1.2:
+            continue
+        seen.add(name)
+        rooms.append({"name": name, "type": rt, "area": round(W * D, 1),
+                      "suggested": pop.smart_furnish(rt, W, D, assets)})
+    return jsonify({"rooms": rooms, "categories": sorted(assets.keys())})
+
+
+@app.post("/api/building/<bid>/populate")
+def api_building_populate(bid):
+    """Run the ergonomic populate on the building with the caller's per-room picks."""
+    b = _building(bid)
+    if not b:
+        return jsonify({"error": "unknown building"}), 404
+    import subprocess
+    picks = (request.get_json(force=True) or {}).get("picks", {})
+    OUT.mkdir(parents=True, exist_ok=True)
+    picks_path = OUT / "building_picks.json"
+    picks_path.write_text(json.dumps(picks), encoding="utf-8")
+    out_glb = OUT / "building.glb"
+    try:
+        r = subprocess.run([sys.executable, str(SCRIPTS / "populate_building.py"), b["ifc"],
+                            str(out_glb), "--picks", str(picks_path)],
+                           capture_output=True, text=True, timeout=600)
+        res = json.loads(r.stdout.strip().splitlines()[-1])
+    except Exception as exc:
+        return jsonify({"ok": False, "error": f"{exc}"}), 500
+    return jsonify({"ok": True, "glb": "/out/building.glb",
+                    "placed": res.get("furniture_placed"), "rooms": res.get("rooms_populated"),
+                    "clashes": res.get("furniture_furniture_clashes"),
+                    "schedule": res.get("schedule", [])})
+
+
 @app.post("/api/reset")
 def api_reset():
     """Discard the current preview — restart clean, nothing kept on disk."""
