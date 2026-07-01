@@ -1,14 +1,21 @@
-"""populate_building.py — auto-populate a REAL architectural building IFC with furniture.
+"""populate_building.py — populate a REAL architectural building IFC with furniture, ergonomically.
 
-Reads every IfcSpace (room) from a building IFC, assigns furniture by room name/type from the
-asset library, places it inside each room's real footprint (seated on the floor), and merges the
-result with the building's empty shell into ONE populated GLB. Pure CPU — no GPU.
+For each IfcSpace (room) it:
+  1. reads the room's real footprint + floor level,
+  2. extracts the OBSTACLES that intrude into it (internal/party walls, beams, members, columns,
+     stairs, railings) as keep-out rectangles, plus door keep-clear zones,
+  3. runs the CP-SAT ergonomic solver (spatial_layout + rule_packs: Neufert/Panero/ADA clearances,
+     circulation, no-overlap) to place the chosen furniture AROUND the obstacles with no clashes,
+  4. merges the placed furniture with the building's empty shell into one populated GLB.
 
-    python populate_building.py <building.ifc> <out.glb> [--rooms Living,Bedroom,...]
+Furniture per room is CHOSEN by the caller (manual), falling back to a per-room-type default only
+when no picks are given.  Pure CPU — no GPU.
 
-Coordinates: IFC is Z-up (floor = XY plane, Z = vertical). Our asset meshes are also Z-up and
-real-world scaled, so furniture drops straight in. The whole scene is rotated to Y-up at the end
-so it displays upright in a standard glTF/xeokit viewer.
+    python populate_building.py <building.ifc> <out.glb> [--picks picks.json]
+    picks.json:  {"Living Room": ["sofa","table","lamp"], "Bedroom 1": ["bed","cabinet"], ...}
+
+Coordinates: IFC is Z-up (floor = XY, Z = vertical); assets are Z-up + real-scaled, so furniture
+drops in with a yaw-only rotation. The final scene is rotated to Y-up for the viewer.
 """
 from __future__ import annotations
 import sys, json, argparse
@@ -17,73 +24,86 @@ import numpy as np
 import trimesh
 import ifcopenshell, ifcopenshell.geom
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import spatial_layout
+
 REPO = Path(__file__).resolve().parents[2]
 LIB = REPO / "deliverable" / "asset_library"
 
-# room-name keyword -> furniture categories (from the asset library) to place in that room
-ROOM_FURNITURE = {
-    "living":  ["sofa", "table", "lamp", "bookshelf"],
-    "bed":     ["bed", "cabinet", "lamp"],
-    "kitchen": ["cabinet", "cabinet", "table"],
-    "dining":  ["table", "chair", "chair"],
-    "office":  ["desk", "office_chair", "bookshelf"],
-    "study":   ["desk", "office_chair"],
-    "meeting": ["table", "office_chair", "office_chair"],
-    "lounge":  ["sofa", "stool", "lamp"],
+# default furniture per room type (used only when the caller gives no explicit picks)
+DEFAULT_FURNITURE = {
+    "living": ["sofa", "table", "lamp"], "bed": ["bed", "cabinet"],
+    "kitchen": ["cabinet", "table"], "dining": ["table", "chair"],
+    "office": ["desk", "office_chair"], "study": ["desk", "office_chair"],
+    "meeting": ["table", "office_chair"], "lounge": ["sofa", "stool"],
 }
 SKIP_KEYWORDS = ["bath", "foyer", "hall", "stair", "utility", "roof", "closet", "wc", "corridor"]
+# element types that cut up a room and must be avoided
+OBSTACLE_TYPES = ["IfcColumn", "IfcWall", "IfcWallStandardCase", "IfcBeam", "IfcMember",
+                  "IfcStair", "IfcStairFlight", "IfcRailing"]
 
 
-def room_furniture(name: str):
+def default_picks(name):
     n = (name or "").lower()
     if any(k in n for k in SKIP_KEYWORDS):
         return None
-    for kw, items in ROOM_FURNITURE.items():
+    for kw, items in DEFAULT_FURNITURE.items():
         if kw in n:
             return items
-    return None   # unknown room -> leave empty (safe default)
+    return None
 
 
-def load_asset_meshes():
+def load_assets():
     man = json.load(open(LIB / "manifest.json", encoding="utf-8"))["assets"]
     by_cat = {}
     for a in man:
-        by_cat.setdefault(a["category"], a)   # first asset per category
-    meshes = {}
+        by_cat.setdefault(a["category"], a)
+    out = {}
     for cat, a in by_cat.items():
         try:
-            meshes[cat] = trimesh.load(str(LIB / a["glb"]), force="mesh")
+            out[cat] = {"mesh": trimesh.load(str(LIB / a["glb"]), force="mesh"),
+                        "ifc": a["ifc_class"]}
         except Exception:
             pass
-    return meshes
+    return out
 
 
-def place_asset(mesh: trimesh.Trimesh, cx, cy, floor_z):
-    """Copy the asset, seat its base on floor_z and centre its footprint at (cx, cy). Z-up."""
-    g = mesh.copy()
-    b = g.bounds  # [[minx,miny,minz],[maxx,maxy,maxz]]
-    fx = (b[0][0] + b[1][0]) / 2
-    fy = (b[0][1] + b[1][1]) / 2
-    g.apply_translation([cx - fx, cy - fy, floor_z - b[0][2]])
-    return g
+def footprint_rects(f, s, types):
+    """World-space footprint rectangles (x0,x1,y0,y1) for every element of the given types."""
+    rects = []
+    for t in types:
+        for e in f.by_type(t):
+            if not getattr(e, "Representation", None):
+                continue
+            try:
+                g = ifcopenshell.geom.create_shape(s, e)
+                v = np.array(g.geometry.verts).reshape(-1, 3)
+                rects.append((v[:, 0].min(), v[:, 0].max(), v[:, 1].min(), v[:, 1].max(), t))
+            except Exception:
+                pass
+    return rects
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("ifc")
-    ap.add_argument("out")
+    ap.add_argument("ifc"); ap.add_argument("out")
+    ap.add_argument("--picks", default="")
     args = ap.parse_args()
 
+    picks = json.load(open(args.picks, encoding="utf-8")) if args.picks else {}
     f = ifcopenshell.open(args.ifc)
     s = ifcopenshell.geom.settings(); s.set(s.USE_WORLD_COORDS, True)
-    assets = load_asset_meshes()
+    assets = load_assets()
+    obstacle_rects = footprint_rects(f, s, OBSTACLE_TYPES)     # all structure, once
+    door_rects = footprint_rects(f, s, ["IfcDoor"])
+
     scene = trimesh.Scene()
 
-    # 1) the empty shell: everything except furniture and space volumes
-    SKIP_TYPES = {"IfcFurnishingElement", "IfcFurniture", "IfcSystemFurnitureElement", "IfcSpace"}
+    # 1) empty shell (everything except furniture + space volumes)
     n_shell = 0
     for prod in f.by_type("IfcProduct"):
-        if prod.is_a() in SKIP_TYPES or not getattr(prod, "Representation", None):
+        if prod.is_a() in {"IfcFurnishingElement", "IfcFurniture", "IfcSystemFurnitureElement",
+                           "IfcSpace", "IfcOpeningElement"} or not getattr(prod, "Representation", None):
             continue
         try:
             sh = ifcopenshell.geom.create_shape(s, prod)
@@ -95,11 +115,15 @@ def main():
         except Exception:
             pass
 
-    # 2) per room: read footprint, assign furniture, place it inside
-    placed, rooms_done, schedule = 0, 0, []
+    placed, rooms_done, skipped_items, clashes = 0, 0, 0, 0
     for sp in f.by_type("IfcSpace"):
         name = sp.LongName or sp.Name or ""
-        cats = room_furniture(name)
+        cats = picks.get(name, picks.get(name.strip()))
+        if cats is None:
+            cats = default_picks(name)
+        if not cats:
+            continue
+        cats = [c for c in cats if c in assets]
         if not cats:
             continue
         try:
@@ -107,48 +131,75 @@ def main():
             v = np.array(g.geometry.verts).reshape(-1, 3)
         except Exception:
             continue
-        x0, x1 = v[:, 0].min(), v[:, 0].max()
-        y0, y1 = v[:, 1].min(), v[:, 1].max()
-        floor_z = v[:, 2].min()
-        M = 0.4  # wall margin
-        ux0, ux1, uy0, uy1 = x0 + M, x1 - M, y0 + M, y1 - M
-        if ux1 <= ux0 or uy1 <= uy0:
+        x0, x1, y0, y1 = v[:, 0].min(), v[:, 0].max(), v[:, 1].min(), v[:, 1].max()
+        fz = v[:, 2].min()
+        W, D = x1 - x0, y1 - y0
+        if W < 1.2 or D < 1.2:
             continue
-        # lay the room's furniture along its longer axis, centred on the shorter
-        cats = [c for c in cats if c in assets]
-        if not cats:
-            continue
-        along_x = (ux1 - ux0) >= (uy1 - uy0)
-        span = (ux1 - ux0) if along_x else (uy1 - uy0)
-        step = span / (len(cats) + 1)
-        cross = (uy0 + uy1) / 2 if along_x else (ux0 + ux1) / 2
+
+        # obstacles intruding into this room's interior (shrink 0.25 m to drop boundary walls)
+        keepouts = []
+        for (ex0, ex1, ey0, ey1, t) in obstacle_rects:
+            ix0, ix1 = max(ex0, x0), min(ex1, x1)
+            iy0, iy1 = max(ey0, y0), min(ey1, y1)
+            if ix1 - ix0 > 0.05 and iy1 - iy0 > 0.05:                  # overlaps the room
+                # keep only genuinely interior intrusions (not the perimeter walls themselves)
+                if (ix0 > x0 + 0.25 and ix1 < x1 - 0.25) or (iy0 > y0 + 0.25 and iy1 < y1 - 0.25):
+                    keepouts.append({"x": ix0 - x0, "z": iy0 - y0,
+                                     "width": ix1 - ix0, "depth": iy1 - iy0})
+        # door keep-clear: a 0.9 m buffer in front of any door on this room's edge
+        for (dx0, dx1, dy0, dy1, _t) in door_rects:
+            if dx1 > x0 and dx0 < x1 and dy1 > y0 and dy0 < y1:
+                cx, cy = (dx0 + dx1) / 2 - x0, (dy0 + dy1) / 2 - y0
+                keepouts.append({"x": max(0, cx - 0.6), "z": max(0, cy - 0.6),
+                                 "width": 1.2, "depth": 1.2})
+
+        # solver objects from the chosen categories (real footprints from the meshes)
+        objs, meshmap = [], {}
         for i, cat in enumerate(cats):
-            t = (i + 1) * step
-            cx, cy = (ux0 + t, cross) if along_x else (cross, uy0 + t)
-            m = assets[cat]
-            # skip if the item is bigger than the room footprint
-            e = m.extents
-            if e[0] > (x1 - x0) or e[1] > (y1 - y0):
-                continue
-            scene.add_geometry(place_asset(m, cx, cy, floor_z), node_name=f"{name}-{cat}-{placed}")
-            schedule.append({"room": name, "category": cat, "x": round(float(cx), 2),
-                             "y": round(float(cy), 2), "z": round(float(floor_z), 2)})
+            m = assets[cat]["mesh"]; e = m.extents
+            if e[0] > W - 0.5 or e[1] > D - 0.5:                       # doesn't fit this room
+                skipped_items += 1; continue
+            oid = f"{cat}-{i}"
+            objs.append({"id": oid, "category": cat,
+                         "width": float(e[0]), "depth": float(e[1]), "height": float(e[2])})
+            meshmap[oid] = (m, assets[cat]["ifc"])
+        if not objs:
+            continue
+
+        res = spatial_layout.layout_room({"width": float(W), "depth": float(D), "height": 3.0},
+                                         objs, obstacles=keepouts)
+        boxes = []   # placed furniture footprints (world) for clash verification
+        for p in res["placements"]:
+            m, _ifc = meshmap[p["id"]]
+            cx, cz = p["position"][0], p["position"][2]
+            yaw = float(p["rotation"][1])
+            g2 = m.copy()
+            if yaw:
+                g2.apply_transform(trimesh.transformations.rotation_matrix(np.radians(yaw), [0, 0, 1]))
+            b = g2.bounds
+            wx, wy = x0 + cx, y0 + cz
+            g2.apply_translation([wx - (b[0][0] + b[1][0]) / 2, wy - (b[0][1] + b[1][1]) / 2, fz - b[0][2]])
+            scene.add_geometry(g2, node_name=f"{name}-{p['id']}-{placed}")
+            fb = g2.bounds
+            boxes.append((fb[0][0], fb[1][0], fb[0][1], fb[1][1]))
             placed += 1
+        # verify no furniture-furniture overlap (should be 0 thanks to the solver)
+        for i in range(len(boxes)):
+            for j in range(i + 1, len(boxes)):
+                ax0, ax1, ay0, ay1 = boxes[i]; bx0, bx1, by0, by1 = boxes[j]
+                if min(ax1, bx1) - max(ax0, bx0) > 0.02 and min(ay1, by1) - max(ay0, by0) > 0.02:
+                    clashes += 1
         rooms_done += 1
 
-    # 3) Z-up (IFC) -> Y-up (glTF standard) so it stands upright in the viewer
-    R = trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0])
-    scene.apply_transform(R)
-
+    # Z-up (IFC) -> Y-up (viewer)
+    scene.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))
     scene.export(args.out)
     import os
-    b = scene.bounds
-    print(json.dumps({
-        "ok": True, "out": args.out, "kb": os.path.getsize(args.out) // 1024,
-        "shell_elements": n_shell, "rooms_populated": rooms_done, "furniture_placed": placed,
-        "bbox_m": [round(float(b[1][i] - b[0][i]), 1) for i in range(3)],
-        "schedule": schedule,
-    }))
+    print(json.dumps({"ok": True, "out": args.out, "kb": os.path.getsize(args.out) // 1024,
+                      "shell_elements": n_shell, "rooms_populated": rooms_done,
+                      "furniture_placed": placed, "items_too_big_skipped": skipped_items,
+                      "furniture_furniture_clashes": clashes}))
 
 
 if __name__ == "__main__":

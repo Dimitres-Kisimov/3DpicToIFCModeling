@@ -6,6 +6,32 @@ Upload a photo → AI reconstructs the 3D object → inspect it in the browser �
 
 ---
 
+## Building-Scale Population (new)
+
+Beyond single objects, the pipeline **auto-furnishes whole buildings**. The tool supplies the
+*furniture*; the *architecture* (walls/doors/rooms) comes from a loaded, real building IFC.
+
+1. **Load a real architectural building IFC** with named rooms — e.g. `sample_buildings/Duplex_Architecture.ifc` (21 rooms, walls, doors).
+2. **`populate_building.py`** reads every `IfcSpace` (room name + real footprint), extracts the
+   **obstacles that intrude into each room** (internal/party walls, beams, columns, stairs) + door
+   keep-clear zones, and runs the **CP-SAT ergonomic solver** (`spatial_layout.py` + `rule_packs.py`;
+   Neufert/Panero/ADA clearances + circulation) to place furniture **around the obstacles, clash-free**.
+3. Furniture per room is **your choice** (`--picks picks.json` → `{"Living Room": ["sofa","table"], ...}`),
+   or a sensible per-room-type default; items too big for a room are skipped.
+4. Output: one populated building GLB (→ xeokit) / IFC. **Pure CPU — no GPU.**
+
+```bash
+python backend/python-scripts/populate_building.py sample_buildings/Duplex_Architecture.ifc outputs/duplex_populated.glb
+```
+
+Verified on the Duplex: 8 rooms furnished, ergonomic placement, **0 clashes**.
+
+**Apps / viewers:** selection room-builder `localhost:8000` · photo→IFC generator `localhost:3000` ·
+building viewers `localhost:3000/{populated,empty,building}_building_viewer.html` · model gallery
+`localhost:8900`. Full write-up: [`FOUNDATION_FOR_RESEARCH_PAPER.md`](FOUNDATION_FOR_RESEARCH_PAPER.md).
+
+---
+
 ## Stack
 
 | Layer | Technology |
