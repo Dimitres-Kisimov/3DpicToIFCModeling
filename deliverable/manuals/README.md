@@ -67,3 +67,26 @@ These five lessons recurred across all models. Internalize them and each manual 
 **Meta-lesson:** every "model loads" ≠ "model produces a mesh." Loading and the final GLB-export step
 fail on *different* missing deps — test all the way to a written `.glb`. (SAM 3D alone needed **12
 distinct fixes** between "imports" and "writes a GLB" — see [SAM3D.md](SAM3D.md).)
+
+## Turning generated meshes into an IFC/BIM catalog — two hard caveats
+
+`cloud/build_ifc_catalog.py` exports the generated meshes as a validated IFC4 furniture catalog
+(`IFC4_BIM_CATALOG_OK`). Two caveats are baked in, and both are **non-negotiable for real BIM use**:
+
+1. **Decimation is mandatory (handled automatically).** Raw generator output is **150 k – 2.7 M faces**
+   per item → a 10-item catalog would be **hundreds of MB** and Revit chokes. The tool decimates each
+   item to ~8 k faces (quadric), giving a **~2.4 MB** IFC4 for all 10. *Never* feed raw meshes to IFC.
+   *(This is the same lesson as Finding B in CLOUD_BENCHMARK_FINDINGS.md.)*
+
+2. **Orientation + real-world scale is BEST-EFFORT, not exact (Finding A).** Generators emit meshes in
+   **inconsistent canonical frames** — even the ABO ground truth isn't uniformly oriented. The tool
+   normalizes to **Z-up** (IFC convention) and scales each item so its **height matches a typical real
+   furniture dimension in metres** (chair 0.90 m, table 0.75 m, bookshelf 1.90 m, …). This lands **most
+   items** at sensible sizes, but **fails for pieces where height isn't the defining dimension** or that
+   are mis-oriented — e.g. a generated **bed came out 0.70×0.74×0.55 m** (footprint far too small,
+   because its long axis mapped onto the vertical). **Always sanity-check the printed `X×Y×Z m` dims;
+   outliers need a manual per-item orientation/scale nudge.** A fully-automatic fix would require per-item
+   up-axis detection (PCA/ICP-to-a-canonical-reference) — not yet implemented.
+
+**Rule of thumb:** `generated mesh → decimate ≤8 k → Z-up → scale to real metres → IFC4`, then **eyeball
+the dimensions** before trusting the catalog in a real room model.

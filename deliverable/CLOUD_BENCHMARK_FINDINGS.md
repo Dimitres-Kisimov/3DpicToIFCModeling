@@ -90,10 +90,20 @@ gallery/scoring, which is still far too dense for BIM. For practical Revit/BIM u
 **Demonstrated population (`cloud/build_ifc_catalog.py`):** the generated meshes export to a **standalone
 IFC4 furniture catalog** — full `IfcProject → Site → Building → Storey` hierarchy, each item an
 `IfcFurniture`/`IfcChair` with real `IfcTriangulatedFaceSet` geometry, re-validated with ifcopenshell. A
-**best-of-each** 10-item catalog (each item sourced from its highest-scoring model, decimated to 8 k faces)
-is a **2.4 MB** IFC4 file that loads in Revit/ArchiCAD. Notably the winners span **four models** (TripoSG
-×2, SAM 3D ×4, TRELLIS ×2, InstantMesh ×2) — concrete proof of the complementarity finding: the strongest
-deployable catalog is a *router*, not any single model.
+**best-of-each** 10-item catalog (each item sourced from its highest-scoring model, decimated to 8 k faces,
+oriented Z-up, scaled to real-world metres) is a **2.4 MB** IFC4 file that loads in Revit/ArchiCAD. Notably
+the winners span **four models** (TripoSG ×2, SAM 3D ×4, TRELLIS ×2, InstantMesh ×2) — concrete proof of
+the complementarity finding: the strongest deployable catalog is a *router*, not any single model.
+
+**Two caveats carried into that catalog (the practical lessons):**
+1. **Decimation is mandatory** — raw meshes (150 k–2.7 M faces) would make a hundreds-of-MB IFC; at 8 k
+   faces the whole 10-item catalog is 2.4 MB.
+2. **Orientation + real-world scale is best-effort, not exact** — because generators emit inconsistent
+   canonical frames (Finding A), the Z-up + height-to-metres normalization lands *most* items correctly
+   (table 1.01×0.86×0.75 m, stool 0.41×0.41×0.60 m, sofa 1.28×0.69×0.85 m) but **fails on pieces where
+   height isn't the defining dimension** (a generated bed came out 0.70×0.74×0.55 m — footprint far too
+   small). A robust fix needs per-item up-axis detection (PCA/ICP to a canonical reference). **Always
+   eyeball the exported `X×Y×Z m` dimensions before trusting the catalog in a room model.**
 
 ## Finding C — deployment is the real barrier, not the models
 Getting these models to produce a single `.glb` took **5–9 distinct dependency fixes each** (torch/
