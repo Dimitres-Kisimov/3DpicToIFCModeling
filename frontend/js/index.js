@@ -294,6 +294,76 @@ if (exportIfcBtn) {
 }
 
 // ============================================================================
+// CLEAR VIEW (keeps inventory + export data) + EXPORT MODES (table / each)
+// ============================================================================
+
+// Clear ONLY the 3D scene — inventory and the export map (_objectGlbMap) are kept, so you can
+// take another photo with a clean viewer and still export everything together at the end.
+const clearViewBtn = document.getElementById('clearViewBtn');
+if (clearViewBtn) {
+  clearViewBtn.addEventListener('click', () => {
+    try { window.xeokitModule.clearScene(); } catch (e) { console.warn(e); }
+    const n = ((window.inventoryModule && window.inventoryModule.getInventory()) || []).length;
+    showSuccess(`3D view cleared — inventory kept (${n} item${n === 1 ? '' : 's'})`);
+  });
+}
+
+// Export the inventory as a spreadsheet TABLE (schedule CSV) — the object list with BIM metadata.
+const exportTableBtn = document.getElementById('exportTableBtn');
+if (exportTableBtn) {
+  exportTableBtn.addEventListener('click', () => {
+    const items = (window.inventoryModule && window.inventoryModule.getInventory()) || [];
+    if (!items.length) { showError('Inventory is empty — generate something first'); return; }
+    const cols = ['id', 'name', 'category', 'ifc_class', 'width_m', 'depth_m', 'height_m',
+                  'confidence', 'coco_label', 'source', 'license', 'glb'];
+    const q = (v) => `"${String(v == null ? '' : v).replace(/"/g, '""')}"`;
+    const rows = items.map((it) => {
+      const d = it.dimensions || {}; const em = (it.metadata && it.metadata.extraMeta) || it.metadata || {};
+      return [it.id, it.name, it.category, it.ifcClass, d.width, d.depth, d.height,
+              it.confidence, it.cocoLabel, em.source, em.license, it.glbUrl || it.glbPath].map(q).join(',');
+    });
+    const csv = [cols.join(','), ...rows].join('\r\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    const a = document.createElement('a'); a.href = url; a.download = 'inventory_schedule.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    showSuccess(`Table exported: ${items.length} items → inventory_schedule.csv`);
+  });
+}
+
+// Export EACH inventory item as its own IFC file (one download per item).
+const exportEachBtn = document.getElementById('exportEachBtn');
+if (exportEachBtn) {
+  exportEachBtn.addEventListener('click', async () => {
+    const map = window._objectGlbMap || {}; const meta = window._objectMetadataMap || {};
+    const ids = Object.keys(map).filter((id) => map[id]);
+    if (!ids.length) { showError('Nothing to export — generate something first'); return; }
+    exportEachBtn.disabled = true;
+    showSuccess(`Exporting ${ids.length} items separately…`);
+    let ok = 0;
+    for (const id of ids) {
+      const m = meta[id] || {};
+      const obj = { id, glbPath: map[id], glbUrl: map[id], name: m.name || 'Object',
+                    ifcClass: m.ifcClass || null, category: m.category || null,
+                    dimensions: m.dimensions || null, extraMeta: m.extraMeta || null,
+                    position: [0, 0, 0], rotation: [0, 0, 0], scale: [1, 1, 1] };
+      try {
+        const ifcPath = await window.exporterModule.exportSceneToIFC([obj]);
+        if (ifcPath) {
+          const fn = ifcPath.split(/[\\/]/).pop();
+          const a = document.createElement('a');
+          a.href = ifcPath.startsWith('/') ? ifcPath : `/outputs/${fn}`;
+          a.download = `${(m.category || 'object')}_${fn}`;
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          ok++; await new Promise((r) => setTimeout(r, 400));  // small gap so the browser allows each download
+        }
+      } catch (e) { console.error('[app] export-each failed for', id, e); }
+    }
+    exportEachBtn.disabled = false;
+    showSuccess(`Exported ${ok}/${ids.length} items as separate IFC files`);
+  });
+}
+
+// ============================================================================
 // EVENT LISTENERS - TRANSFORM CONTROLS
 // ============================================================================
 

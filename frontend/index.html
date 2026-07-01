@@ -91,18 +91,25 @@
 
             <!-- Inventory -->
             <div class="sidebar-section">
-                <h3>4. Inventory</h3>
+                <h3>4. Inventory <span id="invCount" class="inv-count">0</span></h3>
                 <div id="inventoryList" class="inventory-list">
                     <p class="empty-state">No objects yet</p>
                 </div>
+                <button id="clearViewBtn" class="btn btn-small" style="width:100%;margin:10px 0 0;">
+                    🧹 Clear 3D view — keep inventory
+                </button>
             </div>
 
             <!-- Export -->
             <div class="sidebar-section">
                 <h3>5. Export</h3>
                 <button id="exportIfcBtn" class="btn btn-secondary" disabled>
-                    📥 Export to IFC
+                    📥 Export all → one IFC
                 </button>
+                <div class="export-row">
+                    <button id="exportTableBtn" class="btn btn-small">📄 Table (CSV)</button>
+                    <button id="exportEachBtn" class="btn btn-small">📦 Each → IFC</button>
+                </div>
             </div>
 
             <!-- Debug Info -->

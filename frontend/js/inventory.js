@@ -157,6 +157,9 @@ function updateInventoryUI() {
   const inventoryList = document.getElementById('inventoryList');
   if (!inventoryList) return;
 
+  const countEl = document.getElementById('invCount');
+  if (countEl) countEl.textContent = inventory.length;
+
   if (inventory.length === 0) {
     inventoryList.innerHTML = '<p class="empty-state">No objects in inventory</p>';
     return;
