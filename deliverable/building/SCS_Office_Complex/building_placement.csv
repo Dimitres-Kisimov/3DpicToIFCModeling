@@ -19,13 +19,13 @@ inst-00016,office_chair__sam3d,office_chair,Ground Floor,Open Office,8.279,0.0,4
 inst-00017,cabinet__sam3d,cabinet,Ground Floor,Open Office,10.132,0.0,6.257,0,1.0,IfcFurniture,sam3d,SAM License (Meta)
 inst-00018,cabinet__sam3d,cabinet,Ground Floor,Open Office,8.532,0.0,6.257,0,1.0,IfcFurniture,sam3d,SAM License (Meta)
 inst-00019,cabinet__sam3d,cabinet,Ground Floor,Open Office,11.732,0.0,6.257,0,1.0,IfcFurniture,sam3d,SAM License (Meta)
-inst-00020,bookshelf__triposg,bookshelf,Ground Floor,Library,19.224,0.0,1.752,0,1.0,IfcFurniture,triposg,MIT
-inst-00021,bookshelf__triposg,bookshelf,Ground Floor,Library,19.224,0.0,3.152,90,1.0,IfcFurniture,triposg,MIT
+inst-00020,bookshelf__triposg,bookshelf,Ground Floor,Library,19.224,0.0,1.853,0,1.0,IfcFurniture,triposg,MIT
+inst-00021,bookshelf__triposg,bookshelf,Ground Floor,Library,19.224,0.0,2.553,90,1.0,IfcFurniture,triposg,MIT
 inst-00022,bookshelf__triposg,bookshelf,Ground Floor,Library,19.925,0.0,3.152,90,1.0,IfcFurniture,triposg,MIT
-inst-00023,bookshelf__triposg,bookshelf,Ground Floor,Library,21.225,0.0,3.152,90,1.0,IfcFurniture,triposg,MIT
-inst-00024,chair__sam3d,chair,Ground Floor,Library,21.384,0.0,2.411,90,1.0,IfcChair,sam3d,SAM License (Meta)
-inst-00025,chair__sam3d,chair,Ground Floor,Library,22.184,0.0,2.411,90,1.0,IfcChair,sam3d,SAM License (Meta)
-inst-00026,table__instantmesh,table,Ground Floor,Library,23.154,0.0,2.181,90,1.0,IfcFurniture,instantmesh,Apache-2.0
+inst-00023,bookshelf__triposg,bookshelf,Ground Floor,Library,20.625,0.0,3.152,90,1.0,IfcFurniture,triposg,MIT
+inst-00024,chair__sam3d,chair,Ground Floor,Library,20.784,0.0,2.511,0,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00025,chair__sam3d,chair,Ground Floor,Library,21.684,0.0,2.511,0,1.0,IfcChair,sam3d,SAM License (Meta)
+inst-00026,table__instantmesh,table,Ground Floor,Library,22.753,0.0,2.381,0,1.0,IfcFurniture,instantmesh,Apache-2.0
 inst-00027,table__instantmesh,table,Level 1,Meeting Room,5.154,3.5,0.781,0,1.0,IfcFurniture,instantmesh,Apache-2.0
 inst-00028,office_chair__sam3d,office_chair,Level 1,Meeting Room,0.879,3.5,0.968,0,1.0,IfcChair,sam3d,SAM License (Meta)
 inst-00029,office_chair__sam3d,office_chair,Level 1,Meeting Room,0.779,3.5,2.468,0,1.0,IfcChair,sam3d,SAM License (Meta)
