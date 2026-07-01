@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SCS · Empty Building (Duplex) — ready to populate</title>
+  <style>
+    :root { --navy:#1c2f7c; --accent:#5570f0; --accent2:#7d93ff; --text:#e8eef6; --mut:#93a1b5; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100%; overflow:hidden;
+      background: radial-gradient(1200px 700px at 70% -10%, #17263a 0%, #0b0e14 60%), #0b0e14;
+      font-family:'Segoe UI', system-ui, sans-serif; color:var(--text); }
+    #c { width:100vw; height:100vh; display:block; }
+    .badge { position:fixed; top:18px; left:18px; z-index:10; background:rgba(20,27,38,.82);
+      border:1px solid #2c384a; border-radius:12px; padding:14px 18px; backdrop-filter:blur(6px);
+      box-shadow:0 8px 30px rgba(0,0,0,.45); max-width:340px; }
+    .badge .logo { display:inline-block; background:var(--navy); color:#fff; font-weight:800;
+      font-size:13px; letter-spacing:.5px; padding:2px 9px; border-radius:3px; }
+    .badge h1 { font-size:16px; margin:9px 0 3px; font-weight:700; }
+    .badge p  { font-size:12px; color:var(--mut); line-height:1.55; }
+    .badge .stat { color:var(--accent2); font-weight:700; }
+    .hint { position:fixed; bottom:16px; left:50%; transform:translateX(-50%); z-index:10;
+      font-size:12px; color:var(--mut); background:rgba(20,27,38,.7); padding:7px 14px;
+      border-radius:20px; border:1px solid #2c384a; }
+    #loading { position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+      z-index:20; font-size:15px; color:var(--accent2); background:#0b0e14; }
+    .spin { width:14px; height:14px; border:2px solid #2c384a; border-top-color:var(--accent);
+      border-radius:50%; display:inline-block; margin-right:10px; animation:s .8s linear infinite; }
+    @keyframes s { to { transform:rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div id="loading"><span class="spin"></span> Loading empty building…</div>
+  <canvas id="c"></canvas>
+  <div class="badge">
+    <span class="logo">BILDUNGSCAMPUS</span>
+    <h1>Empty building — the container</h1>
+    <p><span class="stat">Duplex Apartment</span> · real architecture, no furniture<br>
+       <span class="stat">21 rooms</span> · 113 walls · 14 doors · 24 windows · 4 storeys<br>
+       This is the <b>empty shell</b> we auto-populate room-by-room.<br>
+       CPU-loaded from IFC · no GPU.</p>
+  </div>
+  <div class="hint">🖱️ Left-drag = orbit · Right-drag = pan · Scroll = zoom</div>
+
+  <script type="module">
+    import * as xeokit from '/vendor/xeokit-sdk/xeokit-sdk.min.es.js';
+
+    const viewer = new xeokit.Viewer({ canvasId: 'c', transparent: false });
+    viewer.scene.canvas.backgroundColor = [0.043, 0.055, 0.078];
+
+    const loader = new xeokit.GLTFLoaderPlugin(viewer);
+    const model = loader.load({ id: 'duplex', src: '/outputs/duplex_empty.glb', edges: true });
+
+    model.on('loaded', () => {
+      viewer.cameraFlight.flyTo({ aabb: viewer.scene.aabb, duration: 0.8 });
+      document.getElementById('loading').style.display = 'none';
+    });
+    model.on('error', (e) => {
+      document.getElementById('loading').innerHTML = '❌ Failed to load duplex_empty.glb: ' + e;
+    });
+  </script>
+</body>
+</html>
