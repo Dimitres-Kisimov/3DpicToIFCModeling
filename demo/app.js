@@ -27,6 +27,16 @@ loadCatalog();   // load items FIRST, before any handler wiring, so the list alw
 
 function setMsg(t, bad) { const m = $("msg"); m.textContent = t; m.className = bad ? "bad" : ""; }
 
+// ⋯ pick button HTML for a category row. Shown when the category has ABO meshes OR
+// at least one user-generated item, so generated-only categories are still browsable.
+function browseBtnHTML(c) {
+  const gen = c.generated_count || 0;
+  if (!c.abo && !gen) return "";
+  const label = c.abo ? `⋯ pick (${c.abo_count})` : "⋯ pick";
+  const genTag = gen ? ` <span style="color:#f0a500">+${gen} ours</span>` : "";
+  return `<button class="browse" data-browse="${c.category}">${label}${genTag}</button>`;
+}
+
 async function loadCatalog() {
   const cats = await (await fetch("/api/catalog")).json();
   const el = $("catalog");
@@ -34,10 +44,10 @@ async function loadCatalog() {
     counts[c.category] = 0;
     const row = document.createElement("div");
     row.className = "catrow";
-    const browse = c.abo ? `<button class="browse" data-browse="${c.category}">⋯ pick (${c.abo_count})</button>` : "";
+    const browse = browseBtnHTML(c);
     row.innerHTML =
       `<span>${c.label} <small>${c.abo ? "· ABO" : "· prim"}</small></span>` +
-      `<span class="step">${browse}<button data-c="${c.category}" data-d="-1">−</button>` +
+      `<span class="step" id="step-${c.category}">${browse}<button data-c="${c.category}" data-d="-1">−</button>` +
       `<b id="n-${c.category}">0</b><button data-c="${c.category}" data-d="1">+</button></span>`;
     el.appendChild(row);
   });
@@ -53,6 +63,67 @@ async function loadCatalog() {
   });
 }
 
+// ---------------------------------------------------------------------------
+// Drop your OWN generated furniture (.glb / .ifc) in — it gets auto-categorized
+// server-side and appears (badged "OURS") in that category's ⋯ picker.
+// ---------------------------------------------------------------------------
+async function uploadGenerated(file) {
+  if (!file) return;
+  const name = (file.name || "").toLowerCase();
+  if (!name.endsWith(".glb") && !name.endsWith(".ifc")) {
+    setMsg("Only .glb or .ifc files can be added.", true); return;
+  }
+  setMsg(`Uploading ${file.name}…`);
+  try {
+    const fd = new FormData();
+    fd.append("file", file);
+    const r = await fetch("/api/upload_generated", { method: "POST", body: fd });
+    const d = await r.json();
+    if (!d.ok) { setMsg("Upload failed: " + (d.error || "unknown"), true); return; }
+    const cat = d.item.category;
+    await refreshCategoryBrowse(cat);   // update/inject the ⋯ button (preserves counts)
+    // The ⋯ picker re-fetches /api/items/<cat> each time it opens and now includes
+    // generated items, so the new asset is immediately reachable. If that category's
+    // picker is open right now, refresh it so the item appears at once.
+    if (pickerCat === cat) openPicker(cat);
+    setMsg(`Added to “${cat.replace(/_/g, " ")}” (generated) — open its ⋯ picker to select it.`);
+  } catch (e) { setMsg("Upload error: " + e, true); }
+}
+
+// After an upload, re-fetch the catalog and update just this category's ⋯ button
+// (bump its "+N ours" count, or inject the button if the category had none). Does
+// NOT reset the count steppers, so any in-progress selection is preserved.
+async function refreshCategoryBrowse(cat) {
+  try {
+    const cats = await (await fetch("/api/catalog")).json();
+    const c = cats.find((x) => x.category === cat);
+    if (!c) return;
+    const step = $("step-" + cat);
+    if (!step) return;
+    const existing = step.querySelector("button[data-browse]");
+    const html = browseBtnHTML(c);
+    if (existing) existing.outerHTML = html;                 // replace with updated label
+    else if (html) step.insertAdjacentHTML("afterbegin", html);   // inject where none existed
+  } catch (e) { /* non-fatal — item is still reachable when the picker is opened */ }
+}
+
+{
+  const dz = $("dropzone"), gf = $("genfile");
+  if (dz && gf) {
+    dz.addEventListener("click", () => gf.click());
+    gf.addEventListener("change", () => { if (gf.files[0]) uploadGenerated(gf.files[0]); gf.value = ""; });
+    ["dragenter", "dragover"].forEach((ev) =>
+      dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add("drag"); }));
+    ["dragleave", "dragend"].forEach((ev) =>
+      dz.addEventListener(ev, () => dz.classList.remove("drag")));
+    dz.addEventListener("drop", (e) => {
+      e.preventDefault(); dz.classList.remove("drag");
+      const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f) uploadGenerated(f);
+    });
+  }
+}
+
 // specific-mesh selection from the 400: chosen[category] = [ASIN, ...]
 const chosen = {};
 let pickerCat = null;
@@ -66,10 +137,16 @@ async function openPicker(category) {
   grid.innerHTML = "";
   items.forEach((it) => {
     const d = it.dims_m || [];
-    const dim = d[0] ? `${d[0]}×${d[1]}×${d[2]} m` : "";
+    const dim = (d[0] != null) ? `${d[0]}×${d[1]}×${d[2]} m` : "";
     const cell = document.createElement("div");
-    cell.className = "thumb" + (sel.has(it.id) ? " sel" : "");
-    cell.innerHTML = `<img src="/thumb/${it.preview || it.thumb}" loading="lazy"><div>${it.id}</div><div>${dim}</div>`;
+    cell.className = "thumb" + (it.generated ? " generated" : "") + (sel.has(it.id) ? " sel" : "");
+    // generated items usually have no thumbnail render → labelled placeholder box + badge.
+    // ABO items keep their existing image.
+    const visual = it.generated
+      ? `<div class="genph" title="user-generated">◆</div>`
+      : `<img src="/thumb/${it.preview || it.thumb}" loading="lazy">`;
+    const badge = it.generated ? `<span class="genbadge">OURS</span>` : "";
+    cell.innerHTML = badge + visual + `<div>${it.id}</div><div>${dim}</div>`;
     cell.onclick = () => {
       if (sel.has(it.id)) sel.delete(it.id); else if (sel.size < 20) sel.add(it.id);
       cell.classList.toggle("sel", sel.has(it.id));

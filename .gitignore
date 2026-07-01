@@ -55,6 +55,9 @@ data/demo_photos/
 data/furniture_library/
 models/
 
+# User-uploaded generated furniture (runtime; created by /api/upload_generated)
+data/generated_assets/
+
 # Office lock files
 ~$*
 

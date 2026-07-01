@@ -46,6 +46,10 @@
   .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; border: 1px solid #0006; }
   .ifc { color: var(--accent); font-family: ui-monospace, monospace; font-size: 11px; }
   .panel-foot { padding: 10px 16px; border-top: 1px solid var(--line); display: flex; gap: 8px; }
+  #dropzone { border: 1px dashed var(--line); border-radius: 8px; padding: 14px 10px; text-align: center; font-size: 12px; color: var(--muted); cursor: pointer; background: #2b313b; transition: border-color .15s, background .15s; }
+  #dropzone small { display: block; margin-top: 5px; font-size: 10px; line-height: 1.4; color: #7f8896; }
+  #dropzone:hover { border-color: var(--accent); }
+  #dropzone.drag { border-color: #f0a500; background: #2f2a1e; color: var(--txt); }
 </style>
 </head>
 <body>
@@ -76,6 +80,11 @@
         <h2>Catalog — select up to 20</h2>
         <div id="catalog"></div>
         <div class="total">Selected: <b id="total" style="color:var(--muted)">0</b> / 20</div>
+      </div>
+      <div class="grp">
+        <h2>Your generated items</h2>
+        <div id="dropzone">Drop a generated .glb / .ifc here<small>(or click to choose) — auto-sorted into its category with an <b style="color:#f0a500">OURS</b> badge</small></div>
+        <input type="file" id="genfile" accept=".glb,.ifc" style="display:none">
       </div>
       <div class="grp">
         <h2>Obstacles & doors</h2>
@@ -118,6 +127,11 @@
   .thumb{border:2px solid var(--line);border-radius:8px;padding:6px;cursor:pointer;background:#2b313b;text-align:center;font-size:11px;color:var(--muted)}
   .thumb img{width:100%;height:96px;object-fit:contain;background:#fff;border-radius:4px;margin-bottom:4px}
   .thumb.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+  .thumb{position:relative}
+  .thumb.generated{border-color:#f0a500}
+  .thumb.generated.sel{box-shadow:0 0 0 2px #f0a500 inset}
+  .genbadge{position:absolute;top:4px;right:4px;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;box-shadow:0 1px 4px #0007;z-index:1}
+  .genph{width:100%;height:96px;display:flex;align-items:center;justify-content:center;background:#3a3324;color:#f0a500;border-radius:4px;margin-bottom:4px;font-size:22px}
   .roomcard{background:#2b313b;border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:8px}
   .roomhdr{font-size:13px;margin-bottom:6px} .roomhdr small{color:var(--muted)}
   .roomchips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
