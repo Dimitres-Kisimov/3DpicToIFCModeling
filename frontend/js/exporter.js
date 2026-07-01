@@ -8,27 +8,42 @@
  * @returns {Array} - Array of scene objects
  */
 function prepareSceneForExport() {
-  const sceneData = window.xeokitModule.exportSceneData();
   const glbMap = window._objectGlbMap || {};
   const meta = window._objectMetadataMap || {};
 
-  // Attach glbPath + per-object detection metadata to each scene object
-  const enriched = sceneData.map(obj => {
-    const m = meta[obj.id] || {};
+  // Live transforms from the viewer, indexed by id (best-effort: the viewer's entity ids may
+  // differ from our object ids, so we match when we can and default otherwise). Guarded so a
+  // viewer hiccup can never break export.
+  const transforms = {};
+  try {
+    const sceneData = (window.xeokitModule && window.xeokitModule.exportSceneData)
+      ? (window.xeokitModule.exportSceneData() || []) : [];
+    sceneData.forEach(o => { if (o && o.id) transforms[o.id] = o; });
+  } catch (e) {
+    console.warn('[exporter] exportSceneData failed; using default transforms', e);
+  }
+
+  // Build the export list from what we ACTUALLY generated + registered — robust to viewer id mismatch.
+  const objects = Object.keys(glbMap).filter(id => glbMap[id]).map(id => {
+    const m = meta[id] || {};
+    const t = transforms[id] || {};
     return {
-      ...obj,
-      glbPath: glbMap[obj.id] || null,
-      glbUrl: glbMap[obj.id] || null,
-      name: m.name || obj.name || 'Object',
+      id,
+      glbPath: glbMap[id],
+      glbUrl: glbMap[id],
+      position: t.position || [0, 0, 0],
+      rotation: t.rotation || [0, 0, 0],
+      scale: t.scale || [1, 1, 1],
+      name: m.name || 'Object',
       ifcClass: m.ifcClass || null,
       category: m.category || null,
       dimensions: m.dimensions || null,
       extraMeta: m.extraMeta || null,
     };
-  }).filter(obj => obj.glbPath);
+  });
 
-  console.log('[exporter] Prepared scene:', enriched.length, 'objects with GLB paths');
-  return enriched;
+  console.log('[exporter] Prepared scene:', objects.length, 'objects for export');
+  return objects;
 }
 
 /**

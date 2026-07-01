@@ -286,7 +286,7 @@ if (exportIfcBtn) {
       }
     } catch (error) {
       console.error('[app] Export error:', error);
-      showError('Export failed', error);
+      showError('Export failed: ' + (error && error.message ? error.message : String(error)), error);
     } finally {
       exportIfcBtn.disabled = false;
     }
