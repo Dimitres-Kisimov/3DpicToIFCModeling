@@ -32,6 +32,10 @@ function runDetectAndPlace(imagePath, outputDir) {
 
     const child = spawn(pythonPath, [script, imagePath, outputGlb], {
       cwd: path.join(__dirname, '..', '..'),
+      env: { ...process.env,
+        SCS_TRIPOSR_SKIP_POSTPROC: '0',   // full clean-up: orient + merge + smooth (kills floating debris)
+        SCS_TRIPOSR_MIRROR: '1',          // mirror the cleaner half onto the messy half (fixes the base)
+      },
     });
 
     let stdout = '';
