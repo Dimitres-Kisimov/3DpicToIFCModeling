@@ -40,6 +40,15 @@ Legend: ✅ done · 🔜 next · 🧊 backlog · ⚠️ known issue
 
 ## 🔜 Next
 
+- 🔜 **IFC checker + optimizer algorithm** *(executive objective, 2026-07-05)* — analyze an exported
+  IFC (entity count, geometry face count, duplicate/redundant entities, file size, structure) and
+  run an optimization pass (mesh decimation, geometry dedup/instancing, dead-entity cleanup) → a
+  smaller, cleaner, valid IFC + a before/after report.
+- 🔜 **Building ergonomics fix (task A)** — `populate_building.py` must apply `rule_packs` functional
+  relationships: chair *in front of & facing* desk, lamp/monitor *on top of* desk, perimeter items
+  *back-to-wall facing in* — no wall-facing, no collision.
+- 🔜 **2D floor-plan editor (task B)** — top-down per-floor view to drag furniture manually.
+- 🔜 **Catalog upload previews (task C)** — image preview + title for uploaded generated items.
 - 🔜 **Non-rectangular room clipping** — clip furniture to the true `IfcSpace` polygon, not just its
   bounding box (shapely is already a dependency)
 - 🔜 **IFC round-trip of edits** — re-export the *dragged* / manually-chosen building back to IFC4
