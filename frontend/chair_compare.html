@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TripoSR vs stronger model — the real difference</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html,body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; }
+    .grid { display:grid; grid-template-columns:1fr 1fr 1fr; height:100vh; }
+    .panel { position:relative; border-right:1px solid #d7deea; overflow:hidden; }
+    .panel:last-child { border-right:none; }
+    canvas { width:100%; height:100%; display:block; }
+    .cap { position:absolute; top:12px; left:12px; right:12px; z-index:5; background:rgba(255,255,255,.92);
+      border:1px solid #d7deea; border-radius:10px; padding:8px 12px; box-shadow:0 2px 8px rgba(20,40,80,.08); }
+    .cap b { font-size:14px; } .cap span { font-size:12px; color:#6b7688; display:block; margin-top:2px; }
+    .cap.a b { color:#c0392b; } .cap.b b { color:#e0812b; } .cap.c b { color:#1faa60; }
+    .hint { position:fixed; bottom:10px; left:50%; transform:translateX(-50%); z-index:10; font-size:12px;
+      color:#6b7688; background:rgba(255,255,255,.92); padding:6px 14px; border-radius:20px; border:1px solid #d7deea; }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="panel"><div class="cap a"><b>① Your chair — TripoSR (raw)</b><span>same model, no cleanup</span></div><canvas id="c0"></canvas></div>
+    <div class="panel"><div class="cap b"><b>② Your chair — TripoSR (cleaned)</b><span>same model + our cleanup → barely different</span></div><canvas id="c1"></canvas></div>
+    <div class="panel"><div class="cap c"><b>③ A stronger model — SAM 3D</b><span>the benchmark chair winner (F=0.63) → clean</span></div><canvas id="c2"></canvas></div>
+  </div>
+  <div class="hint">🖱️ Drag = orbit · Scroll = zoom · ① vs ② = cleanup (tiny) · ② vs ③ = MODEL (big)</div>
+
+  <script type="module">
+    import * as xeokit from '/vendor/xeokit-sdk/xeokit-sdk.min.es.js';
+    const models = [
+      { canvas:'c0', src:'/outputs/chair_original.glb',      rot:[180,0,90] },  // TripoSR raw (X-up)
+      { canvas:'c1', src:'/outputs/chair_smooth.glb',        rot:[180,0,90] },  // TripoSR cleaned
+      { canvas:'c2', src:'/outputs/chair_clean_catalog.glb', rot:[-90,0,0] },   // SAM 3D (Z-up)
+    ];
+    for (const m of models) {
+      const viewer = new xeokit.Viewer({ canvasId: m.canvas, transparent:false });
+      viewer.scene.canvas.backgroundColor = [0.93,0.95,0.98];
+      try { viewer.cameraFlight.fitFOV = 50; } catch(e){}
+      const loader = new xeokit.GLTFLoaderPlugin(viewer);
+      const model = loader.load({ id:'m', src:m.src + '?t=' + Date.now(), edges:false });
+      model.on('loaded', () => {
+        try { model.rotation = m.rot; } catch(e){}
+        try { viewer.cameraFlight.flyTo(model); } catch(e){}
+      });
+      model.on('error', (e) => console.warn(m.src, e));
+    }
+  </script>
+</body>
+</html>
