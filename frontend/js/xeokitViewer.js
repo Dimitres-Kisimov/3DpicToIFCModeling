@@ -236,12 +236,15 @@ function removeObject(objectId) {
  */
 function clearScene() {
   if (!viewer) return;
-
-  const entities = Object.keys(viewer.scene.entities);
-  entities.forEach((id) => {
-    removeObject(id);
-  });
-
+  // GLB files load as scene.MODELS (GLTFLoaderPlugin) — destroy those, not just entities.
+  try {
+    Object.values(viewer.scene.models || {}).forEach((m) => { try { m.destroy(); } catch (e) {} });
+  } catch (e) { console.warn('[xeokitViewer] clear models', e); }
+  // sweep any stray entities too
+  try {
+    Object.values(viewer.scene.entities || {}).forEach((en) => { try { en.destroy(); } catch (e) {} });
+  } catch (e) {}
+  window._lastModel = null;
   console.log('[xeokitViewer] Scene cleared');
   updateStatus('Scene cleared');
 }
