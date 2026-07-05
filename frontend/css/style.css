@@ -89,5 +89,9 @@ html, body { height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui,
 .transform-inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
 .transform-input { width: 100%; padding: 5px; border: 1px solid var(--line); border-radius: 7px; font-size: 12px; }
 
+/* Viewer floating controls */
+.viewer-controls { position: absolute; top: 16px; left: 16px; display: flex; gap: 8px; z-index: 10; }
+.viewer-controls .btn { background: #fff; box-shadow: var(--shadow); }
+
 /* Status bar */
 .status-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line); padding: 6px 16px; font-size: 12px; color: var(--mut); z-index: 20; }

@@ -265,6 +265,10 @@ if (generateBtn) {
   });
 }
 
+// Viewer controls — user can always re-fit or spin the model (never stuck on an auto-guess)
+document.getElementById('fitViewBtn')?.addEventListener('click', () => window.xeokitModule?.fitView());
+document.getElementById('rotateBtn')?.addEventListener('click', () => window.xeokitModule?.rotateLastModel(90));
+
 // ============================================================================
 // EVENT LISTENERS - EXPORT
 // ============================================================================

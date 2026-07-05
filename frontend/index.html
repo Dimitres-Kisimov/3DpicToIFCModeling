@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo to 3D — Furniture Scanner</title>
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
     <div class="container">
@@ -98,6 +98,10 @@
                     <p class="ph-sub">Add a photo on the left and press <b>Generate 3D model</b></p>
                 </div>
             </div>
+            <div class="viewer-controls">
+                <button id="fitViewBtn" class="btn btn-tiny">🎯 Fit view</button>
+                <button id="rotateBtn" class="btn btn-tiny">🔄 Rotate 90°</button>
+            </div>
 
             <div class="transform-panel" id="transformPanel" style="display: none;">
                 <div class="transform-section">
@@ -128,12 +132,12 @@
       import * as xeokit from '/vendor/xeokit-sdk/xeokit-sdk.min.es.js';
       window.xeokit = xeokit;
     </script>
-    <script src="js/api.js?v=3"></script>
-    <script src="js/xeokitViewer.js?v=3"></script>
-    <script src="js/glbLoader.js?v=3"></script>
-    <script src="js/inventory.js?v=3"></script>
-    <script src="js/transformControls.js?v=3"></script>
-    <script src="js/exporter.js?v=3"></script>
-    <script src="js/index.js?v=3"></script>
+    <script src="js/api.js?v=4"></script>
+    <script src="js/xeokitViewer.js?v=4"></script>
+    <script src="js/glbLoader.js?v=4"></script>
+    <script src="js/inventory.js?v=4"></script>
+    <script src="js/transformControls.js?v=4"></script>
+    <script src="js/exporter.js?v=4"></script>
+    <script src="js/index.js?v=4"></script>
 </body>
 </html>

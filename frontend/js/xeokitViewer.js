@@ -56,6 +56,24 @@ function initViewer(containerId) {
     viewer.cameraFlight.fitFOV = 55;   // zoom models in to fill the view
     viewer.cameraFlight.duration = 0.5;
 
+    // Camera controls: orbit + zoom-toward-cursor (fixes "can't zoom properly")
+    try {
+      const cc = viewer.cameraControl;
+      cc.navMode = 'orbit';
+      cc.followPointer = true;
+      cc.mouseWheelDollyRate = 20;
+    } catch (e) { console.warn('[xeokitViewer] cameraControl setup', e); }
+
+    // Keep the WebGL drawing buffer matched to the on-screen size (fixes drift / wrong zoom target)
+    const fitCanvas = () => {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.max(1, Math.round(container.clientWidth * dpr));
+      canvas.height = Math.max(1, Math.round(container.clientHeight * dpr));
+    };
+    fitCanvas();
+    try { new ResizeObserver(fitCanvas).observe(container); } catch (e) {}
+    window.addEventListener('resize', fitCanvas);
+
     updateStatus('✓ xeokit viewer initialized');
     console.log('[xeokitViewer] Viewer initialized successfully');
 
@@ -89,9 +107,11 @@ async function loadGLBModel(glbUrl, objectId, options = {}) {
     });
 
     model.on('loaded', () => {
-      // best-effort upright + face camera (rotation passed into load() would reject the model)
-      try { model.rotation = options.rotation || [0, 180, 90]; } catch (e) { console.warn('rotate failed', e); }
-      // RELIABLE fit: xeokit's built-in flyTo(model) always frames the model. No hand-rolled aabb math.
+      // best-effort upright (rotation passed into load() would reject the model). Pipeline emits
+      // height along X, so [0,180,90] stands it up. The Rotate button lets the user spin it if off.
+      model._yaw = 180;
+      try { model.rotation = [0, model._yaw, 90]; } catch (e) { console.warn('rotate failed', e); }
+      window._lastModel = model;
       try { viewer.cameraFlight.flyTo(model); }
       catch (e) { try { viewer.cameraFlight.jumpTo(model); } catch (_) {} }
       updateStatus(`✓ Model loaded: ${objectId}`);
@@ -250,6 +270,22 @@ function exportSceneData() {
   return sceneData;
 }
 
+/** Re-frame the camera to fit everything in view. */
+function fitView() {
+  if (!viewer) return;
+  try { viewer.cameraFlight.flyTo(viewer.scene); }
+  catch (e) { try { viewer.cameraFlight.jumpTo(viewer.scene); } catch (_) {} }
+}
+
+/** Spin the most-recently-loaded model about the vertical axis (user fixes front/back). */
+function rotateLastModel(deltaYawDeg = 90) {
+  const m = window._lastModel;
+  if (!m) return;
+  m._yaw = (((m._yaw || 0) + deltaYawDeg) % 360 + 360) % 360;
+  try { m.rotation = [0, m._yaw, 90]; } catch (e) { console.warn('[xeokitViewer] rotate', e); }
+  fitView();
+}
+
 // Export functions
 window.xeokitModule = {
   initViewer,
@@ -260,6 +296,8 @@ window.xeokitModule = {
   removeObject,
   clearScene,
   exportSceneData,
+  fitView,
+  rotateLastModel,
   getViewer: () => viewer,
   getLoader: () => gltfLoader,
 };
