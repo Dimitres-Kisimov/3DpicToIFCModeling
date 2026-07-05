@@ -84,10 +84,12 @@ async function loadGLBModel(glbUrl, objectId, options = {}) {
       id: objectId,
       src: glbUrl,
       edges: false,
-      rotation: options.rotation || [0, 0, 90],   // pipeline emits height along X → stand it upright (X→Y)
     });
 
     model.on('loaded', () => {
+      // stand the model upright AFTER load (passing rotation into load() makes xeokit reject the model).
+      // pipeline emits height along X → rotate about Z so X becomes vertical (Y-up).
+      try { model.rotation = options.rotation || [0, 0, 90]; } catch (e) { console.warn('rotate failed', e); }
       // frame the whole model with a little margin so it's fully visible, no scrolling/zoom needed
       try {
         viewer.cameraFlight.flyTo({ aabb: model.aabb, duration: 0.5, fitFOV: 40 });
