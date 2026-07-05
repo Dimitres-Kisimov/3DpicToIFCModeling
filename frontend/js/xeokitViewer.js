@@ -33,6 +33,14 @@ function initViewer(containerId) {
     // Create canvas element with explicit pixel dimensions so xeokit can initialize WebGL
     canvas = document.createElement('canvas');
     canvas.id = 'xeokit-canvas';
+    // Absolute + block so the canvas is pulled OUT of normal flow. An inline
+    // canvas at height:100% inside a %-height chain feeds its own baseline gap
+    // back into layout every frame — the page slowly grows and the model drifts
+    // downward. Locking it to the container's box kills that loop.
+    canvas.style.position = 'absolute';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.display = 'block';
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     container.innerHTML = ''; // Clear placeholder
@@ -97,10 +105,11 @@ async function loadGLBModel(glbUrl, objectId, options = {}) {
     });
 
     model.on('loaded', () => {
-      // best-effort upright (rotation passed into load() would reject the model). Pipeline emits
-      // height along X, so [0,180,90] stands it up. The Rotate button lets the user spin it if off.
-      model._yaw = 180;
-      try { model.rotation = [0, model._yaw, 90]; } catch (e) { console.warn('rotate failed', e); }
+      // Pipeline emits height along X. rz=90 stands it upright; because it's stood up by the Z
+      // rotation, the horizontal SPIN (left/right facing) is controlled by the X-euler, not Y.
+      // Default spin 180° to face the camera; the Rotate button steps this X-euler by 90°.
+      model._spin = 180;
+      try { model.rotation = [model._spin, 0, 90]; } catch (e) { console.warn('rotate failed', e); }
       window._lastModel = model;
       try { viewer.cameraFlight.flyTo(model); }
       catch (e) { try { viewer.cameraFlight.jumpTo(model); } catch (_) {} }
@@ -267,12 +276,12 @@ function fitView() {
   catch (e) { try { viewer.cameraFlight.jumpTo(viewer.scene); } catch (_) {} }
 }
 
-/** Spin the most-recently-loaded model about the vertical axis (user fixes front/back). */
-function rotateLastModel(deltaYawDeg = 90) {
+/** Spin the most-recently-loaded model about its vertical (X-euler, because rz=90 stands it up). */
+function rotateLastModel(deltaDeg = 90) {
   const m = window._lastModel;
   if (!m) return;
-  m._yaw = (((m._yaw || 0) + deltaYawDeg) % 360 + 360) % 360;
-  try { m.rotation = [0, m._yaw, 90]; } catch (e) { console.warn('[xeokitViewer] rotate', e); }
+  m._spin = ((((m._spin || 0) + deltaDeg) % 360) + 360) % 360;
+  try { m.rotation = [m._spin, 0, 90]; } catch (e) { console.warn('[xeokitViewer] rotate', e); }
   fitView();
 }
 
