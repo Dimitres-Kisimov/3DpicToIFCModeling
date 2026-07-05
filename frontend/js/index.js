@@ -24,10 +24,8 @@ function initializeViewer() {
     window.xeokitModule.initViewer('xeokit-container');
     viewerInitialized = true;
 
-    // Enable object selection
-    window.xeokitModule.selectObject((selectedObj) => {
-      window.transformModule.setSelectedObject(selectedObj.objectId);
-    });
+    // object-select / transform panel intentionally NOT wired — for the simple end-user UI,
+    // orbit + Fit view + Rotate are enough (no click-to-highlight, no Position/Rotation panel).
 
     updateStatus('✓ Viewer ready');
   } catch (error) {

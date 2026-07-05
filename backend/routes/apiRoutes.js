@@ -32,10 +32,9 @@ function runDetectAndPlace(imagePath, outputDir) {
 
     const child = spawn(pythonPath, [script, imagePath, outputGlb], {
       cwd: path.join(__dirname, '..', '..'),
-      env: { ...process.env,
-        SCS_TRIPOSR_SKIP_POSTPROC: '0',   // full clean-up: orient + merge + smooth (kills floating debris)
-        SCS_TRIPOSR_MIRROR: '1',          // mirror the cleaner half onto the messy half (fixes the base)
-      },
+      // keep the LIGHT cleanup only (debris filter keeps legs). MIRROR removed — it deleted the
+      // chair legs by mirroring the body half over the base. Base cleanup needs a safer approach.
+      env: { ...process.env, SCS_TRIPOSR_SKIP_POSTPROC: '1', SCS_TRIPOSR_MIRROR: '0' },
     });
 
     let stdout = '';
