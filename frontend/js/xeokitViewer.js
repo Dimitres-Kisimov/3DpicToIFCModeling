@@ -53,6 +53,8 @@ function initViewer(containerId) {
     viewer.camera.eye = [0, 0, 3];
     viewer.camera.look = [0, 0, 0];
     viewer.camera.up = [0, 1, 0];
+    viewer.cameraFlight.fitFOV = 55;   // zoom models in to fill the view
+    viewer.cameraFlight.duration = 0.5;
 
     updateStatus('✓ xeokit viewer initialized');
     console.log('[xeokitViewer] Viewer initialized successfully');
@@ -87,14 +89,11 @@ async function loadGLBModel(glbUrl, objectId, options = {}) {
     });
 
     model.on('loaded', () => {
-      // orient AFTER load (rotation in load() makes xeokit reject the model).
-      // pipeline emits height along X: [0,0,90] stands it up; +180° about Y turns the FRONT to the camera.
+      // best-effort upright + face camera (rotation passed into load() would reject the model)
       try { model.rotation = options.rotation || [0, 180, 90]; } catch (e) { console.warn('rotate failed', e); }
-      // fit AFTER the rotation settles, using the whole scene bounds so it centres + fills the view
-      setTimeout(() => {
-        try { viewer.cameraFlight.flyTo({ aabb: viewer.scene.aabb, duration: 0.4, fitFOV: 55 }); }
-        catch (e) { try { viewer.cameraFlight.flyTo(model); } catch (_) {} }
-      }, 60);
+      // RELIABLE fit: xeokit's built-in flyTo(model) always frames the model. No hand-rolled aabb math.
+      try { viewer.cameraFlight.flyTo(model); }
+      catch (e) { try { viewer.cameraFlight.jumpTo(model); } catch (_) {} }
       updateStatus(`✓ Model loaded: ${objectId}`);
       resolve(model);
     });

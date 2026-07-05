@@ -182,7 +182,20 @@ if (generateBtn) {
                                               : ['detect', 'depth', 'retrieve'];
     activeStages.forEach(s => setPipeStatus(s, 'active'));
     const progressContainer = document.getElementById('progressContainer');
+    const progressText = document.getElementById('progressText');
+    const progressFill = document.getElementById('progressFill');
     progressContainer.style.display = 'block';
+
+    // live elapsed timer + estimate so the user always knows how long it takes
+    const estSec = engine === 'triposr' ? 120 : 8;
+    const t0 = Date.now();
+    const timer = setInterval(() => {
+      const s = Math.round((Date.now() - t0) / 1000);
+      if (progressText) progressText.textContent = engine === 'triposr'
+        ? `Generating 3D model — ${s}s elapsed (usually ~2 min)`
+        : `Matching from catalog — ${s}s`;
+      if (progressFill) progressFill.style.width = Math.min(95, Math.round((s / estSec) * 100)) + '%';
+    }, 500);
 
     try {
       const result = await generateModel(selectedImage, engine);
@@ -244,6 +257,8 @@ if (generateBtn) {
       console.error('[app] Generation error:', error);
       showError('Failed to generate model', error);
     } finally {
+      clearInterval(timer);
+      if (progressFill) progressFill.style.width = '100%';
       generateBtn.disabled = false;
       progressContainer.style.display = 'none';
     }
