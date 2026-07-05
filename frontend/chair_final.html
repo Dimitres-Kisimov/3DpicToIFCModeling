@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optimized chair — final GLB</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html,body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,sans-serif;
+      background:radial-gradient(1000px 600px at 60% -10%,#dfe7f4,#eef2f9); color:#1f2733; }
+    #c { width:100vw; height:100vh; display:block; }
+    .badge { position:fixed; top:18px; left:18px; z-index:10; background:rgba(255,255,255,.94);
+      border:1px solid #d7deea; border-radius:12px; padding:14px 18px; box-shadow:0 4px 16px rgba(20,40,80,.1); max-width:320px; }
+    .badge h1 { font-size:16px; font-weight:700; } .badge p { font-size:12px; color:#6b7688; margin-top:4px; line-height:1.6; }
+    .badge .g { color:#1faa60; font-weight:700; }
+    .ctl { position:fixed; top:18px; right:18px; z-index:10; display:flex; gap:8px; }
+    .ctl button { font-family:inherit; font-size:13px; font-weight:600; padding:8px 12px; border-radius:9px;
+      border:1px solid #d7deea; background:#fff; color:#1f2733; cursor:pointer; box-shadow:0 2px 8px rgba(20,40,80,.08); }
+    .hint { position:fixed; bottom:14px; left:50%; transform:translateX(-50%); z-index:10; font-size:12px;
+      color:#6b7688; background:rgba(255,255,255,.9); padding:6px 14px; border-radius:20px; border:1px solid #d7deea; }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div class="badge">
+    <h1>Optimized chair — final GLB</h1>
+    <p><span class="g">15,000 faces · 264 KB</span> · black color kept<br>
+       from 85,500 faces / 1.5 MB raw → <b>−82% faces, −83% size</b><br>
+       debris-removed · smoothed · decimated · BIM-ready</p>
+  </div>
+  <div class="ctl"><button id="fit">🎯 Fit</button><button id="rot">🔄 Rotate</button></div>
+  <div class="hint">🖱️ Drag = orbit · Scroll = zoom</div>
+  <script type="module">
+    import * as xeokit from '/vendor/xeokit-sdk/xeokit-sdk.min.es.js';
+    const viewer = new xeokit.Viewer({ canvasId:'c', transparent:false });
+    viewer.scene.canvas.backgroundColor = [0.93,0.95,0.98];
+    try { viewer.cameraFlight.fitFOV = 50; viewer.cameraControl.navMode='orbit'; viewer.cameraControl.followPointer=true; } catch(e){}
+    const loader = new xeokit.GLTFLoaderPlugin(viewer);
+    let spin = 180, model = null;
+    model = loader.load({ id:'chair', src:'/outputs/chair_final.glb?t=' + Date.now(), edges:false });
+    model.on('loaded', () => { try { model.rotation = [spin,0,90]; } catch(e){} try { viewer.cameraFlight.flyTo(model); } catch(e){} });
+    document.getElementById('fit').onclick = () => { try { viewer.cameraFlight.flyTo(viewer.scene); } catch(e){} };
+    document.getElementById('rot').onclick = () => { spin=(spin+90)%360; try { model.rotation=[spin,0,90]; } catch(e){} };
+  </script>
+</body>
+</html>
