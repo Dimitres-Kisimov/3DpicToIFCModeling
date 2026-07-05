@@ -87,16 +87,14 @@ async function loadGLBModel(glbUrl, objectId, options = {}) {
     });
 
     model.on('loaded', () => {
-      // stand the model upright AFTER load (passing rotation into load() makes xeokit reject the model).
-      // pipeline emits height along X → rotate about Z so X becomes vertical (Y-up).
-      try { model.rotation = options.rotation || [0, 0, 90]; } catch (e) { console.warn('rotate failed', e); }
-      // frame the whole model with a little margin so it's fully visible, no scrolling/zoom needed
-      try {
-        viewer.cameraFlight.flyTo({ aabb: model.aabb, duration: 0.5, fitFOV: 40 });
-      } catch (e) {
-        viewer.cameraFlight.flyTo(model);
-      }
-      console.log('[xeokitViewer] Camera fitted to model', model.aabb);
+      // orient AFTER load (rotation in load() makes xeokit reject the model).
+      // pipeline emits height along X: [0,0,90] stands it up; +180° about Y turns the FRONT to the camera.
+      try { model.rotation = options.rotation || [0, 180, 90]; } catch (e) { console.warn('rotate failed', e); }
+      // fit AFTER the rotation settles, using the whole scene bounds so it centres + fills the view
+      setTimeout(() => {
+        try { viewer.cameraFlight.flyTo({ aabb: viewer.scene.aabb, duration: 0.4, fitFOV: 55 }); }
+        catch (e) { try { viewer.cameraFlight.flyTo(model); } catch (_) {} }
+      }, 60);
       updateStatus(`✓ Model loaded: ${objectId}`);
       resolve(model);
     });
