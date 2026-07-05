@@ -64,16 +64,6 @@ function initViewer(containerId) {
       cc.mouseWheelDollyRate = 20;
     } catch (e) { console.warn('[xeokitViewer] cameraControl setup', e); }
 
-    // Keep the WebGL drawing buffer matched to the on-screen size (fixes drift / wrong zoom target)
-    const fitCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = Math.max(1, Math.round(container.clientWidth * dpr));
-      canvas.height = Math.max(1, Math.round(container.clientHeight * dpr));
-    };
-    fitCanvas();
-    try { new ResizeObserver(fitCanvas).observe(container); } catch (e) {}
-    window.addEventListener('resize', fitCanvas);
-
     updateStatus('✓ xeokit viewer initialized');
     console.log('[xeokitViewer] Viewer initialized successfully');
 
