@@ -3,130 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCS · Photo → 3D → BIM</title>
+    <title>Photo to 3D — Furniture Scanner</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
         <!-- Sidebar Controls -->
         <aside class="sidebar">
-            <div class="sidebar-section brand">
-                <div class="bc-logo">
-                    <span class="bc-block">BILDUNGS</span>
-                    <span class="bc-block">CAMPUS</span>
-                    <span class="bc-sub">DIETER SCHWARZ STIFTUNG</span>
+            <div class="app-header">
+                <div class="app-mark">📷→🪑</div>
+                <div class="app-title">
+                    <h1>Furniture Scanner</h1>
+                    <p>Turn a photo into a 3D model you can use in BIM</p>
                 </div>
             </div>
-            <div class="sidebar-section brand-tagline">
-                <p class="subtitle"><b>Photo → 3D → BIM</b> · single image to BIM-ready model</p>
-            </div>
 
-            <!-- Image Upload -->
-            <div class="sidebar-section">
-                <h3>1. Upload Image</h3>
+            <!-- Step 1: Upload -->
+            <div class="card">
+                <div class="card-head"><span class="step-num">1</span> Add a photo</div>
                 <div class="upload-box" id="dropZone">
                     <input type="file" id="imageInput" accept="image/*" class="file-input">
                     <label for="imageInput" class="upload-label">
-                        <span>📷 Choose Image</span>
-                        <small style="display:block;margin-top:0.3rem;opacity:0.7;">or drag &amp; drop a photo here</small>
+                        <span class="upload-icon">📷</span>
+                        <span class="upload-main">Choose a photo</span>
+                        <small>or drag &amp; drop it here</small>
                     </label>
                 </div>
-                <button id="useSampleBtn" class="btn btn-small" style="margin-top:0.4rem;width:100%;">
-                    🪑 Use sample chair
-                </button>
+                <button id="useSampleBtn" class="btn btn-ghost btn-block">🪑 Try a sample chair</button>
                 <div id="imagePreview" class="image-preview"></div>
             </div>
 
-            <!-- Model Selection -->
-            <!-- Pipeline status -->
-            <div class="sidebar-section">
-                <h3>2. Pipeline</h3>
-                <div id="pipelineStatus" class="pipeline-status">
-                    <div class="pipe-row" data-stage="detect">
-                        <span class="pipe-dot"></span>
-                        <span class="pipe-label">DETR detection</span>
-                        <small>commercial-safe (Apache-2.0)</small>
-                    </div>
-                    <div class="pipe-row" data-stage="depth">
-                        <span class="pipe-dot"></span>
-                        <span class="pipe-label">Depth Anything V2 Metric</span>
-                        <small>real H×W×D in metres</small>
-                    </div>
-                    <div class="pipe-row" data-stage="retrieve">
-                        <span class="pipe-dot"></span>
-                        <span class="pipe-label">DINOv2 → catalog match</span>
-                        <small>ABO retrieval (CC-BY-4.0)</small>
-                    </div>
-                    <div class="pipe-row" data-stage="trellis">
-                        <span class="pipe-dot"></span>
-                        <span class="pipe-label">TRELLIS via WSL2</span>
-                        <small>generative MIT, high quality</small>
-                    </div>
-                    <div class="pipe-row" data-stage="fallback">
-                        <span class="pipe-dot"></span>
-                        <span class="pipe-label">TripoSR generative fallback</span>
-                        <small>generative MIT, always-runs</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Generate Button -->
-            <div class="sidebar-section">
-                <h3>3. Generate 3D Model</h3>
-                <label for="engineSelect" class="pipe-label" style="display:block;margin-bottom:6px;">Engine</label>
-                <select id="engineSelect" style="width:100%;margin-bottom:10px;padding:6px;">
-                    <option value="detect" selected>Detect + Retrieve (default, BIM path)</option>
-                    <option value="triposr">TripoSR — generative 3D (solid mesh)</option>
+            <!-- Step 2: Generate -->
+            <div class="card">
+                <div class="card-head"><span class="step-num">2</span> Make the 3D model</div>
+                <label for="engineSelect" class="field-label">Quality</label>
+                <select id="engineSelect" class="select">
+                    <option value="detect" selected>Fast — match from catalog</option>
+                    <option value="triposr">Detailed — generate a new mesh (~2 min)</option>
                 </select>
-                <button id="generateBtn" class="btn btn-primary" disabled>
-                    ⚙️ Generate
-                </button>
+                <button id="generateBtn" class="btn btn-primary btn-block" disabled>Generate 3D model</button>
                 <div id="progressContainer" class="progress-container" style="display: none;">
-                    <div class="progress-bar">
-                        <div id="progressFill" class="progress-fill"></div>
-                    </div>
-                    <p id="progressText" class="progress-text">Generating...</p>
+                    <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+                    <p id="progressText" class="progress-text">Working…</p>
+                </div>
+                <!-- friendly pipeline (kept for status updates) -->
+                <div id="pipelineStatus" class="pipeline-status">
+                    <div class="pipe-row" data-stage="detect"><span class="pipe-dot"></span><span class="pipe-label">Finding the object</span></div>
+                    <div class="pipe-row" data-stage="depth"><span class="pipe-dot"></span><span class="pipe-label">Measuring real size</span></div>
+                    <div class="pipe-row" data-stage="retrieve"><span class="pipe-dot"></span><span class="pipe-label">Matching a 3D shape</span></div>
+                    <div class="pipe-row" data-stage="trellis"><span class="pipe-dot"></span><span class="pipe-label">Building high detail</span></div>
+                    <div class="pipe-row" data-stage="fallback"><span class="pipe-dot"></span><span class="pipe-label">Finalizing the mesh</span></div>
                 </div>
             </div>
 
-            <!-- Inventory -->
-            <div class="sidebar-section">
-                <h3>4. Inventory <span id="invCount" class="inv-count">0</span></h3>
+            <!-- Step 3: Inventory -->
+            <div class="card">
+                <div class="card-head"><span class="step-num">3</span> Your models <span id="invCount" class="inv-count">0</span></div>
                 <div id="inventoryList" class="inventory-list">
-                    <p class="empty-state">No objects yet</p>
+                    <p class="empty-state">Nothing yet — generate a model above.</p>
                 </div>
-                <button id="clearViewBtn" class="btn btn-small" style="width:100%;margin:10px 0 0;">
-                    🧹 Clear 3D view — keep inventory
-                </button>
+                <button id="clearViewBtn" class="btn btn-ghost btn-block">🧹 Clear the view (keep models)</button>
             </div>
 
-            <!-- Export -->
-            <div class="sidebar-section">
-                <h3>5. Export</h3>
-                <button id="exportIfcBtn" class="btn btn-secondary" disabled>
-                    📥 Export all → one IFC
-                </button>
+            <!-- Step 4: Export -->
+            <div class="card">
+                <div class="card-head"><span class="step-num">4</span> Export to BIM</div>
+                <button id="exportIfcBtn" class="btn btn-secondary btn-block" disabled>📥 Download all as one IFC</button>
                 <div class="export-row">
-                    <button id="exportTableBtn" class="btn btn-small">📄 Table (CSV)</button>
-                    <button id="exportEachBtn" class="btn btn-small">📦 Each → IFC</button>
+                    <button id="exportTableBtn" class="btn btn-ghost">📄 CSV</button>
+                    <button id="exportEachBtn" class="btn btn-ghost">📦 Each IFC</button>
                 </div>
             </div>
 
-            <!-- Debug Info -->
-            <div class="sidebar-section debug-section">
-                <h3>Debug</h3>
-                <button id="healthCheckBtn" class="btn btn-small">Check Health</button>
-                <div id="healthInfo" class="health-info"></div>
+            <!-- Step 5: View your IFC -->
+            <div class="card viewer-tip">
+                <div class="card-head"><span class="step-num">5</span> View your IFC file</div>
+                <p class="tip-text">An IFC is a BIM file — open it in a free online viewer:</p>
+                <a class="btn btn-link btn-block" href="https://viewer.autodesk.com/" target="_blank" rel="noopener">🌐 viewer.autodesk.com</a>
+                <p class="tip-sub">Drag your downloaded <b>.ifc</b> file onto that page to see it in 3D. Works in Revit &amp; ArchiCAD too.</p>
             </div>
 
-            <!-- Credits / Attribution (required by ABO CC-BY-4.0 + MIT / SAM Licences) -->
-            <div class="credits-footer">
-                3D meshes from <a href="https://amazon-berkeley-objects.s3.amazonaws.com/index.html" target="_blank" rel="noopener">Amazon Berkeley Objects</a> (CC&#8209;BY&#8209;4.0).
-                Generative fallback by <a href="https://github.com/microsoft/TRELLIS" target="_blank" rel="noopener">TRELLIS</a> (Microsoft, MIT) and
-                <a href="https://huggingface.co/stabilityai/TripoSR" target="_blank" rel="noopener">TripoSR</a> (Stability&nbsp;AI, MIT).
-                Detection &amp; depth: Apache&#8209;2.0 components on HuggingFace.
-                IFC&nbsp;writer: <a href="https://github.com/IfcOpenShell/IfcOpenShell" target="_blank" rel="noopener">IfcOpenShell</a> (LGPL&#8209;3.0).
-                Viewer: <a href="https://xeokit.io" target="_blank" rel="noopener">xeokit</a> (MIT).
+            <div class="debug-section">
+                <button id="healthCheckBtn" class="btn btn-ghost btn-tiny">Check connection</button>
+                <div id="healthInfo" class="health-info"></div>
             </div>
         </aside>
 
@@ -134,12 +93,12 @@
         <main class="main-content">
             <div id="xeokit-container" class="xeokit-viewer">
                 <div class="viewer-placeholder">
-                    <p>xeokit viewer will load here</p>
-                    <p class="subtitle">Upload an image and generate a 3D model</p>
+                    <div class="ph-icon">🧊</div>
+                    <p class="ph-title">Your 3D model appears here</p>
+                    <p class="ph-sub">Add a photo on the left and press <b>Generate 3D model</b></p>
                 </div>
             </div>
 
-            <!-- Transform Controls -->
             <div class="transform-panel" id="transformPanel" style="display: none;">
                 <div class="transform-section">
                     <label>Position</label>
@@ -150,42 +109,31 @@
                     </div>
                 </div>
                 <div class="transform-section">
-                    <label>Rotation (degrees)</label>
+                    <label>Rotation (°)</label>
                     <div class="transform-inputs">
                         <input type="number" id="rotX" placeholder="X" class="transform-input">
                         <input type="number" id="rotY" placeholder="Y" class="transform-input">
                         <input type="number" id="rotZ" placeholder="Z" class="transform-input">
                     </div>
                 </div>
-                <button id="snapToGroundBtn" class="btn btn-small">Snap to Ground</button>
-                <button id="resetTransformBtn" class="btn btn-small">Reset Transform</button>
+                <button id="snapToGroundBtn" class="btn btn-ghost btn-tiny">Snap to ground</button>
+                <button id="resetTransformBtn" class="btn btn-ghost btn-tiny">Reset</button>
             </div>
         </main>
     </div>
 
-    <!-- Status Bar -->
-    <div class="status-bar">
-        <span id="statusMessage">Ready</span>
-    </div>
+    <div class="status-bar"><span id="statusMessage">Ready</span></div>
 
-    <!-- Scripts -->
-    <!-- xeokit SDK loaded as ES module, exposed globally for non-module scripts -->
     <script type="module">
       import * as xeokit from '/vendor/xeokit-sdk/xeokit-sdk.min.es.js';
       window.xeokit = xeokit;
     </script>
-    
-    <!-- Core API -->
     <script src="js/api.js"></script>
-    
-    <!-- xeokit Modules (Phase 2+) -->
     <script src="js/xeokitViewer.js"></script>
     <script src="js/glbLoader.js"></script>
     <script src="js/inventory.js"></script>
     <script src="js/transformControls.js"></script>
     <script src="js/exporter.js"></script>
-    
-    <!-- Main App -->
     <script src="js/index.js"></script>
 </body>
 </html>
