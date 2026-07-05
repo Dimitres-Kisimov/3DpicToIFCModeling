@@ -84,12 +84,17 @@ async function loadGLBModel(glbUrl, objectId, options = {}) {
       id: objectId,
       src: glbUrl,
       edges: false,
+      rotation: options.rotation || [0, 0, 90],   // pipeline emits height along X → stand it upright (X→Y)
     });
 
     model.on('loaded', () => {
-      viewer.cameraFlight.flyTo(model, () => {
-        console.log('[xeokitViewer] Camera fitted to model');
-      });
+      // frame the whole model with a little margin so it's fully visible, no scrolling/zoom needed
+      try {
+        viewer.cameraFlight.flyTo({ aabb: model.aabb, duration: 0.5, fitFOV: 40 });
+      } catch (e) {
+        viewer.cameraFlight.flyTo(model);
+      }
+      console.log('[xeokitViewer] Camera fitted to model', model.aabb);
       updateStatus(`✓ Model loaded: ${objectId}`);
       resolve(model);
     });
