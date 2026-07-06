@@ -18,6 +18,7 @@ const config = require('../config/env');
 const instantMeshAdapter = require('../ai/instantMesh');
 const stableFast3DAdapter = require('../ai/stablefast3d');
 const triposrAdapter = require('../ai/triposr');
+const gpuQueue = require('../services/gpuQueue');   // serialize GPU jobs — never two on the 6 GB card
 
 /**
  * Working pipeline: DETR detection -> category-keyed primitive mesh -> GLB.
@@ -127,7 +128,9 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
     if (requested === 'triposr') {
       const forceGraft = /^(1|true|on|yes)$/i.test(String(req.body.graftBase || ''));
       logger.info('GENERATE', 'Starting TripoSR generative pipeline', { imagePath, forceGraft });
-      const t = await triposrAdapter.runTripoSR(imagePath, config.OUTPUT_DIR, { forceGraft });
+      // serialize on the GPU queue so concurrent requests can't OOM the 6 GB card
+      const t = await gpuQueue.run(
+        () => triposrAdapter.runTripoSR(imagePath, config.OUTPUT_DIR, { forceGraft }), 'triposr');
       const md = t.metadata || {};
       logger.info('GENERATE', 'TripoSR pipeline complete', {
         glbUrl: t.glbUrl, label: md.object_label,
@@ -159,7 +162,8 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
     }
 
     logger.info('GENERATE', `Starting detection pipeline (requested model: ${model})`, { imagePath });
-    const result = await runDetectAndPlace(imagePath, config.OUTPUT_DIR);
+    // detection + depth + retrieval are also GPU-heavy — same serialization guard
+    const result = await gpuQueue.run(() => runDetectAndPlace(imagePath, config.OUTPUT_DIR), 'detect');
 
     logger.info('GENERATE', 'detection pipeline complete', {
       glbUrl: result.glbUrl,
