@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optimized furniture — 3D gallery</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; padding:16px; }
+    h1 { font-size:19px; } .sub { color:#6b7688; font-size:13px; margin:3px 0 14px; }
+    .grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+    @media(max-width:1100px){ .grid{ grid-template-columns:repeat(3,1fr);} }
+    .cell { background:#fff; border:1px solid #e3e8f0; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(20,40,80,.06); }
+    .cv-wrap { position:relative; height:220px; background:linear-gradient(180deg,#f5f8fd,#e6ecf6); }
+    canvas { width:100%; height:100%; display:block; }
+    .cap { padding:8px 11px; border-top:1px solid #eef1f7; }
+    .cap b { font-size:13px; text-transform:capitalize; } .cap span { display:block; font-size:11px; color:#6b7688; margin-top:1px; }
+  </style>
+</head>
+<body>
+  <h1>Optimized furniture — the end results in 3D</h1>
+  <p class="sub">One example of each item, after mesh cleanup + IFC optimization. Each ≈ 15k faces / ~264 KB. 🖱️ drag = orbit · scroll = zoom.</p>
+  <div class="grid" id="grid"></div>
+  <script type="module">
+    import * as xeokit from '/vendor/xeokit-sdk/xeokit-sdk.min.es.js';
+    const items = [
+      ['bed','92,856 → 15,000 faces'],['bookshelf','67,348 → 15,000'],['cabinet','125,712 → 15,000'],
+      ['chair','98,452 → 15,000'],['desk','52,248 → 15,000'],['lamp','12,488 → 12,396'],
+      ['office_chair','90,644 → 15,000'],['sofa','92,008 → 14,998'],['stool','42,608 → 15,000'],
+      ['table','126,476 → 15,000'],
+    ];
+    const grid = document.getElementById('grid');
+    items.forEach(([name,stat], i) => {
+      const cell = document.createElement('div'); cell.className='cell';
+      cell.innerHTML = `<div class="cv-wrap"><canvas id="cv${i}"></canvas></div><div class="cap"><b>${name.replace('_',' ')}</b><span>${stat}</span></div>`;
+      grid.appendChild(cell);
+      const viewer = new xeokit.Viewer({ canvasId:`cv${i}`, transparent:false });
+      viewer.scene.canvas.backgroundColor = [0.96,0.97,0.99];
+      try { viewer.cameraFlight.fitFOV = 50; viewer.cameraControl.navMode='orbit'; viewer.cameraControl.followPointer=true; } catch(e){}
+      const loader = new xeokit.GLTFLoaderPlugin(viewer);
+      const m = loader.load({ id:'m', src:`/outputs/batch_test/${name}_clean.glb?t=`+Date.now(), edges:false });
+      m.on('loaded', () => { try { viewer.cameraFlight.jumpTo(m); } catch(e){} });
+      m.on('error', (e)=>console.warn(name,e));
+    });
+  </script>
+</body>
+</html>
