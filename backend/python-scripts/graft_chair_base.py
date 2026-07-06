@@ -21,6 +21,30 @@ def _rot_Z_to(axis):
     return np.eye(4)
 
 
+def _level_seat(m, up):
+    """TripoSR often generates the chair reclined. Rotate so the seat plane is horizontal
+    (its normal aligns with the up-axis) — otherwise the level base clashes with a tilted seat."""
+    b = m.bounds; H = b[1][up] - b[0][up]
+    tc = m.triangles_center; nrm = m.face_normals
+    band = (tc[:, up] > b[0][up] + 0.35 * H) & (tc[:, up] < b[0][up] + 0.60 * H)
+    seat = band & (np.abs(nrm[:, up]) > 0.6)          # seat pan: near-horizontal faces mid-height
+    if seat.sum() < 20:
+        return m
+    n = nrm[seat].mean(axis=0); ln = np.linalg.norm(n)
+    if ln < 1e-6:
+        return m
+    n = n / ln
+    if n[up] < 0:
+        n = -n
+    tilt = np.degrees(np.arccos(min(1.0, abs(n[up]))))
+    if tilt < 3 or tilt > 35:                          # skip negligible tilt or a suspect detection
+        return m
+    target = np.zeros(3); target[up] = 1.0
+    m = m.copy(); m.apply_transform(trimesh.geometry.align_vectors(n, target))
+    print("leveled seat: removed %.1f deg recline" % tilt)
+    return m
+
+
 def build(inp, outp, do_clean=True):
     m = trimesh.load(inp, force="mesh")
     color = _capture_color(m)
@@ -31,6 +55,11 @@ def build(inp, outp, do_clean=True):
             m, _ = clean_mesh(m, target_faces=15000, solidify=False, ground=False)
         except Exception as ex:
             print("clean skipped:", ex)
+    # level out TripoSR's recline so the seat sits flat on the (level) grafted base
+    try:
+        m = _level_seat(m, int(np.argmax(m.extents)))
+    except Exception as ex:
+        print("level skipped:", ex)
     e = m.extents
     up = int(np.argmax(e))                      # tallest axis = the chair's vertical
     b = m.bounds
