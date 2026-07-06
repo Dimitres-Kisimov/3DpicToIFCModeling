@@ -37,12 +37,16 @@ def _level_seat(m, up):
     if n[up] < 0:
         n = -n
     tilt = np.degrees(np.arccos(min(1.0, abs(n[up]))))
-    if tilt < 3 or tilt > 35:                          # skip negligible tilt or a suspect detection
+    if tilt < 3 or tilt > 25:                          # skip negligible tilt or a suspect detection
         return m
     target = np.zeros(3); target[up] = 1.0
-    m = m.copy(); m.apply_transform(trimesh.geometry.align_vectors(n, target))
+    m2 = m.copy(); m2.apply_transform(trimesh.geometry.align_vectors(n, target))
+    # SAFETY: on a near-cubic chair (reclined/footrest), leveling can flip the dominant axis and
+    # send the whole chair sideways. If the tallest axis moved, the detection was wrong — reject.
+    if int(np.argmax(m2.extents)) != up:
+        return m
     print("leveled seat: removed %.1f deg recline" % tilt)
-    return m
+    return m2
 
 
 def build(inp, outp, do_clean=True):
@@ -75,6 +79,11 @@ def build(inp, outp, do_clean=True):
     tc = m.triangles_center
     keep = np.where(tc[:, up] >= cut)[0]
     top = m.submesh([keep], append=True) if len(keep) else m
+    # extra smoothing to take TripoSR's rugged/decimation faceting off the seat & back surfaces
+    try:
+        trimesh.smoothing.filter_taubin(top, iterations=16)
+    except Exception as ex:
+        print("top smooth skipped:", ex)
 
     # 2) build a clean 5-star base in local Z-up (wheels at z=0, hub above)
     r = foot * 0.55                               # wheelbase radius (a touch wider than the seat)
@@ -127,6 +136,12 @@ def build(inp, outp, do_clean=True):
     base.apply_translation(tr)
 
     out = trimesh.util.concatenate([top, base])
+    # canonicalize to X-up (the orientation the app viewer expects) so EVERY chair displays
+    # upright regardless of which axis TripoSR happened to make tallest.
+    if up == 1:
+        out.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [0, 0, 1]))  # +Y -> +X
+    elif up == 2:
+        out.apply_transform(trimesh.transformations.rotation_matrix(np.pi / 2, [0, 1, 0]))   # +Z -> +X
     _apply_color(out, color)
     out.export(outp)
     print("grafted: kept %d chair faces + clean 5-star base (%d faces) -> %s"
