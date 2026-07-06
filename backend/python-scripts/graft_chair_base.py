@@ -24,29 +24,43 @@ def _rot_Z_to(axis):
 def _level_seat(m, up):
     """TripoSR often generates the chair reclined. Rotate so the seat plane is horizontal
     (its normal aligns with the up-axis) — otherwise the level base clashes with a tilted seat."""
-    b = m.bounds; H = b[1][up] - b[0][up]
-    tc = m.triangles_center; nrm = m.face_normals
-    band = (tc[:, up] > b[0][up] + 0.35 * H) & (tc[:, up] < b[0][up] + 0.60 * H)
-    seat = band & (np.abs(nrm[:, up]) > 0.6)          # seat pan: near-horizontal faces mid-height
-    if seat.sum() < 20:
-        return m
-    n = nrm[seat].mean(axis=0); ln = np.linalg.norm(n)
-    if ln < 1e-6:
-        return m
-    n = n / ln
-    if n[up] < 0:
-        n = -n
-    tilt = np.degrees(np.arccos(min(1.0, abs(n[up]))))
-    if tilt < 3 or tilt > 25:                          # skip negligible tilt or a suspect detection
-        return m
-    target = np.zeros(3); target[up] = 1.0
-    m2 = m.copy(); m2.apply_transform(trimesh.geometry.align_vectors(n, target))
-    # SAFETY: on a near-cubic chair (reclined/footrest), leveling can flip the dominant axis and
-    # send the whole chair sideways. If the tallest axis moved, the detection was wrong — reject.
-    if int(np.argmax(m2.extents)) != up:
-        return m
-    print("leveled seat: removed %.1f deg recline" % tilt)
-    return m2
+    def fit(mesh):
+        """(tilt_deg, plane_normal) of the flat seat-top surface, or None if not found."""
+        b = mesh.bounds; H = b[1][up] - b[0][up]
+        tc = mesh.triangles_center; nrm = mesh.face_normals
+        band = (tc[:, up] > b[0][up] + 0.33 * H) & (tc[:, up] < b[0][up] + 0.62 * H)
+        flat = band & (np.abs(nrm[:, up]) > 0.75)      # the flat SITTING surface, not cushion sides
+        if flat.sum() < 15:
+            flat = band & (np.abs(nrm[:, up]) > 0.55)  # relax if the pan is very rounded
+        if flat.sum() < 15:
+            return None
+        pts = tc[flat]; c = pts.mean(axis=0)
+        _, _, vt = np.linalg.svd(pts - c)              # least-squares plane fit on seat-top centres
+        n = vt[2]; n = n if n[up] >= 0 else -n
+        return np.degrees(np.arccos(min(1.0, abs(n[up])))), n
+
+    # Iterate, but ONLY keep a rotation that actually reduces the measured tilt. A clean exec-chair
+    # seat converges to ~0; a recliner/footrest with no single flat seat plane is left alone rather
+    # than spun worse.
+    total = 0.0
+    for _ in range(6):
+        cur = fit(m)
+        if cur is None:
+            break
+        tilt, n = cur
+        if tilt < 1.0:
+            break
+        target = np.zeros(3); target[up] = 1.0
+        m2 = m.copy(); m2.apply_transform(trimesh.geometry.align_vectors(n, target))
+        if int(np.argmax(m2.extents)) != up:           # would flip a near-cubic chair sideways
+            break
+        nxt = fit(m2)
+        if nxt is None or nxt[0] > tilt - 0.5:         # no real improvement — stop, keep current
+            break
+        m = m2; total += tilt - nxt[0]
+    if total > 0.5:
+        print("leveled seat: reduced recline by %.1f deg" % total)
+    return m
 
 
 def build(inp, outp, do_clean=True):
@@ -59,11 +73,9 @@ def build(inp, outp, do_clean=True):
             m, _ = clean_mesh(m, target_faces=15000, solidify=False, ground=False)
         except Exception as ex:
             print("clean skipped:", ex)
-    # level out TripoSR's recline so the seat sits flat on the (level) grafted base
-    try:
-        m = _level_seat(m, int(np.argmax(m.extents)))
-    except Exception as ex:
-        print("level skipped:", ex)
+    # NOTE: seat-leveling + orientation-canonicalize were removed — they reoriented the mesh and,
+    # combined with the app viewer's fixed rotation, threw chairs sideways. The graft now keeps the
+    # mesh in TripoSR's native frame, which the viewer already displays upright.
     e = m.extents
     up = int(np.argmax(e))                      # tallest axis = the chair's vertical
     b = m.bounds
@@ -136,12 +148,6 @@ def build(inp, outp, do_clean=True):
     base.apply_translation(tr)
 
     out = trimesh.util.concatenate([top, base])
-    # canonicalize to X-up (the orientation the app viewer expects) so EVERY chair displays
-    # upright regardless of which axis TripoSR happened to make tallest.
-    if up == 1:
-        out.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [0, 0, 1]))  # +Y -> +X
-    elif up == 2:
-        out.apply_transform(trimesh.transformations.rotation_matrix(np.pi / 2, [0, 1, 0]))   # +Z -> +X
     _apply_color(out, color)
     out.export(outp)
     print("grafted: kept %d chair faces + clean 5-star base (%d faces) -> %s"
