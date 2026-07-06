@@ -48,6 +48,14 @@
     const viewers = suffix.map((_,i) => {
       const v = new xeokit.Viewer({ canvasId:`c${i}`, transparent:false });
       v.scene.canvas.backgroundColor = [0.95,0.96,0.99];
+      // even lighting from all sides so orientation differences don't fake a "darker/worse" look
+      try {
+        v.scene.clearLights();
+        new xeokit.AmbientLight(v.scene, { color:[1,1,1], intensity:0.6 });
+        new xeokit.DirLight(v.scene, { dir:[0.2,-0.5,-0.9], color:[1,1,1], intensity:0.9, space:'view' });
+        new xeokit.DirLight(v.scene, { dir:[-0.9,-0.3,0.4], color:[1,1,1], intensity:0.7, space:'view' });
+        new xeokit.DirLight(v.scene, { dir:[0.6,-0.9,0.5],  color:[1,1,1], intensity:0.6, space:'view' });
+      } catch(e){}
       try { v.cameraFlight.fitFOV = 38; v.cameraControl.navMode='orbit'; v.cameraControl.followPointer=true; } catch(e){}
       return { v, loader:new xeokit.GLTFLoaderPlugin(v), model:null, rot:[...defRot[i]] };
     });
