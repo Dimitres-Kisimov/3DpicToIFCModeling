@@ -108,11 +108,14 @@ router.post('/room/positions', async (req, res, next) => {
 // ---------------------------------------------------------------------------
 router.post('/room/demo', async (req, res, next) => {
   try {
-    const spec = (req.body && req.body.spec) || 'scene_spec.json';
-    // only allow the bundled demo specs — this is a demo button, not a file API
-    const specPath = path.join(REPO_ROOT, 'demo', path.basename(spec));
+    // default: the curated demo through the real pipeline; an explicit ?spec
+    // may name a bundled legacy spec file (demo button, not a file API)
+    const args = { out_dir: ROOM_OUT };
+    if (req.body && req.body.spec) {
+      args.spec_path = path.join(REPO_ROOT, 'demo', path.basename(req.body.spec));
+    }
     const result = await cpuQueue.run(
-      () => roomApi.call('demo_run', { spec_path: specPath, out_dir: ROOM_OUT }, { timeout: 300000 }),
+      () => roomApi.call('demo_run', args, { timeout: 300000 }),
       'demo-run'
     );
     send(res, result);

@@ -481,26 +481,45 @@ def cmd_update_positions(args):
             "rebuilt": rebuilt, "zones": zones}
 
 
-def cmd_demo_run(args):
-    """One-click demo: run a canned scene spec through the full pipeline."""
-    import build_room_scene
-    spec_path = Path(args.get("spec_path") or (REPO / "demo" / "scene_spec.json"))
-    if not spec_path.exists():
-        return {"ok": False, "error": f"spec not found: {spec_path}", "status": 404}
-    spec = json.loads(spec_path.read_text(encoding="utf-8"))
-    out_dir = Path(args["out_dir"])
-    out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "spec.json").write_text(json.dumps(spec), encoding="utf-8")   # 2D edits need it
-    res = build_room_scene.build(spec, out_dir)
+# The demo is the REAL pipeline with a curated pick list — real ABO meshes at
+# ergonomic dimensions, workstation anchoring, people-zones, the works. (The old
+# demo/scene_spec.json fossil carried misdetected names and broken scales — a
+# 2.9 m "lamp" that was actually an armchair.)
+_DEMO_ROOM = {"width": 8.0, "depth": 6.0, "height": 3.0, "type": "office",
+              "name": "SCS Demo Office"}
+_DEMO_PICKS = [
+    {"category": "desk", "count": 2}, {"category": "office_chair", "count": 2},
+    {"category": "monitor", "count": 2}, {"category": "lamp", "count": 1},
+    {"category": "bookshelf", "count": 1}, {"category": "sofa", "count": 1},
+    {"category": "coffee_table", "count": 1},
+]
 
-    sched, render, floorplan = _build_outputs(out_dir)
-    feasible = res["solver"] == "ortools-cpsat"
-    return {"ok": True, "feasible": feasible, "solver": res["solver"],
-            "message": "Demo scene built.", "items": sched["items"], "room": sched["room"],
-            "zones": sched.get("zones") or {},
-            "glb": "/out/scene.glb", "ifc": "/out/scene.ifc",
-            "metamodel": "/out/metamodel.json",
-            "render": render, "floorplan": floorplan}
+
+def cmd_demo_run(args):
+    """One-click demo. Default: the curated scene through the SAME layout pipeline
+    users trigger. A legacy spec file is only used when explicitly requested."""
+    import build_room_scene
+    spec_file = args.get("spec_path")
+    if spec_file and Path(spec_file).exists():
+        spec = json.loads(Path(spec_file).read_text(encoding="utf-8"))
+        out_dir = Path(args["out_dir"])
+        out_dir.mkdir(parents=True, exist_ok=True)
+        (out_dir / "spec.json").write_text(json.dumps(spec), encoding="utf-8")
+        res = build_room_scene.build(spec, out_dir)
+        sched, render, floorplan = _build_outputs(out_dir)
+        return {"ok": True, "feasible": res["solver"] == "ortools-cpsat",
+                "solver": res["solver"], "message": "Demo scene built (from spec file).",
+                "items": sched["items"], "room": sched["room"],
+                "zones": sched.get("zones") or {},
+                "glb": "/out/scene.glb", "ifc": "/out/scene.ifc",
+                "metamodel": "/out/metamodel.json",
+                "render": render, "floorplan": floorplan}
+    result = cmd_layout({"room": dict(_DEMO_ROOM), "items": _DEMO_PICKS,
+                         "out_dir": args["out_dir"]})
+    if result.get("ok"):
+        result["message"] = ("Demo office: two workstations, lounge corner — placed "
+                            "ergonomically with room for people to move.")
+    return result
 
 
 _COMMANDS = {
