@@ -11,15 +11,14 @@ const logger = require('../middleware/logger');
 const ifcExporter = require('../services/ifcExporter');
 const { spawn } = require('child_process');
 const path = require('path');
-let config = {}; try { config = require('../config'); } catch (e) {}
+const config = require('../config/env');
 
 // Run the IFC optimizer (geometry decimation + instancing + precision rounding) on an exported IFC.
 function runOptimizeIFC(inPath, outPath) {
   return new Promise((resolve) => {
     const script = path.join(__dirname, '..', 'python-scripts', 'optimize_ifc.py');
-    // pin the interpreter that has ifcopenshell/trimesh/pymeshfix/fast_simplification
-    const py = config.PYTHON_PATH
-      || 'C:\\Users\\dimik\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe';
+    // pinned interpreter (has ifcopenshell/trimesh/pymeshfix/fast_simplification) — from .env
+    const py = config.PYTHON_PATH;
     const child = spawn(py, [script, inPath, outPath], { cwd: path.join(__dirname, '..', '..') });
     let out = '';
     child.stdout.on('data', (c) => { out += c.toString(); });

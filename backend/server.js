@@ -45,6 +45,16 @@ app.use('/vendor/xeokit-sdk', express.static(path.join(__dirname, '../node_modul
 // This lets users test the pipeline without ever invoking the OS file dialog.
 app.use('/sample', express.static(path.join(__dirname, '../backend/triposr/examples')));
 
+// Room-builder assets (merged from the retired Flask app on :8000):
+// /out           -> scratch preview dir (scene.glb/scene.ifc/renders) — never cached,
+//                   the same URL is refetched after every regenerate
+// /thumb         -> ABO catalog thumbnails
+// /api/generated -> persisted user-generated assets (GLB/IFC)
+const noStore = { setHeaders: (res) => res.setHeader('Cache-Control', 'no-store, max-age=0') };
+app.use('/out', express.static(path.resolve(process.cwd(), config.ROOM_OUT_DIR), noStore));
+app.use('/thumb', express.static(path.join(__dirname, '../data/mesh_library_abo')));
+app.use('/api/generated', express.static(path.join(__dirname, '../data/generated_assets')));
+
 // ============================================================================
 // ROUTES
 // ============================================================================
@@ -122,6 +132,13 @@ app.use('/api', pipelineRoutes);
 const debugRoutes = require('./routes/debugRoutes');
 app.use('/api', debugRoutes);
 
+// Room builder + building population (merged from the retired Flask app)
+const roomRoutes = require('./routes/roomRoutes');
+app.use('/api', roomRoutes);
+
+const buildingRoutes = require('./routes/buildingRoutes');
+app.use('/api', buildingRoutes);
+
 // ============================================================================
 // 404 HANDLER
 // ============================================================================
@@ -147,13 +164,16 @@ app.use(errorHandler);
 // ============================================================================
 
 // Create necessary directories
-const directories = [config.TEMP_DIR, config.UPLOAD_DIR, config.OUTPUT_DIR];
+const directories = [config.TEMP_DIR, config.UPLOAD_DIR, config.OUTPUT_DIR, config.ROOM_OUT_DIR];
 directories.forEach((dir) => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
     logger.info('STARTUP', `Created directory: ${dir}`);
   }
 });
+
+// Room preview is ephemeral by design — start with a clean slate (as Flask did)
+roomRoutes.clearScratch();
 
 // Start server
 // Bind to 0.0.0.0 so both IPv4 (127.0.0.1) and IPv6 (::1) work. Node's

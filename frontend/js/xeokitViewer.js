@@ -48,10 +48,15 @@ function initViewer(containerId) {
     canvas.width = container.clientWidth || 800;
     canvas.height = container.clientHeight || 600;
 
-    // Initialize viewer using xeokit.Viewer
+    // Initialize viewer using xeokit.Viewer.
+    // colorTextureEnabled keeps GLB base-color textures (ABO catalog meshes carry
+    // their colour in PNG textures — without this everything renders ghost-white);
+    // pbrEnabled honours metallic-roughness materials instead of the flat default.
     viewer = new window.xeokit.Viewer({
       canvasId: 'xeokit-canvas',
       transparent: true,
+      colorTextureEnabled: true,
+      pbrEnabled: true,
     });
 
     // Initialize GLTFLoaderPlugin for loading GLB/GLTF files

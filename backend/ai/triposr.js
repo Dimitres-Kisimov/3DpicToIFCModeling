@@ -17,8 +17,7 @@ const config = require('../config/env');
 function runGraftChairBase(inPath, outPath) {
   return new Promise((resolve) => {
     const script = path.join(__dirname, '..', 'python-scripts', 'graft_chair_base.py');
-    const py = config.PYTHON_PATH
-      || 'C:\\Users\\dimik\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe';
+    const py = config.PYTHON_PATH;   // pinned interpreter comes from .env
     const child = spawn(py, [script, inPath, outPath], { cwd: path.join(__dirname, '..', '..') });
     let out = '', err = '';
     child.stdout.on('data', (c) => { out += c.toString(); });

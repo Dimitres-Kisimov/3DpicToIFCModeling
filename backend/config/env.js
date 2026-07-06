@@ -16,6 +16,9 @@ module.exports = {
   PYTHON_PATH: process.env.PYTHON_PATH || 'python',
   PYTHON_SCRIPTS_DIR: process.env.PYTHON_SCRIPTS_DIR || './backend/python-scripts',
 
+  // Room builder (merged from the retired Flask app)
+  ROOM_OUT_DIR: process.env.ROOM_OUT_DIR || './demo/app_out',
+
   // GPU
   USE_GPU: process.env.USE_GPU === 'true',
   CUDA_VISIBLE_DEVICES: process.env.CUDA_VISIBLE_DEVICES || '0',

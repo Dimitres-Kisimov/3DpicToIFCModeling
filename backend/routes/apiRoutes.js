@@ -19,6 +19,31 @@ const instantMeshAdapter = require('../ai/instantMesh');
 const stableFast3DAdapter = require('../ai/stablefast3d');
 const triposrAdapter = require('../ai/triposr');
 const gpuQueue = require('../services/gpuQueue');   // serialize GPU jobs — never two on the 6 GB card
+const roomApi = require('../services/roomApi');
+
+// B3 — close the generator→room loop: every successfully generated object is
+// registered into the room builder's catalog (data/generated_assets) so it is
+// immediately pickable in "Build a room" with an OURS badge. Fire-and-forget:
+// never delays the generation response; keep_source leaves the GLB in /outputs
+// for the viewer.
+function autoRegisterGenerated(glbPath, category) {
+  if (!glbPath) return;
+  roomApi.call('register_upload', {
+    path: glbPath,
+    orig_name: `${category || 'object'}.glb`,
+    category: category || undefined,
+    keep_source: true,
+  }, { timeout: 120000 })
+    .then((r) => {
+      if (r && r.ok) {
+        roomApi.invalidateCatalog(r.item && r.item.category);
+        logger.info('GENERATE', 'Auto-registered into room catalog', r.item);
+      } else {
+        logger.warn('GENERATE', 'Auto-register skipped', { error: r && r.error });
+      }
+    })
+    .catch((e) => logger.warn('GENERATE', 'Auto-register failed', { error: e.message }));
+}
 
 /**
  * Working pipeline: DETR detection -> category-keyed primitive mesh -> GLB.
@@ -143,6 +168,7 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
         glbUrl: t.glbUrl, label: md.object_label,
         confidence: md.clip_confidence, faces: md.faces, glbSize: md.glbSize,
       });
+      autoRegisterGenerated(t.glbPath, md.ifc_category);   // B3: appears in the room picker
       return res.json({
         success: true,
         model: 'triposr',
@@ -179,6 +205,7 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
       confidence: result.detection?.confidence,
       glbSize: result.glb_size_bytes,
     });
+    autoRegisterGenerated(result.glbPath, result.category);   // B3: appears in the room picker
 
     return res.json({
       success: true,
