@@ -56,6 +56,12 @@ MESH_BORROW = {"coffee_table": "table", "side_table": "table", "filing_cabinet":
 # that render as airy cages). Used as index 0 for that category.
 PREFERRED = {"bookshelf": "bookshelf_B07PPNNCM2.glb"}
 
+# Some ABO pools mix related product types (the "sofa" category holds 8 BENCHes and
+# 27 OTTOMANs next to 15 real SOFAs). Entries matching the category's TRUE type sort
+# first, so a count-based pick gets an actual sofa — not a storage bench — and the
+# ⋯ picker shows the real thing at the top.
+_PT_PREFER = {"sofa": ("SOFA",), "cabinet": ("CABINET", "DRESSER"), "lamp": ("LAMP",)}
+
 
 def _manifest():
     global _MANIFEST
@@ -87,6 +93,9 @@ def list_catalog():
 
 def _cat_items(category):
     items = [e for e in _manifest() if e.get("category") == category]
+    types = _PT_PREFER.get(category)
+    if types:  # true-type entries first (stable: keeps manifest order within groups)
+        items = sorted(items, key=lambda e: 0 if (e.get("product_type") or "").upper() in types else 1)
     pref = PREFERRED.get(category)
     if pref:   # float the hand-picked clean mesh to index 0
         items = sorted(items, key=lambda e: 0 if e["glb"] == pref else 1)
