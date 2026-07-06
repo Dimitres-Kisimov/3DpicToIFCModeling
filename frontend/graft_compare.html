@@ -35,7 +35,7 @@
   </div>
   <script type="module">
     import * as xeokit from '/vendor/xeokit-sdk/xeokit-sdk.min.es.js';
-    const srcs = ['/outputs/fresh_chair_raw.glb', '/outputs/fresh_chair_grafted.glb'];
+    const srcs = ['/outputs/fresh_chair_raw_up.glb', '/outputs/fresh_chair_grafted_up.glb'];
     const viewers = srcs.map((src,i) => {
       const v = new xeokit.Viewer({ canvasId:`c${i}`, transparent:false });
       v.scene.canvas.backgroundColor = [0.95,0.96,0.99];

@@ -104,12 +104,20 @@ def clean_mesh(mesh, target_faces=15000, solidify=False, ground=True):
             stages["debris_error"] = str(e)
         try:
             import pymeshfix
-            vc, fc = pymeshfix.clean_from_arrays(
-                np.asarray(mesh.vertices, np.float64), np.asarray(mesh.faces, np.int32),
-                joincomp=True, remove_smallest_components=False)
-            if len(vc) and len(fc):
-                mesh = trimesh.Trimesh(vertices=vc, faces=fc, process=True)
-                stages["watertight_repair"] = "pymeshfix"
+            def _fix(part):
+                vc, fc = pymeshfix.clean_from_arrays(
+                    np.asarray(part.vertices, np.float64), np.asarray(part.faces, np.int32),
+                    joincomp=True, remove_smallest_components=False)
+                return trimesh.Trimesh(vertices=vc, faces=fc, process=True) if len(vc) and len(fc) else part
+            # Repair EACH connected component separately, then recombine. pymeshfix collapses a
+            # multi-part mesh to its largest piece, which would silently drop legitimate parts
+            # (office-chair base, table legs, lamp shade). Per-component repair preserves them.
+            parts = mesh.split(only_watertight=False)
+            if len(parts) > 1:
+                mesh = trimesh.util.concatenate([_fix(p) for p in parts])
+                stages["watertight_repair"] = f"pymeshfix(per-comp x{len(parts)})"
+            else:
+                mesh = _fix(mesh); stages["watertight_repair"] = "pymeshfix"
         except Exception as e:
             stages["repair_error"] = str(e)
     try:

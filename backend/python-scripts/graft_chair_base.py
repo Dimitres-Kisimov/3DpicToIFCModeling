@@ -67,7 +67,15 @@ def build(inp, outp, do_clean=True):
     # fuse hub+column+spokes+casters into ONE watertight solid so the debris filter and the IFC
     # optimizer keep it as a single component (individual casters would otherwise be dropped).
     try:
+        tb = base.bounds.copy()                         # remember the true world-space size
         base = _voxel_solidify(base, pitch_frac=0.010)
+        # trimesh's VoxelGrid.marching_cubes returns voxel-INDEX coords (scaled by 1/pitch) —
+        # refit the solid back onto the original AABB so it isn't ~100x too big.
+        sb = base.bounds
+        ssize = sb[1] - sb[0]; ssize[ssize == 0] = 1e-9
+        base.apply_translation(-sb[0])
+        base.apply_scale((tb[1] - tb[0]) / ssize)
+        base.apply_translation(tb[0])
         if len(base.faces) > 3500:                      # voxel remesh is dense — slim it down
             import fast_simplification
             red = 1.0 - 3500 / len(base.faces)
