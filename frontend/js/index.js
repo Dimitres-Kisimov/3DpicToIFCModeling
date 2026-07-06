@@ -196,7 +196,8 @@ if (generateBtn) {
     }, 500);
 
     try {
-      const result = await generateModel(selectedImage, engine);
+      const graftBase = !!document.getElementById('graftBaseChk')?.checked;
+      const result = await generateModel(selectedImage, engine, { graftBase });
       console.log('[app] Pipeline result:', result);
       applyPipelineResult(result);
       const glbPath = result.glb;
@@ -444,6 +445,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize viewer when xeokit loads
   setTimeout(initializeViewer, 1000);
+
+  // The office-chair base graft only applies to the "Detailed" (TripoSR) engine — hide it otherwise
+  const engineSel = document.getElementById('engineSelect');
+  const graftRow = document.getElementById('graftBaseRow');
+  const syncGraftRow = () => { if (graftRow) graftRow.style.display = (engineSel?.value === 'triposr') ? 'flex' : 'none'; };
+  engineSel?.addEventListener('change', syncGraftRow);
+  syncGraftRow();
 
   updateStatus('Initializing...');
 });

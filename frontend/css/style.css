@@ -33,6 +33,8 @@ html, body { height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui,
 /* Fields */
 .field-label { font-size: 12px; color: var(--mut); display: block; margin-bottom: 4px; }
 .select { width: 100%; padding: 9px 10px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font-size: 13px; color: var(--ink); margin-bottom: 10px; }
+.check-row { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink); margin: 2px 0 12px; cursor: pointer; line-height: 1.35; }
+.check-row input { width: 15px; height: 15px; flex: none; cursor: pointer; }
 
 /* Buttons */
 .btn { font-family: inherit; font-size: 13px; font-weight: 600; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; transition: all .12s; }
@@ -75,8 +77,8 @@ html, body { height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui,
 .health-info { font-size: 11px; color: var(--mut); margin-top: 6px; }
 
 /* Main viewer */
-.main-content { position: relative; background: linear-gradient(180deg, #eef2f9 0%, #e2e8f4 100%); }
-.xeokit-viewer { width: 100%; height: 100%; }
+.main-content { position: relative; overflow: hidden; background: linear-gradient(180deg, #eef2f9 0%, #e2e8f4 100%); }
+.xeokit-viewer { position: relative; width: 100%; height: 100%; overflow: hidden; }
 .viewer-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--mut); }
 .ph-icon { font-size: 54px; margin-bottom: 10px; opacity: .8; }
 .ph-title { font-size: 17px; font-weight: 700; color: var(--ink); }

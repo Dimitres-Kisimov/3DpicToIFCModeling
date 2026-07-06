@@ -125,8 +125,9 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
     // every other model routes through the empirically-validated detection +
     // primitive/retrieval pipeline (the default product path).
     if (requested === 'triposr') {
-      logger.info('GENERATE', 'Starting TripoSR generative pipeline', { imagePath });
-      const t = await triposrAdapter.runTripoSR(imagePath, config.OUTPUT_DIR);
+      const forceGraft = /^(1|true|on|yes)$/i.test(String(req.body.graftBase || ''));
+      logger.info('GENERATE', 'Starting TripoSR generative pipeline', { imagePath, forceGraft });
+      const t = await triposrAdapter.runTripoSR(imagePath, config.OUTPUT_DIR, { forceGraft });
       const md = t.metadata || {};
       logger.info('GENERATE', 'TripoSR pipeline complete', {
         glbUrl: t.glbUrl, label: md.object_label,
