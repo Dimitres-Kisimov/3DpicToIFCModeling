@@ -400,6 +400,7 @@ def build(spec: dict, out_dir: Path) -> dict:
             "qty": 1,
             "material_hex": "#%02x%02x%02x" % tuple(int(max(0, min(1, c)) * 255) for c in rgb),
             "x": p["position"][0], "z": p["position"][2], "rotation_deg": rot_y,
+            "elevation": round(float(p.get("elevation", 0.0)), 3),
             "source": obj.get("source", ""),
             "license": obj.get("license", ""),
             # functional relationship (A6) — persisted into the IFC by build_room_ifc
@@ -452,6 +453,38 @@ def build(spec: dict, out_dir: Path) -> dict:
         "diagnostics": extras.get("diagnostics"),
         "outputs": ["scene.glb", "metamodel.json", "schedule.json", "schedule.csv"],
     }
+
+
+def rebuild_from_schedule(spec: dict, out_dir: Path) -> dict:
+    """Re-assemble scene.glb from the CURRENT schedule.json positions (after manual
+    2D edits) without re-running the solver. The spec supplies each object's mesh
+    (glb path / colour); the schedule supplies x/z/rotation/elevation."""
+    sched = json.loads((out_dir / "schedule.json").read_text(encoding="utf-8"))
+    room = sched["room"]
+    by_id = {o["id"]: o for o in spec["objects"]}
+
+    geometry = {}
+    meta_objects = [{"id": "room", "name": room.get("name", "Room"),
+                     "type": "IfcSpace", "parent": None}]
+    for node_id, (mesh, name, ifc) in _room_shell(room).items():
+        geometry[node_id] = mesh
+        meta_objects.append({"id": node_id, "name": name, "type": ifc, "parent": "room"})
+    for it in sched["items"]:
+        obj = by_id.get(it["id"])
+        if obj is None:
+            continue
+        placed = _place(_object_mesh(obj), [it["x"], 0.0, it["z"]],
+                        it.get("rotation_deg", 0), it.get("elevation", 0.0))
+        geometry[it["id"]] = placed
+        meta_objects.append({"id": it["id"], "name": it.get("name", it["id"]),
+                             "type": it.get("ifc_class", "IfcFurnishingElement"), "parent": "room"})
+
+    scene = trimesh.Scene(geometry=geometry)
+    glb_path = out_dir / "scene.glb"
+    scene.export(str(glb_path))
+    (out_dir / "metamodel.json").write_text(
+        json.dumps({"metaObjects": meta_objects}, indent=2), encoding="utf-8")
+    return {"success": True, "glb_bytes": glb_path.stat().st_size}
 
 
 if __name__ == "__main__":

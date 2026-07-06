@@ -186,6 +186,20 @@ html, body { height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui,
 .genbadge { position: absolute; top: 5px; right: 5px; background: var(--ours); color: #fff; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.25); z-index: 1; }
 .genph { width: 100%; height: 96px; display: flex; align-items: center; justify-content: center; background: var(--warn-soft); color: var(--ours); border-radius: 6px; margin-bottom: 4px; font-size: 24px; }
 
+/* ============================== 2D PLAN EDITOR ============================== */
+.plan-wrap { position: absolute; inset: 0; z-index: 8; }
+.plan-wrap[hidden] { display: none; }
+#planCanvas { display: block; width: 100%; height: 100%; cursor: grab; }
+#planCanvas:active { cursor: grabbing; }
+.plan-inspector { position: absolute; top: 16px; right: 16px; width: 230px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; box-shadow: var(--shadow-lift); font-size: 13px; }
+.plan-inspector[hidden] { display: none; }
+.pi-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin: 8px 0; }
+.pi-grid label { font-size: 10.5px; color: var(--mut); }
+.pi-grid .input { margin-bottom: 0; padding: 6px; font-size: 12px; }
+.pi-actions { display: flex; align-items: center; gap: 8px; }
+.pi-snap { font-size: 11px; color: var(--mut); display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.pi-hint { font-size: 10.5px; color: var(--mut); margin-top: 8px; line-height: 1.4; }
+
 /* ============================== TOASTS ============================== */
 .toasts { position: fixed; top: 70px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 60; pointer-events: none; }
 .toast { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--ok); border-radius: 10px; padding: 10px 14px; font-size: 13px; box-shadow: var(--shadow-lift); max-width: 340px; animation: toastIn .22s ease; pointer-events: auto; }

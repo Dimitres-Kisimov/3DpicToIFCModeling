@@ -103,7 +103,9 @@
       const cell = document.createElement('div');
       cell.className = 'thumb' + (it.generated ? ' generated' : '') + (sel.has(it.id) ? ' sel' : '');
       const visual = it.generated
-        ? `<div class="genph" title="made by you">◆</div>`
+        ? (it.thumb_url
+            ? `<img src="${it.thumb_url}" loading="lazy" title="made by you">`
+            : `<div class="genph" title="made by you">◆</div>`)
         : `<img src="/thumb/${it.preview || it.thumb}" loading="lazy">`;
       const badge = it.generated ? `<span class="genbadge">OURS</span>` : '';
       cell.innerHTML = badge + visual + `<div>${it.id}</div><div>${dim}</div>`;
@@ -218,9 +220,14 @@
     loadScene(d.glb);
     setRenderFallback(d.render);
     renderTable(d.items);
-    if (!d.feasible) toast("Doesn't fit — remove items or enlarge the room.", 'bad');
-    else if (opts.demo) toast('▶ Demo room ready — orbit it, check the table, export the IFC.', 'info');
+    // hand the layout to the 2D floor-plan editor (manual exact placement)
+    if (window.planEditor) window.planEditor.setData({ room: d.room, items: d.items, zones: d.zones });
+    if (!d.feasible) toast("Doesn't fit — the message above says exactly what to change.", 'bad');
+    else if (opts.demo) toast('▶ Demo room ready — orbit it, open the 2D plan, export the IFC.', 'info');
   }
+
+  // reload the room GLB after a server-side rebuild (2D-editor rotation edits)
+  function reloadScene() { loadScene('/out/scene.glb'); }
 
   async function generate() {
     if (total() === 0) { banner('Pick at least one item first — the catalog is on the left.', true); return; }
@@ -257,6 +264,7 @@
     $('rbWidth').value = 8; $('rbDepth').value = 6;
     $('rbType').value = 'office'; $('rbAda').checked = false;
     showImage(false); $('imgviewBtn').hidden = true;
+    if (window.planEditor && window.planEditor.isOpen()) window.planEditor.toggle(false);
     fetch('/api/room/reset', { method: 'POST' }).catch(() => {});
     banner('Fresh start. Nothing is saved until you Export. Pick items, then Generate.');
   }
@@ -358,5 +366,6 @@
     $('imgviewBtn').onclick = () => showImage($('vfallback').hidden);
   }
 
-  window.roomBuilder = { ensureInit, applyResult, refreshCategoryBrowse, hasScene: () => !!roomModel };
+  window.roomBuilder = { ensureInit, applyResult, reloadScene, refreshCategoryBrowse,
+                         hasScene: () => !!roomModel };
 })();

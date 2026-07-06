@@ -90,10 +90,14 @@
 
     // stage controls per workspace
     $('rotateBtn').hidden = tab !== 'generate';
+    $('planBtn').hidden = tab !== 'room';
     $('wallsBtn').hidden = tab !== 'room';
     $('imgviewBtn').hidden = tab !== 'room' || !$('vfallback').src;
     $('lockBtn').hidden = tab !== 'building' || !(window.buildingMode && window.buildingMode.hasContent());
-    if (tab !== 'room') { $('vfallback').hidden = true; }
+    if (tab !== 'room') {
+      $('vfallback').hidden = true;
+      if (window.planEditor && window.planEditor.isOpen()) window.planEditor.toggle(false);
+    }
 
     // camera lock only applies while dragging building pieces
     const v = viewer();

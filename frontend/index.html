@@ -187,9 +187,29 @@
             <div class="viewer-controls">
                 <button id="fitViewBtn" class="btn btn-tiny">🎯 Fit view</button>
                 <button id="rotateBtn" class="btn btn-tiny">🔄 Rotate 90°</button>
+                <button id="planBtn" class="btn btn-tiny" hidden>🗺️ 2D plan</button>
                 <button id="wallsBtn" class="btn btn-tiny" hidden>🧱 Walls</button>
                 <button id="imgviewBtn" class="btn btn-tiny" hidden>🖼️ Image</button>
                 <button id="lockBtn" class="btn btn-tiny" hidden>🔒 Locked</button>
+            </div>
+
+            <!-- 2D floor plan — the manual exact-placement surface (room workspace) -->
+            <div id="planWrap" class="plan-wrap" hidden>
+                <canvas id="planCanvas"></canvas>
+                <div id="planInspector" class="plan-inspector" hidden>
+                    <b id="piName"></b>
+                    <div class="pi-grid">
+                        <label>X (m)<input id="piX" class="input" type="number" step="0.05"></label>
+                        <label>Z (m)<input id="piZ" class="input" type="number" step="0.05"></label>
+                        <label>Rot °<input id="piRot" class="input" type="number" step="90"></label>
+                    </div>
+                    <div class="pi-actions">
+                        <button id="piApply" class="btn btn-tiny btn-primary">Apply</button>
+                        <button id="piRotate" class="btn btn-tiny">↻ 90°</button>
+                        <label class="pi-snap"><input id="piSnap" type="checkbox" checked> snap 10 cm</label>
+                    </div>
+                    <p class="pi-hint">drag to move · R rotates · every move syncs to 3D &amp; the IFC</p>
+                </div>
             </div>
 
             <div class="transform-panel" id="transformPanel" style="display: none;">
@@ -258,8 +278,9 @@
     <script src="js/transformControls.js?v=10"></script>
     <script src="js/exporter.js?v=10"></script>
     <script src="js/index.js?v=10"></script>
-    <script src="js/roomBuilder.js?v=10"></script>
-    <script src="js/buildingMode.js?v=10"></script>
-    <script src="js/shell.js?v=10"></script>
+    <script src="js/roomBuilder.js?v=11"></script>
+    <script src="js/planEditor.js?v=11"></script>
+    <script src="js/buildingMode.js?v=11"></script>
+    <script src="js/shell.js?v=11"></script>
 </body>
 </html>

@@ -57,6 +57,7 @@ function initViewer(containerId) {
       transparent: true,
       colorTextureEnabled: true,
       pbrEnabled: true,
+      entityOffsetsEnabled: true,   // 2D floor-plan editor moves entities live
     });
 
     // Initialize GLTFLoaderPlugin for loading GLB/GLTF files

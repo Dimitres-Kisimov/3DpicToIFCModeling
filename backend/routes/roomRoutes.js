@@ -85,6 +85,25 @@ router.post('/room/layout', async (req, res, next) => {
 });
 
 // ---------------------------------------------------------------------------
+// manual 2D-editor edits: move/rotate items -> re-validate -> schedule + IFC
+// (rebuild=true also re-assembles scene.glb so exports match the manual truth)
+// ---------------------------------------------------------------------------
+router.post('/room/positions', async (req, res, next) => {
+  try {
+    const body = req.body || {};
+    const result = await cpuQueue.run(
+      () => roomApi.call('update_positions', {
+        out_dir: ROOM_OUT,
+        positions: body.positions || {},
+        rebuild: !!body.rebuild,
+      }, { timeout: 180000 }),
+      'room-positions'
+    );
+    send(res, result);
+  } catch (err) { next(err); }
+});
+
+// ---------------------------------------------------------------------------
 // demo run — the canned presentation scene, one click, no terminal
 // ---------------------------------------------------------------------------
 router.post('/room/demo', async (req, res, next) => {

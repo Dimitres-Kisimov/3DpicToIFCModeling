@@ -127,7 +127,9 @@ def _generated_items(category):
             continue
         dims = e.get("dims_m") or [None, None, None]
         fn = e.get("glb")
+        thumb = e.get("thumb")
         out.append({"id": e.get("id"), "thumb": None, "preview": None,
+                    "thumb_url": ("/api/generated/" + thumb) if thumb else None,   # C2 preview
                     "generated_glb": ("/api/generated/" + fn) if fn else None,
                     "product_type": "GENERATED",
                     "dims_m": list(dims) + [None] * (3 - len(dims)) if len(dims) < 3 else dims,
