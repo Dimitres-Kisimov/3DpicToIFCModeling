@@ -43,7 +43,7 @@
     const viewers = suffix.map((_,i) => {
       const v = new xeokit.Viewer({ canvasId:`c${i}`, transparent:false });
       v.scene.canvas.backgroundColor = [0.95,0.96,0.99];
-      try { v.cameraFlight.fitFOV = 52; v.cameraControl.navMode='orbit'; v.cameraControl.followPointer=true; } catch(e){}
+      try { v.cameraFlight.fitFOV = 35; v.cameraControl.navMode='orbit'; v.cameraControl.followPointer=true; } catch(e){}
       return { v, loader:new xeokit.GLTFLoaderPlugin(v), model:null };
     });
     function load(item) {
