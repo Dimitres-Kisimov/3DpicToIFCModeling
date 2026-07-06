@@ -201,10 +201,22 @@ def cmd_layout(args):
 
     sched, render, floorplan = _build_outputs(out_dir)
     feasible = res["solver"] == "ortools-cpsat"
-    msg = "Placed all items." if feasible else \
-        "Doesn't fit — remove items or enlarge the room."
+    unplaced = sched.get("unplaced") or []
+    circ = sched.get("circulation") or {}
+    diag = sched.get("diagnostics") or {}
+    if feasible and circ.get("ok", True):
+        msg = "Placed all items — with room for people to move."
+    elif not feasible:
+        names = ", ".join(u["name"] for u in unplaced) or "some items"
+        msg = (f"Not enough space for: {names}. "
+               + (diag.get("suggestion") or "Remove items or enlarge the room."))
+    else:
+        blocked = ", ".join(circ.get("unreachable") or [])
+        msg = f"Placed, but hard to reach: {blocked} — consider fewer items or a wider room."
     return {"ok": True, "feasible": feasible, "solver": res["solver"],
             "message": msg, "items": sched["items"], "room": sched["room"],
+            "unplaced": unplaced, "circulation": circ or None,
+            "zones": sched.get("zones") or {},
             "glb": "/out/scene.glb", "ifc": "/out/scene.ifc",
             "metamodel": "/out/metamodel.json",
             "render": render, "floorplan": floorplan}

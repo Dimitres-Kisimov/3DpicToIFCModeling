@@ -38,6 +38,11 @@ try:
     _HAVE_PSET = True
 except Exception:
     _HAVE_PSET = False
+try:
+    import ifcopenshell.api.group
+    _HAVE_GROUP = True
+except Exception:
+    _HAVE_GROUP = False
 
 
 def _placement(model, x, y, z, angle_deg):
@@ -81,6 +86,7 @@ def build(out_dir: Path) -> dict:
             pass
 
     made = 0
+    ents_by_id = {}
     for it in items:
         try:
             ifc_class = it.get("ifc_class", "IfcFurnishingElement")
@@ -98,22 +104,47 @@ def build(out_dir: Path) -> dict:
             if _HAVE_PSET:
                 try:
                     ps = ifcopenshell.api.pset.add_pset(model, product=ent, name="Pset_SCS_Object")
-                    ifcopenshell.api.pset.edit_pset(model, pset=ps, properties={
+                    props = {
                         "Category": it.get("category", ""),
                         "Width": float(it["width_m"]), "Depth": float(it["depth_m"]), "Height": float(it["height_m"]),
                         "PositionX": float(it["x"]), "PositionZ": float(it["z"]),
                         "RotationDeg": float(it.get("rotation_deg", 0)),
                         "Source": it.get("source", ""), "License": it.get("license", ""),
-                    })
+                    }
+                    # A6 — functional relationship survives into BIM (was dropped before)
+                    if it.get("anchor_to"):
+                        props["FunctionalAnchor"] = str(it["anchor_to"])
+                        props["FunctionalRelation"] = str(it.get("relation") or "in_front")
+                    ifcopenshell.api.pset.edit_pset(model, pset=ps, properties=props)
                 except Exception:
                     pass
+            ents_by_id[it["id"]] = ent
             made += 1
         except Exception as exc:
             print(f"[build_room_ifc] skipped {it.get('id')}: {exc}", file=sys.stderr)
 
+    # A6 — one IfcGroup per functional cluster (desk + its chair/monitor/lamp), so
+    # downstream BIM tools see the workstation as a unit, not loose furniture.
+    groups = 0
+    clusters = {}
+    for it in items:
+        if it.get("anchor_to") and it["anchor_to"] in ents_by_id and it["id"] in ents_by_id:
+            clusters.setdefault(it["anchor_to"], []).append(it["id"])
+    for parent_id, child_ids in clusters.items():
+        if not _HAVE_GROUP:
+            break
+        try:
+            grp = ifcopenshell.api.group.add_group(model, name=f"Workstation:{parent_id}")
+            ifcopenshell.api.group.assign_group(
+                model, products=[ents_by_id[parent_id]] + [ents_by_id[c] for c in child_ids], group=grp)
+            groups += 1
+        except Exception as exc:
+            print(f"[build_room_ifc] group skipped for {parent_id}: {exc}", file=sys.stderr)
+
     out = out_dir / "scene.ifc"
     model.write(str(out))
-    return {"success": True, "ifc": str(out), "entities": made, "bytes": out.stat().st_size}
+    return {"success": True, "ifc": str(out), "entities": made, "groups": groups,
+            "bytes": out.stat().st_size}
 
 
 if __name__ == "__main__":

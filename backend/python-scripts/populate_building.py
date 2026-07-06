@@ -87,6 +87,43 @@ def smart_furnish(rt, W, D, assets):
     return [c for c in items if c in assets]
 
 
+# Real-world target dimensions per category — (width, depth, height) in metres,
+# Neufert / typical retail sizes. The AI-generated library meshes come out at an
+# arbitrary scale (the raw "bed" measured 0.70×0.74 m — nightstand-sized), so every
+# asset is normalised to its category's real footprint at load time.
+TARGET_DIMS = {
+    "bed":          (1.60, 2.05, 0.55),   # double bed
+    "bookshelf":    (0.90, 0.35, 1.85),
+    "cabinet":      (1.20, 0.60, 1.80),   # wardrobe-class (bedrooms + kitchens)
+    "chair":        (0.45, 0.52, 0.90),   # dining chair
+    "desk":         (1.40, 0.70, 0.74),
+    "lamp":         (0.40, 0.40, 1.60),   # floor lamp
+    "office_chair": (0.60, 0.60, 1.10),
+    "sofa":         (2.00, 0.90, 0.85),   # 2-3 seater
+    "stool":        (0.40, 0.40, 0.60),
+    "table":        (1.10, 0.80, 0.75),
+}
+
+
+def _rescale_to_real(mesh, cat):
+    """Normalise a Z-up mesh to its category's real-world (W, D, H). If the mesh was
+    modelled sideways (footprint aspect opposite to the target's, e.g. the desk with
+    depth > width), rotate it 90° about Z first so scaling doesn't distort it."""
+    t = TARGET_DIMS.get(cat)
+    if not t:
+        return mesh
+    e = mesh.extents
+    if min(e) < 1e-6:
+        return mesh
+    if (e[0] - e[1]) * (t[0] - t[1]) < 0:              # aspect mismatch -> quarter turn
+        mesh.apply_transform(trimesh.transformations.rotation_matrix(np.pi / 2, [0, 0, 1]))
+        e = mesh.extents
+    S = np.eye(4)
+    S[0, 0], S[1, 1], S[2, 2] = t[0] / e[0], t[1] / e[1], t[2] / e[2]
+    mesh.apply_transform(S)
+    return mesh
+
+
 def load_assets():
     man = json.load(open(LIB / "manifest.json", encoding="utf-8"))["assets"]
     by_cat = {}
@@ -95,7 +132,8 @@ def load_assets():
     out = {}
     for cat, a in by_cat.items():
         try:
-            out[cat] = {"mesh": trimesh.load(str(LIB / a["glb"]), force="mesh"), "ifc": a["ifc_class"]}
+            mesh = _rescale_to_real(trimesh.load(str(LIB / a["glb"]), force="mesh"), cat)
+            out[cat] = {"mesh": mesh, "ifc": a["ifc_class"]}
         except Exception:
             pass
     return out
@@ -114,6 +152,49 @@ def footprint_rects(f, s, types):
             except Exception:
                 pass
     return rects
+
+
+# IFC element type -> human keep-out kind (A3b)
+_KIND = {"IfcColumn": "column", "IfcWall": "wall", "IfcWallStandardCase": "wall",
+         "IfcBeam": "beam", "IfcMember": "beam", "IfcStair": "stair",
+         "IfcStairFlight": "stair", "IfcRailing": "railing"}
+
+
+def extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1):
+    """A3b — every fixed building element intruding into the room [x0..x1]×[y0..y1]
+    as a LABELED keep-out rectangle relative to the room origin:
+        [{"x","z","width","depth","kind": column|wall|beam|stair|railing|door}]
+    Same-kind overlapping rects are merged; the solver treats obstacles pairwise, so
+    cross-kind overlaps (a beam inside a wall) are harmless. Used by the auto-layout
+    solver AND (via schedule data) the manual 2D editor."""
+    keepouts = []
+    for (ex0, ex1, ey0, ey1, t) in obstacle_rects:
+        ix0, ix1, iy0, iy1 = max(ex0, x0), min(ex1, x1), max(ey0, y0), min(ey1, y1)
+        if ix1 - ix0 > 0.05 and iy1 - iy0 > 0.05:
+            # drop the room's own perimeter walls (they are the boundary, not obstacles)
+            if (ix0 > x0 + 0.25 and ix1 < x1 - 0.25) or (iy0 > y0 + 0.25 and iy1 < y1 - 0.25):
+                keepouts.append({"x": ix0 - x0, "z": iy0 - y0, "width": ix1 - ix0,
+                                 "depth": iy1 - iy0, "kind": _KIND.get(t, "fixed")})
+    for (dx0, dx1, dy0, dy1, _t) in door_rects:            # door keep-clear (egress)
+        if dx1 > x0 and dx0 < x1 and dy1 > y0 and dy0 < y1:
+            cx, cy = (dx0 + dx1) / 2 - x0, (dy0 + dy1) / 2 - y0
+            keepouts.append({"x": max(0, cx - 0.6), "z": max(0, cy - 0.6),
+                             "width": 1.2, "depth": 1.2, "kind": "door"})
+
+    # merge overlaps within the SAME kind so labels survive
+    merged = []
+    for kind in {k["kind"] for k in keepouts}:
+        same = [k for k in keepouts if k["kind"] == kind]
+        if len(same) > 1:
+            from shapely.geometry import box as _box
+            from shapely.ops import unary_union
+            u = unary_union([_box(k["x"], k["z"], k["x"] + k["width"], k["z"] + k["depth"]) for k in same])
+            geoms = list(u.geoms) if u.geom_type == "MultiPolygon" else [u]
+            merged += [{"x": g.bounds[0], "z": g.bounds[1], "width": g.bounds[2] - g.bounds[0],
+                        "depth": g.bounds[3] - g.bounds[1], "kind": kind} for g in geoms]
+        else:
+            merged += same
+    return merged
 
 
 def main():
@@ -179,27 +260,8 @@ def main():
         if not cats:
             continue
 
-        # 3) obstacles intruding into this room (shrink 0.25 m to drop the perimeter walls)
-        keepouts = []
-        for (ex0, ex1, ey0, ey1, t) in obstacle_rects:
-            ix0, ix1, iy0, iy1 = max(ex0, x0), min(ex1, x1), max(ey0, y0), min(ey1, y1)
-            if ix1 - ix0 > 0.05 and iy1 - iy0 > 0.05:
-                if (ix0 > x0 + 0.25 and ix1 < x1 - 0.25) or (iy0 > y0 + 0.25 and iy1 < y1 - 0.25):
-                    keepouts.append({"x": ix0 - x0, "z": iy0 - y0, "width": ix1 - ix0, "depth": iy1 - iy0})
-        for (dx0, dx1, dy0, dy1, _t) in door_rects:            # door keep-clear
-            if dx1 > x0 and dx0 < x1 and dy1 > y0 and dy0 < y1:
-                cx, cy = (dx0 + dx1) / 2 - x0, (dy0 + dy1) / 2 - y0
-                keepouts.append({"x": max(0, cx - 0.6), "z": max(0, cy - 0.6), "width": 1.2, "depth": 1.2})
-
-        # CP-SAT no-overlap forbids obstacle-obstacle overlap too, so overlapping keep-outs
-        # (e.g. a beam sitting inside a wall) would make the room infeasible. Merge them.
-        if len(keepouts) > 1:
-            from shapely.geometry import box as _box
-            from shapely.ops import unary_union
-            u = unary_union([_box(k["x"], k["z"], k["x"] + k["width"], k["z"] + k["depth"]) for k in keepouts])
-            geoms = list(u.geoms) if u.geom_type == "MultiPolygon" else [u]
-            keepouts = [{"x": g.bounds[0], "z": g.bounds[1],
-                         "width": g.bounds[2] - g.bounds[0], "depth": g.bounds[3] - g.bounds[1]} for g in geoms]
+        # 3) A3b — labeled fixed obstacles (columns/walls/beams/stairs) + door keep-clear
+        keepouts = extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1)
 
         # 4) solver objects (real footprints); measure out anything too big for the room
         objs, meshmap = [], {}
@@ -214,25 +276,19 @@ def main():
         if not objs:
             continue
 
-        # fit-as-many-as-possible: shrink the priority-ordered set until the solver places them
-        # ALL cleanly (placed=True) — guarantees no clashes while keeping the most important pieces
-        room_objs, res = list(objs), None
-        while room_objs:
-            res = spatial_layout.layout_room({"width": float(W), "depth": float(D), "height": 3.0},
-                                             room_objs, obstacles=keepouts)
-            if all(p.get("placed", True) for p in res["placements"]):
-                break
-            room_objs.pop(); skipped_items += 1          # drop lowest-priority item, retry
-        if not room_objs or res is None:
+        # fit-as-many-as-possible is native now: the solver's optional placement keeps
+        # the maximum ergonomic subset and reports the rest as placed=False.
+        res = spatial_layout.layout_room({"width": float(W), "depth": float(D), "height": 3.0},
+                                         objs, obstacles=keepouts)
+        placed_ps = [p for p in res["placements"] if p.get("placed") and p.get("position")]
+        skipped_items += len(res["placements"]) - len(placed_ps)
+        if not placed_ps:
             continue
         boxes, room_cats = [], []
-        for p in res["placements"]:
+        for p in placed_ps:
             m = meshmap[p["id"]]
+            # solver centres are rotation-correct — no footprint-swap correction needed
             cx, cz, yaw = p["position"][0], p["position"][2], float(p["rotation"][1])
-            if yaw:   # solver reports the centre from the UN-rotated footprint — correct the 90° swap
-                ex_, ey_ = float(m.extents[0]), float(m.extents[1])
-                cx += (ey_ - ex_) / 2
-                cz += (ex_ - ey_) / 2
             wx, wy, cat = x0 + cx, y0 + cz, p["id"].rsplit("-", 1)[0]
             if movdir is not None:
                 # export the piece centred at footprint origin (base at 0), Y-up; the viewer positions
@@ -247,7 +303,9 @@ def main():
                 piece.export(str(movdir / gname))
                 movable.append({"id": f"{cat}-{placed}", "room": name, "category": cat, "glb": gname,
                                 "pos": [round(wx, 3), round(fz, 3), round(-wy, 3)]})   # Y-up world
-                boxes.append((wx - m.extents[0] / 2, wx + m.extents[0] / 2, wy - m.extents[1] / 2, wy + m.extents[1] / 2))
+                # rotated footprint for the clash check (90/270 swap the extents)
+                bex, bey = (m.extents[1], m.extents[0]) if yaw % 180 == 90 else (m.extents[0], m.extents[1])
+                boxes.append((wx - bex / 2, wx + bex / 2, wy - bey / 2, wy + bey / 2))
             else:
                 g2 = m.copy()
                 if yaw:

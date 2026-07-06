@@ -134,8 +134,8 @@ ANTHRO = {                     # metres — Neufert / Panero-Zelnik / ADA
 _CATEGORY_ARCHETYPE = {
     "desk": "worksurface", "table": "worksurface", "dining_table": "worksurface",
     "conference_table": "worksurface", "coffee_table": "worksurface", "side_table": "worksurface",
-    "chair": "seating", "office_chair": "seating", "armchair": "seating",
-    "sofa": "seating", "couch": "seating", "stool": "seating", "bench": "seating",
+    "chair": "seating", "office_chair": "seating", "armchair": "seating", "stool": "seating",
+    "sofa": "lounge_seating", "couch": "lounge_seating", "bench": "lounge_seating",
     "cabinet": "storage", "filing_cabinet": "storage", "storage_cabinet": "storage",
     "wardrobe": "storage", "dresser": "storage", "bookshelf": "storage", "shelf": "storage",
     "bed": "bed",
@@ -150,15 +150,22 @@ _CATEGORY_ARCHETYPE = {
 # archetype -> {zone direction: anthro key}, facing rule, wall side.
 # Directions are LOCAL to the object's facing: front (the side people use), back, left, right.
 ARCHETYPES = {
-    "worksurface":  {"zones": {"front": "legroom", "back": "legroom"}, "faces": "open",   "wall": "back"},
-    "seating":      {"zones": {"back": "seat_pullout"},                "faces": "anchor", "wall": None},
-    "storage":      {"zones": {"front": "swing"},                      "faces": "room",   "wall": "back"},
-    "bed":          {"zones": {"front": "bed_side", "left": "bed_side", "right": "bed_side"},
-                                                                        "faces": "open",   "wall": "back"},
-    "appliance":    {"zones": {"front": "approach"},                   "faces": "room",   "wall": "back"},
-    "on_surface":   {"zones": {},                                      "faces": "anchor", "wall": None},
-    "wall_mounted": {"zones": {},                                      "faces": "wall",   "wall": "back"},
-    "free_accent":  {"zones": {},                                      "faces": None,     "wall": None},
+    # worksurface legroom is FRONT-only (user side): a desk's back sits at the wall.
+    # Dining/conference tables get people-space via their anchored chairs instead.
+    "worksurface":    {"zones": {"front": "legroom"},                    "faces": "open",   "wall": "back"},
+    "seating":        {"zones": {"back": "seat_pullout"},                "faces": "anchor", "wall": None},
+    # sofas/benches live with their back to a wall and need a standing approach in front
+    "lounge_seating": {"zones": {"front": "approach"},                   "faces": "open",   "wall": "back"},
+    "storage":        {"zones": {"front": "swing"},                      "faces": "room",   "wall": "back"},
+    # bed: foot access is REQUIRED; at least ONE long side must be reachable
+    # (a small bedroom legitimately puts the other side against the wall)
+    "bed":            {"zones": {"front": "bed_side"},
+                       "zones_any": [["left", "bed_side"], ["right", "bed_side"]],
+                                                                          "faces": "open",   "wall": "back"},
+    "appliance":      {"zones": {"front": "approach"},                   "faces": "room",   "wall": "back"},
+    "on_surface":     {"zones": {},                                      "faces": "anchor", "wall": None},
+    "wall_mounted":   {"zones": {},                                      "faces": "wall",   "wall": "back"},
+    "free_accent":    {"zones": {},                                      "faces": None,     "wall": None},
 }
 
 
@@ -193,10 +200,15 @@ def placement_profile(category: str, dims=None, ada: bool = False) -> dict:
     tell the solver how to orient it. Consumed by the CP-SAT solver (A2) and the facing logic (A6)."""
     name = archetype_of(category, dims)
     arch = ARCHETYPES[name]
-    zones = {}
-    for direction, key in arch["zones"].items():
+
+    def _depth(key):
         depth = ANTHRO.get(key, 0.0)
         if ada:
             depth = max(depth, ADA["route_width"] * 0.6)
-        zones[direction] = round(depth, 3)
-    return {"archetype": name, "zones": zones, "faces": arch["faces"], "wall": arch["wall"]}
+        return round(depth, 3)
+
+    zones = {direction: _depth(key) for direction, key in arch["zones"].items()}
+    # either-or zone groups (e.g. a bed needs at LEAST one long side reachable)
+    zones_any = [[direction, _depth(key)] for direction, key in arch.get("zones_any", [])]
+    return {"archetype": name, "zones": zones, "zones_any": zones_any,
+            "faces": arch["faces"], "wall": arch["wall"]}

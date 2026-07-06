@@ -237,9 +237,15 @@ def _resolve_layout(room: dict, objects: list):
 
     # columns/semi-walls + door keep-clear zones become fixed solver keep-outs
     keepouts = list(room.get("obstacles", [])) + list(room.get("doors", []))
+    extras = {"unplaced": [], "circulation": None, "diagnostics": None, "zones": {}}
     try:
         import spatial_layout
-        placements = spatial_layout.layout_room(room, solver_objs, obstacles=keepouts)["placements"]
+        res = spatial_layout.layout_room(room, solver_objs, obstacles=keepouts)
+        placements = res["placements"]
+        extras["unplaced"] = res.get("unplaced", [])
+        extras["circulation"] = res.get("circulation")
+        extras["diagnostics"] = res.get("diagnostics")
+        extras["zones"] = res.get("zones", {})
         # all placed -> real solve; any placed=False -> overpacked (won't fit)
         solver = "ortools-cpsat" if all(p.get("placed", True) for p in placements) \
             else "infeasible-overpacked"
@@ -259,19 +265,17 @@ def _resolve_layout(room: dict, objects: list):
 
     for o in free:
         b = box.get(o["id"])
-        if b is None:
-            continue
+        if b is None or not b.get("placed", True) or not b.get("position"):
+            continue        # honest gate (A4): unplaced items are reported, never dumped
         m = meta[o["id"]]
         bx, _, bz = b["position"]
         rot = (b.get("rotation") or [0, 0, 0])[1]
-        along_z = (round(rot / 90) % 2 == 0)
-        # anchor at the wall end of the reserved box; "front" points to the room
-        if along_z:
-            front = 1.0 if cz > bz else -1.0
-            ax, az = bx, bz - front * m["extra_d"] / 2.0
-        else:
-            front = 1.0 if cx > bx else -1.0
-            ax, az = bx - front * m["extra_d"] / 2.0, bz
+        # the solver decides the facing now (A6): its front vector points where the
+        # object's users stand — the reserved chair space sits on that side
+        fx, fz = b.get("front") or (0.0, 1.0)
+        rx_, rz_ = fz, -fx                                  # right-hand perpendicular
+        # anchor (parent) sits at the BACK part of the reserved group box
+        ax, az = bx - fx * m["extra_d"] / 2.0, bz - fz * m["extra_d"] / 2.0
         pos[o["id"]] = {"id": o["id"], "position": [ax, 0.0, az],
                         "rotation": [0, rot, 0], "placed": True}
         for c in direct.get(o["id"], []):
@@ -284,12 +288,11 @@ def _resolve_layout(room: dict, objects: list):
                                 "elevation": float(o["dimensions"]["height"]), "placed": True}
             elif rel == "beside":
                 off = m["w"] / 2 + cwd / 2 + 0.1
-                px, pz = (ax + off, az) if along_z else (ax, az + off)
-                pos[c["id"]] = {"id": c["id"], "position": [px, 0.0, pz],
+                pos[c["id"]] = {"id": c["id"], "position": [ax + rx_ * off, 0.0, az + rz_ * off],
                                 "rotation": [0, rot, 0], "placed": True}
-            else:  # in_front — toward the room, seat facing the anchor
+            else:  # in_front — on the solver's front side, seat facing the anchor
                 off = m["d"] / 2 + GAP + cdd / 2
-                px, pz = (ax, az + front * off) if along_z else (ax + front * off, az)
+                px, pz = ax + fx * off, az + fz * off
                 pos[c["id"]] = {"id": c["id"], "position": [px, 0.0, pz],
                                 "rotation": [0, _face(c, px, pz, ax, az), 0], "placed": True}
 
@@ -313,7 +316,7 @@ def _resolve_layout(room: dict, objects: list):
             off = float(ad["depth"]) / 2 + float(od["depth"]) / 2 + GAP
             pos[o["id"]] = {"id": o["id"], "position": [rx, 0.0, rz + off],
                             "rotation": [0, _face(o, rx, rz + off, rx, rz), 0], "placed": True}
-    return pos, solver
+    return pos, solver, extras
 
 
 def _room_shell(room: dict):
@@ -361,7 +364,7 @@ def build(spec: dict, out_dir: Path) -> dict:
     room = spec["room"]
     objects = spec["objects"]
 
-    pos_by_id, solver = _resolve_layout(room, objects)
+    pos_by_id, solver, extras = _resolve_layout(room, objects)
 
     geometry = {}
     meta_objects = [{"id": "room", "name": room.get("name", "Room"),
@@ -385,6 +388,7 @@ def build(spec: dict, out_dir: Path) -> dict:
                              "type": obj.get("ifc_class", "IfcFurnishingElement"), "parent": "room"})
         dims = obj["dimensions"]
         rgb = obj.get("colour_rgb", [0.6, 0.6, 0.62])
+        anchor = obj.get("anchor") or {}
         schedule.append({
             "id": obj["id"],
             "name": obj.get("name", obj["id"]),
@@ -398,6 +402,9 @@ def build(spec: dict, out_dir: Path) -> dict:
             "x": p["position"][0], "z": p["position"][2], "rotation_deg": rot_y,
             "source": obj.get("source", ""),
             "license": obj.get("license", ""),
+            # functional relationship (A6) — persisted into the IFC by build_room_ifc
+            "anchor_to": anchor.get("to"),
+            "relation": anchor.get("relation"),
         })
 
     # Export combined GLB
@@ -409,9 +416,24 @@ def build(spec: dict, out_dir: Path) -> dict:
     (out_dir / "metamodel.json").write_text(
         json.dumps({"metaObjects": meta_objects}, indent=2), encoding="utf-8")
 
-    # Schedule JSON + CSV
+    # A4 — honest per-item reporting: which of the user's picks could NOT be
+    # placed (an unplaced parent takes its anchored children down with it)
+    unplaced_ids = set(extras.get("unplaced") or [])
+    for o in objects:
+        a = o.get("anchor")
+        if a and a.get("to") in unplaced_ids:
+            unplaced_ids.add(o["id"])
+    unplaced_items = [{"id": o["id"], "name": o.get("name", o["id"]),
+                       "category": o.get("category", "")}
+                      for o in objects if o["id"] in unplaced_ids]
+
+    # Schedule JSON + CSV (zones ride along for the 2D floor-plan editor)
     (out_dir / "schedule.json").write_text(
-        json.dumps({"room": room, "solver": solver, "items": schedule}, indent=2),
+        json.dumps({"room": room, "solver": solver, "items": schedule,
+                    "zones": extras.get("zones", {}),
+                    "unplaced": unplaced_items,
+                    "circulation": extras.get("circulation"),
+                    "diagnostics": extras.get("diagnostics")}, indent=2),
         encoding="utf-8")
     if schedule:
         with open(out_dir / "schedule.csv", "w", newline="", encoding="utf-8") as fh:
@@ -425,6 +447,9 @@ def build(spec: dict, out_dir: Path) -> dict:
         "solver": solver,
         "object_count": len(schedule),
         "glb_bytes": glb_path.stat().st_size,
+        "unplaced": unplaced_items,
+        "circulation": extras.get("circulation"),
+        "diagnostics": extras.get("diagnostics"),
         "outputs": ["scene.glb", "metamodel.json", "schedule.json", "schedule.csv"],
     }
 
