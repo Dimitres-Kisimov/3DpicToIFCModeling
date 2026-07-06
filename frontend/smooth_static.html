@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smoothing comparison (images)</title>
+  <style>
+    body { margin:0; font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; padding:18px; }
+    h1 { font-size:18px; margin:0 0 4px; } p.sub { margin:0 0 18px; color:#6b7688; font-size:13px; }
+    .row { display:flex; gap:16px; flex-wrap:wrap; }
+    .card { flex:1 1 300px; background:#fff; border:1px solid #d7deea; border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(20,40,80,.06); }
+    .card h2 { font-size:14px; margin:0; padding:10px 12px; border-bottom:1px solid #eef2f9; }
+    .card .t { font-size:11px; color:#6b7688; font-weight:400; display:block; margin-top:2px; }
+    .card img { width:100%; display:block; background:#fbfcfe; }
+    .a h2{color:#c0392b;} .b h2{color:#e08a1e;} .c h2{color:#1faa60;}
+  </style>
+</head>
+<body>
+  <h1>Chair surface — smoothing comparison</h1>
+  <p class="sub">Same chair, same angle. Look at the seat &amp; back surfaces.</p>
+  <div class="row">
+    <div class="card a"><h2>① Original — raw TripoSR<span class="t">no base · lumpy generated surface</span></h2><img src="/outputs/scmp_orig.png?t=1" alt="original"></div>
+    <div class="card b"><h2>② Prior — smoothing ×16<span class="t">graft + current smoothing</span></h2><img src="/outputs/scmp_prior.png?t=1" alt="prior"></div>
+    <div class="card c"><h2>③ New — smoothing ×40<span class="t">graft + proposed smoothing</span></h2><img src="/outputs/scmp_new.png?t=1" alt="new"></div>
+  </div>
+</body>
+</html>

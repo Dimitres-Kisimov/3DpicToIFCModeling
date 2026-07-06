@@ -91,14 +91,15 @@ def build(inp, outp, do_clean=True):
     tc = m.triangles_center
     keep = np.where(tc[:, up] >= cut)[0]
     top = m.submesh([keep], append=True) if len(keep) else m
-    # extra smoothing to take TripoSR's rugged/decimation faceting off the seat & back surfaces
+    # strong (volume-preserving) smoothing to take TripoSR's rugged faceting off the seat & back.
+    # Taubin's lambda/mu keeps volume, so even a high pass count softens noise without melting shape.
     try:
-        trimesh.smoothing.filter_taubin(top, iterations=16)
+        trimesh.smoothing.filter_taubin(top, iterations=int(os.environ.get("SCS_CHAIR_SMOOTH", "16")))
     except Exception as ex:
         print("top smooth skipped:", ex)
 
     # 2) build a clean 5-star base in local Z-up (wheels at z=0, hub above)
-    r = foot * 0.55                               # wheelbase radius (a touch wider than the seat)
+    r = foot * float(os.environ.get("SCS_BASE_RADIUS_FRAC", "0.42"))   # spoke length; keep within the seat
     hub_h, wr = r * 0.16, r * 0.13
     parts = [trimesh.creation.cylinder(radius=r * 0.17, height=hub_h)]      # hub
     col_h = (cut - floor) + 0.12 * H                                        # gas column past the cut

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smoothing comparison — original / prior / new</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html,body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; }
+    header { display:flex; align-items:center; gap:14px; padding:10px 16px; background:#fff; border-bottom:1px solid #d7deea; }
+    header h1 { font-size:16px; } header .sub { font-size:12px; color:#6b7688; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); height:calc(100vh - 49px); }
+    .panel { position:relative; border-right:1px solid #d7deea; overflow:hidden; }
+    .panel:last-child { border-right:none; }
+    canvas { width:100%; height:100%; display:block; }
+    .cap { position:absolute; top:12px; left:10px; right:10px; z-index:5; background:rgba(255,255,255,.93);
+      border:1px solid #d7deea; border-radius:10px; padding:8px 11px; box-shadow:0 2px 8px rgba(20,40,80,.08); }
+    .cap b { font-size:14px; } .cap span { font-size:11px; color:#6b7688; display:block; margin-top:2px; }
+    .a b{color:#c0392b;} .b b{color:#e08a1e;} .c b{color:#1faa60;}
+    .rot { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); z-index:6; display:flex; gap:6px; }
+    .rot button { font-size:12px; font-weight:700; padding:6px 10px; border:1px solid #d7deea; border-radius:8px;
+      background:rgba(255,255,255,.95); cursor:pointer; box-shadow:0 2px 6px rgba(20,40,80,.1); }
+    .rot button:hover { border-color:#2f6bff; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Chair surface — smoothing comparison</h1>
+    <span class="sub">Original raw · Prior (×16) · New (×40) · 🖱️ drag = orbit · ↻ buttons = turn/tilt</span>
+  </header>
+  <div class="grid">
+    <div class="panel"><div class="cap a"><b>① Original — raw TripoSR</b><span>no base · lumpy generated surface</span></div><canvas id="c0"></canvas>
+      <div class="rot"><button data-i="0" data-ax="x">↻ tilt</button><button data-i="0" data-ax="y">⟳ turn</button></div></div>
+    <div class="panel"><div class="cap b"><b>② Prior — smoothing ×16</b><span>graft + current smoothing</span></div><canvas id="c1"></canvas>
+      <div class="rot"><button data-i="1" data-ax="x">↻ tilt</button><button data-i="1" data-ax="y">⟳ turn</button></div></div>
+    <div class="panel"><div class="cap c"><b>③ New — smoothing ×40</b><span>graft + proposed smoothing</span></div><canvas id="c2"></canvas>
+      <div class="rot"><button data-i="2" data-ax="x">↻ tilt</button><button data-i="2" data-ax="y">⟳ turn</button></div></div>
+  </div>
+  <script type="module">
+    import * as xeokit from '/vendor/xeokit-sdk/xeokit-sdk.min.es.js';
+    const srcs = ['/outputs/cmp_orig.glb', '/outputs/cmp_prior.glb', '/outputs/cmp_new.glb'];
+    const viewers = srcs.map((src,i) => {
+      const v = new xeokit.Viewer({ canvasId:`c${i}`, transparent:false });
+      v.scene.canvas.backgroundColor = [0.95,0.96,0.99];
+      try {
+        v.scene.clearLights();
+        new xeokit.AmbientLight(v.scene, { color:[1,1,1], intensity:0.55 });
+        new xeokit.DirLight(v.scene, { dir:[0.2,-0.5,-0.9], color:[1,1,1], intensity:0.95, space:'view' });
+        new xeokit.DirLight(v.scene, { dir:[-0.9,-0.3,0.4], color:[1,1,1], intensity:0.7, space:'view' });
+        new xeokit.DirLight(v.scene, { dir:[0.6,-0.9,0.5],  color:[1,1,1], intensity:0.6, space:'view' });
+      } catch(e){}
+      try { v.cameraFlight.fitFOV = 40; v.cameraControl.navMode='orbit'; v.cameraControl.followPointer=true; } catch(e){}
+      return { v, loader:new xeokit.GLTFLoaderPlugin(v), model:null, rot:[180,0,90] };  // match the app's orientation
+    });
+    function applyRot(i){ const vw=viewers[i]; if(!vw.model) return; try{ vw.model.rotation=vw.rot; }catch(e){} try{ vw.v.cameraFlight.flyTo(vw.model); }catch(e){} }
+    viewers.forEach((vw,i) => {
+      vw.model = vw.loader.load({ id:'m', src:srcs[i]+'?t='+Date.now(), edges:false });
+      vw.model.on('loaded', () => applyRot(i));
+      vw.model.on('error', e => console.warn(srcs[i], e));
+    });
+    document.querySelectorAll('.rot button').forEach(btn => btn.onclick = () => {
+      const i=+btn.dataset.i, ax=btn.dataset.ax==='x'?0:2;   // tilt=X euler, turn=Z euler (app convention)
+      viewers[i].rot[ax]=(viewers[i].rot[ax]+90)%360; applyRot(i);
+    });
+  </script>
+</body>
+</html>

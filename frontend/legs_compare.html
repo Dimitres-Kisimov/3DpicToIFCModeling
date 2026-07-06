@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Base leg-size comparison</title>
+  <style>
+    body { margin:0; font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; padding:18px; }
+    h1 { font-size:18px; margin:0 0 4px; } p.sub { margin:0 0 18px; color:#6b7688; font-size:13px; }
+    .row { display:flex; gap:16px; flex-wrap:wrap; }
+    .card { flex:1 1 300px; background:#fff; border:1px solid #d7deea; border-radius:12px; overflow:hidden; box-shadow:0 2px 10px rgba(20,40,80,.06); }
+    .card h2 { font-size:14px; margin:0; padding:10px 12px; border-bottom:1px solid #eef2f9; }
+    .card .t { font-size:11px; color:#6b7688; font-weight:400; display:block; margin-top:2px; }
+    .card img { width:100%; display:block; background:#fbfcfe; }
+    .a h2{color:#c0392b;} .b h2{color:#1faa60;} .c h2{color:#e08a1e;}
+    .tag { display:inline-block; font-size:11px; font-weight:700; padding:1px 7px; border-radius:6px; margin-left:6px; }
+    .bad{background:#fde8e5;color:#c0392b;} .good{background:#e3f6ec;color:#1faa60;} .warn{background:#fdf1e2;color:#e08a1e;}
+  </style>
+</head>
+<body>
+  <h1>Office-chair base — leg size</h1>
+  <p class="sub">Same chair, same angle. "base/seat" = base footprint width ÷ seat width (1.0 = same as seat).</p>
+  <div class="row">
+    <div class="card a"><h2>① Current <span class="tag bad">base 1.20× seat — too wide</span><span class="t">legs splay past the seat (your complaint)</span></h2><img src="/outputs/legs_big.png?t=2" alt="big"></div>
+    <div class="card b"><h2>② Proposed <span class="tag good">base 0.92× seat — fits</span><span class="t">legs sit under the seat — recommended</span></h2><img src="/outputs/legs_med.png?t=2" alt="med"></div>
+    <div class="card c"><h2>③ Smallest <span class="tag warn">base 0.74× seat — stubby</span><span class="t">narrower than the seat; can look small</span></h2><img src="/outputs/legs_small.png?t=2" alt="small"></div>
+  </div>
+</body>
+</html>
