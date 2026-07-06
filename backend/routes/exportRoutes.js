@@ -9,6 +9,26 @@ const fs = require('fs');
 
 const logger = require('../middleware/logger');
 const ifcExporter = require('../services/ifcExporter');
+const { spawn } = require('child_process');
+const path = require('path');
+let config = {}; try { config = require('../config'); } catch (e) {}
+
+// Run the IFC optimizer (geometry decimation + instancing + precision rounding) on an exported IFC.
+function runOptimizeIFC(inPath, outPath) {
+  return new Promise((resolve) => {
+    const script = path.join(__dirname, '..', 'python-scripts', 'optimize_ifc.py');
+    // pin the interpreter that has ifcopenshell/trimesh/pymeshfix/fast_simplification
+    const py = config.PYTHON_PATH
+      || 'C:\\Users\\dimik\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe';
+    const child = spawn(py, [script, inPath, outPath], { cwd: path.join(__dirname, '..', '..') });
+    let out = '';
+    child.stdout.on('data', (c) => { out += c.toString(); });
+    child.on('error', () => resolve(null));
+    child.on('close', () => {
+      try { resolve(JSON.parse(out.trim().split('\n').pop())); } catch (e) { resolve(null); }
+    });
+  });
+}
 
 // ============================================================================
 // GET /api/export/formats - Get available export formats
@@ -98,9 +118,24 @@ router.post('/export/ifc', async (req, res, next) => {
     // Export to IFC
     const result = await ifcExporter.exportSceneToIFC(validObjects, './outputs');
 
+    // Optimize the IFC (decimate + geometry-instance + precision-round) unless the client opts out
+    let optimized = null;
+    if (req.body.optimize !== false && result.ifcPath) {
+      try {
+        const optPath = result.ifcPath.replace(/\.ifc$/i, '_optimized.ifc');
+        optimized = await runOptimizeIFC(result.ifcPath, optPath);
+        if (optimized && optimized.ok) {
+          result.ifcPath = optPath;
+          result.ifcUrl = (result.ifcUrl || '').replace(/\.ifc$/i, '_optimized.ifc');
+          result.metadata.optimized = optimized;
+        }
+      } catch (e) { logger.warn('EXPORT', 'IFC optimize skipped', { error: e.message }); }
+    }
+
     logger.info('EXPORT', 'IFC export successful', {
       ifcUrl: result.ifcUrl,
       ifcSize: result.metadata.ifcSize,
+      optimizedReductionPct: optimized ? optimized.size_reduction_pct : null,
     });
 
     return res.json({
@@ -109,6 +144,7 @@ router.post('/export/ifc', async (req, res, next) => {
       ifcUrl: result.ifcUrl,
       ifcPath: result.ifcPath,
       metadata: result.metadata,
+      optimized,
     });
 
   } catch (error) {

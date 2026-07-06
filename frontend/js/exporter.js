@@ -69,8 +69,13 @@ async function exportSceneToIFC(sceneObjects) {
       throw new Error(data.error?.message || 'Export failed');
     }
 
-    showSuccess('IFC exported successfully');
-    console.log('[exporter] IFC exported:', data.ifcUrl || data.ifcPath);
+    const opt = data.optimized;
+    if (opt && opt.ok) {
+      showSuccess(`✓ IFC exported + optimized — ${opt.faces_reduction_pct}% fewer faces, ${opt.size_reduction_pct}% smaller file`);
+    } else {
+      showSuccess('IFC exported successfully');
+    }
+    console.log('[exporter] IFC exported:', data.ifcUrl || data.ifcPath, opt || '');
     return data.ifcUrl || data.ifcPath;   // prefer the server URL (/outputs/..) over the raw OS path
   } catch (error) {
     showError('IFC export failed', error);
