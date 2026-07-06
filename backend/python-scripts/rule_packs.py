@@ -109,3 +109,94 @@ def capacity_hint(pack: dict, room_w: float, room_d: float) -> int:
     """Rough max workstations/seats the room area supports (for feasibility hints)."""
     app = pack.get("area_per_person", 6.0)
     return max(1, int((float(room_w) * float(room_d)) / app))
+
+
+# ---------------------------------------------------------------------------
+# Human (anthropometric) constants + object placement archetypes.
+# This layer makes the ergonomics engine OBJECT-AGNOSTIC: every category resolves
+# to one of a few archetypes, each defining the HUMAN interaction space (legroom,
+# seat pull-out, door swing, approach, bed access) that must stay clear around it.
+# Unknown categories fall back to geometry, so ANY object gets sensible behaviour.
+# ---------------------------------------------------------------------------
+
+ANTHRO = {                     # metres — Neufert / Panero-Zelnik / ADA
+    "shoulder":     0.55,      # person shoulder width (the moving body)
+    "aisle":        0.90,      # comfortable walking width
+    "seat_pullout": 0.55,      # push a chair back and stand up
+    "legroom":      0.55,      # seated legroom at a work surface
+    "approach":     0.60,      # standing approach at a surface/appliance
+    "swing":        0.55,      # cabinet door / drawer pull depth
+    "bed_side":     0.60,      # make the bed / get in from a side
+    "turning":      1.525,     # wheelchair turning circle (ADA)
+}
+
+# normalised category slug -> archetype
+_CATEGORY_ARCHETYPE = {
+    "desk": "worksurface", "table": "worksurface", "dining_table": "worksurface",
+    "conference_table": "worksurface", "coffee_table": "worksurface", "side_table": "worksurface",
+    "chair": "seating", "office_chair": "seating", "armchair": "seating",
+    "sofa": "seating", "couch": "seating", "stool": "seating", "bench": "seating",
+    "cabinet": "storage", "filing_cabinet": "storage", "storage_cabinet": "storage",
+    "wardrobe": "storage", "dresser": "storage", "bookshelf": "storage", "shelf": "storage",
+    "bed": "bed",
+    "refrigerator": "appliance", "fridge": "appliance", "oven": "appliance", "stove": "appliance",
+    "microwave": "appliance", "sink": "appliance", "toilet": "appliance", "bathtub": "appliance",
+    "monitor": "on_surface", "laptop": "on_surface", "keyboard": "on_surface", "mouse": "on_surface",
+    "book": "on_surface", "vase": "on_surface", "cup": "on_surface",
+    "mirror": "wall_mounted", "picture_frame": "wall_mounted", "tv": "wall_mounted", "clock": "wall_mounted",
+    "lamp": "free_accent", "floor_lamp": "free_accent", "planter": "free_accent", "plant": "free_accent",
+}
+
+# archetype -> {zone direction: anthro key}, facing rule, wall side.
+# Directions are LOCAL to the object's facing: front (the side people use), back, left, right.
+ARCHETYPES = {
+    "worksurface":  {"zones": {"front": "legroom", "back": "legroom"}, "faces": "open",   "wall": "back"},
+    "seating":      {"zones": {"back": "seat_pullout"},                "faces": "anchor", "wall": None},
+    "storage":      {"zones": {"front": "swing"},                      "faces": "room",   "wall": "back"},
+    "bed":          {"zones": {"front": "bed_side", "left": "bed_side", "right": "bed_side"},
+                                                                        "faces": "open",   "wall": "back"},
+    "appliance":    {"zones": {"front": "approach"},                   "faces": "room",   "wall": "back"},
+    "on_surface":   {"zones": {},                                      "faces": "anchor", "wall": None},
+    "wall_mounted": {"zones": {},                                      "faces": "wall",   "wall": "back"},
+    "free_accent":  {"zones": {},                                      "faces": None,     "wall": None},
+}
+
+
+def _norm(category: str) -> str:
+    return (category or "").strip().lower().replace(" ", "_")
+
+
+def archetype_of(category: str, dims=None) -> str:
+    """Resolve an object's placement archetype. Known categories use the table; unknown items are
+    inferred from geometry (h, w, d) so the engine covers ANY object without a fixed vocabulary."""
+    cat = _norm(category)
+    if cat in _CATEGORY_ARCHETYPE:
+        return _CATEGORY_ARCHETYPE[cat]
+    h = w = d = 0.0
+    if isinstance(dims, dict):
+        h = float(dims.get("height", 0) or 0); w = float(dims.get("width", 0) or 0); d = float(dims.get("depth", 0) or 0)
+    elif dims:
+        vals = list(dims) + [0, 0, 0]; h, w, d = float(vals[0]), float(vals[1]), float(vals[2])
+    if h >= 1.2 and max(w, d) <= 0.7:      # tall & shallow -> storage against a wall
+        return "storage"
+    if h <= 0.85 and max(w, d) >= 0.9:     # low & broad -> a work/seating surface
+        return "worksurface"
+    if max(h, w, d) <= 0.4:                # tiny -> sits on a surface
+        return "on_surface"
+    return "free_accent"
+
+
+def placement_profile(category: str, dims=None, ada: bool = False) -> dict:
+    """The full ergonomic profile for an object, driven by its archetype:
+      {archetype, zones:{front/back/left/right: metres}, faces, wall}
+    `zones` are the human interaction depths that must stay clear around the object; `faces`/`wall`
+    tell the solver how to orient it. Consumed by the CP-SAT solver (A2) and the facing logic (A6)."""
+    name = archetype_of(category, dims)
+    arch = ARCHETYPES[name]
+    zones = {}
+    for direction, key in arch["zones"].items():
+        depth = ANTHRO.get(key, 0.0)
+        if ada:
+            depth = max(depth, ADA["route_width"] * 0.6)
+        zones[direction] = round(depth, 3)
+    return {"archetype": name, "zones": zones, "faces": arch["faces"], "wall": arch["wall"]}
