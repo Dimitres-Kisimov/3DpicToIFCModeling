@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4-way — original / IFC-optimized / catalog / mesh-optimized</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html,body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; }
+    .grid { display:grid; grid-template-columns:repeat(4,1fr); height:100vh; }
+    .panel { position:relative; border-right:1px solid #d7deea; overflow:hidden; }
+    .panel:last-child { border-right:none; }
+    canvas { width:100%; height:100%; display:block; }
+    .cap { position:absolute; top:12px; left:10px; right:10px; z-index:5; background:rgba(255,255,255,.93);
+      border:1px solid #d7deea; border-radius:10px; padding:8px 11px; box-shadow:0 2px 8px rgba(20,40,80,.08); }
+    .cap b { font-size:13px; } .cap span { font-size:11px; color:#6b7688; display:block; margin-top:2px; }
+    .a b{color:#c0392b;} .b b{color:#1faa60;} .c b{color:#7d5ba6;} .d b{color:#2f6bff;}
+    .hint { position:fixed; bottom:10px; left:50%; transform:translateX(-50%); z-index:10; font-size:12px;
+      color:#6b7688; background:rgba(255,255,255,.93); padding:6px 14px; border-radius:20px; border:1px solid #d7deea; }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="panel"><div class="cap a"><b>① Original</b><span>raw TripoSR · 85,500 faces · 1.5 MB</span></div><canvas id="c0"></canvas></div>
+    <div class="panel"><div class="cap b"><b>② IFC-optimized</b><span>via optimize_ifc · 15k faces · 423 KB IFC</span></div><canvas id="c1"></canvas></div>
+    <div class="panel"><div class="cap c"><b>③ Catalog (retrieval)</b><span>clean real chair (SAM 3D) · different chair</span></div><canvas id="c2"></canvas></div>
+    <div class="panel"><div class="cap d"><b>④ Mesh-optimized (non-IFC)</b><span>via clean_and_optimize · 15k faces · 264 KB GLB</span></div><canvas id="c3"></canvas></div>
+  </div>
+  <div class="hint">🖱️ Drag = orbit · Scroll = zoom · ② and ④ are the SAME cleanup (IFC vs GLB) · ① messy · ③ clean-but-different</div>
+  <script type="module">
+    import * as xeokit from '/vendor/xeokit-sdk/xeokit-sdk.min.es.js';
+    const models = [
+      { canvas:'c0', src:'/outputs/exec_chair_raw.glb',      rot:[180,0,90] },
+      { canvas:'c1', src:'/outputs/cmp_ifc.glb',             rot:[180,0,90] },
+      { canvas:'c2', src:'/outputs/chair_clean_catalog.glb', rot:[-90,0,0] },
+      { canvas:'c3', src:'/outputs/chair_final.glb',         rot:[180,0,90] },
+    ];
+    for (const m of models) {
+      const viewer = new xeokit.Viewer({ canvasId:m.canvas, transparent:false });
+      viewer.scene.canvas.backgroundColor = [0.95,0.96,0.99];
+      try { viewer.cameraFlight.fitFOV = 52; viewer.cameraControl.navMode='orbit'; viewer.cameraControl.followPointer=true; } catch(e){}
+      const loader = new xeokit.GLTFLoaderPlugin(viewer);
+      const model = loader.load({ id:'m', src:m.src+'?t='+Date.now(), edges:false });
+      model.on('loaded', () => { try { model.rotation=m.rot; } catch(e){} try { viewer.cameraFlight.flyTo(model); } catch(e){} });
+      model.on('error', (e)=>console.warn(m.src,e));
+    }
+  </script>
+</body>
+</html>
