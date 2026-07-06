@@ -1,8 +1,21 @@
-# 3D Picture to IFC Modeling
+# 3D Picture to IFC Modeling — SCS Studio
 
 AI-powered pipeline that converts a single 2D photograph into a 3D mesh and exports it to IFC format for architectural and BIM workflows.
 
-Upload a photo → AI reconstructs the 3D object → inspect it in the browser → export to IFC for Revit / AutoCAD.
+**ONE app** (`npm start` → http://localhost:3000) with three workspaces sharing one 3D viewport:
+
+- **📷 Generate object** — photo → AI 3D → dimensioned, BIM-classified mesh. Every generated
+  object auto-registers into the room catalog (badge **OURS**, with a rendered 3D thumbnail).
+- **🛋️ Build a room** — pick furniture (515 ABO meshes + your own), the **people-aware CP-SAT
+  solver** places it with legroom/door-swing/bed-access zones, 4-way facing, back-to-wall,
+  circulation checked — or says honestly, per item, that there's **not enough space**. Fine-tune
+  on the **2D floor plan** (drag / exact X·Z·rotation, live collision, live 3D sync) and export
+  CSV / GLB / one optimized IFC.
+- **🏢 Building** — load a real architectural IFC, review per-room smart suggestions, populate
+  ergonomically around the building's own walls/beams/columns, drag pieces, save the GLB.
+- **▶ Demo run** — one click builds a full presentation-ready demo room.
+
+The former Flask room-builder (`:8000`) is retired — Node is the single front door.
 
 ---
 
@@ -26,9 +39,10 @@ python backend/python-scripts/populate_building.py sample_buildings/Duplex_Archi
 
 Verified on the Duplex: 8 rooms furnished, ergonomic placement, **0 clashes**.
 
-**Apps / viewers:** selection room-builder `localhost:8000` · photo→IFC generator `localhost:3000` ·
-building viewers `localhost:3000/{populated,empty,building}_building_viewer.html` · model gallery
-`localhost:8900`. Full write-up: [`FOUNDATION_FOR_RESEARCH_PAPER.md`](FOUNDATION_FOR_RESEARCH_PAPER.md).
+**Apps / viewers:** everything on `localhost:3000` (SCS Studio — generator, room builder,
+building populate, 2D plan editor) · building viewers
+`localhost:3000/{populated,empty,building}_building_viewer.html` · model gallery `localhost:8900`.
+Full write-up: [`FOUNDATION_FOR_RESEARCH_PAPER.md`](FOUNDATION_FOR_RESEARCH_PAPER.md).
 
 ---
 

@@ -20,6 +20,26 @@ const stableFast3DAdapter = require('../ai/stablefast3d');
 const triposrAdapter = require('../ai/triposr');
 const gpuQueue = require('../services/gpuQueue');   // serialize GPU jobs — never two on the 6 GB card
 const roomApi = require('../services/roomApi');
+const detectWorker = require('../services/detectWorker');
+const crypto = require('crypto');
+
+// D — image-hash result cache: the same photo detected twice costs zero seconds.
+// Bounded, in-memory; entries whose GLB no longer exists on disk are dropped.
+const _detectCache = new Map();     // md5(image) -> pipeline result
+const _DETECT_CACHE_MAX = 100;
+
+function detectCacheGet(hash) {
+  const hit = _detectCache.get(hash);
+  if (!hit) return null;
+  if (!hit.glbPath || !fs.existsSync(hit.glbPath)) { _detectCache.delete(hash); return null; }
+  return hit;
+}
+function detectCachePut(hash, result) {
+  if (_detectCache.size >= _DETECT_CACHE_MAX) {
+    _detectCache.delete(_detectCache.keys().next().value);   // evict oldest
+  }
+  _detectCache.set(hash, result);
+}
 
 // B3 — close the generator→room loop: every successfully generated object is
 // registered into the room builder's catalog (data/generated_assets) so it is
@@ -195,8 +215,26 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
     }
 
     logger.info('GENERATE', `Starting detection pipeline (requested model: ${model})`, { imagePath });
-    // detection + depth + retrieval are also GPU-heavy — same serialization guard
-    const result = await gpuQueue.run(() => runDetectAndPlace(imagePath, config.OUTPUT_DIR), 'detect');
+    // D — same photo again? serve the cached result instantly
+    const imageHash = crypto.createHash('md5').update(fs.readFileSync(imagePath)).digest('hex');
+    let result = detectCacheGet(imageHash);
+    if (result) {
+      logger.info('GENERATE', 'detect cache hit', { hash: imageHash });
+    } else {
+      // D — warm worker first (models stay loaded, CPU-only: no GPU queue needed);
+      // if the worker is broken, fall back to the old spawn-per-request GPU path.
+      const outputName = `mesh_${Date.now()}.glb`;
+      const outputGlb = path.join(config.OUTPUT_DIR, outputName);
+      try {
+        result = await detectWorker.run(imagePath, outputGlb);
+        result.glbUrl = `/outputs/${outputName}`;
+        result.glbPath = result.output_path || outputGlb;
+      } catch (workerErr) {
+        logger.warn('GENERATE', 'warm worker failed — cold fallback', { error: workerErr.message });
+        result = await gpuQueue.run(() => runDetectAndPlace(imagePath, config.OUTPUT_DIR), 'detect');
+      }
+      detectCachePut(imageHash, result);
+    }
 
     logger.info('GENERATE', 'detection pipeline complete', {
       glbUrl: result.glbUrl,

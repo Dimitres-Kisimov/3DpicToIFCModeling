@@ -59,12 +59,24 @@ app.use('/api/generated', express.static(path.join(__dirname, '../data/generated
 // ROUTES
 // ============================================================================
 
-// Health check endpoint
+// Health check endpoint — includes the resource picture (queues, memory, workers)
 app.get('/api/health', (req, res) => {
+  let queues = {};
+  try {
+    queues = {
+      gpu: require('./services/gpuQueue').stats(),
+      cpu: require('./services/cpuQueue').stats(),
+      detectWorker: require('./services/detectWorker').stats(),
+    };
+  } catch (e) { /* stats are best-effort */ }
+  const mem = process.memoryUsage();
   res.json({
     success: true,
     message: 'Server is running',
     timestamp: new Date().toISOString(),
+    uptime_s: Math.round(process.uptime()),
+    memory_mb: { rss: Math.round(mem.rss / 1048576), heapUsed: Math.round(mem.heapUsed / 1048576) },
+    queues,
   });
 });
 

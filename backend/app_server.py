@@ -1,5 +1,11 @@
 """
-app_server.py — SCS room-population app backend (Flask).
+app_server.py — SCS room-population app backend (Flask).  ⚠ RETIRED (2026-07-06)
+
+The room builder now lives inside the ONE merged app: `npm start` serves
+everything (generator + room builder + building populate + 2D editor) on :3000.
+The endpoints below were re-implemented as Node routes (backend/routes/
+roomRoutes.js, buildingRoutes.js) driving backend/python-scripts/room_api.py.
+This file is kept only as a reference / emergency standalone; do not extend it.
 
 Endpoints:
   GET  /api/catalog   -> pickable categories (ABO-backed + dims)

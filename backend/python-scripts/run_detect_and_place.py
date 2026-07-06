@@ -214,13 +214,34 @@ CATEGORY_MESH_BUILDERS = {
 
 
 # ---------------------------------------------------------------------------
+# Warm-model support (Workstream D): when SCS_WARM_MODELS=1 (set by the
+# persistent detect_worker) the DETR / Depth / DINOv2 models are loaded ONCE
+# and reused across requests — the 20 s per-request model loading disappears.
+# The cold CLI path keeps its load-use-free behaviour (kind to the 6 GB GPU).
+# ---------------------------------------------------------------------------
+import os as _os
+_WARM = _os.environ.get("SCS_WARM_MODELS") == "1"
+_warm_cache = {}
+
+
+def _warm_load(key, factory):
+    if not _WARM:
+        return factory()
+    if key not in _warm_cache:
+        _warm_cache[key] = factory()
+    return _warm_cache[key]
+
+
+# ---------------------------------------------------------------------------
 # Stage 1 — Detection (DETR ResNet-50)
 # ---------------------------------------------------------------------------
 def _detect_top_object(image: Image.Image):
     from transformers import DetrForObjectDetection, DetrImageProcessor
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    processor = DetrImageProcessor.from_pretrained("facebook/detr-resnet-50")
-    model = DetrForObjectDetection.from_pretrained("facebook/detr-resnet-50").to(device)
+    processor = _warm_load("detr_proc",
+                           lambda: DetrImageProcessor.from_pretrained("facebook/detr-resnet-50"))
+    model = _warm_load("detr_model",
+                       lambda: DetrForObjectDetection.from_pretrained("facebook/detr-resnet-50").to(device))
     model.eval()
     inputs = processor(images=image, return_tensors="pt").to(device)
     with torch.no_grad():
@@ -229,9 +250,10 @@ def _detect_top_object(image: Image.Image):
     results = processor.post_process_object_detection(
         outputs, target_sizes=target_sizes, threshold=0.3
     )[0]
-    del model, processor
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
+    if not _WARM:
+        del model, processor
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
     if len(results["scores"]) == 0:
         return {"ok": False, "label": None, "score": 0.0, "box": None}
     best_idx = int(results["scores"].argmax().item())
@@ -275,8 +297,8 @@ def _estimate_metric_dimensions(image: Image.Image, box_xyxy, image_size):
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     mid = "depth-anything/Depth-Anything-V2-Metric-Indoor-Small-hf"
-    processor = AutoImageProcessor.from_pretrained(mid)
-    model = AutoModelForDepthEstimation.from_pretrained(mid).to(device)
+    processor = _warm_load("depth_proc", lambda: AutoImageProcessor.from_pretrained(mid))
+    model = _warm_load("depth_model", lambda: AutoModelForDepthEstimation.from_pretrained(mid).to(device))
     model.eval()
 
     inputs = processor(images=image, return_tensors="pt").to(device)
@@ -318,9 +340,10 @@ def _estimate_metric_dimensions(image: Image.Image, box_xyxy, image_size):
     w_m = max(0.05, (bbox_w_px / focal_px) * depth_m)
     h_m = max(0.05, (bbox_h_px / focal_px) * depth_m)
 
-    del model, processor
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
+    if not _WARM:
+        del model, processor
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
 
     return h_m, w_m, depth_m, {
         "depth_m_at_object": round(depth_m, 3),
@@ -431,18 +454,19 @@ def _try_retrieval(image_crop: Image.Image, category: str):
 
         device = "cuda" if torch.cuda.is_available() else "cpu"
         mid = "facebook/dinov2-base"
-        processor = AutoImageProcessor.from_pretrained(mid)
-        model = AutoModel.from_pretrained(mid).to(device).eval()
+        processor = _warm_load("dino_proc", lambda: AutoImageProcessor.from_pretrained(mid))
+        model = _warm_load("dino_model", lambda: AutoModel.from_pretrained(mid).to(device).eval())
         inputs = processor(images=image_crop, return_tensors="pt").to(device)
         with torch.no_grad():
             outputs = model(**inputs)
         query = outputs.last_hidden_state[:, 0, :].cpu().numpy().astype(np.float32)
         query /= max(np.linalg.norm(query), 1e-6)
-        del model, processor
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
+        if not _WARM:
+            del model, processor
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
 
-        index = faiss.read_index(str(MESH_INDEX_PATH))
+        index = _warm_load("faiss_index", lambda: faiss.read_index(str(MESH_INDEX_PATH)))
         # Search the whole library, then filter to category if any candidates exist
         k = min(len(manifest), 8)
         D, I = index.search(query, k=k)
