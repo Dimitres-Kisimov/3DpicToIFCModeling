@@ -17,43 +17,54 @@
       border:1px solid #d7deea; border-radius:10px; padding:8px 11px; box-shadow:0 2px 8px rgba(20,40,80,.08); }
     .cap b { font-size:13px; } .cap span { font-size:11px; color:#6b7688; display:block; margin-top:2px; }
     .a b{color:#c0392b;} .b b{color:#1faa60;} .c b{color:#7d5ba6;} .d b{color:#2f6bff;}
+    .rot { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); z-index:6; display:flex; gap:6px; }
+    .rot button { font-size:12px; font-weight:700; padding:6px 10px; border:1px solid #d7deea; border-radius:8px;
+      background:rgba(255,255,255,.95); cursor:pointer; box-shadow:0 2px 6px rgba(20,40,80,.1); }
+    .rot button:hover { border-color:#2f6bff; }
   </style>
 </head>
 <body>
   <header>
     <h1>4-way comparison — all furniture</h1>
-    <span class="sub">Original · IFC-optimized · Catalog · Mesh-optimized (non-IFC) · 🖱️ drag = orbit</span>
+    <span class="sub">Original · IFC-optimized · Catalog · Mesh-optimized (non-IFC) · 🖱️ drag = orbit · ↻ buttons = stand it up</span>
     <select id="pick"></select>
   </header>
   <div class="grid">
-    <div class="panel"><div class="cap a"><b>① Original</b><span>raw generated mesh</span></div><canvas id="c0"></canvas></div>
-    <div class="panel"><div class="cap b"><b>② IFC-optimized</b><span>via optimize_ifc</span></div><canvas id="c1"></canvas></div>
-    <div class="panel"><div class="cap c"><b>③ Catalog</b><span>clean catalog mesh</span></div><canvas id="c2"></canvas></div>
-    <div class="panel"><div class="cap d"><b>④ Mesh-optimized</b><span>via clean_and_optimize (non-IFC)</span></div><canvas id="c3"></canvas></div>
+    <div class="panel"><div class="cap a"><b>① Original</b><span>raw generated mesh</span></div><canvas id="c0"></canvas><div class="rot"><button data-i="0" data-ax="x">↻ tilt</button><button data-i="0" data-ax="y">⟳ turn</button></div></div>
+    <div class="panel"><div class="cap b"><b>② IFC-optimized</b><span>via optimize_ifc</span></div><canvas id="c1"></canvas><div class="rot"><button data-i="1" data-ax="x">↻ tilt</button><button data-i="1" data-ax="y">⟳ turn</button></div></div>
+    <div class="panel"><div class="cap c"><b>③ Catalog</b><span>clean catalog mesh</span></div><canvas id="c2"></canvas><div class="rot"><button data-i="2" data-ax="x">↻ tilt</button><button data-i="2" data-ax="y">⟳ turn</button></div></div>
+    <div class="panel"><div class="cap d"><b>④ Mesh-optimized</b><span>via clean_and_optimize (non-IFC)</span></div><canvas id="c3"></canvas><div class="rot"><button data-i="3" data-ax="x">↻ tilt</button><button data-i="3" data-ax="y">⟳ turn</button></div></div>
   </div>
   <script type="module">
     import * as xeokit from '/vendor/xeokit-sdk/xeokit-sdk.min.es.js';
     const items = ['bed','bookshelf','cabinet','chair','desk','lamp','office_chair','sofa','stool','table'];
     const suffix = ['orig','ifc','catalog','mesh'];
+    // sensible per-source default: catalog meshes are Z-up -> stand them up; others start as-is
+    const defRot = [[0,0,0],[0,0,0],[-90,0,0],[0,0,0]];
     const pick = document.getElementById('pick');
     items.forEach(it => { const o=document.createElement('option'); o.value=it; o.textContent=it.replace('_',' '); pick.appendChild(o); });
     pick.value = 'office_chair';
 
-    // 4 persistent viewers (4 contexts total) + a loader that swaps the model on each
     const viewers = suffix.map((_,i) => {
       const v = new xeokit.Viewer({ canvasId:`c${i}`, transparent:false });
       v.scene.canvas.backgroundColor = [0.95,0.96,0.99];
-      try { v.cameraFlight.fitFOV = 35; v.cameraControl.navMode='orbit'; v.cameraControl.followPointer=true; } catch(e){}
-      return { v, loader:new xeokit.GLTFLoaderPlugin(v), model:null };
+      try { v.cameraFlight.fitFOV = 38; v.cameraControl.navMode='orbit'; v.cameraControl.followPointer=true; } catch(e){}
+      return { v, loader:new xeokit.GLTFLoaderPlugin(v), model:null, rot:[...defRot[i]] };
     });
+    function applyRot(i){ const vw=viewers[i]; if(!vw.model) return; try{ vw.model.rotation=vw.rot; }catch(e){} try{ vw.v.cameraFlight.flyTo(vw.model); }catch(e){} }
     function load(item) {
       viewers.forEach((vw,i) => {
+        vw.rot = [...defRot[i]];
         if (vw.model) { try { vw.model.destroy(); } catch(e){} }
         vw.model = vw.loader.load({ id:'m', src:`/outputs/four_way/${item}_${suffix[i]}.glb?t=`+Date.now(), edges:false });
-        vw.model.on('loaded', () => { try { vw.v.cameraFlight.jumpTo(vw.model); } catch(e){} });
+        vw.model.on('loaded', () => applyRot(i));
         vw.model.on('error', e => console.warn(item, suffix[i], e));
       });
     }
+    document.querySelectorAll('.rot button').forEach(btn => btn.onclick = () => {
+      const i=+btn.dataset.i, ax=btn.dataset.ax==='x'?0:1;
+      viewers[i].rot[ax]=(viewers[i].rot[ax]+90)%360; applyRot(i);
+    });
     pick.onchange = () => load(pick.value);
     load('office_chair');
   </script>
