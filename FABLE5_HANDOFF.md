@@ -1,5 +1,11 @@
 # Handoff → Fable 5 (SCS Photo-to-BIM, Part 2)
 
+> **STATUS 2026-07-06 (end of session): PART 2 IS COMPLETE.** All workstreams (A2–A6, B, C, C2,
+> D, E) shipped on `part2-ergonomics-one-app` in four commits: `8214a54` (one app), `5a42df1`
+> (people-aware engine, 23/23 tests), `fe8a50e` (2D editor + thumbnails), `1ef0c23` (warm worker
+> 22s→1.9s + polish). ONE app: `npm start` → :3000 (Generate · Build a room · Building · ▶ Demo
+> run). Flask retired. The "Next steps" below are DONE — kept for context only.
+
 You are continuing an in-progress project. Work on branch **`part2-ergonomics-one-app`** (not `main`).
 Do not touch Part 1 unless asked.
 
