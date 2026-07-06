@@ -280,7 +280,10 @@ def cmd_layout(args):
 
 
 def cmd_building_rooms(args):
-    """Furnishable rooms + smart suggestions — ported 1:1 from api_building_rooms()."""
+    """Furnishable rooms + smart suggestions + FLOOR navigation data:
+    storeys (name/elevation/top), and per room its storey, world footprint rect
+    and labeled obstacles/doors — everything the floor selector and the 2D floor
+    plan need. Mirrored units (two 'Living Room's on one level) stay distinct."""
     import ifcopenshell
     import ifcopenshell.geom
     import numpy as np
@@ -293,24 +296,60 @@ def cmd_building_rooms(args):
     s = ifcopenshell.geom.settings()
     s.set(s.USE_WORLD_COORDS, True)
     assets = pop.load_assets()
-    seen, rooms = set(), []
+
+    # storey elevations (sorted) -> each storey's [elevation, top) band
+    all_storeys = sorted(((st.Name or f"Level {i}") , float(st.Elevation or 0.0))
+                         for i, st in enumerate(f.by_type("IfcBuildingStorey")))
+    all_storeys.sort(key=lambda t: t[1])
+    elev_of = dict(all_storeys)
+    tops = {}
+    levels = sorted(elev_of.values())
+    for name, e in elev_of.items():
+        higher = [v for v in levels if v > e + 0.05]
+        tops[name] = min(higher) if higher else e + 3.1
+
+    obstacle_rects = pop.footprint_rects(f, s, pop.OBSTACLE_TYPES)
+    door_rects = pop.footprint_rects(f, s, ["IfcDoor"])
+
+    seen, rooms, used_storeys = set(), [], set()
     for sp in f.by_type("IfcSpace"):
         name = (sp.LongName or sp.Name or "").strip()
         rt = pop.room_type(name)
-        if rt is None or name in seen:
+        if rt is None:
             continue
+        storey = None
+        for rel in (sp.Decomposes or []):
+            if rel.RelatingObject.is_a("IfcBuildingStorey"):
+                storey = rel.RelatingObject.Name
         try:
             g = ifcopenshell.geom.create_shape(s, sp)
             v = np.array(g.geometry.verts).reshape(-1, 3)
         except Exception:
             continue
-        W, D = v[:, 0].max() - v[:, 0].min(), v[:, 1].max() - v[:, 1].min()
+        x0, x1 = float(v[:, 0].min()), float(v[:, 0].max())
+        y0, y1 = float(v[:, 1].min()), float(v[:, 1].max())
+        W, D = x1 - x0, y1 - y0
         if W < 1.2 or D < 1.2:
             continue
-        seen.add(name)
+        # duplicate IfcSpace shells of the SAME room collapse; mirrored-unit
+        # rooms (same name, different position) stay separate
+        key = (name, storey, round(x0, 1), round(y0, 1))
+        if key in seen:
+            continue
+        seen.add(key)
+        used_storeys.add(storey)
         rooms.append({"name": name, "type": rt, "area": round(float(W * D), 1),
+                      "storey": storey,
+                      "rect": [round(x0, 3), round(y0, 3), round(W, 3), round(D, 3)],
+                      "obstacles": pop.extract_room_obstacles(obstacle_rects, door_rects,
+                                                              x0, x1, y0, y1),
                       "suggested": pop.smart_furnish(rt, W, D, assets)})
-    return {"ok": True, "rooms": rooms, "categories": sorted(assets.keys())}
+
+    storeys = [{"name": n, "elevation": round(elev_of.get(n, 0.0), 3),
+                "top": round(tops.get(n, 3.1), 3)}
+               for n in sorted(used_storeys, key=lambda n: elev_of.get(n, 0.0)) if n]
+    return {"ok": True, "rooms": rooms, "categories": sorted(assets.keys()),
+            "storeys": storeys}
 
 
 def cmd_building_save(args):

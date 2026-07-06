@@ -51,7 +51,8 @@ router.get('/building/:bid/rooms', async (req, res, next) => {
     if (result.ok === false) {
       return res.status(result.status || 500).json({ error: result.error });
     }
-    const payload = { rooms: result.rooms, categories: result.categories };
+    const payload = { rooms: result.rooms, categories: result.categories,
+                      storeys: result.storeys || [] };
     _roomsCache.set(b.id, payload);
     res.json(payload);
   } catch (err) { next(err); }
@@ -85,6 +86,7 @@ router.post('/building/:bid/populate', async (req, res, next) => {
     const man = JSON.parse(fs.readFileSync(path.join(movDir, 'furniture.json'), 'utf-8'));
     const pieces = (man.pieces || []).map((p) => ({
       id: p.id, category: p.category, glb: `/out/bldg/${p.glb}`, pos: p.pos,
+      room: p.room, dims: p.dims || null,
     }));
     res.json({
       ok: true,

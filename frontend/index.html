@@ -169,8 +169,9 @@
             </div>
             <div id="bRooms"></div>
             <button id="bPopulate" class="btn btn-primary btn-block" hidden>🏢 Populate building</button>
+            <div id="bFloors" class="floor-chips" hidden></div>
             <button id="bSave" class="btn btn-secondary btn-block" hidden>💾 Save layout (download GLB)</button>
-            <p id="bDragHint" class="hint" hidden>💡 Click a furniture piece in the 3D view and drag it across the floor to reposition. Unlock the camera to orbit.</p>
+            <p id="bDragHint" class="hint" hidden>💡 Pick a floor above to isolate it — in 3D or on the 🗺️ 2D floor plan. Drag any piece to reposition (unlock the camera to orbit in 3D).</p>
         </aside>
 
         <!-- ================= STAGE: the shared 3D viewport ================= -->
@@ -188,9 +189,15 @@
                 <button id="fitViewBtn" class="btn btn-tiny">🎯 Fit view</button>
                 <button id="rotateBtn" class="btn btn-tiny">🔄 Rotate 90°</button>
                 <button id="planBtn" class="btn btn-tiny" hidden>🗺️ 2D plan</button>
+                <button id="bPlanBtn" class="btn btn-tiny" hidden>🗺️ 2D floor</button>
                 <button id="wallsBtn" class="btn btn-tiny" hidden>🧱 Walls</button>
                 <button id="imgviewBtn" class="btn btn-tiny" hidden>🖼️ Image</button>
                 <button id="lockBtn" class="btn btn-tiny" hidden>🔒 Locked</button>
+            </div>
+
+            <!-- 2D floor plan of one building storey (building workspace) -->
+            <div id="bplanWrap" class="plan-wrap" hidden>
+                <canvas id="bplanCanvas"></canvas>
             </div>
 
             <!-- 2D floor plan — the manual exact-placement surface (room workspace) -->
@@ -278,9 +285,10 @@
     <script src="js/transformControls.js?v=10"></script>
     <script src="js/exporter.js?v=10"></script>
     <script src="js/index.js?v=10"></script>
-    <script src="js/roomBuilder.js?v=11"></script>
-    <script src="js/planEditor.js?v=11"></script>
-    <script src="js/buildingMode.js?v=11"></script>
-    <script src="js/shell.js?v=11"></script>
+    <script src="js/roomBuilder.js?v=12"></script>
+    <script src="js/planEditor.js?v=12"></script>
+    <script src="js/buildingMode.js?v=12"></script>
+    <script src="js/buildingPlan.js?v=12"></script>
+    <script src="js/shell.js?v=12"></script>
 </body>
 </html>

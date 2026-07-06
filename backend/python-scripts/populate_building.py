@@ -301,10 +301,11 @@ def main():
                 piece.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))  # Z-up->Y-up
                 gname = f"piece_{placed}.glb"
                 piece.export(str(movdir / gname))
-                movable.append({"id": f"{cat}-{placed}", "room": name, "category": cat, "glb": gname,
-                                "pos": [round(wx, 3), round(fz, 3), round(-wy, 3)]})   # Y-up world
-                # rotated footprint for the clash check (90/270 swap the extents)
+                # rotated footprint for the clash check + the 2D floor plan (90/270 swap)
                 bex, bey = (m.extents[1], m.extents[0]) if yaw % 180 == 90 else (m.extents[0], m.extents[1])
+                movable.append({"id": f"{cat}-{placed}", "room": name, "category": cat, "glb": gname,
+                                "pos": [round(wx, 3), round(fz, 3), round(-wy, 3)],   # Y-up world
+                                "dims": [round(float(bex), 3), round(float(bey), 3)]})
                 boxes.append((wx - bex / 2, wx + bex / 2, wy - bey / 2, wy + bey / 2))
             else:
                 g2 = m.copy()

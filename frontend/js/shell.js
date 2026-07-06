@@ -89,15 +89,20 @@
     $('roomExports').style.display = tab === 'room' ? '' : 'none';
 
     // stage controls per workspace
+    const hasBuilding = !!(window.buildingMode && window.buildingMode.hasContent());
     $('rotateBtn').hidden = tab !== 'generate';
     $('planBtn').hidden = tab !== 'room';
+    $('bPlanBtn').hidden = tab !== 'building' || !hasBuilding;
     $('wallsBtn').hidden = tab !== 'room';
     $('imgviewBtn').hidden = tab !== 'room' || !$('vfallback').src;
-    $('lockBtn').hidden = tab !== 'building' || !(window.buildingMode && window.buildingMode.hasContent());
+    $('lockBtn').hidden = tab !== 'building' || !hasBuilding;
     if (tab !== 'room') {
       $('vfallback').hidden = true;
       if (window.planEditor && window.planEditor.isOpen()) window.planEditor.toggle(false);
     }
+    // section planes cut every model in the scene — clear them when leaving,
+    // re-apply the floor filter when returning (shell just reset visibility)
+    if (tab !== 'building' && window.buildingMode) window.buildingMode.onTabLeave();
 
     // camera lock only applies while dragging building pieces
     const v = viewer();
@@ -108,6 +113,7 @@
     if (tab === 'building' && window.buildingMode) window.buildingMode.ensureInit();
 
     applyVisibility();
+    if (tab === 'building' && window.buildingMode) window.buildingMode.onTabEnter();
     restoreCamera(tab);
   }
 
