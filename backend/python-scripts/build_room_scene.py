@@ -211,6 +211,14 @@ def _resolve_layout(room: dict, objects: list):
     cx, cz = cw / 2.0, ch / 2.0
     GAP = 0.12
 
+    def _clamp_in_room(px, pz, obj, rot_deg):
+        """Hard guarantee: an anchored child's footprint never leaves the room."""
+        w = float(obj["dimensions"]["width"]); d = float(obj["dimensions"]["depth"])
+        if round(float(rot_deg) / 90) % 2 == 1:
+            w, d = d, w
+        hw, hd = min(w / 2, cw / 2), min(d / 2, ch / 2)
+        return min(max(px, hw), cw - hw), min(max(pz, hd), ch - hd)
+
     direct = {}
     for o in objects:
         a = o.get("anchor")
@@ -282,13 +290,19 @@ def _resolve_layout(room: dict, objects: list):
             rel = c["anchor"].get("relation", "in_front")
             cdd = float(c["dimensions"]["depth"]); cwd = float(c["dimensions"]["width"])
             if rel == "on_top":
+                # the offset is in the PARENT's local frame — rotate it with the desk,
+                # or a 90°-rotated desk sends its laptop/lamp off the surface (and the room)
                 ox, oz = (c["anchor"].get("offset", [0.0, 0.0]) + [0.0, 0.0])[:2]
-                pos[c["id"]] = {"id": c["id"], "position": [ax + float(ox), 0.0, az + float(oz)],
+                wox = float(ox) * rx_ + float(oz) * fx
+                woz = float(ox) * rz_ + float(oz) * fz
+                px, pz = _clamp_in_room(ax + wox, az + woz, c, rot)
+                pos[c["id"]] = {"id": c["id"], "position": [px, 0.0, pz],
                                 "rotation": [0, rot, 0],
                                 "elevation": float(o["dimensions"]["height"]), "placed": True}
             elif rel == "beside":
                 off = m["w"] / 2 + cwd / 2 + 0.1
-                pos[c["id"]] = {"id": c["id"], "position": [ax + rx_ * off, 0.0, az + rz_ * off],
+                px, pz = _clamp_in_room(ax + rx_ * off, az + rz_ * off, c, rot)
+                pos[c["id"]] = {"id": c["id"], "position": [px, 0.0, pz],
                                 "rotation": [0, rot, 0], "placed": True}
             else:  # in_front — on the solver's front side, seat facing the anchor
                 off = m["d"] / 2 + GAP + cdd / 2
@@ -302,15 +316,22 @@ def _resolve_layout(room: dict, objects: list):
         if ref is None:
             continue
         rx, _, rz = ref["position"]; rrot = (ref.get("rotation") or [0, 0, 0])[1]
+        # parent's local frame (rotates offsets/beside placement with the parent)
+        fx2 = math.sin(math.radians(rrot)); fz2 = math.cos(math.radians(rrot))
+        rx2, rz2 = fz2, -fx2
         ad = by_id[a["to"]]["dimensions"]; od = o["dimensions"]
         rel = a.get("relation", "in_front")
         if rel == "on_top":
             ox, oz = (a.get("offset", [0.0, 0.0]) + [0.0, 0.0])[:2]
-            pos[o["id"]] = {"id": o["id"], "position": [rx + float(ox), 0.0, rz + float(oz)],
+            wox = float(ox) * rx2 + float(oz) * fx2
+            woz = float(ox) * rz2 + float(oz) * fz2
+            px, pz = _clamp_in_room(rx + wox, rz + woz, o, rrot)
+            pos[o["id"]] = {"id": o["id"], "position": [px, 0.0, pz],
                             "rotation": [0, rrot, 0], "elevation": float(ad["height"]), "placed": True}
         elif rel == "beside":
             off = float(ad["width"]) / 2 + float(od["width"]) / 2 + 0.1
-            pos[o["id"]] = {"id": o["id"], "position": [rx + off, 0.0, rz],
+            px, pz = _clamp_in_room(rx + rx2 * off, rz + rz2 * off, o, rrot)
+            pos[o["id"]] = {"id": o["id"], "position": [px, 0.0, pz],
                             "rotation": [0, rrot, 0], "placed": True}
         else:
             off = float(ad["depth"]) / 2 + float(od["depth"]) / 2 + GAP

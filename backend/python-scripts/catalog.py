@@ -220,8 +220,11 @@ def build_scene_spec(room: dict, picks: list) -> dict:
             aid = anchors[i % len(anchors)]
             anchor = {"to": aid, "relation": rel}
             if rel == "on_top":
+                # spread on-top children across the surface — enough distinct slots
+                # that monitor + laptop + lamp never stack on the same spot
+                _SLOTS = [[0.0, -0.18], [-0.45, -0.15], [0.45, -0.15], [-0.3, 0.12], [0.3, 0.12]]
                 n = on_top_count.get(aid, 0); on_top_count[aid] = n + 1
-                anchor["offset"] = [0.0, -0.18] if n == 0 else [-0.55, -0.20]
+                anchor["offset"] = _SLOTS[n % len(_SLOTS)]
             by_id[cid]["anchor"] = anchor
 
     return {"room": dict(room), "objects": objs}
