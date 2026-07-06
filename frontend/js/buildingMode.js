@@ -32,17 +32,54 @@
   const loader = () => window.xeokitModule && window.xeokitModule.getLoader && window.xeokitModule.getLoader();
 
   // ------------------------------------------------------------------ rooms UI
-  async function loadBuildings() {
+  let registryMap = {};                 // id -> {name, status, profile}
+
+  async function loadBuildings(selectId) {
     try {
       const bs = await (await fetch('/api/buildings')).json();
       const sel = $('bSelect');
+      const keep = selectId || sel.value;
+      while (sel.options.length > 1) sel.remove(1);
+      registryMap = {};
       bs.forEach((b) => {
+        registryMap[b.id] = b;
         const o = document.createElement('option');
         o.value = b.id;
-        o.textContent = b.name;
+        o.textContent = b.name + (b.status === 'preparing' ? ' · preparing…' : '');
         sel.appendChild(o);
       });
+      if (keep && registryMap[keep]) { sel.value = keep; }
     } catch (e) { banner('Buildings list failed to load.', true); }
+  }
+
+  function showProfile(bid) {
+    const el = $('bProfile');
+    const b = registryMap[bid];
+    if (!b || !b.profile) { el.hidden = true; return; }
+    const p = b.profile;
+    el.textContent = `▤ ${p.storeys} floors · ${p.spaces} rooms · ${p.size_mb} MB` +
+      (p.est_populate_min ? ` · ~${p.est_populate_min} min to populate` : '');
+    if (p.warnings && p.warnings.length) el.textContent += ` · ⚠ ${p.warnings[0]}`;
+    el.hidden = false;
+  }
+
+  // ---- add a building (.ifc upload -> probe -> registry -> background prepare)
+  async function uploadBuilding(file) {
+    if (!file) return;
+    if (!/\.ifc$/i.test(file.name || '')) {
+      banner('Only plain .ifc building files can be added.', true); return;
+    }
+    banner(`Checking ${file.name} — probing rooms, floors and size…`);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const r = await fetch('/api/buildings/upload', { method: 'POST', body: fd });
+      const d = await r.json();
+      if (!d.ok) { banner('Upload rejected: ' + (d.error || 'unknown'), true); return; }
+      toast(`🏢 ${d.building.name} added — preparing its geometry in the background`, 'ok');
+      await loadBuildings(d.building.id);
+      onBuildingChange();
+    } catch (e) { banner('Upload error: ' + e, true); }
   }
 
   async function onBuildingChange() {
@@ -55,7 +92,14 @@
     $('bSave').hidden = true;
     $('bDragHint').hidden = true;
     $('bFloors').hidden = true;
+    showProfile(currentBuilding);
     if (!currentBuilding) return;
+    const prof = (registryMap[currentBuilding] || {}).profile;
+    if (prof && prof.est_populate_min > 1) {
+      $('bPopulate').textContent = `🏢 Populate building (~${prof.est_populate_min} min)`;
+    } else {
+      $('bPopulate').textContent = '🏢 Populate building';
+    }
     wrap.innerHTML = '<p class="empty-state">Measuring every room in the IFC…</p>';
     try {
       const data = await (await fetch(`/api/building/${currentBuilding}/rooms`)).json();
@@ -468,6 +512,20 @@
         : `🧹 Fixed ${res.fixed}; ${res.remaining} piece(s) have no free spot nearby — drag them somewhere clear.`,
         res.remaining > 0);
     };
+
+    // add-building dropzone
+    const dz = $('bAddZone'), bf = $('bAddFile');
+    if (dz && bf) {
+      dz.addEventListener('click', () => bf.click());
+      bf.addEventListener('change', () => { if (bf.files[0]) uploadBuilding(bf.files[0]); bf.value = ''; });
+      ['dragenter', 'dragover'].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add('drag'); }));
+      ['dragleave', 'dragend'].forEach((ev) => dz.addEventListener(ev, () => dz.classList.remove('drag')));
+      dz.addEventListener('drop', (e) => {
+        e.preventDefault(); dz.classList.remove('drag');
+        const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if (f) uploadBuilding(f);
+      });
+    }
   }
 
   window.buildingMode = { ensureInit, hasContent: () => !!bShell, getFloorData,

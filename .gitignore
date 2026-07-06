@@ -104,3 +104,6 @@ deliverable/cloud_gallery_export.zip
 deliverable/building/*/rooms/
 deliverable/building/*/*.ifc
 deliverable/building/*/*.xkt
+
+# uploaded building IFCs + per-building geometry caches (runtime data, can be 100s of MB)
+data/buildings/

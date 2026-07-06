@@ -279,11 +279,24 @@ def cmd_layout(args):
             "render": render, "floorplan": floorplan}
 
 
+def _storey_of_space(sp):
+    """A space's storey via Decomposes OR ContainedInStructure (exporters vary)."""
+    for rel in (sp.Decomposes or []):
+        if rel.RelatingObject.is_a("IfcBuildingStorey"):
+            return rel.RelatingObject.Name
+    for rel in (getattr(sp, "ContainedInStructure", None) or []):
+        st = getattr(rel, "RelatingStructure", None)
+        if st is not None and st.is_a("IfcBuildingStorey"):
+            return st.Name
+    return None
+
+
 def cmd_building_rooms(args):
-    """Furnishable rooms + smart suggestions + FLOOR navigation data:
-    storeys (name/elevation/top), and per room its storey, world footprint rect
-    and labeled obstacles/doors — everything the floor selector and the 2D floor
-    plan need. Mirrored units (two 'Living Room's on one level) stay distinct."""
+    """Furnishable rooms + smart suggestions + FLOOR navigation data for ANY IFC:
+    storeys (name/elevation/top — unit-normalised, synthesised from geometry when
+    the file has none), per room its storey, world footprint rect and labeled
+    obstacles/doors. Unknown-named rooms ('Zimmer 1.02') are still furnishable —
+    keywords only drive the default suggestions. Mirrored units stay distinct."""
     import ifcopenshell
     import ifcopenshell.geom
     import numpy as np
@@ -297,74 +310,204 @@ def cmd_building_rooms(args):
     s.set(s.USE_WORLD_COORDS, True)
     assets = pop.load_assets()
 
-    # storey elevations (sorted) -> each storey's [elevation, top) band
-    all_storeys = sorted(((st.Name or f"Level {i}") , float(st.Elevation or 0.0))
-                         for i, st in enumerate(f.by_type("IfcBuildingStorey")))
-    all_storeys.sort(key=lambda t: t[1])
-    elev_of = dict(all_storeys)
-    tops = {}
-    levels = sorted(elev_of.values())
-    for name, e in elev_of.items():
-        higher = [v for v in levels if v > e + 0.05]
-        tops[name] = min(higher) if higher else e + 3.1
+    # geometry (create_shape) is ALWAYS metres; raw attributes like Elevation are
+    # in project units — normalise them (a Revit mm file would otherwise put
+    # storeys at 3100 while rooms sit at 3.1)
+    try:
+        from ifcopenshell.util.unit import calculate_unit_scale
+        unit_scale = float(calculate_unit_scale(f))
+    except Exception:
+        unit_scale = 1.0
 
-    obstacle_rects = pop.footprint_rects(f, s, pop.OBSTACLE_TYPES)
-    door_rects = pop.footprint_rects(f, s, ["IfcDoor"])
-
-    seen, rooms, used_storeys = set(), [], set()
-    non_furnishable = []
-    for sp in f.by_type("IfcSpace"):
-        name = (sp.LongName or sp.Name or "").strip()
-        rt = pop.room_type(name)
-        storey = None
-        for rel in (sp.Decomposes or []):
-            if rel.RelatingObject.is_a("IfcBuildingStorey"):
-                storey = rel.RelatingObject.Name
+    def _bt(t):
         try:
-            g = ifcopenshell.geom.create_shape(s, sp)
-            v = np.array(g.geometry.verts).reshape(-1, 3)
+            return f.by_type(t)
         except Exception:
+            return []
+
+    elev_of = {}
+    for i, st in enumerate(_bt("IfcBuildingStorey")):
+        nm = (st.Name or f"Level {i + 1}").strip()
+        elev_of[nm] = float(st.Elevation or 0.0) * unit_scale
+    if elev_of and max(abs(v) for v in elev_of.values()) > 500:
+        elev_of = {}                                  # broken data — fall back to geometry
+
+    obstacle_rects, door_rects = pop.cached_footprints(f, s, ifc_path)
+
+    seen, rooms = set(), []
+    for sp in _bt("IfcSpace"):
+        name = (sp.LongName or sp.Name or "").strip()
+        cls = pop.classify_room(name)                 # 'skip' | type | None (unknown)
+        storey = _storey_of_space(sp)
+        ext = pop.space_extent(sp, s, unit_scale)     # solid geometry OR bbox fallback
+        if ext is None:
             continue
-        x0, x1 = float(v[:, 0].min()), float(v[:, 0].max())
-        y0, y1 = float(v[:, 1].min()), float(v[:, 1].max())
+        x0, x1, y0, y1, zmin = ext
         W, D = x1 - x0, y1 - y0
         if W < 0.8 or D < 0.8:
             continue
-        # duplicate IfcSpace shells of the SAME room collapse; mirrored-unit
-        # rooms (same name, different position) stay separate
         key = (name, storey, round(x0, 1), round(y0, 1))
         if key in seen:
-            continue
+            continue                                  # duplicate shell of the same room
         seen.add(key)
-        rec = {"name": name, "area": round(float(W * D), 1), "storey": storey,
-               "rect": [round(x0, 3), round(y0, 3), round(W, 3), round(D, 3)]}
-        if rt is None or W < 1.2 or D < 1.2:
-            # context room (foyer/hall/stair/bath): drawn on the 2D plan so the
-            # floor reads as ONE connected apartment, but never furnished
-            non_furnishable.append({**rec, "type": "space", "furnishable": False,
-                                    "obstacles": [], "suggested": []})
-            continue
-        used_storeys.add(storey)
-        rooms.append({**rec, "type": rt, "furnishable": True,
-                      "obstacles": pop.extract_room_obstacles(obstacle_rects, door_rects,
-                                                              x0, x1, y0, y1),
-                      "suggested": pop.smart_furnish(rt, W, D, assets)})
-    # keep context rooms only on floors that actually have furnishable rooms
-    rooms += [r for r in non_furnishable if r["storey"] in used_storeys]
+        area = round(float(W * D), 1)
+        rec = {"name": name or "Room", "area": area, "storey": storey,
+               "rect": [round(x0, 3), round(y0, 3), round(W, 3), round(D, 3)],
+               "_zmin": round(float(zmin), 3)}
+        # furnishable = big enough and not a service space; unknown names count
+        furnishable = cls != "skip" and W >= 1.2 and D >= 1.2 and area >= 4.0
+        if furnishable:
+            rt = cls if cls not in (None, "skip") else None
+            rooms.append({**rec, "type": rt or "room", "furnishable": True,
+                          "obstacles": pop.extract_room_obstacles(obstacle_rects, door_rects,
+                                                                  x0, x1, y0, y1),
+                          "suggested": pop.smart_furnish(rt, W, D, assets) if rt else []})
+        else:
+            rooms.append({**rec, "type": "space", "furnishable": False,
+                          "obstacles": [], "suggested": []})
 
-    storeys = [{"name": n, "elevation": round(elev_of.get(n, 0.0), 3),
-                "top": round(tops.get(n, 3.1), 3)}
-               for n in sorted(used_storeys, key=lambda n: elev_of.get(n, 0.0)) if n]
+    if not rooms:
+        return {"ok": False, "status": 400,
+                "error": "no usable rooms found — the IFC has no IfcSpace geometry"}
+
+    # ---- storey assignment: synthesise bands from room base heights if needed
+    if not elev_of:
+        bands = []
+        for z in sorted({round(r["_zmin"], 1) for r in rooms}):
+            if not bands or z - bands[-1] > 1.5:
+                bands.append(z)
+        elev_of = {f"Level {i + 1}": z for i, z in enumerate(bands)}
+    levels = sorted(elev_of.values())
+    tops = {}
+    for nm, e in elev_of.items():
+        higher = [v for v in levels if v > e + 0.05]
+        tops[nm] = min(higher) if higher else e + 3.1
+    for r in rooms:
+        if not r.get("storey") or r["storey"] not in elev_of:
+            z = r["_zmin"]
+            below = [(z - e, nm) for nm, e in elev_of.items() if e <= z + 0.6]
+            r["storey"] = min(below)[1] if below else min((abs(z - e), nm) for nm, e in elev_of.items())[1]
+        del r["_zmin"]
+
+    used = {r["storey"] for r in rooms if r["furnishable"]}
+    rooms = [r for r in rooms if r["furnishable"] or r["storey"] in used]
+    storeys = [{"name": n, "elevation": round(elev_of[n], 3), "top": round(tops[n], 3)}
+               for n in sorted(used, key=lambda n: elev_of.get(n, 0.0)) if n]
     return {"ok": True, "rooms": rooms, "categories": sorted(assets.keys()),
             "storeys": storeys}
 
 
+def cmd_register_building(args):
+    """Probe an uploaded IFC: is it usable as a building, how heavy is it, and is
+    anything suspicious (units, rotation)? Cheap — counts + ONE test room shape."""
+    import ifcopenshell
+    import ifcopenshell.geom
+    import numpy as np
+
+    path = Path(args["path"])
+    if not path.exists():
+        return {"ok": False, "error": "file not found", "status": 404}
+    try:
+        f = ifcopenshell.open(str(path))
+    except Exception as exc:
+        return {"ok": False, "status": 400, "error": f"not a readable IFC: {exc}"}
+
+    def _bt(t):
+        try:
+            return f.by_type(t)
+        except Exception:
+            return []
+
+    spaces = _bt("IfcSpace")
+    spaces_rep = [sp for sp in spaces if getattr(sp, "Representation", None)]
+    if not spaces_rep:
+        return {"ok": False, "status": 400,
+                "error": "This IFC has no rooms with geometry (IfcSpace). "
+                         "Export the architectural model with spaces/rooms included."}
+    products_rep = sum(1 for p in _bt("IfcProduct") if getattr(p, "Representation", None))
+    try:
+        from ifcopenshell.util.unit import calculate_unit_scale
+        unit_scale = float(calculate_unit_scale(f))
+    except Exception:
+        unit_scale = 1.0
+
+    warnings = []
+    # smoke-test space geometry on a few rooms: solid shape OR bbox fallback both
+    # count (footprint-only exports like Schependomlaan are perfectly usable)
+    import populate_building as pop
+    s = ifcopenshell.geom.settings()
+    s.set(s.USE_WORLD_COORDS, True)
+    solid = 0
+    usable = 0
+    sampleWD = None
+    for sp in spaces_rep[:5]:
+        try:
+            g = ifcopenshell.geom.create_shape(s, sp)
+            v = np.array(g.geometry.verts).reshape(-1, 3)
+            solid += 1
+            usable += 1
+            if sampleWD is None:
+                W = float(v[:, 0].max() - v[:, 0].min())
+                D = float(v[:, 1].max() - v[:, 1].min())
+                sampleWD = (W, D)
+                fc = np.array(g.geometry.faces).reshape(-1, 3)
+                tri = v[fc]
+                proj2 = float(np.abs((tri[:, 1, 0] - tri[:, 0, 0]) * (tri[:, 2, 1] - tri[:, 0, 1])
+                                     - (tri[:, 2, 0] - tri[:, 0, 0]) * (tri[:, 1, 1] - tri[:, 0, 1])).sum() / 2)
+                if W * D > 1 and proj2 > 0 and (proj2 / 2) / (W * D) < 0.55:
+                    warnings.append("building looks rotated or irregular — layouts may be conservative")
+        except Exception:
+            if pop.space_extent(sp, s, unit_scale) is not None:
+                usable += 1
+    if usable == 0:
+        return {"ok": False, "status": 400,
+                "error": "the geometry kernel can't extract any room from this IFC"}
+    if solid == 0:
+        warnings.append("rooms carry footprint-only geometry — using bounding boxes")
+    if sampleWD and max(sampleWD) > 200:
+        warnings.append("rooms measure suspiciously large — the file's units may be unusual")
+
+    name = None
+    for b in _bt("IfcBuilding") + _bt("IfcProject"):
+        name = (getattr(b, "LongName", None) or b.Name or "").strip() or None
+        if name:
+            break
+    return {"ok": True, "profile": {
+        "schema": f.schema, "name": name,
+        "spaces": len(spaces_rep), "storeys": len(_bt("IfcBuildingStorey")),
+        "products": products_rep,
+        "size_mb": round(path.stat().st_size / 1048576, 1),
+        "unit_scale": unit_scale,
+        "est_populate_min": max(1, round(products_rep / 300)),
+        "warnings": warnings,
+    }}
+
+
+def cmd_prepare_building(args):
+    """Background prepare after registration: build the geometry cache (obstacle
+    footprints + decimated shell) so the user's FIRST populate is already fast."""
+    import ifcopenshell
+    import ifcopenshell.geom
+    import populate_building as pop
+
+    path = Path(args["path"])
+    if not path.exists():
+        return {"ok": False, "error": "file not found", "status": 404}
+    f = ifcopenshell.open(str(path))
+    s = ifcopenshell.geom.settings()
+    s.set(s.USE_WORLD_COORDS, True)
+    obstacles, doors = pop.cached_footprints(f, s, path)
+    shell = pop.build_shell_cache(f, s, path)
+    return {"ok": True, "obstacles": len(obstacles), "doors": len(doors),
+            "shell": str(shell)}
+
+
 def cmd_building_save(args):
-    """Merge the current (possibly re-dragged) piece positions + shell into one GLB."""
+    """Merge the current (possibly re-dragged) piece positions + shell into one GLB.
+    Writes into the building's own scratch dir so two buildings never clobber."""
     import trimesh
-    out_dir = Path(args["out_dir"])
+    mov = Path(args.get("bldg_dir") or (Path(args["out_dir"]) / "bldg"))
     positions = args.get("positions", {}) or {}       # {piece_id: [x,y,z]}
-    mov = out_dir / "bldg"
     if not (mov / "shell.glb").exists():
         return {"ok": False, "error": "populate first", "status": 400}
     scene = trimesh.load(str(mov / "shell.glb"), force="scene")
@@ -373,8 +516,8 @@ def cmd_building_save(args):
         g = trimesh.load(str(mov / p["glb"]), force="mesh")
         g.apply_translation(positions.get(p["id"], p["pos"]))
         scene.add_geometry(g, node_name=p["id"])
-    scene.export(str(out_dir / "building_final.glb"))
-    return {"ok": True, "glb": "/out/building_final.glb"}
+    scene.export(str(mov / "building_final.glb"))
+    return {"ok": True, "glb_name": "building_final.glb"}
 
 
 def cmd_register_upload(args):
@@ -575,6 +718,8 @@ _COMMANDS = {
     "update_positions": cmd_update_positions,
     "building_rooms": cmd_building_rooms,
     "building_save": cmd_building_save,
+    "register_building": cmd_register_building,
+    "prepare_building": cmd_prepare_building,
     "register_upload": cmd_register_upload,
     "demo_run": cmd_demo_run,
 }

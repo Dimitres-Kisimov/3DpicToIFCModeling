@@ -165,7 +165,19 @@
             <div class="card">
                 <div class="card-head"><span class="step-num">1</span> Choose a building</div>
                 <select id="bSelect" class="select"><option value="">— choose a building —</option></select>
+                <p id="bProfile" class="hint" hidden></p>
                 <p class="hint">A real architectural IFC. Every room is measured and gets a smart furniture suggestion you can edit.</p>
+            </div>
+            <div class="card">
+                <div class="card-head"><span class="step-num">＋</span> Add a building</div>
+                <div id="bAddZone" class="upload-box upload-box-sm">
+                    <div class="upload-label">
+                        <span class="upload-icon">🏢</span>
+                        <span class="upload-main">Drop an .ifc building here</span>
+                        <small>checked, profiled and prepared automatically — then it's in the list</small>
+                    </div>
+                </div>
+                <input type="file" id="bAddFile" accept=".ifc" hidden>
             </div>
             <div id="bRooms"></div>
             <button id="bPopulate" class="btn btn-primary btn-block" hidden>🏢 Populate building</button>

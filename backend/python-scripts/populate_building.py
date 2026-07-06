@@ -18,7 +18,7 @@ Coordinates: IFC is Z-up (floor = XY, Z = vertical); assets are Z-up + real-scal
 drops in with a yaw-only rotation. The final scene is rotated to Y-up for the viewer.
 """
 from __future__ import annotations
-import sys, json, argparse
+import sys, json, os, argparse
 from pathlib import Path
 import numpy as np
 import trimesh
@@ -30,25 +30,56 @@ import spatial_layout
 REPO = Path(__file__).resolve().parents[2]
 LIB = REPO / "deliverable" / "asset_library"
 
-SKIP_KEYWORDS = ["bath", "foyer", "hall", "stair", "utility", "roof", "closet", "wc", "corridor"]
-# room-name keyword -> canonical room type
+SKIP_KEYWORDS = ["bath", "foyer", "hall", "stair", "utility", "roof", "closet", "wc", "corridor",
+                 # German (SCS buildings will be German)
+                 "bad", "flur", "diele", "treppe", "abstell", "technik", "garderobe",
+                 # Dutch (Schependomlaan-style housing exports)
+                 "entree", "gang", "berging", "instal", "toilet", "trap", "mk"]
+# room-name keyword -> canonical room type (multi-language so ANY new building maps)
 TYPE_KEYWORDS = {"living": "living", "lounge": "lounge", "bed": "bed", "kitchen": "kitchen",
                  "dining": "dining", "meeting": "meeting", "conference": "meeting",
-                 "office": "office", "study": "office", "work": "office", "room": "living"}
+                 "office": "office", "study": "office", "work": "office",
+                 "wohn": "living", "schlaf": "bed", "kinder": "bed",
+                 "küche": "kitchen", "kueche": "kitchen", "ess": "dining",
+                 "besprechung": "meeting", "konferenz": "meeting",
+                 "büro": "office", "buero": "office", "arbeits": "office",
+                 "woon": "living", "slaap": "bed", "keuken": "kitchen", "eet": "dining",
+                 "room": "living", "zimmer": "living", "kamer": "living"}
 # structural element types that cut up a room and must be avoided
 OBSTACLE_TYPES = ["IfcColumn", "IfcWall", "IfcWallStandardCase", "IfcBeam", "IfcMember",
                   "IfcStair", "IfcStairFlight", "IfcRailing"]
 
 
-def room_type(name):
-    """Canonical room type from the IFC room name, or None to skip (bath/hall/stair/…)."""
+def _kw_hit(name, kw):
+    """Keyword match that respects word starts for SHORT keywords: 'Schlafzimmer'
+    still hits 'schlaf' (German compounds need substrings), but 'Dressing' must
+    not hit 'ess' and English text must not hit German 'bad'."""
+    i = name.find(kw)
+    if i < 0:
+        return False
+    if len(kw) >= 5:
+        return True
+    return i == 0 or not name[i - 1].isalpha()
+
+
+def classify_room(name):
+    """'skip' (service space), a canonical room type, or None (unknown name —
+    e.g. 'Zimmer 1.02' / 'Raum 5' / '101'). Unknown ≠ unusable: the UI lets the
+    user furnish unknown rooms with explicit picks; keywords only drive defaults."""
     n = (name or "").lower()
-    if any(k in n for k in SKIP_KEYWORDS):
-        return None
+    for k in SKIP_KEYWORDS:
+        if _kw_hit(n, k):
+            return "skip"
     for kw, t in TYPE_KEYWORDS.items():
-        if kw in n:
+        if _kw_hit(n, kw):
             return t
     return None
+
+
+def room_type(name):
+    """Canonical room type from the IFC room name, or None (service space or unknown)."""
+    c = classify_room(name)
+    return None if c in ("skip", None) else c
 
 
 def smart_furnish(rt, W, D, assets):
@@ -124,6 +155,48 @@ def _rescale_to_real(mesh, cat):
     return mesh
 
 
+def build_shell_cache(f, s, ifc_path, force=False):
+    """Build (once) the building's empty shell as a Y-up GLB in the geometry cache.
+    This is the dominant populate cost (create_shape for every product) — caching
+    it makes every populate after the first solver-only. Heavy meshes are gently
+    decimated per-mesh so the browser never loads a monster GLB."""
+    d = geometry_cache_dir(ifc_path)
+    out = d / "shell.glb"
+    if out.exists() and not force:
+        return str(out)
+    scene = trimesh.Scene()
+    n_shell = 0
+    try:
+        prods = f.by_type("IfcProduct")
+    except Exception:
+        prods = []
+    for prod in prods:
+        if prod.is_a() in {"IfcFurnishingElement", "IfcFurniture", "IfcSystemFurnitureElement",
+                           "IfcSpace", "IfcOpeningElement"} or not getattr(prod, "Representation", None):
+            continue
+        try:
+            sh = ifcopenshell.geom.create_shape(s, prod)
+            v = np.array(sh.geometry.verts).reshape(-1, 3)
+            fc = np.array(sh.geometry.faces).reshape(-1, 3)
+            if len(v) and len(fc):
+                tm = trimesh.Trimesh(vertices=v, faces=fc)
+                if len(fc) > 20000:              # per-mesh budget: heavy slabs only
+                    try:
+                        tm = tm.simplify_quadric_decimation(20000)
+                    except Exception:
+                        pass
+                scene.add_geometry(tm, node_name=f"shell-{n_shell}")
+                n_shell += 1
+        except Exception:
+            pass
+    scene.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))  # -> Y-up
+    tmp = d / "shell.tmp.glb"
+    scene.export(str(tmp))
+    tmp.replace(out)                             # atomic under concurrent jobs
+    (d / "shell.meta.json").write_text(json.dumps({"elements": n_shell}), encoding="utf-8")
+    return str(out)
+
+
 def load_assets():
     man = json.load(open(LIB / "manifest.json", encoding="utf-8"))["assets"]
     by_cat = {}
@@ -139,19 +212,97 @@ def load_assets():
     return out
 
 
+def space_extent(sp, s, unit_scale=1.0):
+    """World bbox (x0, x1, y0, y1, zmin) in METRES for an IfcSpace — via solid
+    geometry when the kernel can process it, else the space's IfcBoundingBox
+    (footprint-only exports like Schependomlaan). Raw attributes are project
+    units, hence unit_scale; create_shape output is already metres."""
+    try:
+        g = ifcopenshell.geom.create_shape(s, sp)
+        v = np.array(g.geometry.verts).reshape(-1, 3)
+        if len(v):
+            return (float(v[:, 0].min()), float(v[:, 0].max()),
+                    float(v[:, 1].min()), float(v[:, 1].max()), float(v[:, 2].min()))
+    except Exception:
+        pass
+    rep = getattr(sp, "Representation", None)
+    if not rep:
+        return None
+    try:
+        import ifcopenshell.util.placement as up
+        for r in rep.Representations:
+            for item in r.Items:
+                if item.is_a("IfcBoundingBox"):
+                    m4 = np.array(up.get_local_placement(sp.ObjectPlacement))
+                    lo = m4 @ np.array(list(item.Corner.Coordinates[:3]) + [1.0])
+                    hi = lo[:3] + m4[:3, :3] @ np.array([float(item.XDim), float(item.YDim), float(item.ZDim)])
+                    x0, x1 = sorted((float(lo[0]), float(hi[0])))
+                    y0, y1 = sorted((float(lo[1]), float(hi[1])))
+                    z0 = min(float(lo[2]), float(hi[2]))
+                    u = float(unit_scale)
+                    return (x0 * u, x1 * u, y0 * u, y1 * u, z0 * u)
+    except Exception:
+        pass
+    return None
+
+
 def footprint_rects(f, s, types):
     rects = []
     for t in types:
-        for e in f.by_type(t):
+        try:
+            prods = f.by_type(t)
+        except Exception:
+            prods = []                       # type absent from this schema
+        for e in prods:
             if not getattr(e, "Representation", None):
                 continue
             try:
                 g = ifcopenshell.geom.create_shape(s, e)
                 v = np.array(g.geometry.verts).reshape(-1, 3)
-                rects.append((v[:, 0].min(), v[:, 0].max(), v[:, 1].min(), v[:, 1].max(), t))
+                rects.append((float(v[:, 0].min()), float(v[:, 0].max()),
+                              float(v[:, 1].min()), float(v[:, 1].max()), t))
             except Exception:
                 pass
     return rects
+
+
+# ---------------------------------------------------------------------------
+# Per-building geometry cache — extracting obstacles/doors and building the
+# shell are the expensive parts (linear in product count) and NEVER change for
+# a given IFC file. Cache them keyed by (path, mtime, size) so only the FIRST
+# scan of a new building pays; repeat populates are solver-only.
+# ---------------------------------------------------------------------------
+CACHE_ROOT = REPO / "data" / "buildings" / "_cache"
+
+
+def geometry_cache_dir(ifc_path):
+    import hashlib
+    p = Path(ifc_path).resolve()
+    st = p.stat()
+    key = f"{hashlib.md5(str(p).lower().encode()).hexdigest()[:10]}_{int(st.st_mtime)}_{st.st_size}"
+    d = CACHE_ROOT / key
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def cached_footprints(f, s, ifc_path):
+    """Obstacle + door world rects for the whole building, disk-cached."""
+    d = geometry_cache_dir(ifc_path)
+    fp = d / "footprints.json"
+    if fp.exists():
+        try:
+            data = json.loads(fp.read_text(encoding="utf-8"))
+            return ([tuple(r) for r in data["obstacles"]],
+                    [tuple(r) for r in data["doors"]])
+        except Exception:
+            pass
+    obstacles = footprint_rects(f, s, OBSTACLE_TYPES)
+    doors = footprint_rects(f, s, ["IfcDoor"])
+    try:
+        fp.write_text(json.dumps({"obstacles": obstacles, "doors": doors}), encoding="utf-8")
+    except Exception:
+        pass
+    return obstacles, doors
 
 
 # IFC element type -> human keep-out kind (A3b)
@@ -207,31 +358,49 @@ def main():
     picks = json.load(open(args.picks, encoding="utf-8")) if args.picks else {}
     f = ifcopenshell.open(args.ifc)
     s = ifcopenshell.geom.settings(); s.set(s.USE_WORLD_COORDS, True)
+    try:
+        from ifcopenshell.util.unit import calculate_unit_scale
+        unit_scale = float(calculate_unit_scale(f))
+    except Exception:
+        unit_scale = 1.0
     assets = load_assets()
     movdir = Path(args.movable) if args.movable else None
     if movdir is not None:
         movdir.mkdir(parents=True, exist_ok=True)
     movable = []
-    obstacle_rects = footprint_rects(f, s, OBSTACLE_TYPES)
-    door_rects = footprint_rects(f, s, ["IfcDoor"])
+    obstacle_rects, door_rects = cached_footprints(f, s, args.ifc)
 
     scene = trimesh.Scene()
-
-    # 1) empty shell (everything except furniture + space volumes + openings)
     n_shell = 0
-    for prod in f.by_type("IfcProduct"):
-        if prod.is_a() in {"IfcFurnishingElement", "IfcFurniture", "IfcSystemFurnitureElement",
-                           "IfcSpace", "IfcOpeningElement"} or not getattr(prod, "Representation", None):
-            continue
+    if movdir is not None:
+        # movable (app) mode: the shell comes from the per-building geometry cache —
+        # built once, reused by every later populate (repeat populates = solver-only)
+        import shutil as _sh
+        shell_src = Path(build_shell_cache(f, s, args.ifc))
         try:
-            sh = ifcopenshell.geom.create_shape(s, prod)
-            v = np.array(sh.geometry.verts).reshape(-1, 3)
-            fc = np.array(sh.geometry.faces).reshape(-1, 3)
-            if len(v) and len(fc):
-                scene.add_geometry(trimesh.Trimesh(vertices=v, faces=fc), node_name=f"shell-{n_shell}")
-                n_shell += 1
+            meta = json.loads((shell_src.parent / "shell.meta.json").read_text(encoding="utf-8"))
+            n_shell = int(meta.get("elements", 0))
         except Exception:
             pass
+        try:
+            os.link(str(shell_src), str(movdir / "shell.glb"))     # zero-copy on same volume
+        except Exception:
+            _sh.copy2(str(shell_src), str(movdir / "shell.glb"))
+    else:
+        # merged single-GLB mode: build the shell inline (furniture merges into it)
+        for prod in f.by_type("IfcProduct"):
+            if prod.is_a() in {"IfcFurnishingElement", "IfcFurniture", "IfcSystemFurnitureElement",
+                               "IfcSpace", "IfcOpeningElement"} or not getattr(prod, "Representation", None):
+                continue
+            try:
+                sh = ifcopenshell.geom.create_shape(s, prod)
+                v = np.array(sh.geometry.verts).reshape(-1, 3)
+                fc = np.array(sh.geometry.faces).reshape(-1, 3)
+                if len(v) and len(fc):
+                    scene.add_geometry(trimesh.Trimesh(vertices=v, faces=fc), node_name=f"shell-{n_shell}")
+                    n_shell += 1
+            except Exception:
+                pass
 
     placed, rooms_done, skipped_items, clashes = 0, 0, 0, 0
     schedule = []
@@ -241,13 +410,10 @@ def main():
         rt = room_type(name)
         if explicit is None and rt is None:                 # not furnishable + not picked
             continue
-        try:
-            g = ifcopenshell.geom.create_shape(s, sp)
-            v = np.array(g.geometry.verts).reshape(-1, 3)
-        except Exception:
+        ext = space_extent(sp, s, unit_scale)
+        if ext is None:
             continue
-        x0, x1, y0, y1 = v[:, 0].min(), v[:, 0].max(), v[:, 1].min(), v[:, 1].max()
-        fz = v[:, 2].min()
+        x0, x1, y0, y1, fz = ext
         W, D = x1 - x0, y1 - y0
         if W < 1.2 or D < 1.2:
             continue
@@ -327,13 +493,12 @@ def main():
                          "placed": len(boxes), "items": room_cats})
         rooms_done += 1
 
-    scene.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))   # -> Y-up
-    import os
     if movdir is not None:
-        scene.export(str(movdir / "shell.glb"))            # scene holds only the shell in movable mode
+        # shell.glb already linked/copied from the geometry cache
         (movdir / "furniture.json").write_text(json.dumps({"pieces": movable}), encoding="utf-8")
         out_info = {"shell": "shell.glb", "movable_pieces": len(movable)}
     else:
+        scene.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))  # -> Y-up
         scene.export(args.out)
         out_info = {"out": args.out, "kb": os.path.getsize(args.out) // 1024}
     print(json.dumps({"ok": True, **out_info, "shell_elements": n_shell, "rooms_populated": rooms_done,
