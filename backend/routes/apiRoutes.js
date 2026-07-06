@@ -35,7 +35,14 @@ function runDetectAndPlace(imagePath, outputDir) {
       cwd: path.join(__dirname, '..', '..'),
       // keep the LIGHT cleanup only (debris filter keeps legs). MIRROR removed — it deleted the
       // chair legs by mirroring the body half over the base. Base cleanup needs a safer approach.
-      env: { ...process.env, SCS_TRIPOSR_SKIP_POSTPROC: '1', SCS_TRIPOSR_MIRROR: '0' },
+      // "Fast — from catalog" must actually USE the catalog: force retrieval (threshold 0) so it
+      // never silently falls back to a slow TripoSR generation. Overridable via the env var.
+      env: {
+        ...process.env,
+        SCS_TRIPOSR_SKIP_POSTPROC: '1',
+        SCS_TRIPOSR_MIRROR: '0',
+        SCS_RETRIEVAL_THRESHOLD: process.env.SCS_RETRIEVAL_THRESHOLD || '0',
+      },
     });
 
     let stdout = '';
