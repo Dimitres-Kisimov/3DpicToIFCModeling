@@ -87,65 +87,62 @@ def _voxel_solidify(mesh, pitch_frac=0.012):
     return solid
 
 
+def clean_mesh(mesh, target_faces=15000, solidify=False, ground=True):
+    """THE single geometry-cleanup pass — shared by GLB export AND IFC optimize (written once).
+    debris removal -> MeshFix watertight -> Taubin smooth -> quadric decimate [-> ground].
+    Returns (cleaned_mesh, stages_dict)."""
+    stages = {}
+    if solidify:
+        try:
+            mesh = _voxel_solidify(mesh); stages["solidify"] = "voxel remesh"
+        except Exception as e:
+            stages["solidify_error"] = str(e)
+    else:
+        try:
+            mesh, dropped = _debris_filter(mesh); stages["debris_removed_components"] = dropped
+        except Exception as e:
+            stages["debris_error"] = str(e)
+        try:
+            import pymeshfix
+            vc, fc = pymeshfix.clean_from_arrays(
+                np.asarray(mesh.vertices, np.float64), np.asarray(mesh.faces, np.int32),
+                joincomp=True, remove_smallest_components=False)
+            if len(vc) and len(fc):
+                mesh = trimesh.Trimesh(vertices=vc, faces=fc, process=True)
+                stages["watertight_repair"] = "pymeshfix"
+        except Exception as e:
+            stages["repair_error"] = str(e)
+    try:
+        trimesh.smoothing.filter_taubin(mesh, iterations=12); stages["smoothing"] = "taubin x12"
+    except Exception as e:
+        stages["smooth_error"] = str(e)
+    try:
+        if len(mesh.faces) > target_faces:
+            import fast_simplification
+            reduction = 1.0 - (target_faces / len(mesh.faces))
+            vs, fs = fast_simplification.simplify(
+                np.asarray(mesh.vertices, np.float32), np.asarray(mesh.faces, np.int32),
+                target_reduction=float(reduction))
+            mesh = trimesh.Trimesh(vertices=vs, faces=fs, process=True)
+            stages["decimated_to_faces"] = int(len(mesh.faces))
+    except Exception as e:
+        stages["decimate_error"] = str(e)
+    if ground:
+        try:
+            b = mesh.bounds
+            mesh.apply_translation([-(b[0][0] + b[1][0]) / 2, -b[0][1], -(b[0][2] + b[1][2]) / 2])
+        except Exception:
+            pass
+    return mesh, stages
+
+
 def clean_and_optimize(in_path, out_path, target_faces=15000, solidify=False):
     report = {"stages": {}}
     mesh = trimesh.load(in_path, force="mesh")
     color = _capture_color(mesh)          # keep the original colour through the rebuild
     report["before"] = _stats(mesh)
 
-    if solidify:
-        try:
-            mesh = _voxel_solidify(mesh)
-            report["stages"]["solidify"] = "voxel remesh"
-        except Exception as e:
-            report["stages"]["solidify_error"] = str(e)
-    else:
-        # 1. debris removal
-        try:
-            mesh, dropped = _debris_filter(mesh)
-            report["stages"]["debris_removed_components"] = dropped
-        except Exception as e:
-            report["stages"]["debris_error"] = str(e)
-        # 2. watertight repair (MeshFix) — join nearby components, fill holes, fix manifold
-        try:
-            import pymeshfix
-            vc, fc = pymeshfix.clean_from_arrays(
-                np.asarray(mesh.vertices, dtype=np.float64),
-                np.asarray(mesh.faces, dtype=np.int32),
-                joincomp=True, remove_smallest_components=False)
-            if len(vc) and len(fc):
-                mesh = trimesh.Trimesh(vertices=vc, faces=fc, process=True)
-                report["stages"]["watertight_repair"] = "pymeshfix"
-        except Exception as e:
-            report["stages"]["repair_error"] = str(e)
-
-    # 3. Taubin smoothing (volume-preserving)
-    try:
-        trimesh.smoothing.filter_taubin(mesh, iterations=12)
-        report["stages"]["smoothing"] = "taubin x12"
-    except Exception as e:
-        report["stages"]["smooth_error"] = str(e)
-
-    # 4. decimation to a face budget
-    try:
-        if len(mesh.faces) > target_faces:
-            import fast_simplification
-            reduction = 1.0 - (target_faces / len(mesh.faces))
-            vs, fs = fast_simplification.simplify(
-                np.asarray(mesh.vertices, dtype=np.float32),
-                np.asarray(mesh.faces, dtype=np.int32), target_reduction=float(reduction))
-            mesh = trimesh.Trimesh(vertices=vs, faces=fs, process=True)
-            report["stages"]["decimated_to_faces"] = int(len(mesh.faces))
-    except Exception as e:
-        report["stages"]["decimate_error"] = str(e)
-
-    # 5. ground + centre
-    try:
-        b = mesh.bounds
-        mesh.apply_translation([-(b[0][0] + b[1][0]) / 2, -b[0][1], -(b[0][2] + b[1][2]) / 2])
-    except Exception:
-        pass
-
+    mesh, report["stages"] = clean_mesh(mesh, target_faces, solidify)   # THE shared cleanup (once)
     _apply_color(mesh, color)             # re-attach the captured colour before export
     mesh.export(out_path)
     report["after"] = _stats(mesh)

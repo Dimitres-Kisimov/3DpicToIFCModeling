@@ -1,109 +1,124 @@
-"""optimize_ifc.py — analyze + optimize an IFC file's geometry. Works on ANY object(s).
+"""optimize_ifc.py — ONE-pass IFC optimizer. Runs on any IFC (single object OR a whole building).
 
-Reads every IfcTriangulatedFaceSet in the IFC, cleans its mesh (drop floating debris → repair to
-watertight → Taubin-smooth → decimate), writes the cleaner geometry back INTO the same IFC entities
-(preserving hierarchy, placement, materials, metadata), and saves an optimized IFC + a before/after
-report (products, face-sets, faces, vertices, entities, file size).
+Efficiency by design — no process is repeated:
+  1. clean geometry — the SHARED clean_mesh() (debris/spike -> MeshFix -> Taubin -> decimate).
+                      Each UNIQUE mesh is cleaned ONCE (cached by geometry hash), not per instance.
+  2. instance       — identical furniture meshes are stored ONCE and referenced N times (dup
+                      IfcTriangulatedFaceSets are collapsed into one shared entity).
+  3. precision      — CoordList rounded to N decimals (0.1 mm) -> smaller STEP text.
+Writes an optimized IFC + before/after report. Optional gzip (.ifcZIP-style).
 
-    python optimize_ifc.py <in.ifc> <out.ifc> [--target-faces 15000]
-
-This is the executive's objective: an algorithm that operates ON the IFC data and makes every object
-cleaner + lighter. Pure CPU.
+    python optimize_ifc.py <in.ifc> <out.ifc> [--target-faces 15000] [--no-clean] [--zip]
 """
 from __future__ import annotations
-import sys, json, argparse, os
+import sys, json, argparse, os, hashlib, gzip
 import numpy as np
 import trimesh
 import ifcopenshell
 
-
-def _clean_mesh(verts, faces, target_faces):
-    """Clean one object's mesh (verts Nx3, faces Mx3 0-based) -> (verts, faces). Guarded per stage."""
-    mesh = trimesh.Trimesh(vertices=np.asarray(verts, float), faces=np.asarray(faces, int), process=False)
-    # 1) debris removal — keep components that are >= 0.6% of the faces (drops floaters, keeps legs)
-    try:
-        comps = mesh.split(only_watertight=False)
-        if len(comps) > 1:
-            total = sum(len(c.faces) for c in comps)
-            kept = [c for c in comps if len(c.faces) / total >= 0.006] \
-                or [max(comps, key=lambda c: len(c.faces))]
-            mesh = trimesh.util.concatenate(kept)
-    except Exception:
-        pass
-    # 2) watertight repair (MeshFix) — join components, fill holes, fix manifold
-    try:
-        import pymeshfix
-        vc, fc = pymeshfix.clean_from_arrays(
-            np.asarray(mesh.vertices, np.float64), np.asarray(mesh.faces, np.int32),
-            joincomp=True, remove_smallest_components=False)
-        if len(vc) and len(fc):
-            mesh = trimesh.Trimesh(vertices=vc, faces=fc, process=True)
-    except Exception:
-        pass
-    # 3) Taubin smoothing (volume-preserving)
-    try:
-        trimesh.smoothing.filter_taubin(mesh, iterations=10)
-    except Exception:
-        pass
-    # 4) decimation to a face budget
-    try:
-        if len(mesh.faces) > target_faces:
-            import fast_simplification
-            reduction = 1.0 - (target_faces / len(mesh.faces))
-            v, f = fast_simplification.simplify(
-                np.asarray(mesh.vertices, np.float32), np.asarray(mesh.faces, np.int32),
-                target_reduction=float(reduction))
-            mesh = trimesh.Trimesh(vertices=v, faces=f, process=True)
-    except Exception:
-        pass
-    return np.asarray(mesh.vertices), np.asarray(mesh.faces)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from clean_and_optimize import clean_mesh   # THE shared cleanup — never re-implemented
 
 
 def _analyze(ifc):
     fss = ifc.by_type("IfcTriangulatedFaceSet")
-    faces = sum(len(fs.CoordIndex or []) for fs in fss)
-    verts = sum(len(fs.Coordinates.CoordList or []) for fs in fss)
     return {"products": len(ifc.by_type("IfcProduct")), "face_sets": len(fss),
-            "faces": int(faces), "vertices": int(verts), "entities": len(list(ifc))}
+            "faces": int(sum(len(fs.CoordIndex or []) for fs in fss)),
+            "vertices": int(sum(len(fs.Coordinates.CoordList or []) for fs in fss)),
+            "entities": len(list(ifc))}
 
 
-def optimize_ifc(in_path, out_path, target_faces=15000):
+def _geo_hash(fs):
+    v = np.round(np.array(fs.Coordinates.CoordList, dtype=float), 3)
+    f = np.array(fs.CoordIndex, dtype=int)
+    return hashlib.md5(v.tobytes() + f.tobytes()).hexdigest()
+
+
+def _repoint(ifc, dup, keep):
+    """Replace every reference to `dup` with `keep` (direct or inside a list attribute)."""
+    for inv in ifc.get_inverse(dup):
+        for i in range(len(inv)):
+            v = inv[i]
+            if v is dup:
+                inv[i] = keep
+            elif isinstance(v, (list, tuple)) and any(x is dup for x in v):
+                inv[i] = [keep if x is dup else x for x in v]
+
+
+def optimize_ifc(in_path, out_path, target_faces=15000, do_clean=True, precision=4, make_zip=False):
     ifc = ifcopenshell.open(in_path)
     before = _analyze(ifc); before["kb"] = os.path.getsize(in_path) // 1024
 
-    cleaned, per_object = 0, []
+    # 1) CLEAN — each unique mesh cleaned ONCE (cache), then precision-rounded on write-back
+    cleaned, cache = 0, {}
     for fs in ifc.by_type("IfcTriangulatedFaceSet"):
         try:
-            verts = np.array(fs.Coordinates.CoordList, dtype=float)
-            faces = np.array(fs.CoordIndex, dtype=int) - 1          # IFC CoordIndex is 1-based
-            f0 = len(faces)
-            cv, cf = _clean_mesh(verts, faces, target_faces)
-            if len(cv) >= 3 and len(cf) >= 1:
-                old = fs.Coordinates
-                fs.Coordinates = ifc.createIfcCartesianPointList3D(
-                    CoordList=[tuple(float(x) for x in p) for p in cv])
-                fs.CoordIndex = [tuple(int(i) + 1 for i in f) for f in cf]   # back to 1-based
+            h = _geo_hash(fs)
+            if do_clean:
+                if h in cache:
+                    cv, cf = cache[h]
+                else:
+                    verts = np.array(fs.Coordinates.CoordList, dtype=float)
+                    faces = np.array(fs.CoordIndex, dtype=int) - 1        # IFC is 1-based
+                    m, _ = clean_mesh(trimesh.Trimesh(verts, faces, process=False),
+                                      target_faces, ground=False)
+                    cv, cf = np.asarray(m.vertices), np.asarray(m.faces)
+                    cache[h] = (cv, cf)
+                if len(cv) < 3 or len(cf) < 1:
+                    continue
+            else:
+                cv = np.array(fs.Coordinates.CoordList, dtype=float)
+                cf = np.array(fs.CoordIndex, dtype=int) - 1
+            old = fs.Coordinates
+            fs.Coordinates = ifc.createIfcCartesianPointList3D(
+                CoordList=[tuple(round(float(x), precision) for x in p) for p in cv])
+            fs.CoordIndex = [tuple(int(i) + 1 for i in f) for f in cf]
+            try: ifc.remove(old)
+            except Exception: pass
+            cleaned += 1
+        except Exception:
+            pass
+
+    # 2) INSTANCE — collapse identical face-sets into one shared entity (store once, ref N times)
+    instanced, groups = 0, {}
+    for fs in ifc.by_type("IfcTriangulatedFaceSet"):
+        groups.setdefault(_geo_hash(fs), []).append(fs)
+    for h, fss in groups.items():
+        if len(fss) > 1:
+            keep = fss[0]
+            for dup in fss[1:]:
                 try:
-                    ifc.remove(old)
+                    oldc = dup.Coordinates
+                    _repoint(ifc, dup, keep)
+                    ifc.remove(dup)
+                    try: ifc.remove(oldc)
+                    except Exception: pass
+                    instanced += 1
                 except Exception:
                     pass
-                cleaned += 1
-                per_object.append({"faces_before": int(f0), "faces_after": int(len(cf))})
-        except Exception as e:
-            per_object.append({"error": str(e)})
 
     ifc.write(out_path)
     after = _analyze(ifcopenshell.open(out_path)); after["kb"] = os.path.getsize(out_path) // 1024
-    return {"ok": True, "face_sets_cleaned": cleaned,
-            "before": before, "after": after,
-            "faces_reduction_pct": round(100 * (1 - after["faces"] / max(before["faces"], 1)), 1),
-            "size_reduction_pct": round(100 * (1 - after["kb"] / max(before["kb"], 1)), 1),
-            "per_object": per_object[:20]}
+    result = {"ok": True, "unique_meshes": len(cache) or None, "geometry_cleaned": cleaned,
+              "meshes_instanced_away": instanced, "before": before, "after": after,
+              "faces_reduction_pct": round(100 * (1 - after["faces"] / max(before["faces"], 1)), 1),
+              "size_reduction_pct": round(100 * (1 - after["kb"] / max(before["kb"], 1)), 1)}
+    if make_zip:
+        zp = out_path + "Z"
+        with open(out_path, "rb") as fh:
+            gzdata = gzip.compress(fh.read(), 9)
+        with open(zp, "wb") as fh:
+            fh.write(gzdata)
+        result["zip_kb"] = os.path.getsize(zp) // 1024
+    return result
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("inp"); ap.add_argument("out")
     ap.add_argument("--target-faces", type=int, default=15000)
+    ap.add_argument("--no-clean", action="store_true")
+    ap.add_argument("--zip", action="store_true")
     args = ap.parse_args()
-    print(json.dumps(optimize_ifc(args.inp, args.out, args.target_faces)))
+    print(json.dumps(optimize_ifc(args.inp, args.out, args.target_faces,
+                                  do_clean=not args.no_clean, make_zip=args.zip)))
