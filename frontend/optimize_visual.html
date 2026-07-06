@@ -23,9 +23,20 @@
     .legend { font-size:11px; color:#6b7688; margin-top:6px; }
     .tot { margin-top:14px; padding-top:12px; border-top:2px solid #e3e8f0; font-size:13px; font-weight:700; }
     .foot { margin-top:18px; font-size:12px; color:#6b7688; }
+    .research-note{max-width:1080px;margin:18px auto 6px;padding:16px 22px;background:#fff;border:1px solid #d7deea;border-left:4px solid #2f6bff;border-radius:12px;box-shadow:0 2px 12px rgba(20,40,80,.07);font-family:'Segoe UI',system-ui,sans-serif;}
+    .research-note h2{font-size:16px;line-height:1.35;margin:0 0 8px;color:#1f2733;}
+    .research-note p{font-size:13.5px;line-height:1.65;color:#3a4453;margin:0 0 8px;}
+    .research-note .why{background:#f6f8fc;border-radius:8px;padding:9px 12px;margin:4px 0 10px;font-size:13px;line-height:1.6;color:#3a4453;}
+    .research-note .byline{font-size:12px;color:#6b7688;font-style:italic;margin:0;}
   </style>
 </head>
 <body>
+  <section class="research-note">
+    <h2>Optimization gains at a glance</h2>
+    <p>This figure charts the face-count and file-size reductions achieved by the optimization pipeline across the furniture library, giving a visual summary of the quantitative results. The consistent, large reductions illustrate that the pipeline reliably compresses raw single-photo reconstructions into lightweight assets suitable for IFC delivery, independent of the original object's complexity.</p>
+    <p class="why"><strong>Why it exists &amp; what it documents:</strong> We wanted the optimization results legible at a glance rather than as a table. It documents, visually, that the reductions are large and consistent across the library.</p>
+    <p class="byline">Research &mdash; Dimitres Kisimov</p>
+  </section>
   <h1>Optimization — visual</h1>
   <p class="sub">Each bar = what remains after optimizing (shorter = better). One example per item, generated from 2D images.</p>
   <div class="grid">

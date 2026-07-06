@@ -6,8 +6,8 @@
   <title>TripoSR vs stronger model — the real difference</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    html,body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; }
-    .grid { display:grid; grid-template-columns:1fr 1fr 1fr; height:100vh; }
+    html,body { height:100%; overflow:auto; font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; }
+    .grid { display:grid; grid-template-columns:1fr 1fr 1fr; height:78vh; }
     .panel { position:relative; border-right:1px solid #d7deea; overflow:hidden; }
     .panel:last-child { border-right:none; }
     canvas { width:100%; height:100%; display:block; }
@@ -17,9 +17,20 @@
     .cap.a b { color:#c0392b; } .cap.b b { color:#e0812b; } .cap.c b { color:#1faa60; }
     .hint { position:fixed; bottom:10px; left:50%; transform:translateX(-50%); z-index:10; font-size:12px;
       color:#6b7688; background:rgba(255,255,255,.92); padding:6px 14px; border-radius:20px; border:1px solid #d7deea; }
+    .research-note{max-width:1080px;margin:18px auto 6px;padding:16px 22px;background:#fff;border:1px solid #d7deea;border-left:4px solid #2f6bff;border-radius:12px;box-shadow:0 2px 12px rgba(20,40,80,.07);font-family:'Segoe UI',system-ui,sans-serif;}
+    .research-note h2{font-size:16px;line-height:1.35;margin:0 0 8px;color:#1f2733;}
+    .research-note p{font-size:13.5px;line-height:1.65;color:#3a4453;margin:0 0 8px;}
+    .research-note .why{background:#f6f8fc;border-radius:8px;padding:9px 12px;margin:4px 0 10px;font-size:13px;line-height:1.6;color:#3a4453;}
+    .research-note .byline{font-size:12px;color:#6b7688;font-style:italic;margin:0;}
   </style>
 </head>
 <body>
+  <section class="research-note">
+    <h2>TripoSR vs. a stronger model — where reconstruction quality actually comes from</h2>
+    <p>This figure isolates the two levers that govern single-photo 3D reconstruction quality in the SCS photo-to-BIM pipeline. Panel 1 shows the raw mesh produced by TripoSR from one photograph of the chair. Panel 2 shows the identical mesh after the project's post-processing stack: connected-component debris removal, volume-preserving Taubin smoothing, and Garland-Heckbert quadric decimation. Panel 3 shows the same chair reconstructed by a stronger generative model (SAM 3D, benchmark F-score 0.63). Comparing 1 to 2 demonstrates that cleanup barely alters the result, while 2 to 3 reveals that the decisive quality gain comes from the generative model itself. The conclusion driving the pipeline design is that model selection, not mesh post-processing, is the primary determinant of reconstruction fidelity.</p>
+    <p class="why"><strong>Why it exists &amp; what it documents:</strong> We needed to decide where to invest — in cleaning up TripoSR output or in adopting a heavier model — before committing the pipeline's engineering effort. This was generated after a five-generator benchmark to make that tradeoff visible on a real chair, and it is kept as the evidence for the project's core design decision: prioritise model choice over mesh cleanup.</p>
+    <p class="byline">Research &mdash; Dimitres Kisimov</p>
+  </section>
   <div class="grid">
     <div class="panel"><div class="cap a"><b>① Your chair — TripoSR (raw)</b><span>same model, no cleanup</span></div><canvas id="c0"></canvas></div>
     <div class="panel"><div class="cap b"><b>② Your chair — TripoSR (cleaned)</b><span>same model + our cleanup → barely different</span></div><canvas id="c1"></canvas></div>

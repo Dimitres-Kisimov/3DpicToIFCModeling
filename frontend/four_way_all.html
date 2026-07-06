@@ -5,11 +5,11 @@
   <title>4-way — all furniture</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    html,body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; }
+    html,body { height:100%; overflow:auto; font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; }
     header { display:flex; align-items:center; gap:14px; padding:10px 16px; background:#fff; border-bottom:1px solid #d7deea; }
     header h1 { font-size:16px; } header .sub { font-size:12px; color:#6b7688; }
     select { margin-left:auto; padding:7px 12px; border:1px solid #d7deea; border-radius:9px; font-size:14px; font-weight:600; }
-    .grid { display:grid; grid-template-columns:repeat(4,1fr); height:calc(100vh - 49px); }
+    .grid { display:grid; grid-template-columns:repeat(4,1fr); height:78vh; }
     .panel { position:relative; border-right:1px solid #d7deea; overflow:hidden; }
     .panel:last-child { border-right:none; }
     canvas { width:100%; height:100%; display:block; }
@@ -21,9 +21,20 @@
     .rot button { font-size:12px; font-weight:700; padding:6px 10px; border:1px solid #d7deea; border-radius:8px;
       background:rgba(255,255,255,.95); cursor:pointer; box-shadow:0 2px 6px rgba(20,40,80,.1); }
     .rot button:hover { border-color:#2f6bff; }
+    .research-note{max-width:1080px;margin:18px auto 6px;padding:16px 22px;background:#fff;border:1px solid #d7deea;border-left:4px solid #2f6bff;border-radius:12px;box-shadow:0 2px 12px rgba(20,40,80,.07);font-family:'Segoe UI',system-ui,sans-serif;}
+    .research-note h2{font-size:16px;line-height:1.35;margin:0 0 8px;color:#1f2733;}
+    .research-note p{font-size:13.5px;line-height:1.65;color:#3a4453;margin:0 0 8px;}
+    .research-note .why{background:#f6f8fc;border-radius:8px;padding:9px 12px;margin:4px 0 10px;font-size:13px;line-height:1.6;color:#3a4453;}
+    .research-note .byline{font-size:12px;color:#6b7688;font-style:italic;margin:0;}
   </style>
 </head>
 <body>
+  <section class="research-note">
+    <h2>The reconstruction-to-IFC tradeoff across all furniture categories</h2>
+    <p>Extending the single-chair comparison, this figure lets the reader step through all ten furniture categories (bed, bookshelf, cabinet, chair, desk, lamp, office chair, sofa, stool, table) and inspect, for each, four representations: the raw generated mesh, the IFC-optimized mesh (optimize_ifc), a clean catalog reference, and the mesh-optimized GLB (clean_and_optimize). It demonstrates that the same optimization and catalog-versus-generated tradeoffs hold across the whole furniture universe, not only for chairs, and that a uniform optimization budget produces consistent, BIM-ready assets regardless of category.</p>
+    <p class="why"><strong>Why it exists &amp; what it documents:</strong> A claim about chairs is not a claim about furniture, so we generalised the four-way across all ten categories to confirm the optimization and catalog tradeoffs are not chair-specific. It documents that the pipeline behaves consistently across the whole furniture library.</p>
+    <p class="byline">Research &mdash; Dimitres Kisimov</p>
+  </section>
   <header>
     <h1>4-way comparison — all furniture</h1>
     <span class="sub">Original · IFC-optimized · Catalog · Mesh-optimized (non-IFC) · 🖱️ drag = orbit · ↻ buttons = stand it up</span>

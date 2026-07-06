@@ -12,9 +12,20 @@
     .card .t { font-size:11px; color:#6b7688; font-weight:400; display:block; margin-top:2px; }
     .card img { width:100%; display:block; background:#fbfcfe; }
     .a h2{color:#c0392b;} .b h2{color:#e08a1e;} .c h2{color:#1faa60;}
+    .research-note{max-width:1080px;margin:18px auto 6px;padding:16px 22px;background:#fff;border:1px solid #d7deea;border-left:4px solid #2f6bff;border-radius:12px;box-shadow:0 2px 12px rgba(20,40,80,.07);font-family:'Segoe UI',system-ui,sans-serif;}
+    .research-note h2{font-size:16px;line-height:1.35;margin:0 0 8px;color:#1f2733;}
+    .research-note p{font-size:13.5px;line-height:1.65;color:#3a4453;margin:0 0 8px;}
+    .research-note .why{background:#f6f8fc;border-radius:8px;padding:9px 12px;margin:4px 0 10px;font-size:13px;line-height:1.6;color:#3a4453;}
+    .research-note .byline{font-size:12px;color:#6b7688;font-style:italic;margin:0;}
   </style>
 </head>
 <body>
+  <section class="research-note">
+  <h2>Surface smoothing tradeoff (still images)</h2>
+  <p>A still-image version of the smoothing study for side-by-side reading: the raw reconstruction and the mesh after 16 and after 40 Taubin iterations. It makes the same point without requiring WebGL — surface noise is reduced by smoothing, but the returns diminish quickly against a fixed face budget, so smoothing is a secondary lever behind model choice and polygon allocation.</p>
+  <p class="why"><strong>Why it exists &amp; what it documents:</strong> We needed a WebGL-free version of the smoothing study so the finding is legible in the documentation and to reviewers without a 3D viewer. It records the same diminishing-returns conclusion.</p>
+  <p class="byline">Research &mdash; Dimitres Kisimov</p>
+</section>
   <h1>Chair surface — smoothing comparison</h1>
   <p class="sub">Same chair, same angle. Look at the seat &amp; back surfaces.</p>
   <div class="row">

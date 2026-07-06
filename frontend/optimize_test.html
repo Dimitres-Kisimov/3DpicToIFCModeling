@@ -21,9 +21,20 @@
     td:nth-child(4) { color:#1faa60; font-weight:700; } td:nth-child(7) { color:#1faa60; font-weight:700; }
     .foot { margin-top:16px; font-size:12px; color:#6b7688; }
     .foot b { color:#1f2733; }
+    .research-note{max-width:1080px;margin:18px auto 6px;padding:16px 22px;background:#fff;border:1px solid #d7deea;border-left:4px solid #2f6bff;border-radius:12px;box-shadow:0 2px 12px rgba(20,40,80,.07);font-family:'Segoe UI',system-ui,sans-serif;}
+    .research-note h2{font-size:16px;line-height:1.35;margin:0 0 8px;color:#1f2733;}
+    .research-note p{font-size:13.5px;line-height:1.65;color:#3a4453;margin:0 0 8px;}
+    .research-note .why{background:#f6f8fc;border-radius:8px;padding:9px 12px;margin:4px 0 10px;font-size:13px;line-height:1.6;color:#3a4453;}
+    .research-note .byline{font-size:12px;color:#6b7688;font-style:italic;margin:0;}
   </style>
 </head>
 <body>
+  <section class="research-note">
+    <h2>Quantitative optimization results across the furniture set</h2>
+    <p>This table reports the measured effect of the mesh and IFC optimization pipeline on each furniture item: input and output face counts and file sizes, and the resulting percentage reductions. It provides the quantitative backing for the visual comparisons, showing that the combined debris-removal, smoothing, decimation, geometry-instancing, and precision-rounding stack consistently converges heterogeneous reconstructions to a compact, BIM-ready envelope.</p>
+    <p class="why"><strong>Why it exists &amp; what it documents:</strong> The visual comparisons needed numbers behind them, so we tabulated the before/after of every item. It is the quantitative record the documentation cites for the optimization pipeline's effect.</p>
+    <p class="byline">Research &mdash; Dimitres Kisimov</p>
+  </section>
   <h1>Optimization test — one example per item</h1>
   <p class="sub">10 furniture items (generated from 2D images). Left: <b>mesh cleanup</b> (GLB). Right: <b>IFC optimizer</b> (algorithm on the IFC). Face budget = 15,000.</p>
   <div class="grid">

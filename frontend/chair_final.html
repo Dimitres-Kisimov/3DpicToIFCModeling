@@ -5,9 +5,9 @@
   <title>Optimized chair — final GLB</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    html,body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,sans-serif;
+    html,body { min-height:100%; overflow:auto; font-family:'Segoe UI',system-ui,sans-serif;
       background:radial-gradient(1000px 600px at 60% -10%,#dfe7f4,#eef2f9); color:#1f2733; }
-    #c { width:100vw; height:100vh; display:block; }
+    #c { width:100vw; height:78vh; display:block; }
     .badge { position:fixed; top:18px; left:18px; z-index:10; background:rgba(255,255,255,.94);
       border:1px solid #d7deea; border-radius:12px; padding:14px 18px; box-shadow:0 4px 16px rgba(20,40,80,.1); max-width:320px; }
     .badge h1 { font-size:16px; font-weight:700; } .badge p { font-size:12px; color:#6b7688; margin-top:4px; line-height:1.6; }
@@ -17,9 +17,20 @@
       border:1px solid #d7deea; background:#fff; color:#1f2733; cursor:pointer; box-shadow:0 2px 8px rgba(20,40,80,.08); }
     .hint { position:fixed; bottom:14px; left:50%; transform:translateX(-50%); z-index:10; font-size:12px;
       color:#6b7688; background:rgba(255,255,255,.9); padding:6px 14px; border-radius:20px; border:1px solid #d7deea; }
+    .research-note{max-width:1080px;margin:18px auto 6px;padding:16px 22px;background:#fff;border:1px solid #d7deea;border-left:4px solid #2f6bff;border-radius:12px;box-shadow:0 2px 12px rgba(20,40,80,.07);font-family:'Segoe UI',system-ui,sans-serif;}
+    .research-note h2{font-size:16px;line-height:1.35;margin:0 0 8px;color:#1f2733;}
+    .research-note p{font-size:13.5px;line-height:1.65;color:#3a4453;margin:0 0 8px;}
+    .research-note .why{background:#f6f8fc;border-radius:8px;padding:9px 12px;margin:4px 0 10px;font-size:13px;line-height:1.6;color:#3a4453;}
+    .research-note .byline{font-size:12px;color:#6b7688;font-style:italic;margin:0;}
   </style>
 </head>
 <body>
+  <section class="research-note">
+    <h2>From raw reconstruction to a BIM-ready asset</h2>
+    <p>This viewer presents the final, optimized office-chair mesh delivered into IFC. The raw TripoSR reconstruction (85,500 triangles, 1.5 MB) is reduced to 15,000 triangles and 264 KB — an 82% reduction in faces and 83% in file size — through debris removal, Taubin smoothing, quadric decimation, and colour preservation via a PBR base-colour factor. The result retains the recognizable chair while being light enough to embed in a building information model, illustrating the fidelity-versus-payload tradeoff every generated asset must satisfy before IFC delivery.</p>
+    <p class="why"><strong>Why it exists &amp; what it documents:</strong> BIM tools choke on raw multi-hundred-thousand-face reconstructions, so we had to prove a generated chair could be made light enough to embed in IFC without losing its identity. It documents the delivered optimization target (~15k faces / ~264 KB) and is the reference for what "BIM-ready" means in this project.</p>
+    <p class="byline">Research &mdash; Dimitres Kisimov</p>
+  </section>
   <canvas id="c"></canvas>
   <div class="badge">
     <h1>Optimized chair — final GLB</h1>

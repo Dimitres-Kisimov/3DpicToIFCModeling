@@ -7,10 +7,10 @@
   <style>
     :root { --navy:#1c2f7c; --accent:#5570f0; --accent2:#7d93ff; --text:#e8eef6; --mut:#93a1b5; }
     * { margin:0; padding:0; box-sizing:border-box; }
-    html, body { width:100%; height:100%; overflow:hidden;
+    html, body { width:100%; height:100%; overflow:auto;
       background: radial-gradient(1200px 700px at 70% -10%, #17263a 0%, #0b0e14 60%), #0b0e14;
       font-family:'Segoe UI', system-ui, sans-serif; color:var(--text); }
-    #c { width:100vw; height:100vh; display:block; }
+    #c { width:100vw; height:78vh; display:block; }
     .badge { position:fixed; top:18px; left:18px; z-index:10; background:rgba(20,27,38,.82);
       border:1px solid #2c384a; border-radius:12px; padding:14px 18px; backdrop-filter:blur(6px);
       box-shadow:0 8px 30px rgba(0,0,0,.45); max-width:360px; }
@@ -27,9 +27,20 @@
     .spin { width:14px; height:14px; border:2px solid #2c384a; border-top-color:var(--accent);
       border-radius:50%; display:inline-block; margin-right:10px; animation:s .8s linear infinite; }
     @keyframes s { to { transform:rotate(360deg); } }
+    .research-note{max-width:1080px;margin:18px auto 6px;padding:16px 22px;background:#fff;border:1px solid #d7deea;border-left:4px solid #2f6bff;border-radius:12px;box-shadow:0 2px 12px rgba(20,40,80,.07);font-family:'Segoe UI',system-ui,sans-serif;}
+    .research-note h2{font-size:16px;line-height:1.35;margin:0 0 8px;color:#1f2733;}
+    .research-note p{font-size:13.5px;line-height:1.65;color:#3a4453;margin:0 0 8px;}
+    .research-note .byline{font-size:12px;color:#6b7688;font-style:italic;margin:0;}
+    .research-note .why{background:#f6f8fc;border-radius:8px;padding:9px 12px;margin:4px 0 10px;font-size:13px;line-height:1.6;color:#3a4453;}
   </style>
 </head>
 <body>
+  <section class="research-note">
+    <h2>Populated building — ergonomic layout at scale</h2>
+    <p>This viewer presents the populated building produced by the layout engine at full scale, with every room furnished according to its type using the ergonomic rule packs (Neufert, Panero-Zelnik, and ADA-derived clearances and aisles). It illustrates how the single-object photo-to-3D pipeline composes into whole-room and whole-building furnishing, the focus of Part 2 of the project.</p>
+    <p class="why"><strong>Why it exists &amp; what it documents:</strong> We wanted to show the ergonomic layout holding at full building scale across many rooms at once. It documents the Part-2 goal and the rule-pack-driven population that achieves it.</p>
+    <p class="byline">Research &mdash; Dimitres Kisimov</p>
+  </section>
   <div id="loading"><span class="spin"></span> Loading populated building…</div>
   <canvas id="c"></canvas>
   <div class="badge">

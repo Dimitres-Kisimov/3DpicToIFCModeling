@@ -5,8 +5,8 @@
   <title>IFC optimizer — before / after</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    html,body { height:100%; overflow:hidden; font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; }
-    .grid { display:grid; grid-template-columns:1fr 1fr; height:100vh; }
+    html,body { height:100%; overflow:auto; font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; height:78vh; }
     .panel { position:relative; border-right:1px solid #d7deea; overflow:hidden; }
     .panel:last-child { border-right:none; }
     canvas { width:100%; height:100%; display:block; }
@@ -16,9 +16,20 @@
     .cap.a b { color:#c0392b; } .cap.b b { color:#1faa60; }
     .hint { position:fixed; bottom:10px; left:50%; transform:translateX(-50%); z-index:10; font-size:12px;
       color:#6b7688; background:rgba(255,255,255,.92); padding:6px 14px; border-radius:20px; border:1px solid #d7deea; }
+    .research-note{max-width:1080px;margin:18px auto 6px;padding:16px 22px;background:#fff;border:1px solid #d7deea;border-left:4px solid #2f6bff;border-radius:12px;box-shadow:0 2px 12px rgba(20,40,80,.07);font-family:'Segoe UI',system-ui,sans-serif;}
+    .research-note h2{font-size:16px;line-height:1.35;margin:0 0 8px;color:#1f2733;}
+    .research-note p{font-size:13.5px;line-height:1.65;color:#3a4453;margin:0 0 8px;}
+    .research-note .why{background:#f6f8fc;border-radius:8px;padding:9px 12px;margin:4px 0 10px;font-size:13px;line-height:1.6;color:#3a4453;}
+    .research-note .byline{font-size:12px;color:#6b7688;font-style:italic;margin:0;}
   </style>
 </head>
 <body>
+  <section class="research-note">
+    <h2>IFC size reduction — ninety percent lighter, still valid IFC4</h2>
+    <p>This before/after compares the same bed embedded in IFC. The raw photo-derived mesh carries 150,000 triangles in a 5.1 MB file; after the IFC optimizer it carries 15,000 triangles in 420 KB — a 90% reduction in faces and 92% in file size — while remaining a valid IFC4 object with visually equivalent geometry. It demonstrates that reconstructed meshes must be decimated before IFC embedding for models to remain openable and shareable in standard BIM tools.</p>
+    <p class="why"><strong>Why it exists &amp; what it documents:</strong> An early IFC would not open in standard viewers because the embedded mesh was too heavy, so we had to quantify how much the IFC optimizer recovers. It documents that a ~90%/92% reduction yields a valid, openable IFC4 — the justification for running the optimizer automatically on every export.</p>
+    <p class="byline">Research &mdash; Dimitres Kisimov</p>
+  </section>
   <div class="grid">
     <div class="panel"><div class="cap a"><b>IFC — BEFORE</b><span>bed · 150,000 faces · 5.1 MB</span></div><canvas id="c0"></canvas></div>
     <div class="panel"><div class="cap b"><b>IFC — AFTER (optimized)</b><span>bed · 15,000 faces · 420 KB · −90% faces, −92% size · valid IFC4</span></div><canvas id="c1"></canvas></div>

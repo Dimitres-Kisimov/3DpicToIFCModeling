@@ -14,9 +14,20 @@
     .a h2{color:#c0392b;} .b h2{color:#1faa60;} .c h2{color:#e08a1e;}
     .tag { display:inline-block; font-size:11px; font-weight:700; padding:1px 7px; border-radius:6px; margin-left:6px; }
     .bad{background:#fde8e5;color:#c0392b;} .good{background:#e3f6ec;color:#1faa60;} .warn{background:#fdf1e2;color:#e08a1e;}
+    .research-note{max-width:1080px;margin:18px auto 6px;padding:16px 22px;background:#fff;border:1px solid #d7deea;border-left:4px solid #2f6bff;border-radius:12px;box-shadow:0 2px 12px rgba(20,40,80,.07);font-family:'Segoe UI',system-ui,sans-serif;}
+    .research-note h2{font-size:16px;line-height:1.35;margin:0 0 8px;color:#1f2733;}
+    .research-note p{font-size:13.5px;line-height:1.65;color:#3a4453;margin:0 0 8px;}
+    .research-note .byline{font-size:12px;color:#6b7688;font-style:italic;margin:0;}
+    .research-note .why{background:#f6f8fc;border-radius:8px;padding:9px 12px;margin:4px 0 10px;font-size:13px;line-height:1.6;color:#3a4453;}
   </style>
 </head>
 <body>
+  <section class="research-note">
+    <h2>Ergonomic proportioning of the grafted chair base</h2>
+    <p>Having established that a parametric base can be grafted onto a generated chair, this figure tunes its size. The three renders show the same chair with the base footprint set to 0.55, 0.42, and 0.34 of the seat width. At 0.55 the base splays about 20% wider than the seat (unstable and visually wrong); at 0.34 it is stubby and under-supportive; at 0.42 it sits within the seat footprint and reads as a correct office-chair base. The chosen 0.42 ratio encodes an ergonomic proportion directly into the procedural base generator.</p>
+    <p class="why"><strong>Why it exists &amp; what it documents:</strong> The first grafted base splayed wider than the seat and looked wrong, so we generated three sizes to fix the proportion empirically. It documents why the base radius is fixed at 0.42 of the seat width in the shipped generator.</p>
+    <p class="byline">Research &mdash; Dimitres Kisimov</p>
+  </section>
   <h1>Office-chair base — leg size</h1>
   <p class="sub">Same chair, same angle. "base/seat" = base footprint width ÷ seat width (1.0 = same as seat).</p>
   <div class="row">
