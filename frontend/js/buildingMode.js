@@ -67,7 +67,8 @@
       // floor share picks — shown once with a ×N marker
       const order = storeys.length ? storeys.map((s) => s.name) : [null];
       order.forEach((sName) => {
-        const floorRooms = roomsData.filter((r) => (r.storey || null) === sName);
+        // sidebar cards: only rooms you can furnish (context spaces live on the 2D plan)
+        const floorRooms = roomsData.filter((r) => (r.storey || null) === sName && r.furnishable !== false);
         if (!floorRooms.length) return;
         if (sName) {
           const h = document.createElement('div');
@@ -193,6 +194,94 @@
     return { storey: st, rooms, pieces };
   }
 
+  // ------------------------------------------------------------------ clash engine
+  // One legality checker shared by the 2D plan AND the 3D drag: a piece must sit
+  // fully inside a room, off the fixed elements, and clear of every other piece.
+  function pieceRect(p) {
+    const w = (p.dims && p.dims[0]) || 0.6;
+    const d = (p.dims && p.dims[1]) || 0.6;
+    return [p.pos[0] - w / 2, -p.pos[2] - d / 2, w, d];
+  }
+  function rectsOverlap(a, b) {
+    return Math.min(a[0] + a[2], b[0] + b[2]) - Math.max(a[0], b[0]) > 0.02 &&
+           Math.min(a[1] + a[3], b[1] + b[3]) - Math.max(a[1], b[1]) > 0.02;
+  }
+  function floorBandOf(p) {
+    return storeys.find((s) => p.pos[1] >= s.elevation - 0.5 && p.pos[1] < s.top - 0.5) || null;
+  }
+  function isLegalPiece(pid) {
+    const p = bPieces[pid];
+    if (!p) return true;
+    const st = floorBandOf(p);
+    const rooms = roomsData.filter((r) => !st || r.storey === st.name);
+    const r = pieceRect(p);
+    const inRoom = rooms.some((rm) =>
+      r[0] >= rm.rect[0] - 0.01 && r[1] >= rm.rect[1] - 0.01 &&
+      r[0] + r[2] <= rm.rect[0] + rm.rect[2] + 0.01 &&
+      r[1] + r[3] <= rm.rect[1] + rm.rect[3] + 0.01);
+    if (!inRoom) return false;
+    for (const [oid, o] of Object.entries(bPieces)) {
+      if (oid === pid) continue;
+      if (st && !(o.pos[1] >= st.elevation - 0.5 && o.pos[1] < st.top - 0.5)) continue;
+      if (rectsOverlap(r, pieceRect(o))) return false;
+    }
+    for (const rm of rooms) {
+      for (const ob of (rm.obstacles || [])) {
+        if (rectsOverlap(r, [rm.rect[0] + ob.x, rm.rect[1] + ob.z, ob.width, ob.depth])) return false;
+      }
+    }
+    return true;
+  }
+  function findClashes() {
+    return new Set(Object.keys(bPieces).filter((pid) => !isLegalPiece(pid)));
+  }
+  // auto-fix: nudge each clashing piece outward in a spiral to its nearest legal spot
+  function resolveClashes() {
+    let fixed = 0;
+    for (const pid of findClashes()) {
+      if (isLegalPiece(pid)) continue;            // an earlier nudge may have freed it
+      const p = bPieces[pid];
+      const px = p.pos[0], py = -p.pos[2];
+      let done = false;
+      for (let rad = 0.1; rad <= 2.4 && !done; rad += 0.1) {
+        for (let a = 0; a < 16 && !done; a++) {
+          const th = (Math.PI * 2 * a) / 16;
+          p.pos[0] = Math.round((px + rad * Math.cos(th)) * 100) / 100;
+          p.pos[2] = -Math.round((py + rad * Math.sin(th)) * 100) / 100;
+          if (isLegalPiece(pid)) done = true;
+        }
+      }
+      if (done) { fixed++; refreshPiece(pid); }
+      else { p.pos[0] = px; p.pos[2] = -py; }     // no free spot in reach — leave, stays marked
+    }
+    return { fixed, remaining: findClashes().size };
+  }
+  function updateClashUI() {
+    const n = findClashes().size;
+    const btn = $('bFixClashes');
+    if (btn) {
+      btn.hidden = n === 0;
+      btn.textContent = `🧹 Resolve ${n} clash${n === 1 ? '' : 'es'}`;
+    }
+    return n;
+  }
+
+  // ------------------------------------------------------------------ room teleport
+  function enterRoom(room) {
+    const st = storeys.find((s) => s.name === room.storey);
+    if (st && currentFloor !== st.name) selectFloor(st.name);
+    if (window.buildingPlan && window.buildingPlan.isOpen()) window.buildingPlan.toggle(false);
+    const v = viewer();
+    if (!v) return;
+    const [x0, y0, W, D] = room.rect;
+    const e = st ? st.elevation : 0;
+    try {
+      // fly INTO the room: its world box (viewer frame: z = -y_ifc), dollhouse cut open
+      v.cameraFlight.flyTo({ aabb: [x0, e, -(y0 + D), x0 + W, e + 2.2, -y0], duration: 0.8 });
+    } catch (err) {}
+    banner(`🧊 ${room.name} · ${room.area} m² — drag pieces to rearrange; unlock the camera to orbit.`);
+  }
+
   // ------------------------------------------------------------------ 3D pieces
   function clearBuilding() {
     if (bShell) { try { bShell.destroy(); } catch (e) {} bShell = null; }
@@ -248,6 +337,7 @@
     const v = viewer();
     if (!v) return;
     const cv = v.scene.canvas.canvas;      // the actual canvas element
+    let dragStartPos = null;
     cv.addEventListener('pointerdown', (e) => {
       if (!Object.keys(bPieces).length) return;
       if (window.appShell && window.appShell.activeTab() !== 'building') return;
@@ -255,6 +345,7 @@
       const pid = pieceIdFromPick(v.scene.pick({ canvasPos: [e.clientX - rect.left, e.clientY - rect.top] }));
       if (pid && bPieces[pid]) {
         bSelected = pid; bDragging = true;
+        dragStartPos = bPieces[pid].pos.slice();
         try { v.cameraControl.active = false; } catch (_) {}
         banner('Dragging ' + bPieces[pid].category.replace(/_/g, ' ') + ' — release to drop it.');
       }
@@ -271,8 +362,17 @@
     });
     const endDrag = () => {
       if (bDragging && bSelected) {
-        refreshPiece(bSelected);
-        banner('Moved ' + bPieces[bSelected].category.replace(/_/g, ' ') + '. Drag more, or 💾 Save layout to keep it.');
+        // 3D drops are validated too — clashes can't be created by dragging
+        if (!isLegalPiece(bSelected) && dragStartPos) {
+          bPieces[bSelected].pos = dragStartPos.slice();
+          try { bPieces[bSelected].model.position = bPieces[bSelected].pos; } catch (_) {}
+          banner('That spot clashes with a wall or another piece — put it somewhere clear.', true);
+        } else {
+          refreshPiece(bSelected);
+          banner('Moved ' + bPieces[bSelected].category.replace(/_/g, ' ') + '. Drag more, or 💾 Save layout to keep it.');
+        }
+        updateClashUI();
+        if (window.buildingPlan && window.buildingPlan.isOpen()) window.buildingPlan.floorChanged();
       }
       bDragging = false;
       try { v.cameraControl.active = !camLocked; } catch (_) {}
@@ -304,6 +404,7 @@
       $('lockBtn').hidden = false;
       $('bPlanBtn').hidden = false;
       setLock(true);
+      setTimeout(updateClashUI, 400);      // offer 🧹 if anything overlaps
       const tb = $('tableRows');
       tb.innerHTML = '';
       $('tableMeta').textContent = ` · ${d.rooms} rooms · ${d.placed} placed`;
@@ -358,9 +459,19 @@
     $('bPopulate').onclick = populate;
     $('bSave').onclick = saveBuilding;
     $('lockBtn').onclick = () => setLock(!camLocked);
+    $('bFixClashes').onclick = () => {
+      const res = resolveClashes();
+      updateClashUI();
+      if (window.buildingPlan && window.buildingPlan.isOpen()) window.buildingPlan.floorChanged();
+      banner(res.remaining === 0
+        ? `🧹 ${res.fixed} clash${res.fixed === 1 ? '' : 'es'} resolved — everything sits clear now.`
+        : `🧹 Fixed ${res.fixed}; ${res.remaining} piece(s) have no free spot nearby — drag them somewhere clear.`,
+        res.remaining > 0);
+    };
   }
 
   window.buildingMode = { ensureInit, hasContent: () => !!bShell, getFloorData,
                           selectFloor, currentFloor: () => currentFloor,
-                          refreshPiece, onTabLeave, onTabEnter };
+                          refreshPiece, onTabLeave, onTabEnter,
+                          isLegalPiece, findClashes, resolveClashes, enterRoom };
 })();

@@ -312,11 +312,10 @@ def cmd_building_rooms(args):
     door_rects = pop.footprint_rects(f, s, ["IfcDoor"])
 
     seen, rooms, used_storeys = set(), [], set()
+    non_furnishable = []
     for sp in f.by_type("IfcSpace"):
         name = (sp.LongName or sp.Name or "").strip()
         rt = pop.room_type(name)
-        if rt is None:
-            continue
         storey = None
         for rel in (sp.Decomposes or []):
             if rel.RelatingObject.is_a("IfcBuildingStorey"):
@@ -329,7 +328,7 @@ def cmd_building_rooms(args):
         x0, x1 = float(v[:, 0].min()), float(v[:, 0].max())
         y0, y1 = float(v[:, 1].min()), float(v[:, 1].max())
         W, D = x1 - x0, y1 - y0
-        if W < 1.2 or D < 1.2:
+        if W < 0.8 or D < 0.8:
             continue
         # duplicate IfcSpace shells of the SAME room collapse; mirrored-unit
         # rooms (same name, different position) stay separate
@@ -337,13 +336,21 @@ def cmd_building_rooms(args):
         if key in seen:
             continue
         seen.add(key)
+        rec = {"name": name, "area": round(float(W * D), 1), "storey": storey,
+               "rect": [round(x0, 3), round(y0, 3), round(W, 3), round(D, 3)]}
+        if rt is None or W < 1.2 or D < 1.2:
+            # context room (foyer/hall/stair/bath): drawn on the 2D plan so the
+            # floor reads as ONE connected apartment, but never furnished
+            non_furnishable.append({**rec, "type": "space", "furnishable": False,
+                                    "obstacles": [], "suggested": []})
+            continue
         used_storeys.add(storey)
-        rooms.append({"name": name, "type": rt, "area": round(float(W * D), 1),
-                      "storey": storey,
-                      "rect": [round(x0, 3), round(y0, 3), round(W, 3), round(D, 3)],
+        rooms.append({**rec, "type": rt, "furnishable": True,
                       "obstacles": pop.extract_room_obstacles(obstacle_rects, door_rects,
                                                               x0, x1, y0, y1),
                       "suggested": pop.smart_furnish(rt, W, D, assets)})
+    # keep context rooms only on floors that actually have furnishable rooms
+    rooms += [r for r in non_furnishable if r["storey"] in used_storeys]
 
     storeys = [{"name": n, "elevation": round(elev_of.get(n, 0.0), 3),
                 "top": round(tops.get(n, 3.1), 3)}
