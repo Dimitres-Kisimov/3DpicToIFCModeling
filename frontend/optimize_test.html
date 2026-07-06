@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optimization test — mesh vs IFC, all items</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Segoe UI',system-ui,sans-serif; background:#eef2f9; color:#1f2733; padding:20px; }
+    h1 { font-size:20px; margin-bottom:4px; }
+    .sub { color:#6b7688; font-size:13px; margin-bottom:18px; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .card { background:#fff; border:1px solid #e3e8f0; border-radius:14px; padding:16px; box-shadow:0 2px 10px rgba(20,40,80,.06); }
+    .card h2 { font-size:15px; margin-bottom:10px; }
+    .card.mesh h2 { color:#2f6bff; } .card.ifc h2 { color:#1faa60; }
+    table { width:100%; border-collapse:collapse; font-size:12.5px; }
+    th { text-align:right; padding:7px 8px; color:#6b7688; border-bottom:2px solid #e3e8f0; font-weight:600; }
+    th:first-child, td:first-child { text-align:left; text-transform:capitalize; font-weight:600; }
+    td { text-align:right; padding:6px 8px; border-bottom:1px solid #eef1f7; }
+    tr:last-child td { font-weight:700; border-top:2px solid #e3e8f0; background:#f7f9fc; }
+    .pct { color:#1faa60; font-weight:700; }
+    td:nth-child(4) { color:#1faa60; font-weight:700; } td:nth-child(7) { color:#1faa60; font-weight:700; }
+    .foot { margin-top:16px; font-size:12px; color:#6b7688; }
+    .foot b { color:#1f2733; }
+  </style>
+</head>
+<body>
+  <h1>Optimization test — one example per item</h1>
+  <p class="sub">10 furniture items (generated from 2D images). Left: <b>mesh cleanup</b> (GLB). Right: <b>IFC optimizer</b> (algorithm on the IFC). Face budget = 15,000.</p>
+  <div class="grid">
+    <div class="card mesh">
+      <h2>① MESH cleanup — raw GLB → cleaned GLB</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Faces raw</th><th>Faces clean</th><th>↓</th><th>KB raw</th><th>KB clean</th><th>↓</th></tr></thead>
+        <tbody>
+          <tr><td>bed</td><td>92,856</td><td>14,998</td><td>−84%</td><td>1,814</td><td>264</td><td>−85%</td></tr>
+          <tr><td>bookshelf</td><td>67,348</td><td>15,000</td><td>−78%</td><td>1,315</td><td>263</td><td>−80%</td></tr>
+          <tr><td>cabinet</td><td>125,712</td><td>15,000</td><td>−88%</td><td>2,456</td><td>264</td><td>−89%</td></tr>
+          <tr><td>chair</td><td>98,452</td><td>15,000</td><td>−85%</td><td>1,923</td><td>264</td><td>−86%</td></tr>
+          <tr><td>desk</td><td>52,248</td><td>15,000</td><td>−71%</td><td>1,021</td><td>264</td><td>−74%</td></tr>
+          <tr><td>lamp</td><td>12,488</td><td>12,396</td><td>−1%</td><td>245</td><td>218</td><td>−11%</td></tr>
+          <tr><td>office_chair</td><td>90,644</td><td>15,000</td><td>−83%</td><td>1,775</td><td>264</td><td>−85%</td></tr>
+          <tr><td>sofa</td><td>92,008</td><td>14,998</td><td>−84%</td><td>1,798</td><td>264</td><td>−85%</td></tr>
+          <tr><td>stool</td><td>42,608</td><td>15,000</td><td>−65%</td><td>833</td><td>264</td><td>−68%</td></tr>
+          <tr><td>table</td><td>126,476</td><td>15,000</td><td>−88%</td><td>2,471</td><td>264</td><td>−89%</td></tr>
+          <tr><td>TOTAL</td><td>800,840</td><td>147,392</td><td>−82%</td><td>15,151</td><td>2,593</td><td>−83%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card ifc">
+      <h2>② IFC optimizer — raw IFC → optimized IFC</h2>
+      <table>
+        <thead><tr><th>Item</th><th>IFC KB raw</th><th>IFC KB opt</th><th>↓</th><th>Faces before</th><th>Faces after</th></tr></thead>
+        <tbody>
+          <tr><td>bed</td><td>3,112</td><td>420</td><td>−87%</td><td>92,856</td><td>14,998</td></tr>
+          <tr><td>bookshelf</td><td>2,242</td><td>419</td><td>−81%</td><td>67,348</td><td>15,000</td></tr>
+          <tr><td>cabinet</td><td>4,252</td><td>422</td><td>−90%</td><td>125,712</td><td>15,000</td></tr>
+          <tr><td>chair</td><td>3,317</td><td>422</td><td>−87%</td><td>98,452</td><td>15,000</td></tr>
+          <tr><td>desk</td><td>1,736</td><td>424</td><td>−76%</td><td>52,248</td><td>15,000</td></tr>
+          <tr><td>lamp</td><td>390</td><td>350</td><td>−10%</td><td>12,488</td><td>12,396</td></tr>
+          <tr><td>office_chair</td><td>3,054</td><td>422</td><td>−86%</td><td>90,644</td><td>15,000</td></tr>
+          <tr><td>sofa</td><td>3,089</td><td>421</td><td>−86%</td><td>92,008</td><td>14,998</td></tr>
+          <tr><td>stool</td><td>1,400</td><td>422</td><td>−70%</td><td>42,608</td><td>15,000</td></tr>
+          <tr><td>table</td><td>4,270</td><td>421</td><td>−90%</td><td>126,476</td><td>15,000</td></tr>
+          <tr><td>TOTAL</td><td>26,862</td><td>4,143</td><td>−85%</td><td>800,840</td><td>147,392</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="foot">Mesh: total <b>800,840 → 147,392 faces (−82%)</b>, <b>15.1 MB → 2.6 MB (−83%)</b>. &nbsp; IFC: total <b>26.9 MB → 4.1 MB (−85%)</b>. &nbsp; <b>lamp</b> was already light (already near the 15k budget → little to cut — the algorithm correctly does little when there's nothing to gain).</p>
+</body>
+</html>
