@@ -1,8 +1,20 @@
 # Handoff → Fable 5 (SCS Photo-to-BIM, Part 2)
 
-You are continuing an in-progress project. Read this file first, then the plan at
-`docs/PART2_ERGONOMICS_AND_ONE_APP_PLAN.md` and the log at `docs/WORK_LOG_2026-07-06.md`.
-Work on branch **`part2-ergonomics-one-app`** (not `main`). Do not touch Part 1 unless asked.
+You are continuing an in-progress project. Work on branch **`part2-ergonomics-one-app`** (not `main`).
+Do not touch Part 1 unless asked.
+
+## READ THESE FIRST, IN THIS ORDER (full picture)
+1. **This file** — state, environment, next steps, gotchas.
+2. **`docs/CODEBASE_MAP.md`** — the whole system: two-app topology, every subsystem→file, the object
+   universe, the engine gaps, project facts. Start here to understand the code without re-exploring.
+3. **`docs/PART2_ERGONOMICS_AND_ONE_APP_PLAN.md`** — the Part-2 design (workstreams A–E, verification).
+4. **`docs/WORK_LOG_2026-07-06.md`** — everything done this session + comparison artifacts.
+5. Part 1 reference: **`docs/office_chair_base_graft/README.md`**, **`docs/IFC_OPTIMIZER.md`**.
+6. Older context (as needed): `docs/OPTIMIZATION_GUIDE.md`, `OPTIMIZATION_WORK_AND_VISUALS.md`,
+   `SCS_MONOGRAPH_Photo_to_IFC.md`, `REPORT_IFC_to_3D_and_Progress_2026-07-01.md`.
+
+The plan (#3) and codebase map (#2) contain exact `file:line` references for every subsystem you'll
+touch — use them so you don't have to re-derive the architecture.
 
 ## What this project is
 Photo → 3D → IFC pipeline for SCS (Bildungscampus). Two apps today that MUST become one:
