@@ -369,6 +369,28 @@
     if (b) b.textContent = locked ? '🔒 Locked' : '🔓 Free';
   }
 
+  // ------------------------------------------------------------------ x-ray
+  let xrayOn = false;
+  function setXray(on) {
+    const v = viewer();
+    if (!v) return;
+    xrayOn = on;
+    try {
+      const xm = v.scene.xrayMaterial;      // ghosted shell: furniture pops through
+      xm.fillColor = [0.75, 0.81, 0.90];
+      xm.fillAlpha = 0.12;
+      xm.edgeColor = [0.35, 0.42, 0.55];
+      xm.edgeAlpha = 0.35;
+    } catch (e) {}
+    Object.entries(viewer().scene.objects).forEach(([id, ent]) => {
+      if (String(id).startsWith('shell-')) {
+        try { ent.xrayed = on; } catch (e) {}
+      }
+    });
+    const b = $('xrayBtn');
+    if (b) b.textContent = on ? '🏢 Solid' : '👻 X-ray';
+  }
+
   // reload a piece's GLB at its current position (guarantees the move shows)
   function refreshPiece(pid) {
     const p = bPieces[pid];
@@ -447,6 +469,9 @@
       $('bDragHint').hidden = false;
       $('lockBtn').hidden = false;
       $('bPlanBtn').hidden = false;
+      $('xrayBtn').hidden = false;
+      xrayOn = false;
+      $('xrayBtn').textContent = '👻 X-ray';
       setLock(true);
       setTimeout(updateClashUI, 400);      // offer 🧹 if anything overlaps
       const tb = $('tableRows');
@@ -503,6 +528,7 @@
     $('bPopulate').onclick = populate;
     $('bSave').onclick = saveBuilding;
     $('lockBtn').onclick = () => setLock(!camLocked);
+    $('xrayBtn').onclick = () => setXray(!xrayOn);
     $('bFixClashes').onclick = () => {
       const res = resolveClashes();
       updateClashUI();

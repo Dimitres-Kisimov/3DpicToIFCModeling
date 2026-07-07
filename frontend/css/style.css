@@ -42,7 +42,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui,
 .side-panel[hidden] { display: none; }
 @keyframes panelIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
 
-.stage { position: relative; flex: 1; overflow: hidden; background: linear-gradient(180deg, #eef2f9 0%, #e2e8f4 100%); }
+.stage { position: relative; flex: 1; overflow: hidden; background: linear-gradient(180deg, #e3e9f3 0%, #d3dbe9 100%); }
 .table-panel { width: 340px; flex: none; background: var(--panel); border-left: 1px solid var(--line); display: flex; flex-direction: column; animation: panelIn .22s ease; }
 .table-panel[hidden] { display: none; }
 

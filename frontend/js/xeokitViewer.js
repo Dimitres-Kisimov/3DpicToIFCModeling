@@ -58,7 +58,24 @@ function initViewer(containerId) {
       colorTextureEnabled: true,
       pbrEnabled: true,
       entityOffsetsEnabled: true,   // 2D floor-plan editor moves entities live
+      saoEnabled: true,             // ambient occlusion — corners shade, geometry reads
     });
+
+    // Balanced studio lighting instead of xeokit's blown-out defaults: soft
+    // ambient + one key light + one cool fill. Guarded — if anything is missing
+    // (WebGL1 / older SDK) the default lights simply stay.
+    try {
+      viewer.scene.clearLights();
+      new window.xeokit.AmbientLight(viewer.scene, { color: [1, 1, 1], intensity: 0.45 });
+      new window.xeokit.DirLight(viewer.scene, {
+        dir: [0.6, -0.8, -0.4], color: [1.0, 0.98, 0.94], intensity: 0.75, space: 'world',
+      });
+      new window.xeokit.DirLight(viewer.scene, {
+        dir: [-0.5, -0.4, 0.6], color: [0.85, 0.90, 1.0], intensity: 0.35, space: 'world',
+      });
+      const sao = viewer.scene.sao;
+      if (sao) { sao.enabled = true; sao.intensity = 0.2; sao.kernelRadius = 90; }
+    } catch (e) { console.warn('[xeokitViewer] custom lighting unavailable', e); }
 
     // Initialize GLTFLoaderPlugin for loading GLB/GLTF files
     gltfLoader = new window.xeokit.GLTFLoaderPlugin(viewer);

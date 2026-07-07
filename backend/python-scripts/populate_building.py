@@ -176,15 +176,7 @@ def build_shell_cache(f, s, ifc_path, force=False):
             continue
         try:
             sh = ifcopenshell.geom.create_shape(s, prod)
-            v = np.array(sh.geometry.verts).reshape(-1, 3)
-            fc = np.array(sh.geometry.faces).reshape(-1, 3)
-            if len(v) and len(fc):
-                tm = trimesh.Trimesh(vertices=v, faces=fc)
-                if len(fc) > 20000:              # per-mesh budget: heavy slabs only
-                    try:
-                        tm = tm.simplify_quadric_decimation(20000)
-                    except Exception:
-                        pass
+            for tm in _colored_product_meshes(sh, prod):    # authored IFC colours + palette
                 scene.add_geometry(tm, node_name=f"shell-{n_shell}")
                 n_shell += 1
         except Exception:
@@ -273,16 +265,98 @@ def footprint_rects(f, s, types):
 # scan of a new building pays; repeat populates are solver-only.
 # ---------------------------------------------------------------------------
 CACHE_ROOT = REPO / "data" / "buildings" / "_cache"
+CACHE_VERSION = "v2"          # bump when the cached artefacts change shape (v2: colored shell)
 
 
 def geometry_cache_dir(ifc_path):
     import hashlib
     p = Path(ifc_path).resolve()
     st = p.stat()
-    key = f"{hashlib.md5(str(p).lower().encode()).hexdigest()[:10]}_{int(st.st_mtime)}_{st.st_size}"
+    key = f"{CACHE_VERSION}_{hashlib.md5(str(p).lower().encode()).hexdigest()[:10]}_{int(st.st_mtime)}_{st.st_size}"
     d = CACHE_ROOT / key
     d.mkdir(parents=True, exist_ok=True)
     return d
+
+
+# ---------------------------------------------------------------------------
+# Shell colouring — the IFC's authored surface styles, with a professional
+# BIM-viewer palette as the fallback for unstyled products.
+# ---------------------------------------------------------------------------
+_CLASS_PALETTE = [                      # (class prefix, [r, g, b, a])
+    ("IfcWall",     [0.93, 0.90, 0.85, 1.0]),
+    ("IfcSlab",     [0.80, 0.79, 0.77, 1.0]),
+    ("IfcRoof",     [0.70, 0.44, 0.38, 1.0]),
+    ("IfcDoor",     [0.62, 0.47, 0.32, 1.0]),
+    ("IfcWindow",   [0.58, 0.74, 0.90, 0.35]),
+    ("IfcPlate",    [0.58, 0.74, 0.90, 0.35]),
+    ("IfcStair",    [0.66, 0.68, 0.72, 1.0]),
+    ("IfcRailing",  [0.55, 0.58, 0.63, 1.0]),
+    ("IfcColumn",   [0.72, 0.72, 0.74, 1.0]),
+    ("IfcBeam",     [0.72, 0.72, 0.74, 1.0]),
+    ("IfcCovering", [0.90, 0.89, 0.86, 1.0]),
+    ("IfcMember",   [0.68, 0.70, 0.73, 1.0]),
+]
+
+
+def _palette_rgba(ifc_class):
+    for prefix, rgba in _CLASS_PALETTE:
+        if ifc_class.startswith(prefix):
+            return list(rgba)
+    return [0.85, 0.85, 0.86, 1.0]
+
+
+def _tinted(mesh, rgba):
+    try:
+        mesh.visual = trimesh.visual.TextureVisuals(
+            material=trimesh.visual.material.PBRMaterial(
+                baseColorFactor=np.array(rgba, dtype=float),
+                roughnessFactor=0.85, metallicFactor=0.0,
+                alphaMode="BLEND" if rgba[3] < 0.999 else None,
+            ))
+    except Exception:
+        pass
+    return mesh
+
+
+def _colored_product_meshes(sh, prod):
+    """Split a created shape into per-material trimesh submeshes carrying the
+    IFC's AUTHORED surface colours; unstyled faces get the class palette.
+    Heavy submeshes are gently decimated (split first, THEN decimate)."""
+    v = np.array(sh.geometry.verts).reshape(-1, 3)
+    fc = np.array(sh.geometry.faces).reshape(-1, 3)
+    if not len(v) or not len(fc):
+        return []
+    mats = list(getattr(sh.geometry, "materials", []) or [])
+    try:
+        mids = np.array(list(sh.geometry.material_ids), dtype=int)
+    except Exception:
+        mids = np.full(len(fc), -1, dtype=int)
+    if len(mids) != len(fc):
+        mids = np.full(len(fc), -1, dtype=int)
+
+    fallback = _palette_rgba(prod.is_a())
+    out = []
+    for mid in np.unique(mids):
+        faces = fc[mids == mid]
+        if not len(faces):
+            continue
+        rgba = list(fallback)
+        if mid >= 0 and mid < len(mats):
+            try:
+                st = mats[mid]
+                d = st.diffuse
+                rgba = [float(d.r), float(d.g), float(d.b),
+                        1.0 - float(getattr(st, "transparency", 0.0) or 0.0)]
+            except Exception:
+                pass
+        tm = trimesh.Trimesh(vertices=v, faces=faces)
+        if len(faces) > 20000:              # per-submesh budget: heavy slabs only
+            try:
+                tm = tm.simplify_quadric_decimation(20000)
+            except Exception:
+                pass
+        out.append(_tinted(tm, rgba))
+    return out
 
 
 def cached_footprints(f, s, ifc_path):
@@ -394,10 +468,8 @@ def main():
                 continue
             try:
                 sh = ifcopenshell.geom.create_shape(s, prod)
-                v = np.array(sh.geometry.verts).reshape(-1, 3)
-                fc = np.array(sh.geometry.faces).reshape(-1, 3)
-                if len(v) and len(fc):
-                    scene.add_geometry(trimesh.Trimesh(vertices=v, faces=fc), node_name=f"shell-{n_shell}")
+                for tm in _colored_product_meshes(sh, prod):
+                    scene.add_geometry(tm, node_name=f"shell-{n_shell}")
                     n_shell += 1
             except Exception:
                 pass
