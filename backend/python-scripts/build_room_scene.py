@@ -285,6 +285,12 @@ def _resolve_layout(room: dict, objects: list):
         m = meta[o["id"]]
         bx, _, bz = b["position"]
         rot = (b.get("rotation") or [0, 0, 0])[1]
+        # a LONE screen (monitor/laptop with no desk) must still face where a
+        # person would be — turn it toward the open room, never toward the wall
+        if o.get("category") in _SCREEN_FLIP and not direct.get(o["id"]):
+            dxc, dzc = cx - bx, cz - bz
+            if abs(dxc) > 1e-6 or abs(dzc) > 1e-6:
+                rot = math.degrees(math.atan2(-dxc, -dzc))   # screen (-Z local) -> room centre
         # the solver decides the facing now (A6): its front vector points where the
         # object's users stand — the reserved chair space sits on that side
         fx, fz = b.get("front") or (0.0, 1.0)
@@ -346,6 +352,32 @@ def _resolve_layout(room: dict, objects: list):
             off = float(ad["depth"]) / 2 + float(od["depth"]) / 2 + GAP
             pos[o["id"]] = {"id": o["id"], "position": [rx, 0.0, rz + off],
                             "rotation": [0, _face(o, rx, rz + off, rx, rz), 0], "placed": True}
+
+    # ---- petal pass: SEVERAL 'beside' children of one parent fan around it
+    # radially (2 opposite, 3 at 120°, 4 at 90°...), each facing the parent —
+    # instead of stacking on a single side offset.
+    from collections import defaultdict
+    beside_groups = defaultdict(list)
+    for o in objects:
+        a = o.get("anchor")
+        if a and a.get("relation") == "beside" and o["id"] in pos and a["to"] in pos:
+            beside_groups[a["to"]].append(o)
+    for parent_id, kids in beside_groups.items():
+        if len(kids) < 2:
+            continue
+        par = pos[parent_id]
+        pd = by_id[parent_id]["dimensions"]
+        ax_, az_ = par["position"][0], par["position"][2]
+        base = math.radians((par.get("rotation") or [0, 0, 0])[1])   # start at the front
+        for k, c in enumerate(kids):
+            cd = c["dimensions"]
+            r = (max(float(pd["width"]), float(pd["depth"])) / 2
+                 + max(float(cd["width"]), float(cd["depth"])) / 2 + 0.12)
+            ang = base + 2 * math.pi * k / len(kids)
+            px_, pz_ = ax_ + math.sin(ang) * r, az_ + math.cos(ang) * r
+            px_, pz_ = _clamp_in_room(px_, pz_, c, 0)
+            pos[c["id"]] = {"id": c["id"], "position": [px_, 0.0, pz_],
+                            "rotation": [0, _face(c, px_, pz_, ax_, az_), 0], "placed": True}
     return pos, solver, extras
 
 

@@ -564,8 +564,19 @@ def main():
         GAP = 0.12
         ext_of = {i: assets[c]["mesh"].extents for i, c in enumerate(cats)}
         chair_idx = [i for i, c in enumerate(cats)
-                     if rule_packs.archetype_of(c) == "seating" and max(float(ext_of[i][0]), float(ext_of[i][1])) <= 0.9]
+                     if rule_packs.archetype_of(c) == "seating" and c != "stool"
+                     and max(float(ext_of[i][0]), float(ext_of[i][1])) <= 0.9]
         surf_idx = [i for i, c in enumerate(cats) if rule_packs.archetype_of(c) == "worksurface"]
+
+        # stools fan around a TABLE in a petal ring (2 opposite, 3 at 120°, ...);
+        # stools with no table in the room stay free-standing (a lounge is fine)
+        table_hosts = [j for j in surf_idx if cats[j] == "table"] or surf_idx
+        stools_of = {}
+        if table_hosts:
+            for si in [i for i, c in enumerate(cats) if c == "stool"]:
+                host = min(table_hosts, key=lambda j: len(stools_of.get(j, [])))
+                stools_of.setdefault(host, []).append(si)
+        stool_children = {si for lst in stools_of.values() for si in lst}
         pair_of = {}                        # chair index -> its worksurface index
         _PREF = {"office_chair": ["desk", "table"], "chair": ["table", "desk"]}
         for ci in chair_idx:
@@ -593,7 +604,7 @@ def main():
         dropped = list(unhosted_tops)       # honest per-room "no space" report
         skipped_items += len(unhosted_tops)
         for i, cat in enumerate(cats):
-            if i in pair_of or i in top_children:
+            if i in pair_of or i in top_children or i in stool_children:
                 continue                    # anchored child — placed after the solve
             e = ext_of[i]
             w_, d_ = float(e[0]), float(e[1])
@@ -603,7 +614,12 @@ def main():
                 ce = ext_of[child_i]
                 extra_d = GAP + float(ce[1])
                 w_ = max(w_, float(ce[0]))
-            if w_ > W - 0.5 or d_ + extra_d > D - 0.5:
+            # a stool ring reserves a full band around the table in the solve
+            ring = 0.0
+            if stools_of.get(i):
+                ring = GAP + max(max(float(ext_of[si][0]), float(ext_of[si][1]))
+                                 for si in stools_of[i])
+            if w_ + 2 * ring > W - 0.5 or d_ + extra_d + 2 * ring > D - 0.5:
                 skipped_items += 1
                 dropped.append(cat)
                 if child_i is not None:
@@ -613,13 +629,17 @@ def main():
                 for ti in tops_of.pop(i, []):
                     skipped_items += 1
                     dropped.append(cats[ti])
+                for si in stools_of.pop(i, []):
+                    skipped_items += 1
+                    dropped.append(cats[si])
                 continue
             oid = f"{cat}-{i}"
-            objs.append({"id": oid, "category": cat, "width": w_,
-                         "depth": float(d_ + extra_d), "height": float(e[2])})
+            objs.append({"id": oid, "category": cat, "width": w_ + 2 * ring,
+                         "depth": float(d_ + extra_d + 2 * ring), "height": float(e[2])})
             meshmap[oid] = assets[cat]["mesh"]
             expand[oid] = {"extra_d": extra_d, "child": child_i,
-                           "d_par": float(e[1]), "tops": tops_of.get(i, [])}
+                           "d_par": float(e[1]), "tops": tops_of.get(i, []),
+                           "stools": stools_of.get(i, [])}
         if not objs:
             continue
 
@@ -639,6 +659,9 @@ def main():
                 skipped_items += 1
             for ti in info.get("tops", []):
                 dropped.append(cats[ti])
+                skipped_items += 1
+            for si in info.get("stools", []):
+                dropped.append(cats[si])
                 skipped_items += 1
         circ = res.get("circulation") or {}
         unreachable = [oid.rsplit("-", 1)[0] for oid in (circ.get("unreachable") or [])]
@@ -676,6 +699,26 @@ def main():
                 room_items.append({"oid": f"{ccat}-{ci}", "cat": ccat,
                                    "cx": ccx, "cz": ccz, "yaw": cyaw,
                                    "mesh": cmesh, "zones": None})
+            # stool petal ring: fan evenly around the table, each facing it
+            stool_list = info.get("stools", [])
+            if stool_list:
+                import math as _math
+                base = _math.atan2(fx, fzv)                    # start at the front
+                pw = max(float(meshmap[oid].extents[0]), float(meshmap[oid].extents[1]))
+                for k, si in enumerate(stool_list):
+                    scat = cats[si]
+                    se = ext_of[si]
+                    r_ = pw / 2 + max(float(se[0]), float(se[1])) / 2 + 0.12
+                    ang = base + 2 * _math.pi * k / len(stool_list)
+                    sx = acx + _math.sin(ang) * r_
+                    sz = acz + _math.cos(ang) * r_
+                    sfwd = _chair_forward_xy(assets[scat]["mesh"])
+                    syaw = _math.degrees(_math.atan2(acz - sz, acx - sx)
+                                         - _math.atan2(sfwd[1], sfwd[0]))
+                    room_items.append({"oid": f"{scat}-{si}", "cat": scat,
+                                       "cx": sx, "cz": sz, "yaw": syaw,
+                                       "mesh": assets[scat]["mesh"], "zones": None})
+
             # on-desk electronics: slot offsets rotated with the desk; the
             # screen (+Y local) turned toward the desk's front — i.e. the chair
             par_h = float(meshmap[oid].extents[2])             # desk/table top height
