@@ -60,6 +60,31 @@
     return;
   }
   main.innerHTML = '';
+  // feature showcase (if captured): X-ray + dollhouse views of the full system
+  try {
+    const sc = await (await fetch('fleet/showcase.json?t=' + Date.now())).json();
+    if (sc.shots && sc.shots.length) {
+      const sec = document.createElement('section');
+      sec.className = 'bldg';
+      sec.innerHTML = '<h2>✨ Feature Showcase — the complete system</h2>' +
+        '<p class="sub" style="max-width:1050px;line-height:1.65;margin-bottom:6px">' +
+        'Two real architectural IFC buildings, furnished end-to-end by the ergonomics engine and rendered ' +
+        'live from this machine. Every room was measured from the IFC, given a smart per-type suggestion, and ' +
+        'solved with CP-SAT under human constraints: chairs pair with desks and are rotated to face them, ' +
+        'monitors and laptops sit ON the desks with their screens turned toward the sitter, stools fan around ' +
+        'tables in even petal rings while the table itself is pulled to the open centre of the room, planters ' +
+        'flank workstations, and every piece keeps its people-space (legroom, pull-out, door swing) — clearances ' +
+        'the solver enforces and the 2D plan draws. The shells carry the colours their architects authored ' +
+        '(brown doors, translucent windows), rooms that cannot ergonomically take an item say so honestly ' +
+        '("no space" / "hard to reach"), and one bedroom contains a chair the user generated from a photo ' +
+        'in this same app (badge OURS) — the full photo → 3D → building → BIM loop in one picture. ' +
+        'X-ray ghosts the architecture so the furnishing logic is visible at a glance.</p>' +
+        sc.shots.map((s) => `<div class="floor"><div class="pair" style="grid-template-columns:1fr">
+          <figure><img loading="lazy" src="fleet/${s.img}"><figcaption>${s.caption}</figcaption></figure>
+        </div></div>`).join('');
+      main.appendChild(sec);
+    }
+  } catch (e) { /* no showcase captured yet */ }
   for (const b of stats) {
     const sec = document.createElement('section');
     sec.className = 'bldg';

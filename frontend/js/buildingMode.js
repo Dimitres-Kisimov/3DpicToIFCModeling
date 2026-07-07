@@ -33,6 +33,22 @@
 
   // ------------------------------------------------------------------ rooms UI
   let registryMap = {};                 // id -> {name, status, profile}
+  let genItems = [];                    // the user's OWN generated meshes [{id, category}]
+
+  async function loadGenItems() {
+    try {
+      const cats = await (await fetch('/api/room/catalog')).json();
+      const withGen = cats.filter((c) => c.generated_count > 0).map((c) => c.category);
+      const lists = await Promise.all(withGen.map((c) =>
+        fetch('/api/room/items/' + c).then((r) => r.json()).then((items) =>
+          items.filter((it) => it.generated).map((it) => ({ id: it.id, category: c })))));
+      genItems = lists.flat();
+    } catch (e) { genItems = []; }
+  }
+  const genCat = (gid) => (genItems.find((g) => g.id === gid) || {}).category || 'item';
+  const pickLabel = (c) => c.startsWith('gen:')
+    ? '◆ ' + genCat(c.slice(4)).replace(/_/g, ' ') + ' (ours)'
+    : c.replace(/_/g, ' ');
 
   async function loadBuildings(selectId) {
     try {
@@ -125,6 +141,7 @@
       allCategories = data.categories || [];
       storeys = data.storeys || [];
       roomsData = data.rooms || [];
+      await loadGenItems();              // your generated meshes join the picker
       renderRoomCards();
       banner(`${roomsData.length} rooms across ${storeys.length} floors — edit the furniture, then Populate.`);
     } catch (e) {
@@ -169,6 +186,11 @@
       `<div class="roomchips"></div>` +
       `<select class="roomadd"><option value="">+ add item…</option>` +
       allCategories.map((c) => `<option value="${c}">${c.replace(/_/g, ' ')}</option>`).join('') +
+      (genItems.length
+        ? `<optgroup label="◆ yours (generated)">` +
+          genItems.map((g) => `<option value="gen:${g.id}">◆ ${g.category.replace(/_/g, ' ')} · ${g.id.slice(4, 10)}</option>`).join('') +
+          `</optgroup>`
+        : '') +
       `</select>`;
     const chips = card.querySelector('.roomchips');
     const render = () => {
@@ -176,7 +198,7 @@
       roomPicks[r.name].forEach((c, i) => {
         const chip = document.createElement('span');
         chip.className = 'chip';
-        chip.textContent = c.replace(/_/g, ' ') + ' ✕';
+        chip.textContent = pickLabel(c) + ' ✕';
         chip.onclick = () => { roomPicks[r.name].splice(i, 1); render(); };
         chips.appendChild(chip);
       });

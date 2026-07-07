@@ -163,6 +163,21 @@ router.post('/room/upload', upload.single('file'), async (req, res, next) => {
 });
 
 // ---------------------------------------------------------------------------
+// delete a user-generated (OURS) item — files + manifest entry
+// ---------------------------------------------------------------------------
+router.delete('/room/generated/:gid', async (req, res, next) => {
+  try {
+    const result = await roomApi.call('delete_generated', { id: req.params.gid },
+                                      { timeout: 30000 });
+    if (result.ok) {
+      roomApi.invalidateCatalog(result.category);
+      logger.info('ROOM', 'Deleted generated asset', { id: req.params.gid });
+    }
+    send(res, result);
+  } catch (err) { next(err); }
+});
+
+// ---------------------------------------------------------------------------
 // reset — discard the current preview, start clean
 // ---------------------------------------------------------------------------
 router.post('/room/reset', (req, res) => {

@@ -1,0 +1,20 @@
+{
+ "shots": [
+  {
+   "img": "showcase_duplex_xray.png",
+   "caption": "duplex — whole building, X-ray: every piece visible through ghosted walls (populated in 9s ·· 6 rooms · 38 placed)"
+  },
+  {
+   "img": "showcase_duplex_floor.png",
+   "caption": "duplex — \"Level 2\" isolated (dollhouse cut): workstations with monitors facing chairs, stool petals, real IFC colours"
+  },
+  {
+   "img": "showcase_german_apartment_xray.png",
+   "caption": "german_apartment — whole building, X-ray: every piece visible through ghosted walls (populated in 9s ·· 10 rooms · 54 placed)"
+  },
+  {
+   "img": "showcase_german_apartment_floor.png",
+   "caption": "german_apartment — \"BT-A_1010_OG01_RDOK_3,000\" isolated (dollhouse cut): workstations with monitors facing chairs, stool petals, real IFC colours"
+  }
+ ]
+}

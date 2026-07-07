@@ -370,6 +370,19 @@ def cmd_building_rooms(args):
         return {"ok": False, "status": 400,
                 "error": "no usable rooms found — the IFC has no IfcSpace geometry"}
 
+    # ---- reconcile storey elevations with GEOMETRY: some exports put the model
+    # at site datum (sea level ≈ 500 m) while the Elevation attribute says 3.0 —
+    # bands, cuts and floor filters must follow where the geometry actually is
+    by_storey_z = {}
+    for r in rooms:
+        if r.get("storey"):
+            by_storey_z.setdefault(r["storey"], []).append(r["_zmin"])
+    for nm, zs in by_storey_z.items():
+        zs.sort()
+        med = zs[len(zs) // 2]
+        if nm not in elev_of or abs(med - elev_of[nm]) > 1.0:
+            elev_of[nm] = round(med, 3)
+
     # ---- storey assignment: synthesise bands from room base heights if needed
     if not elev_of:
         bands = []
@@ -380,7 +393,10 @@ def cmd_building_rooms(args):
     levels = sorted(elev_of.values())
     tops = {}
     for nm, e in elev_of.items():
-        higher = [v for v in levels if v > e + 0.05]
+        # a real storey is never 30 cm tall — Revit exports carry datum variants
+        # (raw/finished floor levels) centimetres apart; the band above a storey
+        # runs to the next REAL floor, not the next datum
+        higher = [v for v in levels if v > e + 1.5]
         tops[nm] = min(higher) if higher else e + 3.1
     for r in rooms:
         if not r.get("storey") or r["storey"] not in elev_of:
@@ -684,6 +700,27 @@ _DEMO_PICKS = [
 ]
 
 
+def cmd_delete_generated(args):
+    """Remove a user-generated (OURS) item: manifest entry + its files."""
+    gid = (args.get("id") or "").strip()
+    if not gid.startswith("gen_"):
+        return {"ok": False, "error": "invalid id", "status": 400}
+    man = _read_gen_manifest()
+    items = man.get("items", [])
+    entry = next((e for e in items if e.get("id") == gid), None)
+    if entry is None:
+        return {"ok": False, "error": "not found", "status": 404}
+    for fn in (entry.get("glb"), entry.get("thumb")):
+        if fn:
+            try:
+                (GEN_DIR / fn).unlink()
+            except Exception:
+                pass
+    man["items"] = [e for e in items if e.get("id") != gid]
+    GEN_MANIFEST.write_text(json.dumps(man, indent=1), encoding="utf-8")
+    return {"ok": True, "id": gid, "category": entry.get("category")}
+
+
 def cmd_demo_run(args):
     """One-click demo. Default: the curated scene through the SAME layout pipeline
     users trigger. A legacy spec file is only used when explicitly requested."""
@@ -721,6 +758,7 @@ _COMMANDS = {
     "register_building": cmd_register_building,
     "prepare_building": cmd_prepare_building,
     "register_upload": cmd_register_upload,
+    "delete_generated": cmd_delete_generated,
     "demo_run": cmd_demo_run,
 }
 

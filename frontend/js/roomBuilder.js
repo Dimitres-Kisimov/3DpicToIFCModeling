@@ -108,8 +108,15 @@
             : `<div class="genph" title="made by you">◆</div>`)
         : `<img src="/thumb/${it.preview || it.thumb}" loading="lazy">`;
       const badge = it.generated ? `<span class="genbadge">OURS</span>` : '';
-      cell.innerHTML = badge + visual + `<div>${it.id}</div><div>${dim}</div>`;
-      cell.onclick = () => {
+      const del = it.generated
+        ? `<button class="gen-del" data-del="${it.id}" title="delete this generated item">✕</button>` : '';
+      cell.innerHTML = badge + del + visual + `<div>${it.id}</div><div>${dim}</div>`;
+      cell.onclick = (ev) => {
+        if (ev.target && ev.target.dataset && ev.target.dataset.del) {
+          ev.stopPropagation();
+          deleteGenerated(it.id, category);
+          return;
+        }
         if (sel.has(it.id)) sel.delete(it.id); else if (sel.size < 30) sel.add(it.id);
         cell.classList.toggle('sel', sel.has(it.id));
         chosen[category] = [...sel];
@@ -118,6 +125,20 @@
       grid.appendChild(cell);
     });
     $('pickerCount').textContent = sel.size;
+  }
+
+  // delete one of the user's OWN generated items (files + manifest) — the ✕
+  // on OURS cards. The generator's /outputs copy is untouched.
+  async function deleteGenerated(gid, category) {
+    try {
+      const r = await fetch('/api/room/generated/' + gid, { method: 'DELETE' });
+      const d = await r.json();
+      if (!d.ok) { banner('Delete failed: ' + (d.error || '?'), true); return; }
+      chosen[category] = (chosen[category] || []).filter((x) => x !== gid);
+      toast(`✕ removed ${gid} from the catalog`, 'info');
+      await refreshCategoryBrowse(category);
+      openPicker(category);            // re-render without the deleted item
+    } catch (e) { banner('Delete failed: ' + e, true); }
   }
 
   function closePicker() {

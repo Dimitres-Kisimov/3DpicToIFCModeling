@@ -239,6 +239,28 @@ def _stool_mesh_zup(h=0.50, w=0.42, d=0.42):
     return _tinted(trimesh.util.concatenate(parts), [0.48, 0.36, 0.27, 1.0])
 
 
+_GEN_DIR = REPO / "data" / "generated_assets"
+
+
+def load_generated(gid):
+    """A user-generated (OURS) mesh by manifest id — usable as a building pick
+    via 'gen:<id>'. Y-up GLB -> Z-up, normalised to its category's real dims so
+    the ergonomics (pairing, zones, petals) treat it exactly like its category."""
+    try:
+        man = json.loads((_GEN_DIR / "manifest.json").read_text(encoding="utf-8"))
+        e = next((x for x in man.get("items", []) if x.get("id") == gid), None)
+        if not e or not (e.get("glb") or "").lower().endswith(".glb"):
+            return None
+        m = trimesh.load(str(_GEN_DIR / e["glb"]), force="mesh")
+        m.apply_transform(trimesh.transformations.rotation_matrix(np.pi / 2, [1, 0, 0]))
+        cat = e.get("category", "table")
+        if cat in TARGET_DIMS:
+            m = _rescale_to_real(m, cat)
+        return {"category": cat, "mesh": m}
+    except Exception:
+        return None
+
+
 def load_assets():
     man = json.load(open(LIB / "manifest.json", encoding="utf-8"))["assets"]
     by_cat = {}
@@ -597,13 +619,23 @@ def main():
         if W < 1.2 or D < 1.2:
             continue
 
-        # 2) choose furniture: explicit picks, else space-aware smart set
-        if explicit is not None:
-            cats = [c for c in explicit if c in assets]
-        else:
-            cats = smart_furnish(rt, W, D, assets)
+        # 2) choose furniture: explicit picks (may include the user's OWN
+        # generated meshes as 'gen:<id>'), else a space-aware smart set
+        raw_picks = explicit if explicit is not None else smart_furnish(rt, W, D, assets)
+        cats, custom_mesh = [], {}
+        for ent in raw_picks:
+            if isinstance(ent, str) and ent.startswith("gen:"):
+                info = load_generated(ent[4:])
+                if info:
+                    cats.append(info["category"])
+                    custom_mesh[len(cats) - 1] = info["mesh"]
+            elif ent in assets:
+                cats.append(ent)
         if not cats:
             continue
+
+        def mesh_of(idx):
+            return custom_mesh.get(idx, assets[cats[idx]]["mesh"])
 
         # 3) A3b — labeled fixed obstacles (columns/walls/beams/stairs) + door keep-clear
         keepouts = extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1)
@@ -613,7 +645,7 @@ def main():
         # afterwards the chair is placed in front of it, rotated to FACE it)
         import rule_packs
         GAP = 0.12
-        ext_of = {i: assets[c]["mesh"].extents for i, c in enumerate(cats)}
+        ext_of = {i: mesh_of(i).extents for i, c in enumerate(cats)}
         chair_idx = [i for i, c in enumerate(cats)
                      if rule_packs.archetype_of(c) == "seating" and c != "stool"
                      and max(float(ext_of[i][0]), float(ext_of[i][1])) <= 0.9]
@@ -690,7 +722,7 @@ def main():
             if ring > 0:
                 entry["prefer"] = "center"   # a stool-ringed table is social — keep it open
             objs.append(entry)
-            meshmap[oid] = assets[cat]["mesh"]
+            meshmap[oid] = mesh_of(i)
             expand[oid] = {"extra_d": extra_d, "child": child_i,
                            "d_par": float(e[1]), "tops": tops_of.get(i, []),
                            "stools": stools_of.get(i, [])}
@@ -742,7 +774,7 @@ def main():
             ci = info.get("child")
             if ci is not None:
                 ccat = cats[ci]
-                cmesh = assets[ccat]["mesh"]
+                cmesh = mesh_of(ci)
                 ce = ext_of[ci]
                 off = info["d_par"] / 2.0 + GAP + float(ce[1]) / 2.0
                 ccx, ccz = acx + fx * off, acz + fzv * off
@@ -766,12 +798,12 @@ def main():
                     ang = base + 2 * _math.pi * k / len(stool_list)
                     sx = acx + _math.sin(ang) * r_
                     sz = acz + _math.cos(ang) * r_
-                    sfwd = _chair_forward_xy(assets[scat]["mesh"])
+                    sfwd = _chair_forward_xy(mesh_of(si))
                     syaw = _math.degrees(_math.atan2(acz - sz, acx - sx)
                                          - _math.atan2(sfwd[1], sfwd[0]))
                     room_items.append({"oid": f"{scat}-{si}", "cat": scat,
                                        "cx": sx, "cz": sz, "yaw": syaw,
-                                       "mesh": assets[scat]["mesh"], "zones": None})
+                                       "mesh": mesh_of(si), "zones": None})
 
             # on-desk electronics: slot offsets rotated with the desk; the
             # screen (+Y local) turned toward the desk's front — i.e. the chair
@@ -786,7 +818,7 @@ def main():
                 tyaw = _math.degrees(_math.atan2(-fx, fzv))    # +Y local -> (fx, fzv)
                 room_items.append({"oid": f"{tcat}-{ti}", "cat": tcat,
                                    "cx": tx, "cz": tz, "yaw": tyaw,
-                                   "mesh": assets[tcat]["mesh"], "zones": None,
+                                   "mesh": mesh_of(ti), "zones": None,
                                    "elev": par_h})
 
         boxes, room_cats = [], []
