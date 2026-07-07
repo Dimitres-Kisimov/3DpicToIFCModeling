@@ -496,7 +496,17 @@
       (d.schedule || []).forEach((s, i) => {
         const tr = document.createElement('tr');
         tr.style.setProperty('--i', i);
-        tr.innerHTML = `<td>${s.room}</td><td class="ifc">${s.type}</td><td>${s.placed}/${s.items.length} placed</td>`;
+        const total = s.items.length + ((s.dropped || []).length);
+        // honest per-room ergonomics report — same voice as the room builder
+        let note = '';
+        if ((s.dropped || []).length) {
+          note += `<br><span style="color:#d64545">✗ no space: ${s.dropped.join(', ')}</span>`;
+        }
+        if ((s.unreachable || []).length) {
+          note += `<br><span style="color:#e0812b">⚠ hard to reach: ${s.unreachable.join(', ')}</span>`;
+        }
+        tr.innerHTML = `<td>${s.room}</td><td class="ifc">${s.type}</td>` +
+                       `<td>${s.placed}/${total} placed${note}</td>`;
         tb.appendChild(tr);
       });
       wireDrag();

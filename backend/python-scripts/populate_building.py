@@ -549,6 +549,7 @@ def main():
             pair_of[ci] = open_surfaces[0]
 
         objs, meshmap, expand = [], {}, {}
+        dropped = []                        # honest per-room "no space" report
         for i, cat in enumerate(cats):
             if i in pair_of:
                 continue                    # anchored child — placed after the solve
@@ -562,8 +563,10 @@ def main():
                 w_ = max(w_, float(ce[0]))
             if w_ > W - 0.5 or d_ + extra_d > D - 0.5:
                 skipped_items += 1
+                dropped.append(cat)
                 if child_i is not None:
                     skipped_items += 1
+                    dropped.append(cats[child_i])
                     pair_of.pop(child_i)
                 continue
             oid = f"{cat}-{i}"
@@ -580,7 +583,19 @@ def main():
                                          objs, obstacles=keepouts)
         placed_ps = [p for p in res["placements"] if p.get("placed") and p.get("position")]
         skipped_items += len(res["placements"]) - len(placed_ps)
+        # solver-dropped items (and their paired chairs) join the honest report
+        for oid in (res.get("unplaced") or []):
+            dropped.append(oid.rsplit("-", 1)[0])
+            ci = expand.get(oid, {}).get("child")
+            if ci is not None:
+                dropped.append(cats[ci])
+                skipped_items += 1
+        circ = res.get("circulation") or {}
+        unreachable = [oid.rsplit("-", 1)[0] for oid in (circ.get("unreachable") or [])]
         if not placed_ps:
+            schedule.append({"room": name, "type": rt or "picked", "area_m2": round(W * D, 1),
+                             "placed": 0, "items": [], "dropped": dropped,
+                             "unreachable": unreachable})
             continue
 
         # resolve final per-item placements (parents pulled back to their true
@@ -657,7 +672,8 @@ def main():
                 if min(ax1, bx1) - max(ax0, bx0) > 0.02 and min(ay1, by1) - max(ay0, by0) > 0.02:
                     clashes += 1
         schedule.append({"room": name, "type": rt or "picked", "area_m2": round(W * D, 1),
-                         "placed": len(boxes), "items": room_cats})
+                         "placed": len(boxes), "items": room_cats,
+                         "dropped": dropped, "unreachable": unreachable})
         rooms_done += 1
 
     if movdir is not None:
