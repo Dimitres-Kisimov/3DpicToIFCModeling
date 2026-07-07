@@ -55,6 +55,10 @@ app.use('/out', express.static(path.resolve(process.cwd(), config.ROOM_OUT_DIR),
 app.use('/thumb', express.static(path.join(__dirname, '../data/mesh_library_abo')));
 app.use('/api/generated', express.static(path.join(__dirname, '../data/generated_assets')));
 
+// Research artifacts: the cloud 5-model AI benchmark gallery (used to live on :8900)
+// now rides on the ONE app — see /hub.html for the index of every comparison page.
+app.use('/gallery', express.static(path.join(__dirname, '../deliverable/cloud_gallery')));
+
 // ============================================================================
 // ROUTES
 // ============================================================================

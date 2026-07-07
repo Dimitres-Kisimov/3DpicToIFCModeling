@@ -1,0 +1,131 @@
+[
+ {
+  "id": "duplex",
+  "tag": "duplex",
+  "label": "Duplex Apartment (2.4 MB · IFC2X3)",
+  "floors": [
+   {
+    "name": "Level 1",
+    "safe": "Level_1"
+   },
+   {
+    "name": "Level 2",
+    "safe": "Level_2"
+   }
+  ],
+  "error": null,
+  "populate_s": 4,
+  "meta": "· 6 rooms · 26 placed",
+  "schedule": [
+   "Living Room · living · 4/4 placed\n⚠ hard to reach: bookshelf",
+   "Living Room · living · 4/4 placed",
+   "Kitchen · kitchen · 0/3 placed\n✗ no space: cabinet, cabinet, table",
+   "Kitchen · kitchen · 0/3 placed\n✗ no space: cabinet, cabinet, table",
+   "Bedroom 2 · bed · 4/5 placed\n✗ no space: bed\n⚠ hard to reach: desk",
+   "Bedroom 1 · bed · 5/5 placed",
+   "Bedroom 1 · bed · 5/5 placed",
+   "Bedroom 2 · bed · 4/5 placed\n✗ no space: bed"
+  ]
+ },
+ {
+  "id": "b_7e52aca674",
+  "tag": "house",
+  "label": "buildingSMART House (0.2 MB · IFC4 · mm units)",
+  "floors": [
+   {
+    "name": "00 groundfloor",
+    "safe": "00_groundfloor"
+   }
+  ],
+  "error": null,
+  "populate_s": 2,
+  "meta": "· 1 rooms · 3 placed",
+  "schedule": [
+   "living room · living · 3/3 placed"
+  ]
+ },
+ {
+  "id": "b_fd30573002",
+  "tag": "german",
+  "label": "German Wohnung \"Projektname\" (9.7 MB · IFC4)",
+  "floors": [
+   {
+    "name": "BT-A_1010_OG01_RDOK_3,000",
+    "safe": "BT_A_1010_OG01_RDOK_3_000"
+   }
+  ],
+  "error": null,
+  "populate_s": 75,
+  "meta": "· 10 rooms · 34 placed",
+  "schedule": [
+   "Zimmer · living · 3/3 placed\n⚠ hard to reach: table",
+   "Wohnküche · living · 4/4 placed",
+   "Wohnküche · living · 4/4 placed",
+   "Zimmer · living · 3/3 placed",
+   "Zimmer · living · 3/3 placed",
+   "Zimmer · living · 3/3 placed",
+   "Zimmer · living · 3/3 placed",
+   "Wohnküche · living · 4/4 placed",
+   "Wohnküche · living · 4/4 placed",
+   "Zimmer · living · 3/3 placed"
+  ]
+ },
+ {
+  "id": "b_0e5868e366",
+  "tag": "schependomlaan",
+  "label": "Schependomlaan (47 MB · IFC2X3 · 3752 products)",
+  "floors": [
+   {
+    "name": "00 begane grond",
+    "safe": "00_begane_grond"
+   },
+   {
+    "name": "01 eerste verdieping",
+    "safe": "01_eerste_verdieping"
+   },
+   {
+    "name": "02 tweede verdieping",
+    "safe": "02_tweede_verdieping"
+   },
+   {
+    "name": "03 derde verdieping",
+    "safe": "03_derde_verdieping"
+   }
+  ],
+  "error": null,
+  "populate_s": 8,
+  "meta": "· 20 rooms · 42 placed",
+  "schedule": [
+   "slaapkamer 2 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "slaapkamer 1 · bed · 1/2 placed\n✗ no space: bed",
+   "woonkamer · living · 0/4 placed\n✗ no space: sofa, table, lamp, bookshelf",
+   "keuken · kitchen · 1/1 placed",
+   "slaapkamer 1 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "slaapkamer 2 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "woonkamer · living · 4/4 placed\n⚠ hard to reach: bookshelf",
+   "keuken · kitchen · 0/1 placed\n✗ no space: cabinet",
+   "slaapkamer · bed · 2/3 placed\n✗ no space: bed",
+   "keuken · kitchen · 1/1 placed",
+   "woonkamer · living · 0/4 placed\n✗ no space: sofa, table, lamp, bookshelf",
+   "slaapkamer 2 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "slaapkamer 2 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "slaapkamer 1 · bed · 1/2 placed\n✗ no space: bed",
+   "woonkamer · living · 0/4 placed\n✗ no space: sofa, table, lamp, bookshelf",
+   "keuken · kitchen · 1/1 placed",
+   "slaapkamer 1 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "slaapkamer 2 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "woonkamer · living · 4/4 placed\n⚠ hard to reach: bookshelf",
+   "keuken · kitchen · 1/1 placed",
+   "slaapkamer 1 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "keuken · kitchen · 1/1 placed",
+   "woonkamer · living · 4/4 placed\n⚠ hard to reach: bookshelf",
+   "slaapkamer 2 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "slaapkamer 1 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "slaapkamer 2 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "woonkamer · living · 4/4 placed\n⚠ hard to reach: bookshelf",
+   "keuken · kitchen · 1/1 placed",
+   "slaapkamer 1 · bed · 0/2 placed\n✗ no space: bed, cabinet",
+   "keuken · kitchen · 1/1 placed"
+  ]
+ }
+]

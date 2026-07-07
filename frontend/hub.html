@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCS Studio — Research &amp; Comparisons Hub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔬</text></svg>">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0;
+          --brand:#2f6bff; --brand-dark:#1f52d6; --shadow:0 2px 10px rgba(20,40,80,.06); }
+  body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:var(--panel); border-bottom:1px solid var(--line); padding:18px 28px;
+           display:flex; align-items:baseline; gap:14px; position:sticky; top:0; z-index:5; }
+  header h1 { font-size:20px; }
+  header p { color:var(--mut); font-size:13px; }
+  header a { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
+  main { max-width:1240px; margin:0 auto; padding:26px 28px 70px; }
+  h2 { font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--mut);
+       margin:26px 4px 12px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:14px; }
+  a.card { display:block; background:var(--panel); border:1px solid var(--line); border-radius:14px;
+           padding:16px 18px; text-decoration:none; color:var(--ink); box-shadow:var(--shadow);
+           transition:transform .12s, border-color .12s; }
+  a.card:hover { transform:translateY(-2px); border-color:var(--brand); }
+  a.card b { display:flex; align-items:center; gap:8px; font-size:14.5px; margin-bottom:5px; }
+  a.card span { font-size:12.5px; color:var(--mut); line-height:1.5; }
+  a.card.hero { background:linear-gradient(135deg,#2f6bff,#7a4dff); border:none; color:#fff; }
+  a.card.hero b { color:#fff; } a.card.hero span { color:#dfe7ff; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🔬 Research &amp; Comparisons Hub</h1>
+  <p>every experiment, benchmark and before/after from the SCS Photo-to-BIM project — all on this one localhost</p>
+  <a href="/">← back to SCS Studio</a>
+</header>
+<main>
+
+  <h2>AI model research</h2>
+  <div class="grid">
+    <a class="card hero" href="/gallery/index.html"><b>🏆 5-Model AI Benchmark Gallery</b>
+      <span>TripoSG · SAM 3D · TRELLIS · InstantMesh · TripoSR — identical inputs, spinning 3D side-by-side with measured F-scores (TripoSG 0.393 best). The H200 cloud study.</span></a>
+    <a class="card" href="/four_way_all.html"><b>🔄 Four-Way Generator Comparison</b>
+      <span>Four AI generators side-by-side with even multi-directional lighting, so orientation can't fake a better/worse look.</span></a>
+    <a class="card" href="/four_way.html"><b>🔃 Four-Way (original)</b>
+      <span>The first four-way comparison round.</span></a>
+    <a class="card" href="/gallery3d.html"><b>🧊 3D Results Gallery</b>
+      <span>Interactive gallery of generated meshes.</span></a>
+  </div>
+
+  <h2>Office-chair base graft (Part 1)</h2>
+  <div class="grid">
+    <a class="card" href="/graft_compare.html"><b>🪑 Raw vs Grafted Chair</b>
+      <span>TripoSR's ~500-fragment broken swivel base vs the clean parametric 5-star graft — the before/after.</span></a>
+    <a class="card" href="/legs_compare.html"><b>📐 Leg-Size Comparison</b>
+      <span>Base radius 0.55 (too wide) vs <b>0.42 (shipped)</b> vs 0.34 — how the default was chosen.</span></a>
+    <a class="card" href="/smooth_compare.html"><b>〰️ Surface Smoothing ×16 vs ×40 (3D)</b>
+      <span>Interactive smoothing-strength comparison on the grafted chair.</span></a>
+    <a class="card" href="/smooth_static.html"><b>🖼️ Smoothing (static renders)</b>
+      <span>The same comparison as still images — loads instantly.</span></a>
+    <a class="card" href="/chair_compare.html"><b>🔍 Chair Pipeline Stages</b>
+      <span>Step-by-step chair reconstruction comparison.</span></a>
+    <a class="card" href="/chair_final.html"><b>✅ Final Chair</b>
+      <span>The shipped result, IFC-verified.</span></a>
+  </div>
+
+  <h2>IFC &amp; mesh optimization</h2>
+  <div class="grid">
+    <a class="card" href="/ifc_compare.html"><b>🏗️ IFC Before/After Optimization</b>
+      <span>Geometry instancing + per-component repair + precision rounding — the export optimizer's effect.</span></a>
+    <a class="card" href="/optimize_visual.html"><b>👁️ Mesh Optimizer Visuals</b>
+      <span>Visual walkthrough of the mesh cleanup/decimation stages.</span></a>
+    <a class="card" href="/optimize_test.html"><b>🧪 Optimizer Test Page</b>
+      <span>Raw optimizer test harness.</span></a>
+  </div>
+
+  <h2>Buildings</h2>
+  <div class="grid">
+    <a class="card hero" href="/fleet.html"><b>🏢 Building Fleet Comparison</b>
+      <span>Four real IFCs (0.2 MB → 47 MB) populated by the ergonomics engine — every floor in 3D + 2D with visible people-space.</span></a>
+    <a class="card" href="/populated_building_viewer.html"><b>🛋️ Populated Building Viewer</b>
+      <span>The furnished Duplex, classic viewer.</span></a>
+    <a class="card" href="/empty_building_viewer.html"><b>🏚️ Empty Building Viewer</b>
+      <span>The bare architectural shell.</span></a>
+    <a class="card" href="/building_viewer.html"><b>🏘️ Building Viewer</b>
+      <span>General building GLB viewer.</span></a>
+  </div>
+
+</main>
+</body>
+</html>
