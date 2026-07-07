@@ -133,7 +133,19 @@ TARGET_DIMS = {
     "sofa":         (2.00, 0.90, 0.85),   # 2-3 seater
     "stool":        (0.40, 0.40, 0.60),
     "table":        (1.10, 0.80, 0.75),
+    # ABO-borrowed categories (see load_assets)
+    "coffee_table":   (1.10, 0.60, 0.45),
+    "side_table":     (0.55, 0.55, 0.55),
+    "filing_cabinet": (0.45, 0.60, 1.32),
+    "planter":        (0.40, 0.40, 0.90),
+    "mirror":         (0.60, 0.15, 1.70),  # floor mirror
 }
+
+# floor-standing categories the AI library lacks — borrowed from the SAME ABO
+# catalog the room builder uses, so both parts of the app offer them. Wall-
+# mounted decor (clock, picture_frame) stays room-only: the building path has
+# no wall-mounting logic yet and clocks don't belong on floors.
+_ABO_BORROW = ["coffee_table", "side_table", "filing_cabinet", "planter", "mirror"]
 
 
 def _rescale_to_real(mesh, cat):
@@ -230,6 +242,31 @@ def load_assets():
     # desks, screens facing the chair, exactly like the room builder
     out.setdefault("monitor", {"mesh": _monitor_mesh_zup(), "ifc": "IfcAudioVisualAppliance"})
     out.setdefault("laptop", {"mesh": _laptop_mesh_zup(), "ifc": "IfcAudioVisualAppliance"})
+
+    # borrow the room builder's ABO meshes for the remaining categories, so the
+    # building picker offers (almost) the same catalog as "Build a room"
+    try:
+        import catalog as _catalog
+        rotx90 = trimesh.transformations.rotation_matrix(np.pi / 2, [1, 0, 0])
+        for cat in _ABO_BORROW:
+            if cat in out:
+                continue
+            # categories without direct ABO meshes reuse a visually-similar source
+            # (coffee_table -> table etc.), exactly like the room builder does
+            src = cat if cat in _catalog.ABO_CATEGORIES else _catalog.MESH_BORROW.get(cat, cat)
+            glb = _catalog._abo_glb(src, 0)
+            if not glb:
+                continue
+            try:
+                m = trimesh.load(glb, force="mesh")
+                m.apply_transform(rotx90)              # ABO GLBs are Y-up; assets are Z-up
+                m = _rescale_to_real(m, cat)
+                ifc = _catalog.CATALOG_META.get(cat, ("IfcFurniture",))[0]
+                out[cat] = {"mesh": m, "ifc": ifc}
+            except Exception:
+                pass
+    except Exception:
+        pass
     return out
 
 
