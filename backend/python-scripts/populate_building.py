@@ -204,6 +204,27 @@ def load_assets():
     return out
 
 
+def _chair_forward_xy(m):
+    """Native forward (backrest -> seat front) of a Z-up seat mesh in XY, so the
+    chair can be rotated to FACE its desk regardless of the mesh's orientation."""
+    try:
+        v = m.vertices
+        z = v[:, 2]
+        z0, z1 = float(z.min()), float(z.max())
+        h = z1 - z0
+        if h < 1e-6:
+            return (0.0, 1.0)
+        back = v[z > z0 + 0.6 * h][:, :2]
+        seat = v[z < z0 + 0.5 * h][:, :2]
+        if len(back) < 10 or len(seat) < 10:
+            return (0.0, 1.0)
+        fwd = seat.mean(axis=0) - back.mean(axis=0)
+        n = float(np.hypot(fwd[0], fwd[1]))
+        return (float(fwd[0] / n), float(fwd[1] / n)) if n > 1e-6 else (0.0, 1.0)
+    except Exception:
+        return (0.0, 1.0)
+
+
 def space_extent(sp, s, unit_scale=1.0):
     """World bbox (x0, x1, y0, y1, zmin) in METRES for an IfcSpace — via solid
     geometry when the kernel can process it, else the space's IfcBoundingBox
@@ -442,6 +463,7 @@ def main():
     if movdir is not None:
         movdir.mkdir(parents=True, exist_ok=True)
     movable = []
+    zones_map = {}                     # piece id -> [[x, y, w, d]] people-space, world XY
     obstacle_rects, door_rects = cached_footprints(f, s, args.ifc)
 
     scene = trimesh.Scene()
@@ -456,10 +478,15 @@ def main():
             n_shell = int(meta.get("elements", 0))
         except Exception:
             pass
+        dest = movdir / "shell.glb"
         try:
-            os.link(str(shell_src), str(movdir / "shell.glb"))     # zero-copy on same volume
+            dest.unlink()                                          # stale link from a prior run
         except Exception:
-            _sh.copy2(str(shell_src), str(movdir / "shell.glb"))
+            pass
+        try:
+            os.link(str(shell_src), str(dest))                     # zero-copy on same volume
+        except Exception:
+            _sh.copy2(str(shell_src), str(dest))
     else:
         # merged single-GLB mode: build the shell inline (furniture merges into it)
         for prod in f.by_type("IfcProduct"):
@@ -501,16 +528,49 @@ def main():
         # 3) A3b — labeled fixed obstacles (columns/walls/beams/stairs) + door keep-clear
         keepouts = extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1)
 
-        # 4) solver objects (real footprints); measure out anything too big for the room
-        objs, meshmap = [], {}
+        # 4) solver objects — with the room-builder's HUMAN layer: small seating
+        # pairs with a worksurface (its pull-out space is reserved in the solve;
+        # afterwards the chair is placed in front of it, rotated to FACE it)
+        import rule_packs
+        GAP = 0.12
+        ext_of = {i: assets[c]["mesh"].extents for i, c in enumerate(cats)}
+        chair_idx = [i for i, c in enumerate(cats)
+                     if rule_packs.archetype_of(c) == "seating" and max(float(ext_of[i][0]), float(ext_of[i][1])) <= 0.9]
+        surf_idx = [i for i, c in enumerate(cats) if rule_packs.archetype_of(c) == "worksurface"]
+        pair_of = {}                        # chair index -> its worksurface index
+        _PREF = {"office_chair": ["desk", "table"], "chair": ["table", "desk"]}
+        for ci in chair_idx:
+            order = _PREF.get(cats[ci], ["desk", "table"])
+            open_surfaces = sorted(
+                (j for j in surf_idx if j not in pair_of.values()),
+                key=lambda j: order.index(cats[j]) if cats[j] in order else 99)
+            if not open_surfaces:
+                break
+            pair_of[ci] = open_surfaces[0]
+
+        objs, meshmap, expand = [], {}, {}
         for i, cat in enumerate(cats):
-            m = assets[cat]["mesh"]; e = m.extents
-            if e[0] > W - 0.5 or e[1] > D - 0.5:
-                skipped_items += 1; continue
+            if i in pair_of:
+                continue                    # anchored child — placed after the solve
+            e = ext_of[i]
+            w_, d_ = float(e[0]), float(e[1])
+            extra_d = 0.0
+            child_i = next((c for c, par in pair_of.items() if par == i), None)
+            if child_i is not None:
+                ce = ext_of[child_i]
+                extra_d = GAP + float(ce[1])
+                w_ = max(w_, float(ce[0]))
+            if w_ > W - 0.5 or d_ + extra_d > D - 0.5:
+                skipped_items += 1
+                if child_i is not None:
+                    skipped_items += 1
+                    pair_of.pop(child_i)
+                continue
             oid = f"{cat}-{i}"
-            objs.append({"id": oid, "category": cat,
-                         "width": float(e[0]), "depth": float(e[1]), "height": float(e[2])})
+            objs.append({"id": oid, "category": cat, "width": w_,
+                         "depth": float(d_ + extra_d), "height": float(e[2])})
             meshmap[oid] = assets[cat]["mesh"]
+            expand[oid] = {"extra_d": extra_d, "child": child_i, "d_par": float(e[1])}
         if not objs:
             continue
 
@@ -522,12 +582,41 @@ def main():
         skipped_items += len(res["placements"]) - len(placed_ps)
         if not placed_ps:
             continue
-        boxes, room_cats = [], []
+
+        # resolve final per-item placements (parents pulled back to their true
+        # centre; paired chairs in front of the surface, facing it)
+        room_items = []
+        zones_room = dict(res.get("zones") or {})
         for p in placed_ps:
-            m = meshmap[p["id"]]
-            # solver centres are rotation-correct — no footprint-swap correction needed
+            oid = p["id"]
+            info = expand.get(oid, {})
             cx, cz, yaw = p["position"][0], p["position"][2], float(p["rotation"][1])
-            wx, wy, cat = x0 + cx, y0 + cz, p["id"].rsplit("-", 1)[0]
+            fx, fzv = (p.get("front") or [0.0, 1.0])
+            extra = float(info.get("extra_d", 0.0))
+            acx, acz = cx - fx * extra / 2.0, cz - fzv * extra / 2.0
+            room_items.append({"oid": oid, "cat": oid.rsplit("-", 1)[0],
+                               "cx": acx, "cz": acz, "yaw": yaw,
+                               "mesh": meshmap[oid], "zones": zones_room.get(oid)})
+            ci = info.get("child")
+            if ci is not None:
+                ccat = cats[ci]
+                cmesh = assets[ccat]["mesh"]
+                ce = ext_of[ci]
+                off = info["d_par"] / 2.0 + GAP + float(ce[1]) / 2.0
+                ccx, ccz = acx + fx * off, acz + fzv * off
+                fwd = _chair_forward_xy(cmesh)
+                import math as _math
+                cyaw = _math.degrees(_math.atan2(acz - ccz, acx - ccx)
+                                     - _math.atan2(fwd[1], fwd[0]))
+                room_items.append({"oid": f"{ccat}-{ci}", "cat": ccat,
+                                   "cx": ccx, "cz": ccz, "yaw": cyaw,
+                                   "mesh": cmesh, "zones": None})
+
+        boxes, room_cats = [], []
+        for it in room_items:
+            m = it["mesh"]
+            cx, cz, yaw = it["cx"], it["cz"], it["yaw"]
+            wx, wy, cat = x0 + cx, y0 + cz, it["cat"]
             if movdir is not None:
                 # export the piece centred at footprint origin (base at 0), Y-up; the viewer positions
                 # it — so each piece is a separate, movable object (drag-to-reposition).
@@ -535,15 +624,21 @@ def main():
                 if yaw:
                     piece.apply_transform(trimesh.transformations.rotation_matrix(np.radians(yaw), [0, 0, 1]))
                 pb = piece.bounds
+                # true rotated footprint (works for facing angles, not just 90° steps)
+                bex, bey = float(pb[1][0] - pb[0][0]), float(pb[1][1] - pb[0][1])
                 piece.apply_translation([-(pb[0][0] + pb[1][0]) / 2, -(pb[0][1] + pb[1][1]) / 2, -pb[0][2]])
                 piece.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))  # Z-up->Y-up
                 gname = f"piece_{placed}.glb"
                 piece.export(str(movdir / gname))
-                # rotated footprint for the clash check + the 2D floor plan (90/270 swap)
-                bex, bey = (m.extents[1], m.extents[0]) if yaw % 180 == 90 else (m.extents[0], m.extents[1])
-                movable.append({"id": f"{cat}-{placed}", "room": name, "category": cat, "glb": gname,
+                pid = f"{cat}-{placed}"
+                movable.append({"id": pid, "room": name, "category": cat, "glb": gname,
                                 "pos": [round(wx, 3), round(fz, 3), round(-wy, 3)],   # Y-up world
-                                "dims": [round(float(bex), 3), round(float(bey), 3)]})
+                                "dims": [round(bex, 3), round(bey, 3)]})
+                if it.get("zones"):
+                    # people-space halos, world XY — drawn by the 2D floor plan
+                    zones_map[pid] = [[round(x0 + zx, 3), round(y0 + zz, 3),
+                                       round(zw, 3), round(zd, 3)]
+                                      for (zx, zz, zw, zd) in it["zones"]]
                 boxes.append((wx - bex / 2, wx + bex / 2, wy - bey / 2, wy + bey / 2))
             else:
                 g2 = m.copy()
@@ -567,7 +662,8 @@ def main():
 
     if movdir is not None:
         # shell.glb already linked/copied from the geometry cache
-        (movdir / "furniture.json").write_text(json.dumps({"pieces": movable}), encoding="utf-8")
+        (movdir / "furniture.json").write_text(
+            json.dumps({"pieces": movable, "zones": zones_map}), encoding="utf-8")
         out_info = {"shell": "shell.glb", "movable_pieces": len(movable)}
     else:
         scene.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))  # -> Y-up

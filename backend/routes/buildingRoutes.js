@@ -261,6 +261,7 @@ router.post('/building/:bid/populate', async (req, res, next) => {
       ok: true,
       shell: `${base}/shell.glb`,
       pieces,
+      zones: man.zones || {},          // people-space halos per piece (world XY)
       placed: result.furniture_placed,
       rooms: result.rooms_populated,
       clashes: result.furniture_furniture_clashes,

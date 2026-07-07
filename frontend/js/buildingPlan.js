@@ -122,6 +122,19 @@
       });
     });
 
+    // people-space halos (legroom, approach, door swing, bed access) — they
+    // travel with their piece; ergonomics made VISIBLE
+    ctx.setLineDash([4, 3]);
+    Object.values(data.pieces || {}).forEach((p) => {
+      bm().pieceZonesWorld(p).forEach(([zx, zy, zw, zd]) => {
+        ctx.fillStyle = 'rgba(31,170,96,0.16)';
+        ctx.strokeStyle = 'rgba(31,170,96,0.55)';
+        ctx.fillRect(X(zx), Y(zy), zw * view.s, zd * view.s);
+        ctx.strokeRect(X(zx), Y(zy), zw * view.s, zd * view.s);
+      });
+    });
+    ctx.setLineDash([]);
+
     // furniture pieces
     Object.entries(data.pieces || {}).forEach(([pid, p]) => {
       const r = pieceRect(p);

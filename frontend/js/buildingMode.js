@@ -268,6 +268,10 @@
       if (oid === pid) continue;
       if (st && !(o.pos[1] >= st.elevation - 0.5 && o.pos[1] < st.top - 0.5)) continue;
       if (rectsOverlap(r, pieceRect(o))) return false;
+      // people-space is sacred: no footprint may invade another piece's zone
+      for (const z of pieceZonesWorld(o)) {
+        if (rectsOverlap(r, z)) return false;
+      }
     }
     for (const rm of rooms) {
       for (const ob of (rm.obstacles || [])) {
@@ -335,7 +339,7 @@
     clearSections();
   }
 
-  function loadBuilding(shellUrl, pieces) {
+  function loadBuilding(shellUrl, pieces, zones) {
     const g = loader();
     if (!g) { banner('3D viewer unavailable (no WebGL)', true); return; }
     clearBuilding();
@@ -349,10 +353,22 @@
       const model = g.load({ id: 'bp-' + pc.id, src: pc.glb + '?t=' + Date.now(), position: pc.pos.slice() });
       if (model) {
         model.on('error', (e) => console.warn('piece load error', pc.id, e));
+        // zones stored RELATIVE to the piece's plan position — they ride along
+        // when the user drags the piece (2D or 3D)
+        const px = pc.pos[0], py = -pc.pos[2];
+        const zonesRel = ((zones || {})[pc.id] || []).map(([zx, zy, zw, zd]) =>
+          [zx - px, zy - py, zw, zd]);
         bPieces[pc.id] = { model, pos: pc.pos.slice(), category: pc.category,
-                           glb: pc.glb, dims: pc.dims || null, room: pc.room || null };
+                           glb: pc.glb, dims: pc.dims || null, room: pc.room || null,
+                           zonesRel };
       }
     });
+  }
+
+  // world-XY people-space rects for a piece at its CURRENT position
+  function pieceZonesWorld(p) {
+    const px = p.pos[0], py = -p.pos[2];
+    return (p.zonesRel || []).map(([dx, dy, w, d]) => [px + dx, py + dy, w, d]);
   }
 
   function pieceIdFromPick(pr) {
@@ -463,7 +479,7 @@
       banner(`✓ ${d.placed} pieces across ${d.rooms} rooms · ${d.clashes} clashes — pick a floor to explore.`, d.clashes > 0);
       toast(`🏢 Building populated: ${d.placed} pieces`, 'ok');
       currentFloor = null;
-      loadBuilding(d.shell, d.pieces || []);
+      loadBuilding(d.shell, d.pieces || [], d.zones || {});
       renderFloorChips();
       $('bSave').hidden = false;
       $('bDragHint').hidden = false;
@@ -556,6 +572,6 @@
 
   window.buildingMode = { ensureInit, hasContent: () => !!bShell, getFloorData,
                           selectFloor, currentFloor: () => currentFloor,
-                          refreshPiece, onTabLeave, onTabEnter,
+                          refreshPiece, onTabLeave, onTabEnter, pieceZonesWorld,
                           isLegalPiece, findClashes, resolveClashes, enterRoom };
 })();
