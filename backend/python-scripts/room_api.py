@@ -246,8 +246,8 @@ def cmd_layout(args):
     total = sum(len(p["ids"]) if p.get("ids") else int(p.get("count", 1)) for p in picks)
     if total == 0:
         return {"ok": False, "error": "select at least one item", "status": 400}
-    if total > 20:
-        return {"ok": False, "error": f"max 20 items ({total} selected)", "status": 400}
+    if total > 30:
+        return {"ok": False, "error": f"max 30 items ({total} selected)", "status": 400}
 
     out_dir = Path(args["out_dir"])
     out_dir.mkdir(parents=True, exist_ok=True)

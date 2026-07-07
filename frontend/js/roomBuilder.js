@@ -62,8 +62,8 @@
   function updateTotal() {
     const t = total();
     const el = $('rbTotal');
-    el.textContent = `${t} / 20`;
-    el.style.color = t > 20 ? 'var(--bad)' : '';
+    el.textContent = `${t} / 30`;
+    el.style.color = t > 30 ? 'var(--bad)' : '';
   }
   function itemsPayload() {
     return Object.entries(counts).filter(([, n]) => n > 0).map(([category, count]) => {
@@ -110,7 +110,7 @@
       const badge = it.generated ? `<span class="genbadge">OURS</span>` : '';
       cell.innerHTML = badge + visual + `<div>${it.id}</div><div>${dim}</div>`;
       cell.onclick = () => {
-        if (sel.has(it.id)) sel.delete(it.id); else if (sel.size < 20) sel.add(it.id);
+        if (sel.has(it.id)) sel.delete(it.id); else if (sel.size < 30) sel.add(it.id);
         cell.classList.toggle('sel', sel.has(it.id));
         chosen[category] = [...sel];
         $('pickerCount').textContent = sel.size;
@@ -231,7 +231,7 @@
 
   async function generate() {
     if (total() === 0) { banner('Pick at least one item first — the catalog is on the left.', true); return; }
-    if (total() > 20) { banner('Max 20 items — remove a few.', true); return; }
+    if (total() > 30) { banner('Max 30 items — remove a few.', true); return; }
     const btn = $('rbGenerate');
     btn.disabled = true;
     btn.textContent = '⏳ Solving your room…';
