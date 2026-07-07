@@ -82,16 +82,35 @@
     } catch (e) { banner('Upload error: ' + e, true); }
   }
 
+  // wipe the populated state (3D pieces + shell, floor cuts, table, picks) so
+  // the user can re-configure and populate again from a clean slate. Also runs
+  // on building switch — old pieces must never haunt the next building.
+  function clearAll(resetPicks) {
+    clearBuilding();
+    currentFloor = null;
+    ['bSave', 'bDragHint', 'bFloors', 'bFixClashes', 'lockBtn', 'xrayBtn',
+     'bPlanBtn', 'bClear'].forEach((id) => { const el = $(id); if (el) el.hidden = true; });
+    if (window.buildingPlan && window.buildingPlan.isOpen()) window.buildingPlan.toggle(false);
+    const tb = $('tableRows');
+    if (tb) tb.innerHTML = '';
+    $('tableMeta').textContent = '';
+    if (resetPicks) {
+      roomPicks = {};
+      renderRoomCards();
+    }
+    if (currentBuilding) {
+      fetch(`/api/building/${currentBuilding}/clear`, { method: 'POST' }).catch(() => {});
+    }
+  }
+
   async function onBuildingChange() {
+    clearAll(false);                       // never carry the previous building's pieces
     currentBuilding = $('bSelect').value;
     const wrap = $('bRooms');
     wrap.innerHTML = '';
     roomPicks = {};
     storeys = []; roomsData = [];
     $('bPopulate').hidden = !currentBuilding;
-    $('bSave').hidden = true;
-    $('bDragHint').hidden = true;
-    $('bFloors').hidden = true;
     showProfile(currentBuilding);
     if (!currentBuilding) return;
     const prof = (registryMap[currentBuilding] || {}).profile;
@@ -106,34 +125,39 @@
       allCategories = data.categories || [];
       storeys = data.storeys || [];
       roomsData = data.rooms || [];
-      wrap.innerHTML = '';
-      // group room cards under floor headers; mirrored same-name rooms on one
-      // floor share picks — shown once with a ×N marker
-      const order = storeys.length ? storeys.map((s) => s.name) : [null];
-      order.forEach((sName) => {
-        // sidebar cards: only rooms you can furnish (context spaces live on the 2D plan)
-        const floorRooms = roomsData.filter((r) => (r.storey || null) === sName && r.furnishable !== false);
-        if (!floorRooms.length) return;
-        if (sName) {
-          const h = document.createElement('div');
-          h.className = 'storey-head';
-          h.textContent = `▤ ${sName}`;
-          wrap.appendChild(h);
-        }
-        const seenNames = new Set();
-        floorRooms.forEach((r) => {
-          if (seenNames.has(r.name)) return;
-          seenNames.add(r.name);
-          const copies = floorRooms.filter((x) => x.name === r.name).length;
-          if (!(r.name in roomPicks)) roomPicks[r.name] = [...r.suggested];
-          wrap.appendChild(roomCard(r, copies));
-        });
-      });
+      renderRoomCards();
       banner(`${roomsData.length} rooms across ${storeys.length} floors — edit the furniture, then Populate.`);
     } catch (e) {
       wrap.innerHTML = '';
       banner('Rooms load failed: ' + e, true);
     }
+  }
+
+  // group room cards under floor headers; mirrored same-name rooms on one
+  // floor share picks — shown once with a ×N marker
+  function renderRoomCards() {
+    const wrap = $('bRooms');
+    wrap.innerHTML = '';
+    const order = storeys.length ? storeys.map((s) => s.name) : [null];
+    order.forEach((sName) => {
+      // sidebar cards: only rooms you can furnish (context spaces live on the 2D plan)
+      const floorRooms = roomsData.filter((r) => (r.storey || null) === sName && r.furnishable !== false);
+      if (!floorRooms.length) return;
+      if (sName) {
+        const h = document.createElement('div');
+        h.className = 'storey-head';
+        h.textContent = `▤ ${sName}`;
+        wrap.appendChild(h);
+      }
+      const seenNames = new Set();
+      floorRooms.forEach((r) => {
+        if (seenNames.has(r.name)) return;
+        seenNames.add(r.name);
+        const copies = floorRooms.filter((x) => x.name === r.name).length;
+        if (!(r.name in roomPicks)) roomPicks[r.name] = [...r.suggested];
+        wrap.appendChild(roomCard(r, copies));
+      });
+    });
   }
 
   function roomCard(r, copies) {
@@ -483,6 +507,7 @@
       loadBuilding(d.shell, d.pieces || [], d.zones || {});
       renderFloorChips();
       $('bSave').hidden = false;
+      $('bClear').hidden = false;
       $('bDragHint').hidden = false;
       $('lockBtn').hidden = false;
       $('bPlanBtn').hidden = false;
@@ -556,6 +581,11 @@
     $('bSave').onclick = saveBuilding;
     $('lockBtn').onclick = () => setLock(!camLocked);
     $('xrayBtn').onclick = () => setXray(!xrayOn);
+    $('bClear').onclick = () => {
+      clearAll(true);
+      banner('🧼 Cleared. Fresh suggestions loaded — adjust the picks and Populate again.');
+      toast('Building reset — nothing saved unless you had downloaded it', 'info');
+    };
     $('bFixClashes').onclick = () => {
       const res = resolveClashes();
       updateClashUI();

@@ -270,6 +270,14 @@ router.post('/building/:bid/populate', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+// ---- clear: wipe this building's scratch (pieces, shell link, saved GLB) -------
+router.post('/building/:bid/clear', (req, res) => {
+  const b = building(req.params.bid);
+  if (!b) return res.status(404).json({ error: 'unknown building' });
+  fs.rmSync(scratchDir(b.id), { recursive: true, force: true });
+  res.json({ ok: true });
+});
+
 // ---- save ----------------------------------------------------------------------
 router.post('/building/:bid/save', async (req, res, next) => {
   try {
