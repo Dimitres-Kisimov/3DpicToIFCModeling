@@ -322,7 +322,21 @@ def _solve_layout_ortools(room, objects, obstacles=None):
         area = int((p["obj"]["width"] + 2 * c) * (p["obj"]["depth"] + 2 * c) * SCALE * SCALE)
         reward = PLACE_REWARD + area // 5 + (n - idx) * 500
         place_terms.append(p["present"] * reward)
-        if p["wall_gap"] is not None:
+        if p["obj"].get("prefer") == "center":
+            # social pieces (a table ringed by stools) belong in the OPEN, not at
+            # a wall — pull toward the room centre instead of any wall
+            x, z, ex, ez = p["x"], p["z"], p["ex"], p["ez"]
+            dcx = model.NewIntVar(0, room_w, f"dcx_{p['obj']['id']}")
+            dcz = model.NewIntVar(0, room_d, f"dcz_{p['obj']['id']}")
+            mx = model.NewIntVar(-room_w, room_w, f"mx_{p['obj']['id']}")
+            mz = model.NewIntVar(-room_d, room_d, f"mz_{p['obj']['id']}")
+            model.Add(mx == x + ex - room_w)          # 2*(centre_x - room_cx)
+            model.Add(mz == z + ez - room_d)
+            model.AddAbsEquality(dcx, mx)
+            model.AddAbsEquality(dcz, mz)
+            gap_terms.append(dcx)
+            gap_terms.append(dcz)
+        elif p["wall_gap"] is not None:
             gap_terms.append(p["wall_gap"])
         elif _is_perimeter(p["obj"]):
             x, z, ex, ez = p["x"], p["z"], p["ex"], p["ez"]

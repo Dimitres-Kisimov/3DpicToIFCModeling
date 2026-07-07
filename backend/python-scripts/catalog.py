@@ -33,7 +33,7 @@ CATALOG_META = {
     "table":          ("IfcTable",                 (0.74, 1.2, 0.8),  [0.50, 0.35, 0.22]),
     "coffee_table":   ("IfcTable",                 (0.45, 1.1, 0.6),  [0.50, 0.35, 0.22]),
     "side_table":     ("IfcTable",                 (0.55, 0.5, 0.5),  [0.50, 0.35, 0.22]),
-    "stool":          ("IfcFurniture",             (0.45, 0.4, 0.4),  [0.40, 0.30, 0.25]),
+    "stool":          ("IfcFurniture",             (0.50, 0.42, 0.42), [0.40, 0.30, 0.25]),
     "lamp":           ("IfcFurniture",             (1.60, 0.4, 0.4),  [0.85, 0.80, 0.60]),
     "monitor":        ("IfcAudioVisualAppliance",  (0.45, 0.55, 0.18),[0.10, 0.10, 0.10]),
     "laptop":         ("IfcAudioVisualAppliance",  (0.25, 0.34, 0.24),[0.20, 0.20, 0.22]),

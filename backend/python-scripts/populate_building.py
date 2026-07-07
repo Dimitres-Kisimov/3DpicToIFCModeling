@@ -131,7 +131,7 @@ TARGET_DIMS = {
     "lamp":         (0.40, 0.40, 1.60),   # floor lamp
     "office_chair": (0.60, 0.60, 1.10),
     "sofa":         (2.00, 0.90, 0.85),   # 2-3 seater
-    "stool":        (0.40, 0.40, 0.60),
+    "stool":        (0.42, 0.42, 0.50),
     "table":        (1.10, 0.80, 0.75),
     # ABO-borrowed categories (see load_assets)
     "coffee_table":   (1.10, 0.60, 0.45),
@@ -226,6 +226,19 @@ def _laptop_mesh_zup(h=0.25, w=0.34, d=0.24):
     return _tinted(m, [0.16, 0.16, 0.18, 1.0])
 
 
+def _stool_mesh_zup(h=0.50, w=0.42, d=0.42):
+    """Procedural stool, Z-up — guaranteed LEVEL and chair-proportioned (the AI
+    stool mesh sat tilted and undersized)."""
+    parts = []
+    seat = trimesh.creation.cylinder(radius=w / 2, height=0.06, sections=24)
+    seat.apply_translation([0, 0, h - 0.03]); parts.append(seat)
+    for sx, sy in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
+        leg = trimesh.creation.cylinder(radius=0.02, height=h - 0.06, sections=12)
+        leg.apply_translation([sx * (w / 2 - 0.06), sy * (d / 2 - 0.06), (h - 0.06) / 2])
+        parts.append(leg)
+    return _tinted(trimesh.util.concatenate(parts), [0.48, 0.36, 0.27, 1.0])
+
+
 def load_assets():
     man = json.load(open(LIB / "manifest.json", encoding="utf-8"))["assets"]
     by_cat = {}
@@ -242,6 +255,7 @@ def load_assets():
     # desks, screens facing the chair, exactly like the room builder
     out.setdefault("monitor", {"mesh": _monitor_mesh_zup(), "ifc": "IfcAudioVisualAppliance"})
     out.setdefault("laptop", {"mesh": _laptop_mesh_zup(), "ifc": "IfcAudioVisualAppliance"})
+    out["stool"] = {"mesh": _stool_mesh_zup(), "ifc": "IfcFurniture"}   # level, chair-class
 
     # borrow the room builder's ABO meshes for the remaining categories, so the
     # building picker offers (almost) the same catalog as "Build a room"
@@ -671,8 +685,11 @@ def main():
                     dropped.append(cats[si])
                 continue
             oid = f"{cat}-{i}"
-            objs.append({"id": oid, "category": cat, "width": w_ + 2 * ring,
-                         "depth": float(d_ + extra_d + 2 * ring), "height": float(e[2])})
+            entry = {"id": oid, "category": cat, "width": w_ + 2 * ring,
+                     "depth": float(d_ + extra_d + 2 * ring), "height": float(e[2])}
+            if ring > 0:
+                entry["prefer"] = "center"   # a stool-ringed table is social — keep it open
+            objs.append(entry)
             meshmap[oid] = assets[cat]["mesh"]
             expand[oid] = {"extra_d": extra_d, "child": child_i,
                            "d_par": float(e[1]), "tops": tops_of.get(i, []),

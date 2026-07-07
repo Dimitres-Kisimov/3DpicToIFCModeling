@@ -49,6 +49,8 @@ import trimesh
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
+import rule_packs  # noqa: E402  (archetypes drive wall mounting + centring)
+
 
 # ---------------------------------------------------------------------------
 # Placement: CP-SAT solver if available, else deterministic grid
@@ -231,14 +233,19 @@ def _resolve_layout(room: dict, objects: list):
         a = o.get("anchor")
         if a:
             direct.setdefault(a["to"], []).append(o)
-    free = [o for o in objects if not o.get("anchor")]
+    # wall-mounted decor (clock, picture frame, mirror, tv) never stands on the
+    # floor — excluded from the solve, mounted on a wall afterwards
+    wall_items = [o for o in objects if not o.get("anchor")
+                  and rule_packs.archetype_of(o.get("category", ""), o.get("dimensions")) == "wall_mounted"]
+    wall_ids = {o["id"] for o in wall_items}
+    free = [o for o in objects if not o.get("anchor") and o["id"] not in wall_ids]
 
     # Reserve each group's full footprint in the solve: a desk's in-front chair and
     # a parent's beside-child expand its solver box, so groups can't collide.
     solver_objs, meta = [], {}
     for o in free:
         w = float(o["dimensions"]["width"]); d = float(o["dimensions"]["depth"])
-        extra_d = 0.0; extra_w = 0.0; front_w = w
+        extra_d = 0.0; extra_w = 0.0; front_w = w; beside_n = 0
         for c in direct.get(o["id"], []):
             rel = c["anchor"].get("relation", "in_front")
             cwd = float(c["dimensions"]["width"]); cdd = float(c["dimensions"]["depth"])
@@ -246,8 +253,12 @@ def _resolve_layout(room: dict, objects: list):
                 extra_d = max(extra_d, GAP + cdd); front_w = max(front_w, cwd)
             elif rel == "beside":
                 extra_w += GAP + cwd
-        solver_objs.append({"id": o["id"], "width": max(w, front_w) + extra_w,
-                            "depth": d + extra_d, "category": o.get("category", "")})
+                beside_n += 1
+        entry = {"id": o["id"], "width": max(w, front_w) + extra_w,
+                 "depth": d + extra_d, "category": o.get("category", "")}
+        if beside_n >= 2:
+            entry["prefer"] = "center"     # a stool-ringed table is social — keep it open
+        solver_objs.append(entry)
         meta[o["id"]] = {"w": w, "d": d, "extra_d": extra_d}
 
     # columns/semi-walls + door keep-clear zones become fixed solver keep-outs
@@ -278,6 +289,7 @@ def _resolve_layout(room: dict, objects: list):
             return target - math.degrees(math.atan2(fx, fz))  # seat-front -> anchor
         return target
 
+    gaze = None            # where a seated person looks (drives clock placement)
     for o in free:
         b = box.get(o["id"])
         if b is None or not b.get("placed", True) or not b.get("position"):
@@ -299,6 +311,8 @@ def _resolve_layout(room: dict, objects: list):
         ax, az = bx - fx * m["extra_d"] / 2.0, bz - fz * m["extra_d"] / 2.0
         pos[o["id"]] = {"id": o["id"], "position": [ax, 0.0, az],
                         "rotation": [0, rot, 0], "placed": True}
+        if gaze is None and any("chair" in c.get("category", "") for c in direct.get(o["id"], [])):
+            gaze = {"fx": fx, "fz": fz, "x": ax, "z": az}   # the person faces the desk's back wall
         for c in direct.get(o["id"], []):
             rel = c["anchor"].get("relation", "in_front")
             cdd = float(c["dimensions"]["depth"]); cwd = float(c["dimensions"]["width"])
@@ -378,6 +392,67 @@ def _resolve_layout(room: dict, objects: list):
             px_, pz_ = _clamp_in_room(px_, pz_, c, 0)
             pos[c["id"]] = {"id": c["id"], "position": [px_, 0.0, pz_],
                             "rotation": [0, _face(c, px_, pz_, ax_, az_), 0], "placed": True}
+
+    # ---- wall-mount pass: decor hangs ON the wall at human heights — the
+    # picture frame at eye level, the CLOCK high on the wall the seated person
+    # faces (opposite the chair), the mirror at face height. Spans avoid doors
+    # and each other. Only the two rendered walls (back z=0, left x=0) are used.
+    if wall_items:
+        WALL_T = 0.08
+        MOUNT_H = {"clock": 2.05, "picture_frame": 1.55, "mirror": 1.50, "tv": 1.40}
+        room_h = float(room.get("height", 3.0))
+        spans = {"back": [], "left": []}
+
+        def _blocked(wall, c0, half):
+            for (a0, a1) in spans[wall]:
+                if c0 + half > a0 and c0 - half < a1:
+                    return True
+            for dr in room.get("doors", []):
+                dx, dz = float(dr["x"]), float(dr["z"])
+                dw = float(dr["width"]); dd = float(dr.get("depth", dw))
+                if wall == "back" and dz < 0.4 and c0 + half > dx and c0 - half < dx + dw:
+                    return True
+                if wall == "left" and dx < 0.4 and c0 + half > dz and c0 - half < dz + dd:
+                    return True
+            return False
+
+        for o in wall_items:
+            od = o["dimensions"]
+            oh, ow, odp = float(od["height"]), float(od["width"]), float(od["depth"])
+            half = ow / 2 + 0.15
+            cat = o.get("category", "")
+            if cat == "clock" and gaze is not None and gaze["fz"] > 0.3:
+                cands = [("back", gaze["x"]), ("back", cw / 2)]     # in the line of sight
+            elif cat == "clock" and gaze is not None and gaze["fx"] > 0.3:
+                cands = [("left", gaze["z"]), ("left", ch / 2)]
+            else:
+                base_wall = "left" if cat == "mirror" else "back"
+                other = "back" if base_wall == "left" else "left"
+                lim_b = cw if base_wall == "back" else ch
+                lim_o = cw if other == "back" else ch
+                cands = [(base_wall, f * lim_b) for f in (0.5, 0.3, 0.7, 0.18, 0.82)]
+                cands += [(other, f * lim_o) for f in (0.5, 0.3, 0.7)]
+            chosen = None
+            for wall, c0 in cands:
+                limit = cw if wall == "back" else ch
+                c0 = min(max(c0, half + 0.1), limit - half - 0.1)
+                if not _blocked(wall, c0, half):
+                    chosen = (wall, c0)
+                    break
+            if chosen is None:
+                wall, c0 = cands[0]
+                limit = cw if wall == "back" else ch
+                chosen = (wall, min(max(c0, half), limit - half))
+            wall, c0 = chosen
+            spans[wall].append((c0 - half, c0 + half))
+            elev = min(max(MOUNT_H.get(cat, 1.5) - oh / 2, 0.9), room_h - oh - 0.05)
+            zoff = WALL_T + odp / 2 + 0.01
+            if wall == "back":
+                pos[o["id"]] = {"id": o["id"], "position": [c0, 0.0, zoff],
+                                "rotation": [0, 0, 0], "elevation": elev, "placed": True}
+            else:
+                pos[o["id"]] = {"id": o["id"], "position": [zoff, 0.0, c0],
+                                "rotation": [0, 90, 0], "elevation": elev, "placed": True}
     return pos, solver, extras
 
 

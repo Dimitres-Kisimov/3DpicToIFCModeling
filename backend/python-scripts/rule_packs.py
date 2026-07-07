@@ -50,6 +50,9 @@ ROOM_TYPES = {
             ("monitor", "desk", "on_top"),
             ("laptop", "desk", "on_top"),
             ("lamp", "desk", "on_top"),
+            ("planter", "desk", "beside"),   # greenery flanks the workstation
+            ("stool", "table", "beside"),    # stools cluster around the side table
+            ("chair", "table", "beside"),
         ],
     },
     "living": {
@@ -73,6 +76,8 @@ ROOM_TYPES = {
             ("office_chair", "desk", "in_front"),
             ("monitor", "desk", "on_top"),
             ("laptop", "desk", "on_top"),
+            ("planter", "desk", "beside"),
+            ("stool", "table", "beside"),
         ],
     },
 }
