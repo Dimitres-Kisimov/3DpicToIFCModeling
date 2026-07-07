@@ -108,7 +108,7 @@ def smart_furnish(rt, W, D, assets):
         if area > 10: items += ["table"]
     elif rt == "office":
         for _ in range(min(8, max(1, int(area / 6.5)))):  # ~6.5 m²/workstation (Neufert)
-            items += ["desk", "office_chair"]
+            items += ["desk", "office_chair", "monitor"]
         if area > 15: items += ["cabinet"]
         if area > 22: items += ["bookshelf"]
     elif rt == "dining":
@@ -189,6 +189,31 @@ def build_shell_cache(f, s, ifc_path, force=False):
     return str(out)
 
 
+def _monitor_mesh_zup(h=0.45, w=0.55, d=0.18):
+    """Procedural monitor, Z-up; the user/screen side is local +Y."""
+    parts = []
+    screen = trimesh.creation.box(extents=[w, 0.03, h * 0.7])
+    screen.apply_translation([0, 0, h * 0.5 + 0.05]); parts.append(screen)
+    stand = trimesh.creation.box(extents=[w * 0.2, min(d, 0.10), 0.04])
+    stand.apply_translation([0, 0, 0.02]); parts.append(stand)
+    neck = trimesh.creation.cylinder(radius=0.03, height=0.05, sections=12)
+    neck.apply_translation([0, 0, 0.05]); parts.append(neck)
+    m = trimesh.util.concatenate(parts)
+    return _tinted(m, [0.12, 0.12, 0.14, 1.0])
+
+
+def _laptop_mesh_zup(h=0.25, w=0.34, d=0.24):
+    """Procedural open laptop, Z-up; keyboard/user side is local +Y."""
+    parts = []
+    base = trimesh.creation.box(extents=[w, d, h * 0.10])
+    base.apply_translation([0, 0, h * 0.05]); parts.append(base)
+    screen = trimesh.creation.box(extents=[w, h * 0.05, h * 0.95])
+    screen.apply_transform(trimesh.transformations.rotation_matrix(np.radians(15), [1, 0, 0]))
+    screen.apply_translation([0, -d / 2 + h * 0.05, h * 0.5]); parts.append(screen)
+    m = trimesh.util.concatenate(parts)
+    return _tinted(m, [0.16, 0.16, 0.18, 1.0])
+
+
 def load_assets():
     man = json.load(open(LIB / "manifest.json", encoding="utf-8"))["assets"]
     by_cat = {}
@@ -201,6 +226,10 @@ def load_assets():
             out[cat] = {"mesh": mesh, "ifc": a["ifc_class"]}
         except Exception:
             pass
+    # on-desk electronics: procedural (the AI asset library has none) — placed ON
+    # desks, screens facing the chair, exactly like the room builder
+    out.setdefault("monitor", {"mesh": _monitor_mesh_zup(), "ifc": "IfcAudioVisualAppliance"})
+    out.setdefault("laptop", {"mesh": _laptop_mesh_zup(), "ifc": "IfcAudioVisualAppliance"})
     return out
 
 
@@ -548,10 +577,23 @@ def main():
                 break
             pair_of[ci] = open_surfaces[0]
 
+        # on-desk electronics ride ON a worksurface, screens facing the chair
+        _TOP_SLOTS = [[0.0, -0.05], [-0.35, -0.02], [0.35, -0.02]]
+        tops_of = {}                        # surface index -> [electronics indices]
+        unhosted_tops = []                  # electronics with no desk/table in the room
+        for ti in [i for i, c in enumerate(cats) if c in ("monitor", "laptop")]:
+            hosts = sorted(surf_idx, key=lambda j: len(tops_of.get(j, [])))
+            if not hosts:
+                unhosted_tops.append(cats[ti])
+                continue
+            tops_of.setdefault(hosts[0], []).append(ti)
+        top_children = {ti for lst in tops_of.values() for ti in lst}
+
         objs, meshmap, expand = [], {}, {}
-        dropped = []                        # honest per-room "no space" report
+        dropped = list(unhosted_tops)       # honest per-room "no space" report
+        skipped_items += len(unhosted_tops)
         for i, cat in enumerate(cats):
-            if i in pair_of:
+            if i in pair_of or i in top_children:
                 continue                    # anchored child — placed after the solve
             e = ext_of[i]
             w_, d_ = float(e[0]), float(e[1])
@@ -568,12 +610,16 @@ def main():
                     skipped_items += 1
                     dropped.append(cats[child_i])
                     pair_of.pop(child_i)
+                for ti in tops_of.pop(i, []):
+                    skipped_items += 1
+                    dropped.append(cats[ti])
                 continue
             oid = f"{cat}-{i}"
             objs.append({"id": oid, "category": cat, "width": w_,
                          "depth": float(d_ + extra_d), "height": float(e[2])})
             meshmap[oid] = assets[cat]["mesh"]
-            expand[oid] = {"extra_d": extra_d, "child": child_i, "d_par": float(e[1])}
+            expand[oid] = {"extra_d": extra_d, "child": child_i,
+                           "d_par": float(e[1]), "tops": tops_of.get(i, [])}
         if not objs:
             continue
 
@@ -583,12 +629,16 @@ def main():
                                          objs, obstacles=keepouts)
         placed_ps = [p for p in res["placements"] if p.get("placed") and p.get("position")]
         skipped_items += len(res["placements"]) - len(placed_ps)
-        # solver-dropped items (and their paired chairs) join the honest report
+        # solver-dropped items (and their paired chairs/electronics) join the report
         for oid in (res.get("unplaced") or []):
             dropped.append(oid.rsplit("-", 1)[0])
-            ci = expand.get(oid, {}).get("child")
+            info = expand.get(oid, {})
+            ci = info.get("child")
             if ci is not None:
                 dropped.append(cats[ci])
+                skipped_items += 1
+            for ti in info.get("tops", []):
+                dropped.append(cats[ti])
                 skipped_items += 1
         circ = res.get("circulation") or {}
         unreachable = [oid.rsplit("-", 1)[0] for oid in (circ.get("unreachable") or [])]
@@ -626,6 +676,21 @@ def main():
                 room_items.append({"oid": f"{ccat}-{ci}", "cat": ccat,
                                    "cx": ccx, "cz": ccz, "yaw": cyaw,
                                    "mesh": cmesh, "zones": None})
+            # on-desk electronics: slot offsets rotated with the desk; the
+            # screen (+Y local) turned toward the desk's front — i.e. the chair
+            par_h = float(meshmap[oid].extents[2])             # desk/table top height
+            for k, ti in enumerate(info.get("tops", [])):
+                tcat = cats[ti]
+                slot = _TOP_SLOTS[k % len(_TOP_SLOTS)]
+                rxv, rzv = fzv, -fx                            # right-hand perpendicular
+                tx = acx + slot[0] * rxv + slot[1] * fx
+                tz = acz + slot[0] * rzv + slot[1] * fzv
+                import math as _math
+                tyaw = _math.degrees(_math.atan2(-fx, fzv))    # +Y local -> (fx, fzv)
+                room_items.append({"oid": f"{tcat}-{ti}", "cat": tcat,
+                                   "cx": tx, "cz": tz, "yaw": tyaw,
+                                   "mesh": assets[tcat]["mesh"], "zones": None,
+                                   "elev": par_h})
 
         boxes, room_cats = [], []
         for it in room_items:
@@ -646,15 +711,18 @@ def main():
                 gname = f"piece_{placed}.glb"
                 piece.export(str(movdir / gname))
                 pid = f"{cat}-{placed}"
+                elev = float(it.get("elev") or 0.0)
                 movable.append({"id": pid, "room": name, "category": cat, "glb": gname,
-                                "pos": [round(wx, 3), round(fz, 3), round(-wy, 3)],   # Y-up world
-                                "dims": [round(bex, 3), round(bey, 3)]})
+                                "pos": [round(wx, 3), round(fz + elev, 3), round(-wy, 3)],  # Y-up world
+                                "dims": [round(bex, 3), round(bey, 3)],
+                                "elev": round(elev, 3)})
                 if it.get("zones"):
                     # people-space halos, world XY — drawn by the 2D floor plan
                     zones_map[pid] = [[round(x0 + zx, 3), round(y0 + zz, 3),
                                        round(zw, 3), round(zd, 3)]
                                       for (zx, zz, zw, zd) in it["zones"]]
-                boxes.append((wx - bex / 2, wx + bex / 2, wy - bey / 2, wy + bey / 2))
+                if elev <= 0.01:            # on-desk items don't join floor clash boxes
+                    boxes.append((wx - bex / 2, wx + bex / 2, wy - bey / 2, wy + bey / 2))
             else:
                 g2 = m.copy()
                 if yaw:

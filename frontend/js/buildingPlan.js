@@ -140,13 +140,16 @@
       const r = pieceRect(p);
       const sel = selected === pid;
       const bad = clashes.has(pid) || (sel && dragging && !dragOK);
-      ctx.globalAlpha = 0.92;
+      const onTop = (p.elev || 0) > 0.01;          // on-desk electronics: light + dashed
+      if (onTop) ctx.setLineDash([3, 3]);
+      ctx.globalAlpha = onTop ? 0.6 : 0.92;
       ctx.fillStyle = bad ? '#e05a5a' : (CAT_FILL[p.category] || '#7d8aa0');
       ctx.fillRect(X(r[0]), Y(r[1]), r[2] * view.s, r[3] * view.s);
       ctx.globalAlpha = 1;
       ctx.lineWidth = sel || bad ? 3 : 1;
       ctx.strokeStyle = bad ? '#a11d1d' : sel ? '#2f6bff' : '#1f2733';
       ctx.strokeRect(X(r[0]), Y(r[1]), r[2] * view.s, r[3] * view.s);
+      ctx.setLineDash([]);
       ctx.fillStyle = bad ? '#a11d1d' : '#1f2733';
       ctx.font = `${sel ? 'bold ' : ''}10px Segoe UI`;
       ctx.fillText(p.category.replace(/_/g, ' '), X(r[0]), Y(r[1]) - 3);

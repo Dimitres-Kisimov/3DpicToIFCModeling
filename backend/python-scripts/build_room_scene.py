@@ -199,6 +199,13 @@ def _chair_forward_xz(obj):
         return (0.0, 1.0)
 
 
+# On-desk electronics must FACE the person at the desk. The procedural monitor/
+# laptop meshes carry their screen on the local -Z side after Z-up -> Y-up
+# conversion (the laptop hinges at the rear edge), so a half-turn relative to
+# the desk points the screen at the chair.
+_SCREEN_FLIP = {"monitor": 180.0, "laptop": 180.0}
+
+
 def _resolve_layout(room: dict, objects: list):
     """Solve free-standing objects with CP-SAT, then place 'anchored' objects
     functionally relative to their anchor — chair in front of desk (facing it),
@@ -296,8 +303,9 @@ def _resolve_layout(room: dict, objects: list):
                 wox = float(ox) * rx_ + float(oz) * fx
                 woz = float(ox) * rz_ + float(oz) * fz
                 px, pz = _clamp_in_room(ax + wox, az + woz, c, rot)
+                crot = rot + _SCREEN_FLIP.get(c.get("category", ""), 0.0)   # screen -> chair
                 pos[c["id"]] = {"id": c["id"], "position": [px, 0.0, pz],
-                                "rotation": [0, rot, 0],
+                                "rotation": [0, crot, 0],
                                 "elevation": float(o["dimensions"]["height"]), "placed": True}
             elif rel == "beside":
                 off = m["w"] / 2 + cwd / 2 + 0.1
@@ -326,8 +334,9 @@ def _resolve_layout(room: dict, objects: list):
             wox = float(ox) * rx2 + float(oz) * fx2
             woz = float(ox) * rz2 + float(oz) * fz2
             px, pz = _clamp_in_room(rx + wox, rz + woz, o, rrot)
+            crot = rrot + _SCREEN_FLIP.get(o.get("category", ""), 0.0)      # screen -> chair
             pos[o["id"]] = {"id": o["id"], "position": [px, 0.0, pz],
-                            "rotation": [0, rrot, 0], "elevation": float(ad["height"]), "placed": True}
+                            "rotation": [0, crot, 0], "elevation": float(ad["height"]), "placed": True}
         elif rel == "beside":
             off = float(ad["width"]) / 2 + float(od["width"]) / 2 + 0.1
             px, pz = _clamp_in_room(rx + rx2 * off, rz + rz2 * off, o, rrot)

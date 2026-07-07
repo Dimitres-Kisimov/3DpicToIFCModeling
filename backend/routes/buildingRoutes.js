@@ -255,7 +255,7 @@ router.post('/building/:bid/populate', async (req, res, next) => {
     const base = `/out/bldg_${b.id}`;
     const pieces = (man.pieces || []).map((p) => ({
       id: p.id, category: p.category, glb: `${base}/${p.glb}`, pos: p.pos,
-      room: p.room, dims: p.dims || null,
+      room: p.room, dims: p.dims || null, elev: p.elev || 0,
     }));
     res.json({
       ok: true,

@@ -256,6 +256,7 @@
   function isLegalPiece(pid) {
     const p = bPieces[pid];
     if (!p) return true;
+    if (p.elev > 0.01) return true;        // on-desk items live above the floor plane
     const st = floorBandOf(p);
     const rooms = roomsData.filter((r) => !st || r.storey === st.name);
     const r = pieceRect(p);
@@ -265,7 +266,7 @@
       r[1] + r[3] <= rm.rect[1] + rm.rect[3] + 0.01);
     if (!inRoom) return false;
     for (const [oid, o] of Object.entries(bPieces)) {
-      if (oid === pid) continue;
+      if (oid === pid || o.elev > 0.01) continue;
       if (st && !(o.pos[1] >= st.elevation - 0.5 && o.pos[1] < st.top - 0.5)) continue;
       if (rectsOverlap(r, pieceRect(o))) return false;
       // people-space is sacred: no footprint may invade another piece's zone
@@ -360,7 +361,7 @@
           [zx - px, zy - py, zw, zd]);
         bPieces[pc.id] = { model, pos: pc.pos.slice(), category: pc.category,
                            glb: pc.glb, dims: pc.dims || null, room: pc.room || null,
-                           zonesRel };
+                           elev: pc.elev || 0, zonesRel };
       }
     });
   }
