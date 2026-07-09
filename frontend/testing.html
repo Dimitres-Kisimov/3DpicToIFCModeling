@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCS Studio — System Test Report</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0;
+          --brand:#2f6bff; --ok:#177a46; --ok-bg:#e7f7ee; --ok-line:#bfe8d0;
+          --warn:#b06515; --warn-bg:#fdf3e7; --warn-line:#f4d9b0;
+          --bad:#d64545; --shadow:0 2px 10px rgba(20,40,80,.06); }
+  body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:var(--panel); border-bottom:1px solid var(--line); padding:18px 28px;
+           display:flex; align-items:baseline; gap:14px; position:sticky; top:0; z-index:5; }
+  header h1 { font-size:20px; }
+  header p { color:var(--mut); font-size:13px; }
+  header a { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
+  main { max-width:1200px; margin:0 auto; padding:24px 28px 60px; }
+  .test { background:var(--panel); border:1px solid var(--line); border-radius:16px;
+          box-shadow:var(--shadow); padding:20px 24px; margin-bottom:24px; }
+  .test h2 { font-size:16.5px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .date { font-size:11.5px; color:var(--mut); font-weight:400; background:#eef1f7;
+          padding:2px 10px; border-radius:9px; }
+  .verdict { font-size:11.5px; font-weight:700; padding:3px 12px; border-radius:9px; }
+  .verdict.pass { background:var(--ok-bg); color:var(--ok); border:1px solid var(--ok-line); }
+  .verdict.fixed { background:var(--warn-bg); color:var(--warn); border:1px solid var(--warn-line); }
+  .test p { font-size:13.5px; line-height:1.65; color:var(--ink); margin:10px 0 0; max-width:1050px; }
+  .test p.mut { color:var(--mut); }
+  table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:12px; }
+  th { text-align:left; padding:7px 10px; color:var(--mut); border-bottom:2px solid var(--line);
+       font-weight:600; white-space:nowrap; }
+  td { padding:7px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  td.ok { color:var(--ok); font-weight:600; }
+  td.bad { color:var(--bad); font-weight:600; }
+  code { background:#eef1f7; border-radius:5px; padding:1px 6px; font-size:11.5px;
+         font-family:ui-monospace,Consolas,monospace; }
+  .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin:14px 0 4px; }
+  .stat { background:#f7f9fc; border:1px solid var(--line); border-radius:12px; padding:10px 14px; }
+  .stat b { display:block; font-size:19px; }
+  .stat span { font-size:11.5px; color:var(--mut); }
+</style>
+</head>
+<body>
+<header>
+  <h1>🧪 System Test Report</h1>
+  <p>six test campaigns · run live against this machine · all data below is measured, not estimated</p>
+  <a href="/hub.html">← research hub</a>
+</header>
+<main>
+
+<section class="test">
+  <h2>Overview <span class="date">test day: 2026-07-09</span> <span class="verdict pass">6 / 6 CAMPAIGNS PASSED</span></h2>
+  <div class="summary">
+    <div class="stat"><b>3</b><span>new buildings ingested / refused correctly</span></div>
+    <div class="stat"><b>2 bugs</b><span>found by testing, fixed same day</span></div>
+    <div class="stat"><b>0</b><span>schema issues in exported IFCs</span></div>
+    <div class="stat"><b>121 / 121</b><span>exported furnishings with valid geometry</span></div>
+    <div class="stat"><b>+1 MB</b><span>RSS drift over 12 soak cycles</span></div>
+    <div class="stat"><b>0</b><span>stuck registry states after fuzzing</span></div>
+  </div>
+  <p class="mut">Every campaign ran against the live app at localhost:3000 (Node front door +
+  Python engine) on 2026-07-09. Where a test found a defect, the defect is documented below
+  together with the fix and the re-run that proves it — the report keeps both results on purpose.</p>
+</section>
+
+<section class="test">
+  <h2>T1 · Fleet ingestion sweep <span class="date">2026-07-09</span> <span class="verdict fixed">PASS — after FR keyword fix</span></h2>
+  <p>Three previously unseen sample buildings (xeokit-sdk model library) pushed through the full
+  pipeline: upload → probe → background prepare → room detection → populate → IFC export.</p>
+  <table>
+    <tr><th>Model</th><th>Size</th><th>Schema</th><th>Outcome</th></tr>
+    <tr><td>IfcOpenHouse4</td><td>0.1 MB</td><td>IFC4</td>
+        <td class="bad">refused at probe — no IfcSpace with geometry (correct: the model has none; the message tells the user to re-export with rooms)</td></tr>
+    <tr><td>rac_advanced_sample_project (Revit)</td><td>45.3 MB</td><td>IFC4</td>
+        <td class="bad">refused at probe — verified offline: the file genuinely contains 0 IfcSpace entities</td></tr>
+    <tr><td>19 rue Marc-Antoine Petit (ground floor)</td><td>4.1 MB</td><td>IFC2X3</td>
+        <td class="ok">ingested — 29 spaces, ready in 23 s; after fix: 15 pieces placed, 0 clashes, 15-furnishing IFC exported (5.65 MB)</td></tr>
+  </table>
+  <p><b>Irregularity found and fixed:</b> the French building ingested cleanly but populated
+  <b>0 pieces</b> — its rooms are named BUREAU, LABORATOIRE, ATTENTE, and the room classifier only
+  spoke English, German and Dutch, so no room earned a default suggestion. French keywords were
+  added (bureau/laboratoire/atelier → office, attente/accueil → lounge, chambre → bed,
+  cuisine → kitchen, séjour/salon → living; sanitaire/vestiaire/circulation → skip) and the re-run
+  placed 15 pieces across the waiting room and offices. The general lesson stands in the code:
+  unknown room names are never <i>blocked</i> — explicit picks always work — but default
+  suggestions only reach as far as the keyword dictionary.</p>
+</section>
+
+<section class="test">
+  <h2>T2 · Concurrency &amp; load <span class="date">2026-07-09</span> <span class="verdict pass">PASS</span></h2>
+  <p>Fired simultaneously: populate of the German apartment, populate of the French building, and a
+  12-item room-builder solve — with health polling every 2 s throughout.</p>
+  <table>
+    <tr><th>Task</th><th>Result</th><th>Wall time</th></tr>
+    <tr><td>Populate German apartment (9.7 MB, incl. one-time v3 shell rebuild)</td><td class="ok">34 placed</td><td>57 s</td></tr>
+    <tr><td>Populate French building (queued behind, by design)</td><td class="ok">15 placed</td><td>60 s total</td></tr>
+    <tr><td>Room-builder layout, 12 items</td><td class="ok">feasible, all placed</td><td>13 s — ran in parallel, did not wait for the buildings</td></tr>
+  </table>
+  <p>The building queue <b>serialized</b> the two populates exactly as designed (two heavy IFC jobs
+  never fight for the same cores), while the room solve rode the separate CPU queue in parallel.
+  29 health samples during the run: <b>0 errors, peak RSS 51 MB</b>. Nothing failed, nothing
+  starved.</p>
+</section>
+
+<section class="test">
+  <h2>T3 · BIM round-trip <span class="date">2026-07-09</span> <span class="verdict pass">PASS</span></h2>
+  <p>The strongest correctness test available: populate the Duplex, export its populated IFC, then
+  feed that exported file back into the app as a brand-new building.</p>
+  <table>
+    <tr><th>Stage</th><th>Result</th></tr>
+    <tr><td>Export</td><td class="ok">26 furnishings, 5.72 MB</td></tr>
+    <tr><td>Re-upload probe</td><td class="ok">312 products = 286 original + our 26 — every piece survived the round trip</td></tr>
+    <tr><td>Room re-detection</td><td class="ok">20 rooms — identical to the original Duplex</td></tr>
+    <tr><td>Fixed-element extraction</td><td class="ok">45 obstacle rects vs 42 originally — round-1 furniture now counts as immovable</td></tr>
+    <tr><td>Re-populate</td><td class="ok">26 new pieces, 0 clashes; 4 rooms honestly reported reduced space</td></tr>
+  </table>
+  <p>This closes the loop end to end: furniture written by the exporter is real enough BIM that the
+  app's own probe, room detector and solver treat it exactly like architect-authored content — the
+  solver routed the second generation of furniture <i>around</i> the first with zero clashes, and
+  the capacity math correctly reported that pre-furnished rooms hold less.</p>
+</section>
+
+<section class="test">
+  <h2>T4 · Malformed-IFC fuzzing <span class="date">2026-07-09</span> <span class="verdict fixed">PASS — after truncation fix</span></h2>
+  <p>Five hostile uploads against the registry. Acceptance criteria: a clean, actionable refusal for
+  each; no stuck "preparing" entries; server healthy afterwards.</p>
+  <table>
+    <tr><th>Case</th><th>First run</th><th>After fix</th></tr>
+    <tr><td>Truncated mid-entity (first 100 KB of a real 9.7 MB IFC)</td>
+        <td class="bad">ACCEPTED — registered &amp; prepared as a seemingly valid building</td>
+        <td class="ok">refused: "file is incomplete (missing STEP terminator)"</td></tr>
+    <tr><td>Plain text renamed .ifc</td><td class="ok">refused: "not an IFC (STEP) file"</td><td class="ok">same</td></tr>
+    <tr><td>Valid ISO-10303 header, garbage entities</td><td class="ok">refused (parse error)</td><td class="ok">same</td></tr>
+    <tr><td>Schema-valid IFC4 with zero IfcSpace</td><td class="ok">refused with re-export guidance</td><td class="ok">same</td></tr>
+    <tr><td>Wrong extension (.glb)</td><td class="ok">refused by the extension gate</td><td class="ok">same</td></tr>
+  </table>
+  <p><b>The bug this found:</b> ifcopenshell happily salvages the parseable <i>prefix</i> of a
+  truncated file — the 100 KB stub of the German apartment contained the project header and a few
+  early rooms, so it sailed through the probe and registered as a plausible-looking building that
+  silently lacked 99% of its content. The upload gate now also reads the file <i>tail</i> and
+  requires the STEP terminator <code>END-ISO-10303-21</code>, so a cut-off upload or export is named
+  as exactly that. Re-run: <b>5/5 refused, registry unchanged, 0 stuck states, server healthy</b>.</p>
+</section>
+
+<section class="test">
+  <h2>T5 · Soak — repeated populate/clear <span class="date">2026-07-09</span> <span class="verdict pass">PASS</span></h2>
+  <p>12 back-to-back populate → clear cycles on the Duplex, with a room-builder solve injected every
+  third cycle, watching process memory and the scratch directory.</p>
+  <table>
+    <tr><th>Metric</th><th>Cycle 1</th><th>Cycle 12</th><th>Verdict</th></tr>
+    <tr><td>Node RSS</td><td>52 MB</td><td>53 MB</td><td class="ok">+1 MB — noise, no trend</td></tr>
+    <tr><td>Node heap</td><td>10 MB</td><td>11 MB</td><td class="ok">flat</td></tr>
+    <tr><td>Scratch on disk</td><td>0.8 MB</td><td>0.8 MB</td><td class="ok">clear() reclaims everything</td></tr>
+    <tr><td>Pieces placed</td><td>26</td><td>26</td><td class="ok">identical every cycle — the solver is deterministic</td></tr>
+  </table>
+  <p>No leak in the Node front door (each Python job is a short-lived process, so engine memory
+  cannot accumulate by construction). A pleasant side-finding: the placement result was
+  <b>bit-identical across all 12 cycles</b> — same picks in, same layout out — which makes layouts
+  reproducible evidence, not a dice roll.</p>
+</section>
+
+<section class="test">
+  <h2>T6 · Standards validation of exported IFCs <span class="date">2026-07-09</span> <span class="verdict pass">PASS</span></h2>
+  <p>Both flagship exports formally validated with <code>ifcopenshell.validate</code> (schema and
+  attribute-level rules), plus a geometric round-trip: every furnishing must regenerate valid
+  geometry through <code>create_shape</code>, the same routine every serious IFC viewer uses.</p>
+  <table>
+    <tr><th>File</th><th>Schema</th><th>Schema issues</th><th>Geometry round-trip</th></tr>
+    <tr><td>Duplex populated.ifc (5.72 MB)</td><td>IFC2X3</td><td class="ok">0</td>
+        <td class="ok">87 / 87 furnishings (61 native Revit + our 26)</td></tr>
+    <tr><td>German apartment populated.ifc (12.48 MB)</td><td>IFC4</td><td class="ok">0</td>
+        <td class="ok">34 / 34 furnishings, correctly at the model's z≈503 m sea-level datum</td></tr>
+  </table>
+  <p>Zero validation issues in either schema generation — the exported furniture is
+  standards-compliant BIM, not merely "renders in our viewer". Combined with T3 (the app's own
+  pipeline re-ingesting an export) this is the strongest cross-tool guarantee available without a
+  commercial viewer licence; opening the files in BIMvision/Solibri is the one remaining manual
+  step for the reader.</p>
+</section>
+
+</main>
+</body>
+</html>

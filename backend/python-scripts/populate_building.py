@@ -34,7 +34,9 @@ SKIP_KEYWORDS = ["bath", "foyer", "hall", "stair", "utility", "roof", "closet", 
                  # German (SCS buildings will be German)
                  "bad", "flur", "diele", "treppe", "abstell", "technik", "garderobe",
                  # Dutch (Schependomlaan-style housing exports)
-                 "entree", "gang", "berging", "instal", "toilet", "trap", "mk"]
+                 "entree", "gang", "berging", "instal", "toilet", "trap", "mk",
+                 # French (19-rue-Marc-Antoine-style exports)
+                 "sanitaire", "san.", "douche", "vestiaire", "circulation", "dgt", "palier"]
 # room-name keyword -> canonical room type (multi-language so ANY new building maps)
 TYPE_KEYWORDS = {"living": "living", "lounge": "lounge", "bed": "bed", "kitchen": "kitchen",
                  "dining": "dining", "meeting": "meeting", "conference": "meeting",
@@ -44,6 +46,12 @@ TYPE_KEYWORDS = {"living": "living", "lounge": "lounge", "bed": "bed", "kitchen"
                  "besprechung": "meeting", "konferenz": "meeting",
                  "büro": "office", "buero": "office", "arbeits": "office",
                  "woon": "living", "slaap": "bed", "keuken": "kitchen", "eet": "dining",
+                 # French: offices/labs classify as workplaces, waiting rooms as seating
+                 "bureau": "office", "laboratoire": "office", "labo": "office",
+                 "atelier": "office", "attente": "lounge", "accueil": "lounge",
+                 "séjour": "living", "sejour": "living", "salon": "living",
+                 "chambre": "bed", "dortoir": "bed", "cuisine": "kitchen",
+                 "réunion": "meeting", "reunion": "meeting",
                  "room": "living", "zimmer": "living", "kamer": "living"}
 # structural element types that cut up a room and must be avoided
 OBSTACLE_TYPES = ["IfcColumn", "IfcWall", "IfcWallStandardCase", "IfcBeam", "IfcMember",

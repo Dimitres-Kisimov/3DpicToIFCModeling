@@ -151,10 +151,20 @@ router.post('/buildings/upload', bUpload.single('file'), async (req, res, next) 
     const head = Buffer.alloc(96);
     const fd = fs.openSync(req.file.path, 'r');
     fs.readSync(fd, head, 0, 96, 0);
+    // ...and the STEP terminator in the tail: a truncated upload still parses
+    // (ifcopenshell salvages the prefix) but silently loses most of the model
+    const size = fs.fstatSync(fd).size;
+    const tail = Buffer.alloc(Math.min(256, size));
+    fs.readSync(fd, tail, 0, tail.length, Math.max(0, size - tail.length));
     fs.closeSync(fd);
     if (!head.toString('utf-8').includes('ISO-10303-21')) {
       drop();
       return res.status(400).json({ ok: false, error: 'not an IFC (STEP) file' });
+    }
+    if (!tail.toString('utf-8').includes('END-ISO-10303-21')) {
+      drop();
+      return res.status(400).json({ ok: false,
+        error: 'file is incomplete (missing STEP terminator) — the upload or export was cut off' });
     }
     const man = readManifest();
     if ((man.buildings || []).length >= MAX_BUILDINGS) {
