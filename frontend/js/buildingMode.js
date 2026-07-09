@@ -104,7 +104,7 @@
   function clearAll(resetPicks) {
     clearBuilding();
     currentFloor = null;
-    ['bSave', 'bDragHint', 'bFloors', 'bFixClashes', 'lockBtn', 'xrayBtn',
+    ['bSave', 'bIfc', 'bDragHint', 'bFloors', 'bFixClashes', 'lockBtn', 'xrayBtn',
      'bPlanBtn', 'bClear'].forEach((id) => { const el = $(id); if (el) el.hidden = true; });
     if (window.buildingPlan && window.buildingPlan.isOpen()) window.buildingPlan.toggle(false);
     const tb = $('tableRows');
@@ -586,6 +586,7 @@
       loadBuilding(d.shell, d.pieces || [], d.zones || {});
       renderFloorChips();
       $('bSave').hidden = false;
+      $('bIfc').hidden = false;
       $('bClear').hidden = false;
       $('bDragHint').hidden = false;
       $('lockBtn').hidden = false;
@@ -641,6 +642,32 @@
     } catch (e) { banner('Save error: ' + e, true); }
   }
 
+  async function exportIfc() {
+    const positions = {};
+    Object.entries(bPieces).forEach(([id, p]) => { positions[id] = p.pos; });
+    const btn = $('bIfc');
+    btn.disabled = true;
+    btn.textContent = '⏳ Writing BIM file…';
+    banner('Writing the IFC — architecture + every placed piece as IfcFurnishingElement…');
+    try {
+      const r = await fetch(`/api/building/${currentBuilding}/export-ifc`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ positions }),
+      });
+      const d = await r.json();
+      if (!d.ok) { banner('IFC export failed: ' + (d.error || 'unknown'), true); return; }
+      banner(`✓ IFC ready — ${d.furniture} furniture elements, ${d.mb} MB. Downloading…`);
+      const blob = await (await fetch(d.ifc + '?t=' + Date.now())).blob();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${(registryMap[currentBuilding] || {}).name || 'building'} - populated.ifc`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      toast(`🏗️ populated IFC downloaded (${d.furniture} furnishings)`, 'ok');
+    } catch (e) { banner('IFC export error: ' + e, true); }
+    finally { btn.disabled = false; btn.textContent = '🏗️ Download IFC (BIM, incl. furniture)'; }
+  }
+
   // ------------------------------------------------------------------ shell hooks
   function onTabLeave() {
     clearSections();                       // section planes cut EVERY model — never
@@ -658,6 +685,7 @@
     $('bSelect').onchange = onBuildingChange;
     $('bPopulate').onclick = populate;
     $('bSave').onclick = saveBuilding;
+    $('bIfc').onclick = exportIfc;
     $('lockBtn').onclick = () => setLock(!camLocked);
     $('xrayBtn').onclick = () => setXray(!xrayOn);
     $('bClear').onclick = () => {

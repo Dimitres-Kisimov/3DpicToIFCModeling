@@ -388,7 +388,7 @@ def footprint_rects(f, s, types):
 # scan of a new building pays; repeat populates are solver-only.
 # ---------------------------------------------------------------------------
 CACHE_ROOT = REPO / "data" / "buildings" / "_cache"
-CACHE_VERSION = "v2"          # bump when the cached artefacts change shape (v2: colored shell)
+CACHE_VERSION = "v3"          # bump when the cached artefacts change shape (v3: real decimation)
 
 
 def geometry_cache_dir(ifc_path):
@@ -474,8 +474,8 @@ def _colored_product_meshes(sh, prod):
                 pass
         tm = trimesh.Trimesh(vertices=v, faces=faces)
         if len(faces) > 20000:              # per-submesh budget: heavy slabs only
-            try:
-                tm = tm.simplify_quadric_decimation(20000)
+            try:                            # trimesh 4.x: keyword-only face_count
+                tm = tm.simplify_quadric_decimation(face_count=20000)
             except Exception:
                 pass
         out.append(_tinted(tm, rgba))

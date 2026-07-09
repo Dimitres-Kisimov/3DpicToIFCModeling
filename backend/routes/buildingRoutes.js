@@ -296,4 +296,23 @@ router.post('/building/:bid/save', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+// ---- export IFC: architecture + furniture in one BIM file ----------------------
+router.post('/building/:bid/export-ifc', async (req, res, next) => {
+  try {
+    const b = building(req.params.bid);
+    if (!b) return res.status(404).json({ error: 'unknown building' });
+
+    const positions = (req.body && req.body.positions) || {};
+    const result = await cpuQueue.run(
+      () => roomApi.call('building_export_ifc',
+        { ifc: b.ifc, bldg_dir: scratchDir(b.id), positions }, { timeout: 600000 }),
+      `building-export-ifc:${b.id}`);
+    if (result.ok === false) {
+      return res.status(result.status || 500).json(result);
+    }
+    res.json({ ok: true, ifc: `/out/bldg_${b.id}/${result.ifc_name || 'populated.ifc'}`,
+               furniture: result.furniture, mb: result.mb });
+  } catch (err) { next(err); }
+});
+
 module.exports = router;

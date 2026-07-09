@@ -127,8 +127,8 @@ def _add_furniture(ifc, owner_history, body_ctx, storey, mesh, name, position, s
 
     # Decimate if too heavy — IFC readers struggle above ~8000 faces
     if len(mesh.faces) > 8000:
-        try:
-            mesh = mesh.simplify_quadric_decimation(8000)
+        try:                                # trimesh 4.x: keyword-only face_count
+            mesh = mesh.simplify_quadric_decimation(face_count=8000)
         except Exception:
             pass
 

@@ -556,6 +556,81 @@ def cmd_building_save(args):
     return {"ok": True, "glb_name": "building_final.glb"}
 
 
+def cmd_building_export_ifc(args):
+    """Inject the populated furniture into a COPY of the building's own IFC — one
+    downloadable BIM file (architecture + furniture) any IFC viewer can open.
+    Each piece becomes an IfcFurnishingElement with real (gently decimated) mesh
+    geometry at its final — possibly user-dragged — world position."""
+    import numpy as np
+    import trimesh
+    import ifcopenshell
+    import ifcopenshell.api.root
+    import ifcopenshell.api.geometry
+    import ifcopenshell.api.spatial
+    import ifcopenshell.util.representation
+    import ifcopenshell.util.unit
+
+    src = Path(args["ifc"])
+    mov = Path(args["bldg_dir"])
+    positions = args.get("positions", {}) or {}       # {piece_id: [x,y,z]} viewer frame
+    if not (mov / "furniture.json").exists():
+        return {"ok": False, "error": "populate first", "status": 400}
+
+    f = ifcopenshell.open(str(src))
+    unit_scale = ifcopenshell.util.unit.calculate_unit_scale(f) or 1.0   # project -> metres
+    body = (ifcopenshell.util.representation.get_context(f, "Model", "Body", "MODEL_VIEW")
+            or ifcopenshell.util.representation.get_context(f, "Model"))
+    if body is None:
+        return {"ok": False, "error": "building IFC has no model context", "status": 400}
+
+    # containment target per piece: nearest storey below its base (attribute
+    # elevations; mis-datum exports still view fine — containment is metadata)
+    storeys = sorted(f.by_type("IfcBuildingStorey"),
+                     key=lambda st: float(st.Elevation or 0))
+    def storey_for(z_m):
+        best = storeys[0] if storeys else None
+        for st in storeys:
+            if float(st.Elevation or 0) * unit_scale <= z_m + 0.5:
+                best = st
+        return best
+
+    man = json.loads((mov / "furniture.json").read_text(encoding="utf-8"))
+    yup_to_zup = trimesh.transformations.rotation_matrix(np.pi / 2, [1, 0, 0])
+    added, skipped = 0, 0
+    for p in man.get("pieces", []):
+        try:
+            m = trimesh.load(str(mov / p["glb"]), force="mesh")
+            pos = positions.get(p["id"], p["pos"])    # Y-up world (same frame as save)
+            m.apply_translation(pos)
+            m.apply_transform(yup_to_zup)             # -> IFC Z-up world, metres
+            if len(m.faces) > 800:                    # keep the BIM light: furniture
+                try:                                  # in IFC is for coordination, not
+                    m = m.simplify_quadric_decimation(face_count=800)   # close-up rendering
+                except Exception:
+                    pass
+            el = ifcopenshell.api.root.create_entity(
+                f, ifc_class="IfcFurnishingElement",
+                name=f"{p['category']} ({p['id']})")
+            rep = ifcopenshell.api.geometry.add_mesh_representation(
+                f, context=body,
+                vertices=[(np.asarray(m.vertices, dtype=float) / unit_scale).tolist()],
+                faces=[np.asarray(m.faces).tolist()])
+            ifcopenshell.api.geometry.assign_representation(f, product=el, representation=rep)
+            st = storey_for(float(pos[1]))
+            if st is not None:
+                ifcopenshell.api.spatial.assign_container(f, products=[el], relating_structure=st)
+            added += 1
+        except Exception:
+            skipped += 1
+            continue
+    if added == 0:
+        return {"ok": False, "error": "no furniture could be written", "status": 500}
+    out = mov / "populated.ifc"
+    f.write(str(out))
+    return {"ok": True, "ifc_name": "populated.ifc", "furniture": added,
+            "skipped": skipped, "mb": round(out.stat().st_size / 1e6, 2)}
+
+
 def cmd_register_upload(args):
     """Categorize + register an uploaded .glb/.ifc that Node (multer) already saved
     to a temp path. Moves it into data/generated_assets/ under a manifest id."""
@@ -775,6 +850,7 @@ _COMMANDS = {
     "update_positions": cmd_update_positions,
     "building_rooms": cmd_building_rooms,
     "building_save": cmd_building_save,
+    "building_export_ifc": cmd_building_export_ifc,
     "register_building": cmd_register_building,
     "prepare_building": cmd_prepare_building,
     "register_upload": cmd_register_upload,
