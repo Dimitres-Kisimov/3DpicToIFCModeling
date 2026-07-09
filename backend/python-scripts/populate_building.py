@@ -605,6 +605,7 @@ def main():
 
     placed, rooms_done, skipped_items, clashes = 0, 0, 0, 0
     schedule = []
+    seen_rooms = set()          # duplicate IfcSpace shells of the SAME room collapse
     for sp in f.by_type("IfcSpace"):
         name = sp.LongName or sp.Name or ""
         explicit = picks.get(name, picks.get((name or "").strip()))
@@ -615,6 +616,10 @@ def main():
         if ext is None:
             continue
         x0, x1, y0, y1, fz = ext
+        key = (name.strip(), round(x0, 1), round(y0, 1), round(fz, 1))
+        if key in seen_rooms:
+            continue            # exact duplicate shell — furnishing it twice stacks furniture
+        seen_rooms.add(key)
         W, D = x1 - x0, y1 - y0
         if W < 1.2 or D < 1.2:
             continue

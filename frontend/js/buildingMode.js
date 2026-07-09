@@ -299,6 +299,17 @@
   function floorBandOf(p) {
     return storeys.find((s) => p.pos[1] >= s.elevation - 0.5 && p.pos[1] < s.top - 0.5) || null;
   }
+  // rooms of L-shaped plans overlap as bounding boxes — a piece is judged ONLY
+  // against the room(s) that actually hold its centre (its named home room first),
+  // never against a neighbour's walls bleeding into the overlap.
+  function roomsOf(p, rooms) {
+    const cx = p.pos[0], cz = -p.pos[2];
+    const inside = rooms.filter((rm) =>
+      cx >= rm.rect[0] - 0.01 && cx <= rm.rect[0] + rm.rect[2] + 0.01 &&
+      cz >= rm.rect[1] - 0.01 && cz <= rm.rect[1] + rm.rect[3] + 0.01);
+    const home = inside.filter((rm) => rm.name === p.room);
+    return home.length ? home : inside;
+  }
   function isLegalPiece(pid) {
     const p = bPieces[pid];
     if (!p) return true;
@@ -306,7 +317,8 @@
     const st = floorBandOf(p);
     const rooms = roomsData.filter((r) => !st || r.storey === st.name);
     const r = pieceRect(p);
-    const inRoom = rooms.some((rm) =>
+    const mine = roomsOf(p, rooms);
+    const inRoom = mine.some((rm) =>
       r[0] >= rm.rect[0] - 0.01 && r[1] >= rm.rect[1] - 0.01 &&
       r[0] + r[2] <= rm.rect[0] + rm.rect[2] + 0.01 &&
       r[1] + r[3] <= rm.rect[1] + rm.rect[3] + 0.01);
@@ -314,13 +326,15 @@
     for (const [oid, o] of Object.entries(bPieces)) {
       if (oid === pid || o.elev > 0.01) continue;
       if (st && !(o.pos[1] >= st.elevation - 0.5 && o.pos[1] < st.top - 0.5)) continue;
+      // only neighbours sharing one of my rooms can truly collide
+      if (!roomsOf(o, rooms).some((rm) => mine.includes(rm))) continue;
       if (rectsOverlap(r, pieceRect(o))) return false;
       // people-space is sacred: no footprint may invade another piece's zone
       for (const z of pieceZonesWorld(o)) {
         if (rectsOverlap(r, z)) return false;
       }
     }
-    for (const rm of rooms) {
+    for (const rm of mine) {
       for (const ob of (rm.obstacles || [])) {
         if (rectsOverlap(r, [rm.rect[0] + ob.x, rm.rect[1] + ob.z, ob.width, ob.depth])) return false;
       }
