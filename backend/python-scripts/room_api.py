@@ -246,12 +246,32 @@ def cmd_layout(args):
     total = sum(len(p["ids"]) if p.get("ids") else int(p.get("count", 1)) for p in picks)
     if total == 0:
         return {"ok": False, "error": "select at least one item", "status": 400}
-    if total > 30:
-        return {"ok": False, "error": f"max 30 items ({total} selected)", "status": 400}
+    if total > 120:
+        return {"ok": False, "error":
+                f"{total} items exceeds the solver's practical capacity for one room (120) — "
+                "the constraint model grows quadratically; split the load", "status": 400}
 
     out_dir = Path(args["out_dir"])
     out_dir.mkdir(parents=True, exist_ok=True)
     spec = catalog.build_scene_spec(room, picks)
+
+    # count-free feasibility: item quantity is unlimited, floor area is not.
+    # Wall-mounted decor and on-desk screens cost no floor; for the rest, even
+    # a PERFECT tiling cannot exceed the floor itself — past that bound the
+    # answer is a message, not a solve.
+    import rule_packs
+    floor_area = float(room.get("width", 8)) * float(room.get("depth", 6))
+    footprint = 0.0
+    for o in spec.get("objects", []):
+        dm = o.get("dimensions", {})
+        if rule_packs.archetype_of(o.get("category", ""), dm) in ("on_surface", "wall_mounted"):
+            continue
+        footprint += float(dm.get("width", 0.5)) * float(dm.get("depth", 0.5))
+    if footprint > 0.85 * floor_area:
+        return {"ok": False, "error":
+                f"not enough space: ~{footprint:.1f} m2 of furniture footprint cannot fit a "
+                f"{floor_area:.1f} m2 room even without people-space — remove items or "
+                "enlarge the room", "status": 400}
     # persist the spec so manual 2D edits can rebuild the GLB without re-solving
     (out_dir / "spec.json").write_text(json.dumps(spec), encoding="utf-8")
     res = build_room_scene.build(spec, out_dir)

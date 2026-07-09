@@ -59,11 +59,32 @@
   }
 
   function total() { return Object.values(counts).reduce((a, b) => a + b, 0); }
+
+  // No item-count limit — the budget is FLOOR AREA. Real footprint × people-
+  // space factor per category (same model as the building path); screens ride
+  // desks and wall decor costs no floor.
+  const FOOT = {
+    bed: [3.28, 1.9], sofa: [1.80, 2.0], desk: [0.98, 2.0], table: [0.88, 2.2],
+    office_chair: [0.36, 2.0], chair: [0.23, 2.0], stool: [0.18, 1.5],
+    cabinet: [0.72, 1.8], bookshelf: [0.32, 1.8], filing_cabinet: [0.27, 1.8],
+    coffee_table: [0.66, 1.5], side_table: [0.30, 1.3], lamp: [0.16, 1.2],
+    planter: [0.16, 1.2], mirror: [0, 0], monitor: [0, 0], laptop: [0, 0],
+    clock: [0, 0], picture_frame: [0, 0],
+  };
+  const spaceNeed = () => Object.entries(counts).reduce((s, [c, n]) => {
+    const f = FOOT[c] || [0.35, 1.5];
+    return s + n * f[0] * f[1];
+  }, 0);
+  // walls, door swings and the circulation aisle eat ~45% of any room
+  const usableArea = () => ((+$('rbWidth').value || 0) * (+$('rbDepth').value || 0)) * 0.55;
+
   function updateTotal() {
     const t = total();
+    const need = spaceNeed(), usable = usableArea();
     const el = $('rbTotal');
-    el.textContent = `${t} / 30`;
-    el.style.color = t > 30 ? 'var(--bad)' : '';
+    el.textContent = `${t} item${t === 1 ? '' : 's'} · ≈${need.toFixed(1)} / ${usable.toFixed(1)} m²`;
+    el.style.color = need > usable ? 'var(--bad)' : '';
+    el.title = 'furniture + people-space vs usable floor (~55% of the room)';
   }
   function itemsPayload() {
     return Object.entries(counts).filter(([, n]) => n > 0).map(([category, count]) => {
@@ -117,7 +138,7 @@
           deleteGenerated(it.id, category);
           return;
         }
-        if (sel.has(it.id)) sel.delete(it.id); else if (sel.size < 30) sel.add(it.id);
+        if (sel.has(it.id)) sel.delete(it.id); else sel.add(it.id);
         cell.classList.toggle('sel', sel.has(it.id));
         chosen[category] = [...sel];
         $('pickerCount').textContent = sel.size;
@@ -252,7 +273,13 @@
 
   async function generate() {
     if (total() === 0) { banner('Pick at least one item first — the catalog is on the left.', true); return; }
-    if (total() > 30) { banner('Max 30 items — remove a few.', true); return; }
+    const need = spaceNeed(), usable = usableArea();
+    if (need > usable) {
+      banner(`🚫 Not enough space — ${total()} items need ≈${need.toFixed(1)} m² with people-space, ` +
+        `but only ≈${usable.toFixed(1)} m² of the ${$('rbWidth').value}×${$('rbDepth').value} m room ` +
+        `is usable. Remove items or enlarge the room.`, true);
+      return;
+    }
     const btn = $('rbGenerate');
     btn.disabled = true;
     btn.textContent = '⏳ Solving your room…';
@@ -347,11 +374,21 @@
       const b = e.target.closest('button[data-c]');
       if (!b) return;
       const c = b.dataset.c;
+      const fitBefore = spaceNeed() <= usableArea();
       counts[c] = Math.max(0, counts[c] + (+b.dataset.d));
       chosen[c] = [];                     // manual count overrides specific picks
       $('rbN-' + c).textContent = counts[c];
       updateTotal();
+      // say it the moment the order outgrows the floor (room can still be enlarged)
+      if (fitBefore && +b.dataset.d > 0 && spaceNeed() > usableArea()) {
+        toast(`🚫 Not enough space — ≈${spaceNeed().toFixed(1)} m² of furniture + people-space ` +
+          `now exceeds the ≈${usableArea().toFixed(1)} m² usable in this ${$('rbWidth').value}×` +
+          `${$('rbDepth').value} m room. Remove items or enlarge the room.`, 'bad');
+      }
     });
+
+    // resizing the room moves the budget — keep the m² counter honest
+    ['rbWidth', 'rbDepth'].forEach((id) => $(id).addEventListener('input', updateTotal));
 
     $('pickerDone').onclick = closePicker;
     $('pickerClose').onclick = closePicker;
