@@ -15,6 +15,13 @@
   header h1 { font-size:20px; }
   header p { color:var(--mut); font-size:13px; }
   header a { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
+  .vswitch { display:flex; gap:6px; margin-left:18px; }
+  .vswitch button { font-family:inherit; font-size:12px; font-weight:600; padding:5px 12px;
+                    border-radius:10px; border:1px solid var(--line); background:#fff;
+                    color:var(--mut); cursor:pointer; }
+  .vswitch button.active { background:var(--brand); border-color:var(--brand); color:#fff; }
+  .badge.clash { background:#e7f7ee; border-color:#bfe8d0; color:#177a46; }
+  .badge.clash.warn { background:#fdf3e7; border-color:#f4d9b0; color:#b06515; }
   main { max-width:1500px; margin:0 auto; padding:24px 28px 60px; }
   .bldg { background:var(--panel); border:1px solid var(--line); border-radius:16px;
           box-shadow:var(--shadow); padding:20px 24px; margin-bottom:28px; }
@@ -44,22 +51,44 @@
 <header>
   <h1>🏢 Building Fleet Comparison</h1>
   <p>every registered building · every floor · 3D dollhouse + 2D ergonomic plan · captured live from this machine</p>
+  <div class="vswitch" id="vswitch">
+    <button data-v="2" class="active">v2 · clash-free</button>
+    <button data-v="1">v1 · archive</button>
+  </div>
   <a href="/">← back to SCS Studio</a>
 </header>
 <main id="main"><p style="color:var(--mut)">Loading fleet data…</p></main>
 <div id="lightbox" onclick="this.style.display='none'"><img id="lightimg"></div>
 <script>
-(async () => {
+async function render(version) {
   const main = document.getElementById('main');
+  document.querySelectorAll('#vswitch button').forEach((b) =>
+    b.classList.toggle('active', b.dataset.v === String(version)));
+  const statsFile = version === 2 ? 'fleet/stats_v2.json' : 'fleet/stats.json';
+  const px = version === 2 ? 'v2_' : '';
   let stats;
   try {
-    stats = await (await fetch('fleet/stats.json?t=' + Date.now())).json();
+    stats = await (await fetch(statsFile + '?t=' + Date.now())).json();
   } catch (e) {
     main.innerHTML = '<p class="err">No capture yet — the fleet screenshots have not been generated. ' +
       'Ask Claude to re-run the fleet capture, then refresh.</p>';
     return;
   }
   main.innerHTML = '';
+  if (version === 2) {
+    const note = document.createElement('section');
+    note.className = 'bldg';
+    note.innerHTML = '<h2>🧹 Capture v2 — room-scoped clash validation</h2>' +
+      '<p class="sub" style="max-width:1050px;line-height:1.65">' +
+      'v1 flagged phantom clashes on L-shaped Dutch floor plans: rooms tracked as bounding ' +
+      'rectangles overlap, so furniture was wrongly tested against a <i>neighbour</i> room’s ' +
+      'walls bleeding into the overlap. The validator now judges every piece only against the ' +
+      'room(s) that actually hold its centre (its named home room first) and only against ' +
+      'furniture sharing that room; the populater also skips duplicate IfcSpace shells so no room ' +
+      'is furnished twice. Result across the whole fleet below: <b>zero phantom clashes</b> — the ' +
+      'single genuine tight spot (Schependomlaan) is auto-resolved by the spiral nudge.</p>';
+    main.appendChild(note);
+  }
   // feature showcase (if captured): X-ray + dollhouse views of the full system
   try {
     const sc = await (await fetch('fleet/showcase.json?t=' + Date.now())).json();
@@ -92,19 +121,27 @@
     if (b.error) {
       html += `<p class="err">capture failed: ${b.error}</p>`;
     } else {
+      let clashBadge = '';
+      if (b.clashes) {
+        clashBadge = b.clashes.found === 0
+          ? '<span class="badge clash">✓ 0 clashes — clean solve</span>'
+          : (b.clashes.after === 0
+            ? `<span class="badge clash">✓ ${b.clashes.found} tight spot${b.clashes.found === 1 ? '' : 's'} → auto-resolved to 0</span>`
+            : `<span class="badge clash warn">⚠ ${b.clashes.found} clashes → ${b.clashes.after} remain</span>`);
+      }
       html += `<div class="badges">
         <span class="badge ok">populated in ${b.populate_s}s</span>
         <span class="badge">${(b.meta || '').replace(/^\\s*·\\s*/, '')}</span>
-        <span class="badge">${b.floors.length} floor${b.floors.length === 1 ? '' : 's'}</span></div>`;
+        <span class="badge">${b.floors.length} floor${b.floors.length === 1 ? '' : 's'}</span>${clashBadge}</div>`;
       if (b.schedule && b.schedule.length) {
         html += `<div class="sched">${b.schedule.map((s) => '• ' + s).join('<br>')}</div>`;
       }
       for (const fl of b.floors) {
         html += `<div class="floor"><h3>▤ ${fl.name}</h3><div class="pair">
-          <figure><img loading="lazy" src="fleet/${b.tag}__${fl.safe}_3d.png">
+          <figure><img loading="lazy" src="fleet/${px}${b.tag}__${fl.safe}_3d.png">
             <figcaption>3D — storey isolated (dollhouse cut), real IFC colours</figcaption></figure>
-          <figure><img loading="lazy" src="fleet/${b.tag}__${fl.safe}_2d.png">
-            <figcaption>2D — rooms, fixed elements, furniture, green people-space</figcaption></figure>
+          <figure><img loading="lazy" src="fleet/${px}${b.tag}__${fl.safe}_2d.png">
+            <figcaption>2D — rooms, fixed elements, furniture, green people-space${version === 2 ? ', clash-audited' : ''}</figcaption></figure>
         </div></div>`;
       }
     }
@@ -117,7 +154,11 @@
       document.getElementById('lightbox').style.display = 'flex';
     };
   });
-})();
+}
+document.querySelectorAll('#vswitch button').forEach((b) => {
+  b.onclick = () => render(+b.dataset.v);
+});
+render(2);
 </script>
 </body>
 </html>
