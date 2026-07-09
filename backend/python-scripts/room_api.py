@@ -138,6 +138,44 @@ def _mesh_dims(path):
     return None
 
 
+def _canonicalize_seat_upright(m):
+    """Upright a SEATING mesh in the Y-up GLB frame. Photo->3D chairs come out in
+    arbitrary orientations (a tilted chair then haunts every room/building it is
+    placed in); category ergonomics (desk pairing, facing, pull-out zones) assume
+    upright. OBB-align, tallest axis -> +Y (chairs are taller than wide), flip so
+    the big shell (backrest+seat) is on top and the sparse legs/base below, then
+    ground at y=0 and centre in XZ. Yaw is left alone — the chair-forward
+    heuristic finds the backrest later. Applied ONLY to seating at registration;
+    deliberately NOT part of the generate pipeline (see office-chair base graft)."""
+    import numpy as np
+    import trimesh
+    T, ext = trimesh.bounds.oriented_bounds(m)
+    m.apply_transform(T)
+    up = int(np.argmax(ext))
+    if up == 0:
+        m.apply_transform(trimesh.transformations.rotation_matrix(np.pi / 2, [0, 0, 1]))
+    elif up == 2:
+        m.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))
+    # flip test: a seat's THINNEST interior band (legs / gas column) sits in the
+    # lower half when upright; the bulky seat+backrest live up top. Surface-area
+    # comparisons fail here (a chunky seat out-areas the backrest) — width wins.
+    v = m.vertices
+    y0, y1 = float(v[:, 1].min()), float(v[:, 1].max())
+    rel = (v[:, 1] - y0) / max(y1 - y0, 1e-6)
+    widths = []
+    for i in range(1, 9):                              # interior bands only
+        sel = v[(rel >= i / 10) & (rel < (i + 1) / 10)]
+        widths.append(float(np.ptp(sel[:, 0]) * np.ptp(sel[:, 2])) if len(sel) >= 10 else np.inf)
+    if np.isfinite(min(widths)) and (int(np.argmin(widths)) + 1.5) / 10 > 0.5:
+        m.apply_transform(trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0]))
+    lo, hi = m.bounds
+    m.apply_translation([-(lo[0] + hi[0]) / 2, -lo[1], -(lo[2] + hi[2]) / 2])
+    return m
+
+
+_SEATING_CATS = {"office_chair", "chair", "stool"}
+
+
 def _secure_stem(name):
     """Filesystem-safe file stem (werkzeug-free so deployment needs no Flask)."""
     stem = re.sub(r"[^A-Za-z0-9_.-]+", "_", (name or "").strip()).strip("._")
@@ -659,6 +697,17 @@ def cmd_register_upload(args):
         cat = client_cat or _cat_from_ifc(dest) or _cat_from_name(orig) or "table"
     else:  # .glb
         cat = client_cat or _cat_from_name(orig) or "table"
+
+    # photo->3D seats arrive in arbitrary orientations — store them UPRIGHT so
+    # every consumer (thumbs, room solver, buildings) sees a level seat
+    if ext == ".glb" and cat in _SEATING_CATS:
+        try:
+            import trimesh
+            m = trimesh.load(str(dest), force="mesh")
+            _canonicalize_seat_upright(m)
+            m.export(str(dest))
+        except Exception:
+            pass
 
     dims = _mesh_dims(dest)                            # may be None (.ifc / unreadable)
 
