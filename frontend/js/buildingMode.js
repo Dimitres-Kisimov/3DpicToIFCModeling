@@ -177,6 +177,25 @@
     });
   }
 
+  // ------------------------------------------------------- capacity guard
+  // real footprints (mirrors populate_building.TARGET_DIMS) × a people-space
+  // factor — the legroom / pull-out / approach zone the solver will reserve
+  // anyway. Monitors/laptops ride on desks: zero floor cost.
+  const FOOT = {
+    bed: [3.28, 1.9], sofa: [1.80, 2.0], desk: [0.98, 2.0], table: [0.88, 2.2],
+    office_chair: [0.36, 2.0], chair: [0.23, 2.0], stool: [0.18, 1.5],
+    cabinet: [0.72, 1.8], bookshelf: [0.32, 1.8], filing_cabinet: [0.27, 1.8],
+    coffee_table: [0.66, 1.5], side_table: [0.30, 1.3], lamp: [0.16, 1.2],
+    planter: [0.16, 1.2], mirror: [0.09, 1.5], monitor: [0, 0], laptop: [0, 0],
+  };
+  const catOf = (pick) => pick.startsWith('gen:') ? genCat(pick.slice(4)) : pick;
+  const spaceNeed = (picksArr) => picksArr.reduce((sum, p) => {
+    const f = FOOT[catOf(p)] || [0.35, 1.5];
+    return sum + f[0] * f[1];
+  }, 0);
+  // walls, door swings and the circulation aisle eat ~45% of any real room
+  const usableArea = (r) => r.area * 0.55;
+
   function roomCard(r, copies) {
     const card = document.createElement('div');
     card.className = 'roomcard';
@@ -211,7 +230,23 @@
     };
     render();
     card.querySelector('.roomadd').onchange = (e) => {
-      if (e.target.value) { roomPicks[r.name].push(e.target.value); e.target.value = ''; render(); }
+      const v = e.target.value;
+      e.target.value = '';
+      if (!v) return;
+      const usable = usableArea(r);
+      const need = spaceNeed([...roomPicks[r.name], v]);
+      if (need > usable) {
+        toast(`🚫 Not enough space in "${r.name}" — ${roomPicks[r.name].length + 1} items need ` +
+          `≈${need.toFixed(1)} m² with people-space, but only ≈${usable.toFixed(1)} m² of its ` +
+          `${r.area} m² is usable. Remove something first.`, 'bad');
+        return;
+      }
+      roomPicks[r.name].push(v);
+      if (need > usable * 0.8) {
+        toast(`⚠ "${r.name}" is getting tight — ≈${need.toFixed(1)} of ${usable.toFixed(1)} m² usable ` +
+          `is spoken for; the solver will drop whatever can't sit ergonomically.`, 'info');
+      }
+      render();
     };
     return card;
   }
@@ -539,6 +574,14 @@
       if (!d.ok) { banner('Populate failed: ' + (d.error || 'unknown'), true); return; }
       banner(`✓ ${d.placed} pieces across ${d.rooms} rooms · ${d.clashes} clashes — pick a floor to explore.`, d.clashes > 0);
       toast(`🏢 Building populated: ${d.placed} pieces`, 'ok');
+      // honest capacity verdict: whatever the solver could NOT fit is said out loud
+      const droppedRooms = (d.schedule || []).filter((s) => (s.dropped || []).length);
+      const nDropped = droppedRooms.reduce((n, s) => n + s.dropped.length, 0);
+      if (nDropped > 0) {
+        toast(`🚫 Not enough space for ${nDropped} item${nDropped === 1 ? '' : 's'} in ` +
+          `${droppedRooms.length} room${droppedRooms.length === 1 ? '' : 's'} — the engine placed ` +
+          `what fits ergonomically; the object table lists what didn't.`, 'bad');
+      }
       currentFloor = null;
       loadBuilding(d.shell, d.pieces || [], d.zones || {});
       renderFloorChips();

@@ -89,6 +89,7 @@ async function render(version) {
       'single genuine tight spot (Schependomlaan) is auto-resolved by the spiral nudge.</p>';
     main.appendChild(note);
   }
+  if (version === 2) main.appendChild(densitySection());
   // feature showcase (if captured): X-ray + dollhouse views of the full system
   try {
     const sc = await (await fetch('fleet/showcase.json?t=' + Date.now())).json();
@@ -155,6 +156,92 @@ async function render(version) {
     };
   });
 }
+
+// ---- Density & limits: medium / dense / overload stress capture (2026-07-09) ----
+function densitySection() {
+  const P = (t) => `<p class="sub" style="max-width:1050px;line-height:1.65;margin-bottom:10px">${t}</p>`;
+  const pair = (base, cap3d, cap2d) => `<div class="pair">
+    <figure><img loading="lazy" src="fleet/${base}_3d.png"><figcaption>${cap3d}</figcaption></figure>
+    <figure><img loading="lazy" src="fleet/${base}_2d.png"><figcaption>${cap2d}</figcaption></figure>
+  </div>`;
+  const sec = document.createElement('section');
+  sec.className = 'bldg';
+  sec.innerHTML = `<h2>📐 Density &amp; limits — how far a room can be pushed</h2>` +
+    P(`Three population profiles were driven live against the fleet: <b>medium</b> (each room's smart
+       suggestion plus five extras), <b>dense</b> (a 17-category assortment — sofa, tables, chairs,
+       stools, cabinets, bookshelf, coffee/side/filing furniture, lamp, planter, mirror, screens —
+       pushed at every room), and <b>overload</b> (five beds and sofas forced at rooms that obviously
+       cannot hold them). Space is enforced <b>twice</b>. First at add-time: every room card knows its
+       area from the IFC, budgets each category's real footprint <i>plus its people-space</i> (legroom,
+       pull-out, approach), assumes walls/doors/circulation consume ~45% of any real room, and refuses
+       the pick with an explicit message — <i>"🚫 Not enough space in 'Kitchen' — 4 items need ≈10.8 m²
+       with people-space, but only ≈7.2 m² of its 13 m² is usable. Remove something first."</i> Second
+       at solve-time: the CP-SAT solver knows what the area heuristic cannot — the actual walls, door
+       swings, columns and fixed kitchen elements — and whatever still doesn't fit ergonomically is
+       dropped and reported per room ("✗ no space"), plus a summary toast ("Not enough space for 46
+       items in 8 rooms").`) +
+    `<div class="badges">
+      <span class="badge">duplex medium · 32 placed · 0 clashes</span>
+      <span class="badge">duplex dense · 42 placed · 41 over-adds blocked · 0 clashes</span>
+      <span class="badge">german dense · 77 placed · 23 blocked · 6 clashes → 0</span>
+      <span class="badge clash warn">overload · 19 of 20 adds refused with "not enough space"</span>
+    </div>` +
+
+    `<div class="floor"><h3>▤ overload — the guard says no</h3></div>` +
+    `<div class="pair" style="grid-template-columns:1fr">
+      <figure><img loading="lazy" src="fleet/density_overload_blocked.png">
+      <figcaption>five beds/sofas forced at every duplex room — 19 of 20 attempts refused, each with the precise m² arithmetic</figcaption></figure>
+    </div>` +
+    P(`Every refusal names the room, counts the items, and shows the arithmetic. The one attempt that
+       <i>was</i> accepted is itself informative: a second bed into the 27.7 m² Living Room — by pure
+       area it fits, and the guard is deliberately a heuristic that only blocks what <i>cannot possibly</i>
+       fit; borderline cases are allowed through so the solver, which sees the real walls, can give the
+       final verdict.`) +
+
+    `<div class="floor"><h3>▤ duplex · medium (+5 per room)</h3></div>` +
+    pair('density_duplex_medium_L1', '3D — Level 1, medium density', '2D — 32 placed, 0 clashes; kitchens expose the area-vs-floor gap') +
+    P(`Medium load places 32 pieces with zero clashes. The interesting irregularity is the
+       <b>Kitchen: 0 of 6 placed</b> despite "13 m²" on paper — the duplex kitchens are almost entirely
+       counters, appliances and door swing, so the real free floor is a fraction of the attribute area.
+       The add-time guard (which reasons from area) accepted the picks; the solver (which sees the fixed
+       elements) refused all of them and said so honestly. This two-tier disagreement is by design:
+       the guard prevents absurd requests instantly, the solver owns the truth.`) +
+
+    `<div class="floor"><h3>▤ duplex · dense (17-item assortment per room)</h3></div>` +
+    pair('density_duplex_dense_L1', '3D — Level 1 at maximum ergonomic density', '2D — every green zone intact, nothing overlaps') +
+    P(`The dense profile threw 17 categories at every room; the guard trimmed 41 over-adds at the
+       moment of picking (with the "getting tight" warning firing first), the solver placed 42 pieces
+       and dropped 46 more with per-room reasons. Two irregularities surfaced. <b>Identical rooms
+       diverge:</b> Bedroom 1 and Bedroom 2 are both 23.2 m², yet Bedroom 1 kept its bed (6/10 placed)
+       while Bedroom 2 dropped it (5/10) — their door and obstacle layouts differ, and a bed needs BOTH
+       side-access zones, so the same shopping list meets a different fate one wall away. <b>Screens
+       need desks:</b> monitors and laptops cost no floor space (they ride on worksurfaces), but in
+       rooms where the desk itself didn't survive the density cut, the orphaned screens were dropped
+       too — "no space: monitor, laptop" in a room with visible floor left is the solver refusing to
+       put a monitor on the carpet.`) +
+
+    `<div class="floor"><h3>▤ german apartment · dense</h3></div>` +
+    pair('density_german_dense', '3D — top storey at dense load', '2D — 77 placed; 6 genuine tight spots auto-resolved to 0') +
+    P(`The German apartment took 77 pieces across 12 rooms. At this density the first genuine clashes
+       of the whole exercise appeared — six of them — and the spiral auto-resolver cleared all six
+       without human help. The "hard to reach" circulation warnings (bookshelf, cabinet, sofa in the
+       Wohnküche) are the early-warning tier: the piece fits, but the walking path to it pinches below
+       the comfortable aisle. One semantic limit to know about: the <b>Loggia and Balkon accepted
+       furniture freely</b> (the Loggia swallowed all 17 dense picks — it is 23.2 m² of genuinely empty
+       floor). Geometrically correct, semantically odd — the room classifier's German keyword list does
+       not yet tag outdoor spaces as unfurnishable, so a loggia is treated like any large empty room.
+       That is the honest edge of the current system.`) +
+
+    P(`<b>Where the limits sit, in numbers:</b> a 13 m² room saturates at roughly 4–6 real furniture
+       pieces once people-space is charged; a 23 m² bedroom at 5–6 plus on-desk electronics; a 28 m²
+       living space at 9–12. Past that, the system degrades in the designed order: first the tight-fit
+       warning, then the add-time refusal with the m² arithmetic, then the solver's per-room "no space"
+       drops, and only at extreme density do physical clashes appear — every one of which the
+       auto-resolver cleared in these runs. At no point did over-asking corrupt a layout: the response
+       to "too many items" is always a message, never a broken room.`);
+  return sec;
+}
+
 document.querySelectorAll('#vswitch button').forEach((b) => {
   b.onclick = () => render(+b.dataset.v);
 });

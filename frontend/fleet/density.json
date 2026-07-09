@@ -1,0 +1,220 @@
+[
+ {
+  "test": "duplex_medium",
+  "profile": "medium (+5 per room)",
+  "fill": [
+   {
+    "name": "Living Room ×2",
+    "area": "living · 27.7 m²",
+    "suggested": 4,
+    "accepted": 5,
+    "blocked": 0,
+    "total": 9
+   },
+   {
+    "name": "Kitchen ×2",
+    "area": "kitchen · 13 m²",
+    "suggested": 3,
+    "accepted": 3,
+    "blocked": 2,
+    "total": 6
+   },
+   {
+    "name": "Bedroom 2 ×2",
+    "area": "bed · 23.2 m²",
+    "suggested": 5,
+    "accepted": 2,
+    "blocked": 3,
+    "total": 7
+   },
+   {
+    "name": "Bedroom 1 ×2",
+    "area": "bed · 23.2 m²",
+    "suggested": 5,
+    "accepted": 2,
+    "blocked": 3,
+    "total": 7
+   }
+  ],
+  "populate_s": 9,
+  "meta": "· 6 rooms · 32 placed",
+  "clashes": {
+   "found": 0,
+   "after": 0
+  },
+  "dropRows": 8,
+  "dropSample": [
+   "Living Room · living · 7/9 placed\n✗ no space: table, stool\n⚠ hard to reach: bookshelf",
+   "Living Room · living · 7/9 placed\n✗ no space: table, stool",
+   "Kitchen · kitchen · 0/6 placed\n✗ no space: table, stool, table, stool, cabinet, cabinet",
+   "Kitchen · kitchen · 0/6 placed\n✗ no space: table, stool, table, stool, cabinet, cabinet",
+   "Bedroom 2 · bed · 4/7 placed\n✗ no space: bed, table, stool\n⚠ hard to reach: desk",
+   "Bedroom 1 · bed · 5/7 placed\n✗ no space: table, stool",
+   "Bedroom 1 · bed · 5/7 placed\n✗ no space: table, stool",
+   "Bedroom 2 · bed · 4/7 placed\n✗ no space: bed, table, stool"
+  ],
+  "noSpaceToast": "🚫 Not enough space for 26 items in 8 rooms — the engine placed what fits ergonomically; the object table lists what didn't."
+ },
+ {
+  "test": "duplex_overload",
+  "profile": "overload (5 beds/sofas per room)",
+  "fill": [
+   {
+    "name": "Living Room ×2",
+    "area": "living · 27.7 m²",
+    "suggested": 4,
+    "accepted": 1,
+    "blocked": 4,
+    "total": 5
+   },
+   {
+    "name": "Kitchen ×2",
+    "area": "kitchen · 13 m²",
+    "suggested": 3,
+    "accepted": 0,
+    "blocked": 5,
+    "total": 3
+   },
+   {
+    "name": "Bedroom 2 ×2",
+    "area": "bed · 23.2 m²",
+    "suggested": 5,
+    "accepted": 0,
+    "blocked": 5,
+    "total": 5
+   },
+   {
+    "name": "Bedroom 1 ×2",
+    "area": "bed · 23.2 m²",
+    "suggested": 5,
+    "accepted": 0,
+    "blocked": 5,
+    "total": 5
+   }
+  ],
+  "blocked_msgs": [
+   "🚫 Not enough space in \"Living Room\" — 6 items need ≈18.8 m² with people-space, but only ≈15.2 m² of its 27.7 m² is usable. Remove something first.",
+   "🚫 Not enough space in \"Living Room\" — 6 items need ≈16.1 m² with people-space, but only ≈15.2 m² of its 27.7 m² is usable. Remove something first.",
+   "🚫 Not enough space in \"Living Room\" — 6 items need ≈16.1 m² with people-space, but only ≈15.2 m² of its 27.7 m² is usable. Remove something first.",
+   "🚫 Not enough space in \"Living Room\" — 6 items need ≈16.1 m² with people-space, but only ≈15.2 m² of its 27.7 m² is usable. Remove something first."
+  ],
+  "blocked_total": 19,
+  "accepted_total": 1
+ },
+ {
+  "test": "duplex_dense",
+  "profile": "dense (17-item assortment per room, guard-trimmed)",
+  "fill": [
+   {
+    "name": "Living Room ×2",
+    "area": "living · 27.7 m²",
+    "suggested": 4,
+    "accepted": 12,
+    "blocked": 5,
+    "total": 16
+   },
+   {
+    "name": "Kitchen ×2",
+    "area": "kitchen · 13 m²",
+    "suggested": 3,
+    "accepted": 5,
+    "blocked": 12,
+    "total": 8
+   },
+   {
+    "name": "Bedroom 2 ×2",
+    "area": "bed · 23.2 m²",
+    "suggested": 5,
+    "accepted": 5,
+    "blocked": 12,
+    "total": 10
+   },
+   {
+    "name": "Bedroom 1 ×2",
+    "area": "bed · 23.2 m²",
+    "suggested": 5,
+    "accepted": 5,
+    "blocked": 12,
+    "total": 10
+   }
+  ],
+  "add_blocked": 41,
+  "tight_warnings": 21,
+  "populate_s": 7,
+  "meta": "· 8 rooms · 42 placed",
+  "clashes": {
+   "found": 0,
+   "after": 0
+  },
+  "dropRows": 8,
+  "dropSample": [
+   "Living Room · living · 7/16 placed\n✗ no space: table, chair, monitor, stool, stool, table, chair, laptop, stool\n⚠ hard to reach: bookshelf",
+   "Living Room · living · 7/16 placed\n✗ no space: table, chair, monitor, stool, stool, table, chair, laptop, stool",
+   "Kitchen · kitchen · 1/8 placed\n✗ no space: cabinet, cabinet, table, chair, monitor, table, laptop",
+   "Kitchen · kitchen · 1/8 placed\n✗ no space: cabinet, cabinet, table, chair, monitor, table, laptop",
+   "Bedroom 2 · bed · 5/10 placed\n✗ no space: bed, table, laptop, stool\n⚠ hard to reach: desk",
+   "Bedroom 1 · bed · 6/10 placed\n✗ no space: table, laptop, stool",
+   "Bedroom 1 · bed · 6/10 placed\n✗ no space: table, laptop, stool",
+   "Bedroom 2 · bed · 5/10 placed\n✗ no space: bed, table, laptop, stool"
+  ],
+  "noSpaceToast": "🚫 Not enough space for 46 items in 8 rooms — the engine placed what fits ergonomically; the object table lists what didn't."
+ },
+ {
+  "test": "german_dense",
+  "profile": "dense (17-item assortment per room, guard-trimmed)",
+  "fill": [
+   {
+    "name": "Zimmer ×6",
+    "area": "living · 13 m²",
+    "suggested": 3,
+    "accepted": 6,
+    "blocked": 11,
+    "total": 9
+   },
+   {
+    "name": "Wohnküche ×4",
+    "area": "living · 28.1 m²",
+    "suggested": 4,
+    "accepted": 11,
+    "blocked": 6,
+    "total": 15
+   },
+   {
+    "name": "Balkon",
+    "area": "room · 14.8 m²",
+    "suggested": 0,
+    "accepted": 11,
+    "blocked": 6,
+    "total": 11
+   },
+   {
+    "name": "Loggia",
+    "area": "room · 23.2 m²",
+    "suggested": 0,
+    "accepted": 17,
+    "blocked": 0,
+    "total": 17
+   }
+  ],
+  "add_blocked": 23,
+  "tight_warnings": 22,
+  "populate_s": 9,
+  "meta": "· 12 rooms · 77 placed",
+  "clashes": {
+   "found": 6,
+   "after": 0
+  },
+  "dropRows": 12,
+  "dropSample": [
+   "Zimmer · living · 4/9 placed\n✗ no space: table, chair, monitor, laptop, stool",
+   "Wohnküche · living · 9/15 placed\n✗ no space: sofa, table, chair, laptop, stool\n⚠ hard to reach: bookshelf, cabinet",
+   "Wohnküche · living · 9/15 placed\n✗ no space: table, chair, laptop, stool, cabinet\n⚠ hard to reach: sofa, bookshelf, bookshelf",
+   "Zimmer · living · 4/9 placed\n✗ no space: table, chair, monitor, laptop, stool",
+   "Zimmer · living · 4/9 placed\n✗ no space: table, chair, monitor, laptop, stool",
+   "Zimmer · living · 4/9 placed\n✗ no space: table, chair, monitor, laptop, stool",
+   "Zimmer · living · 4/9 placed\n✗ no space: table, chair, monitor, laptop, stool",
+   "Wohnküche · living · 9/15 placed\n✗ no space: table, chair, laptop, stool, cabinet\n⚠ hard to reach: sofa, bookshelf, bookshelf"
+  ],
+  "noSpaceToast": "🚫 Not enough space for 67 items in 12 rooms — the engine placed what fits ergonomically; the object table lists what didn't."
+ }
+]
