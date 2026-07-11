@@ -15,11 +15,15 @@ items = json.load(open(manifest_path, encoding="utf-8"))
 BUNDLE = os.path.dirname(os.path.abspath(manifest_path))
 REPO = "/workspace/repos/InstantMesh"
 
-# stage inputs into one dir, named by key so outputs are identifiable
+# stage inputs into one dir, named by key so outputs are identifiable.
+# Force RGB: Zero123++ raises on mode-'L' images and one bad photo kills the
+# whole single-process batch (learned from list11_table, 2026-07-11).
+from PIL import Image
 stage = os.path.join(outdir, "_inputs")
 os.makedirs(stage, exist_ok=True)
 for it in items:
-    shutil.copy(os.path.join(BUNDLE, it["input"]), os.path.join(stage, it["key"] + ".png"))
+    src = it["input"] if os.path.isabs(it["input"]) else os.path.join(BUNDLE, it["input"])
+    Image.open(src).convert("RGB").save(os.path.join(stage, it["key"] + ".png"))
 
 run_out = os.path.join(outdir, "_run")
 print(f"[instantmesh] running run.py on {len(items)} inputs (loads model once) ...", flush=True)
