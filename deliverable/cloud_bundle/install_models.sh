@@ -8,9 +8,16 @@
 #   instantmesh TencentARC/InstantMesh          Apache (proven CLI)
 #   sam3d       facebook/sam-3d-objects         SAM Licence (best-effort; entrypoint may differ)
 #
+# Next-wave (Stage-7 licence audit 2026-07-11 — DRAFT recipes, not yet pod-proven; see manuals/):
+#   direct3ds2  wushuang98/Direct3D-S2          MIT    (sparse-SDF geometry; torchsparse build)
+#   step1x3d    stepfun-ai/Step1X-3D            Apache (textured 2-stage; heavy pinned deps)
+#   hi3dgen     Stable-X/trellis-normal-v0-1    MIT    (repo is Stable-X/Stable3DGen — NOT /Hi3DGen)
+#   partcrafter wgsxm/PartCrafter               MIT    (part-level meshes; avoid RMBG-1.4 masking)
+#
 # Usage:  bash install_models.sh                      # installs the default set: trellis trellis2 triposg
 #         bash install_models.sh trellis triposg      # only these
-#         bash install_models.sh all                  # all five
+#         bash install_models.sh all                  # all five proven-set models
+#         bash install_models.sh nextwave             # the four Stage-7 draft models
 #
 # Design (from compare_4way.sh):
 #   * NO `set -e` — one model failing must not abort the others.
@@ -24,6 +31,7 @@ mkdir -p "$REPOS" "$ENVS" "$LOGS"
 
 MODELS=("$@"); [ ${#MODELS[@]} -eq 0 ] && MODELS=(trellis trellis2 triposg)
 [ "${MODELS[0]:-}" = "all" ] && MODELS=(trellis trellis2 triposg instantmesh sam3d)
+[ "${MODELS[0]:-}" = "nextwave" ] && MODELS=(direct3ds2 step1x3d hi3dgen partcrafter)
 
 log(){ echo -e "\n=== [$(date +%H:%M:%S)] $* ==="; }
 mkvenv(){ [ -d "$ENVS/$1" ] || python -m venv "$ENVS/$1" --system-site-packages; }
@@ -154,6 +162,97 @@ install_sam3d(){
   echo "sam3d install done -> $LOGS/install_sam3d.log"
 }
 
+# ============== NEXT-WAVE (Stage-7 audit 2026-07-11) — DRAFT, not yet pod-proven ==============
+
+# ------------------------------------------------------------- Direct3D-S2 ----
+install_direct3ds2(){
+  local V="$ENVS/direct3ds2"; log "install: direct3ds2 (DreamTechAI/Direct3D-S2 — DRAFT, manuals/DIRECT3D_S2.md)"
+  { mkvenv direct3ds2; source "$V/bin/activate"
+    # authors' tested base is torch 2.5.1+cu121 (SAM3D lesson: official base > improvised)
+    pip install -q torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cu121 || true
+    # torchsparse builds from source and needs the sparsehash headers first
+    DEBIAN_FRONTEND=noninteractive apt-get install -y libsparsehash-dev >>"$LOGS/apt.log" 2>&1 || true
+    [ -d "$REPOS/torchsparse" ] || git clone --depth 1 https://github.com/mit-han-lab/torchsparse "$REPOS/torchsparse"
+    pip install -q --no-build-isolation "$REPOS/torchsparse" || true
+    [ -d "$REPOS/Direct3D-S2" ] || git clone --depth 1 https://github.com/DreamTechAI/Direct3D-S2 "$REPOS/Direct3D-S2"
+    cd "$REPOS/Direct3D-S2"
+    # requirements.txt contains flash-attn AND a local path (third_party/voxelize) —
+    # install the pure-python bulk explicitly, compiled bits with --no-build-isolation:
+    pip install -q scikit-image trimesh omegaconf tqdm huggingface_hub einops numpy \
+      "transformers==4.40.2" diffusers "triton==3.1.0" pymeshfix pyvista igraph \
+      rembg onnxruntime || true
+    pip install -q "git+https://github.com/EasternJournalist/utils3d.git" || true
+    pip install -q --no-build-isolation flash-attn || true          # gotcha #6 — sdpa fallback UNVERIFIED
+    pip install -q --no-build-isolation ./third_party/voxelize || true
+    pip install -q -e . --no-deps || true
+    python -c "from huggingface_hub import snapshot_download; snapshot_download('wushuang98/Direct3D-S2')" || true
+    deactivate
+  } >"$LOGS/install_direct3ds2.log" 2>&1
+  echo "direct3ds2 install done -> $LOGS/install_direct3ds2.log"
+}
+
+# --------------------------------------------------------------- Step1X-3D ----
+install_step1x3d(){
+  local V="$ENVS/step1x3d"; log "install: step1x3d (stepfun-ai/Step1X-3D — DRAFT, manuals/STEP1X_3D.md)"
+  { mkvenv step1x3d; source "$V/bin/activate"
+    [ -d "$REPOS/Step1X-3D" ] || git clone --depth 1 https://github.com/stepfun-ai/Step1X-3D "$REPOS/Step1X-3D"
+    cd "$REPOS/Step1X-3D"
+    pip install -q torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu124 || true
+    pip install -q -r requirements.txt || true         # LONG: builds nvdiffrast + pytorch3d from git
+    pip install -q torch-cluster -f https://data.pyg.org/whl/torch-2.5.1+cu124.html || true
+    pip install -q kaolin==0.17.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-2.5.1_cu124.html || true
+    # texture-stage compiled extensions (geometry-only benchmark works without them):
+    ( cd step1x3d_texture/custom_rasterizer && python setup.py install ) || true
+    ( cd step1x3d_texture/differentiable_renderer && python setup.py install ) || true
+    # geometry weights only (the full repo also carries Label + Texture subfolders):
+    python -c "from huggingface_hub import snapshot_download; snapshot_download('stepfun-ai/Step1X-3D', allow_patterns=['Step1X-3D-Geometry-1300m/*'])" || true
+    deactivate
+  } >"$LOGS/install_step1x3d.log" 2>&1
+  echo "step1x3d install done -> $LOGS/install_step1x3d.log"
+}
+
+# ------------------------------------------------- Hi3DGen (Stable3DGen) ----
+install_hi3dgen(){
+  local V="$ENVS/hi3dgen"; log "install: hi3dgen (Stable-X/Stable3DGen — DRAFT, manuals/HI3DGEN.md)"
+  { mkvenv hi3dgen; source "$V/bin/activate"
+    # NAMING TRAP: the repo is Stable3DGen — github.com/Stable-X/Hi3DGen does not exist.
+    [ -d "$REPOS/Stable3DGen" ] || git clone --recursive https://github.com/Stable-X/Stable3DGen "$REPOS/Stable3DGen"
+    cd "$REPOS/Stable3DGen"
+    # repo pins its OWN torch (2.4.0) — keep it venv-local, never let it bump (gotcha #3)
+    pip install -q torch==2.4.0 torchvision==0.19.0 --index-url https://download.pytorch.org/whl/cu124 || true
+    pip install -q spconv-cu124==2.3.6 || pip install -q spconv-cu120==2.3.6 || true
+    pip install -q --no-deps xformers==0.0.27.post2 || true         # matched to torch 2.4.0
+    pip install -q -r requirements.txt || true
+    pip install -q rembg onnxruntime || true
+    # weights where app.py expects them (weights/<name>) — pipeline loads from the LOCAL folder
+    python -c "
+from huggingface_hub import snapshot_download
+import os
+for rid in ['Stable-X/trellis-normal-v0-1','Stable-X/yoso-normal-v1-8-1','ZhengPeng7/BiRefNet']:
+    snapshot_download(repo_id=rid, local_dir=os.path.join('weights', rid.split('/')[-1]))
+" || true
+    deactivate
+  } >"$LOGS/install_hi3dgen.log" 2>&1
+  echo "hi3dgen install done -> $LOGS/install_hi3dgen.log"
+}
+
+# -------------------------------------------------------------- PartCrafter ----
+install_partcrafter(){
+  local V="$ENVS/partcrafter"; log "install: partcrafter (wgsxm/PartCrafter — DRAFT, manuals/PARTCRAFTER.md)"
+  { mkvenv partcrafter; source "$V/bin/activate"
+    [ -d "$REPOS/PartCrafter" ] || git clone --depth 1 https://github.com/wgsxm/PartCrafter "$REPOS/PartCrafter"
+    cd "$REPOS/PartCrafter"
+    pip install -q torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cu124 || true
+    pip install -q torch-cluster -f https://data.pyg.org/whl/torch-2.5.1+cu124.html || true
+    pip install -q -r settings/requirements.txt || true   # deepspeed/wandb/google-genai may fail soft — training-only
+    pip install -q rembg onnxruntime || true               # our masking (RMBG-1.4 is license:other — do NOT use)
+    DEBIAN_FRONTEND=noninteractive apt-get install -y libegl1 libgl1-mesa-dev >>"$LOGS/apt.log" 2>&1 || true
+    python -c "from huggingface_hub import snapshot_download; snapshot_download('wgsxm/PartCrafter')" || true
+    deactivate
+  } >"$LOGS/install_partcrafter.log" 2>&1
+  echo "partcrafter install done -> $LOGS/install_partcrafter.log"
+}
+
 # pre-clone repos SHARED across venvs first, so parallel installs don't race on git clone
 if has trellis; then
   [ -d "$REPOS/TRELLIS" ] || git clone --recurse-submodules https://github.com/microsoft/TRELLIS "$REPOS/TRELLIS" >/dev/null 2>&1
@@ -172,6 +271,10 @@ for m in "${MODELS[@]}"; do
     instantmesh) install_instantmesh & pids+=($!);;
     sam3d) install_sam3d & pids+=($!);;
     sf3d) install_sf3d & pids+=($!);;
+    direct3ds2) install_direct3ds2 & pids+=($!);;    # DRAFT — not yet pod-proven
+    step1x3d) install_step1x3d & pids+=($!);;        # DRAFT — not yet pod-proven
+    hi3dgen) install_hi3dgen & pids+=($!);;          # DRAFT — not yet pod-proven
+    partcrafter) install_partcrafter & pids+=($!);;  # DRAFT — not yet pod-proven
     *) echo "unknown model: $m";;
   esac
 done

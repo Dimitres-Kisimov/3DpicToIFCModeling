@@ -24,6 +24,12 @@ MODELS = {
     "sam3d":       {"venv": "sam3d",       "script": "infer_sam3d.py",       "args": []},
     # Stability Community License: free < US$1M revenue — benchmark-only for now.
     "sf3d":        {"venv": "sf3d",        "script": "infer_sf3d.py",        "args": []},
+    # Next-wave (Stage-7 licence audit 2026-07-11) — DRAFT scripts, not yet pod-proven.
+    # See manuals/DIRECT3D_S2.md, STEP1X_3D.md, HI3DGEN.md, PARTCRAFTER.md.
+    "direct3ds2":  {"venv": "direct3ds2",  "script": "infer_direct3ds2.py",  "args": []},
+    "step1x3d":    {"venv": "step1x3d",    "script": "infer_step1x3d.py",    "args": []},
+    "hi3dgen":     {"venv": "hi3dgen",     "script": "infer_hi3dgen.py",     "args": []},
+    "partcrafter": {"venv": "partcrafter", "script": "infer_partcrafter.py", "args": []},
 }
 
 ap = argparse.ArgumentParser()

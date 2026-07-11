@@ -95,6 +95,20 @@ licence, dependency licences traced).
 | **MeshAnything / V2** | **S-Lab License 1.0 — non-commercial without written permission.** Listed in the Stage-2 survey CSV; never integrated into the pipeline. Do not integrate — use DeepMesh instead. |
 | SPAR3D | SF3D's successor, same Stability revenue cap — benchmark-only |
 
+### Stage 8 — Multi-image audit + three status corrections (2026-07-11, same night)
+**Doc:** [MULTI_IMAGE_RESEARCH.md](MULTI_IMAGE_RESEARCH.md) — full multi-photo→3D
+audit (the app's Mode 2). Chosen path: **TRELLIS v1 `run_multi_image`** (MIT,
+pose-free, 2–8 photos) + **`facebook/map-anything-apache`** (Apache-2.0, metric
+scale) — the entire DUSt3R/MASt3R/VGGT family is CC-BY-NC and banned; classical
+photogrammetry needs 20+ photos (documented, kept as optional "orbit mode").
+
+**Status corrections to earlier stages (verified from primary sources):**
+| Model | Correction |
+|---|---|
+| **InstantMesh** | **Downgraded to benchmark-only.** Its pipeline hard-requires Zero123++ weights = **CC-BY-NC 4.0** ("you cannot use the model (or its derivatives) in a commercial product pipeline"). Stays in the accuracy studies; must never ship in the app's engine selector. |
+| **TRELLIS (v1 & .2)** | Geometry path clean (FlexiCubes is Apache-2.0), but the **texture/radiance paths use NC submodules** (diffoctreerast, mip-splatting rasterizer, nvdiffrast). Commercial use = untextured geometry today, or swap renderers to gsplat. |
+| **Hunyuan3D — "research-only" question** | Asked and answered: **still no, even for student/research use.** The Tencent licence is a *territory exclusion* — not granted in the EU for ANY purpose, so there is no research carve-out (unlike ordinary NC licences). Cite Hunyuan's published numbers instead. |
+
 ---
 *Note: the raw size of the Stage-1 pool was the live HuggingFace tag listing at
 sweep time; the docs record the source URL, ranking method, and survivors — not

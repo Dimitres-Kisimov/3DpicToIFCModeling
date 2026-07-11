@@ -2,7 +2,8 @@
 
 **Project:** 3DpicToIFCModeling (SCS) — photograph → 3D reconstruction → IFC/BIM export
 **Chapter status:** Studies A and B complete; Study C (A100 pod extension) in flight — its result
-tables are pre-formatted below with cells marked **PENDING**.
+tables are pre-formatted below with cells marked **PENDING**. Study D (next-wave candidates,
+license-cleared 2026-07-11) is **planned only** — draft manuals ready, no numbers yet.
 **Date:** 2026-07-11
 
 This chapter consolidates every quantitative comparison the project has produced into one place:
@@ -556,6 +557,38 @@ Sources for §5: `deliverable/cloud_bundle/RUNBOOK_REMAINING.md`,
    Stable Fast 3D), re-verifies two Study-A results on new hardware, and extends the comparison
    from the 10 controlled inputs to the 170 uncontrolled photos through the app's own
    repair-and-export path. Its tables in §5 are pre-formatted for direct drop-in.
+
+---
+
+## Study D (planned) — next-wave candidates (license-cleared 2026-07-11)
+
+**Status: planned only — no runs, no numbers.** The second license audit
+(`docs/HUGGINGFACE_MODEL_NARROWING.md`, Stage 7, 2026-07-11) cleared a new wave of royalty-free,
+EU-safe generators released since the Stage-2 funnel. Each now has a **DRAFT deployment manual**
+(written 2026-07-11 from repo README/LICENSE/HF-API research — recipes are *anticipated*, **not
+pod-proven**) in `deliverable/manuals/`, and the four queued models have draft infer scripts and
+`install_models.sh` entries in `deliverable/cloud_bundle/` following the Study-A/C contract
+(manifest in, seed 42, per-item fail isolation, identical scorer).
+
+| Model | Org | License (code / weights) | VRAM | Textured? | Status |
+|---|---|---|---|---|---|
+| Direct3D-S2 | DreamTechAI | MIT / MIT | 10 GB @512³, ~24 GB @1024³ (README) | no | DRAFT manual ready (`DIRECT3D_S2.md`) |
+| Step1X-3D | StepFun | Apache-2.0 / Apache-2.0 | 27–29 GB with texture stage (README) | **yes** | DRAFT manual ready (`STEP1X_3D.md`) |
+| Hi3DGen (repo: Stable3DGen) | Stable-X | MIT / MIT + Apache-2.0 | *not recorded* in README (~16 GB est., TRELLIS lineage) | no | DRAFT manual ready (`HI3DGEN.md`) |
+| PartCrafter | wgsxm (PKU/CMU) | MIT / MIT | ≥8 GB (README) | no — part-level meshes | DRAFT manual ready (`PARTCRAFTER.md`) |
+| MIDI-3D *(optional)* | VAST-AI | Apache-2.0 / Apache-2.0 | ~30 GB textured scene (README) | optional | DRAFT manual ready (`MIDI3D.md`) — scene-level, outside the per-object protocol |
+| Unique3D *(optional)* | AiuniAI | MIT / weights unpinned (no HF repo id in README) | *not recorded* | yes | DRAFT manual ready (`UNIQUE3D.md`) — weight provenance unverifiable, held back |
+
+License tags verified against the HuggingFace API on 2026-07-11 (`wushuang98/Direct3D-S2` = mit,
+`stepfun-ai/Step1X-3D` = apache-2.0, `Stable-X/trellis-normal-v0-1` = mit +
+`Stable-X/yoso-normal-v1-8-1` = apache-2.0, `wgsxm/PartCrafter` = mit, `VAST-AI/MIDI-3D` =
+apache-2.0); code license files quoted verbatim in each manual. When Study D runs, it reuses the
+Study-A protocol unchanged (same 10 inputs, same `eval_accuracy.py` scorer, seed 42), so its rows
+drop directly into the §2 accuracy table.
+
+Sources: `docs/HUGGINGFACE_MODEL_NARROWING.md` (Stage 7), `deliverable/manuals/README.md`
+(next-wave board) and the six draft manuals, `deliverable/cloud_bundle/install_models.sh` +
+`run_cloud_benchmark.py` (nextwave entries).
 
 ---
 

@@ -25,6 +25,25 @@ CUDA 12.8**, 120 GB disk, Ubuntu, 160 vCPU. (An A100 80 GB works for all of thes
 Reference baselines for the same 10 furniture types: **TripoSR·SAM2 = 0.278, TripoSR·rembg = 0.295,
 ABO ground truth = 1.00.**
 
+## Next-wave candidates (Stage-7 licence audit, 2026-07-11) — 🟡 DRAFT manuals, not yet pod-proven
+
+The second licence audit ([docs/HUGGINGFACE_MODEL_NARROWING.md](../../docs/HUGGINGFACE_MODEL_NARROWING.md),
+Stage 7) cleared these royalty-free, EU-safe models for a future pod run. Each has a **draft** manual
+(written from repo README/LICENSE/HF-API research, 2026-07-11 — recipes are *anticipated*, not proven):
+
+| Model | Org | Licence (code / weights) | VRAM | Textured? | Manual |
+|---|---|---|---|---|---|
+| **Direct3D-S2** | DreamTechAI | MIT / MIT | 10 GB @512³, ~24 GB @1024³ | no | [DIRECT3D_S2.md](DIRECT3D_S2.md) |
+| **Step1X-3D** | StepFun | Apache-2.0 / Apache-2.0 | 27–29 GB (with texture) | **yes** | [STEP1X_3D.md](STEP1X_3D.md) |
+| **Hi3DGen** (repo: Stable3DGen) | Stable-X | MIT / MIT + Apache-2.0 | not stated (~16 GB est., TRELLIS lineage) | no | [HI3DGEN.md](HI3DGEN.md) |
+| **PartCrafter** | wgsxm (PKU/CMU) | MIT / MIT | ≥8 GB | no (part-level!) | [PARTCRAFTER.md](PARTCRAFTER.md) |
+| MIDI-3D *(optional)* | VAST-AI | Apache-2.0 / Apache-2.0 | ~30 GB (textured scene) | optional | [MIDI3D.md](MIDI3D.md) |
+| Unique3D *(optional)* | AiuniAI | MIT / weights unpinned (no HF repo id) | not recorded | yes | [UNIQUE3D.md](UNIQUE3D.md) |
+
+Draft infer scripts for the four queued models exist in `cloud_bundle/` (`infer_direct3ds2.py`,
+`infer_step1x3d.py`, `infer_hi3dgen.py`, `infer_partcrafter.py`) plus matching `install_models.sh`
+entries (`bash install_models.sh nextwave`). All marked DRAFT until the first `.glb` lands.
+
 ---
 
 ## Universal gotchas (hit *every* model — fix these first)
