@@ -1,0 +1,72 @@
+[
+  {
+    "key": "bed",
+    "type": "bed",
+    "source_id": "GothicBed_01",
+    "input": "inputs/bed.png",
+    "gt": "gt/bed.glb"
+  },
+  {
+    "key": "bookshelf",
+    "type": "bookshelf",
+    "source_id": "B07HSGPG2D",
+    "input": "inputs/bookshelf.png",
+    "gt": "gt/bookshelf.glb"
+  },
+  {
+    "key": "cabinet",
+    "type": "cabinet",
+    "source_id": "B07HSL4TS1",
+    "input": "inputs/cabinet.png",
+    "gt": "gt/cabinet.glb"
+  },
+  {
+    "key": "chair",
+    "type": "chair",
+    "source_id": "ArmChair_01",
+    "input": "inputs/chair.png",
+    "gt": "gt/chair.glb"
+  },
+  {
+    "key": "desk",
+    "type": "desk",
+    "source_id": "B07GFWW5JZ",
+    "input": "inputs/desk.png",
+    "gt": "gt/desk.glb"
+  },
+  {
+    "key": "lamp",
+    "type": "lamp",
+    "source_id": "B07HK6B4D7",
+    "input": "inputs/lamp.png",
+    "gt": "gt/lamp.glb"
+  },
+  {
+    "key": "office_chair",
+    "type": "office_chair",
+    "source_id": "B07DBH52YB",
+    "input": "inputs/office_chair.png",
+    "gt": "gt/office_chair.glb"
+  },
+  {
+    "key": "sofa",
+    "type": "sofa",
+    "source_id": "B07DBGHYG6",
+    "input": "inputs/sofa.png",
+    "gt": "gt/sofa.glb"
+  },
+  {
+    "key": "stool",
+    "type": "stool",
+    "source_id": "B07DBD9VY1",
+    "input": "inputs/stool.png",
+    "gt": "gt/stool.glb"
+  },
+  {
+    "key": "table",
+    "type": "table",
+    "source_id": "B07H8V49GP",
+    "input": "inputs/table.png",
+    "gt": "gt/table.glb"
+  }
+]

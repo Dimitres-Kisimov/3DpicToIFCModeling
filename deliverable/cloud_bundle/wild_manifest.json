@@ -1,0 +1,32 @@
+[
+  {
+    "key": "wild_armchair",
+    "input": "wild/wild_armchair.jpg",
+    "gt": null,
+    "track": "robustness"
+  },
+  {
+    "key": "wild_chairs_room",
+    "input": "wild/wild_chairs_room.jpg",
+    "gt": null,
+    "track": "robustness"
+  },
+  {
+    "key": "wild_office_chair",
+    "input": "wild/wild_office_chair.jpg",
+    "gt": null,
+    "track": "robustness"
+  },
+  {
+    "key": "wild_office_desks",
+    "input": "wild/wild_office_desks.jpg",
+    "gt": null,
+    "track": "robustness"
+  },
+  {
+    "key": "wild_sofa_room",
+    "input": "wild/wild_sofa_room.jpg",
+    "gt": null,
+    "track": "robustness"
+  }
+]
