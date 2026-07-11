@@ -1,3 +1,5 @@
+
+> **CUPID ON HOLD (user directive, 2026-07-11).** Do not install or run Cupid in this pod session. Safety check performed: weights are all .safetensors (no pickle — no code-execution-on-load risk), MIT license, TRELLIS-format components; no adverse findings — but the hold stands until the user lifts it. Run only: scenegen (benchmark-only, VGGT-NC dep) and 3dtopiaxl.
 # RUNBOOK — Census-Trio Pod Run (SceneGen · Cupid · 3DTopia-XL) — 🟡 DRAFT 2026-07-11
 
 **Goal:** benchmark the three license-verified challengers from the HF census
