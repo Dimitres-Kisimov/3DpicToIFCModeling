@@ -10,6 +10,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/bookshelf/raw.glb",
      "faces": 82480,
      "watertight": true,
@@ -18,6 +20,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/bookshelf/improved.glb",
      "faces": 14916,
      "watertight": true,
@@ -35,6 +39,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/cabinet/raw.glb",
      "faces": 115880,
      "watertight": true,
@@ -43,6 +49,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/cabinet/improved.glb",
      "faces": 14864,
      "watertight": true,
@@ -60,6 +68,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/clock/raw.glb",
      "faces": 152640,
      "watertight": true,
@@ -68,6 +78,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/clock/improved.glb",
      "faces": 9984,
      "watertight": true,
@@ -85,6 +97,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/coffee_table/raw.glb",
      "faces": 59800,
      "watertight": true,
@@ -93,6 +107,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/coffee_table/improved.glb",
      "faces": 12004,
      "watertight": true,
@@ -110,6 +126,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/desk/raw.glb",
      "faces": 183954,
      "watertight": true,
@@ -118,6 +136,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/desk/improved.glb",
      "faces": 13774,
      "watertight": true,
@@ -135,6 +155,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/filing_cabinet/raw.glb",
      "faces": 90584,
      "watertight": true,
@@ -143,6 +165,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/filing_cabinet/improved.glb",
      "faces": 13076,
      "watertight": true,
@@ -160,6 +184,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/lamp/raw.glb",
      "faces": 151308,
      "watertight": true,
@@ -168,6 +194,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/lamp/improved.glb",
      "faces": 11848,
      "watertight": true,
@@ -185,6 +213,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/laptop/raw.glb",
      "faces": 82774,
      "watertight": true,
@@ -193,6 +223,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/laptop/improved.glb",
      "faces": 14818,
      "watertight": true,
@@ -210,6 +242,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/mirror/raw.glb",
      "faces": 96800,
      "watertight": true,
@@ -218,6 +252,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/mirror/improved.glb",
      "faces": 9980,
      "watertight": true,
@@ -235,6 +271,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/monitor/raw.glb",
      "faces": 123984,
      "watertight": true,
@@ -243,6 +281,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/monitor/improved.glb",
      "faces": 9952,
      "watertight": true,
@@ -260,6 +300,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/office_chair/raw.glb",
      "faces": 100366,
      "watertight": true,
@@ -268,6 +310,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/office_chair/improved.glb",
      "faces": 15689,
      "watertight": false,
@@ -285,6 +329,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/picture_frame/raw.glb",
      "faces": 192076,
      "watertight": true,
@@ -293,6 +339,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/picture_frame/improved.glb",
      "faces": 9858,
      "watertight": false,
@@ -310,6 +358,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/planter/raw.glb",
      "faces": 183346,
      "watertight": true,
@@ -318,6 +368,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/planter/improved.glb",
      "faces": 11186,
      "watertight": true,
@@ -335,6 +387,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/side_table/raw.glb",
      "faces": 120450,
      "watertight": true,
@@ -343,6 +397,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/side_table/improved.glb",
      "faces": 18284,
      "watertight": true,
@@ -360,6 +416,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/sofa/raw.glb",
      "faces": 55592,
      "watertight": true,
@@ -368,6 +426,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/sofa/improved.glb",
      "faces": 14990,
      "watertight": true,
@@ -385,6 +445,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/stool/raw.glb",
      "faces": 93080,
      "watertight": true,
@@ -393,6 +455,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/stool/improved.glb",
      "faces": 14436,
      "watertight": true,
@@ -410,6 +474,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list01/table/raw.glb",
      "faces": 214572,
      "watertight": true,
@@ -418,6 +484,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list01/table/improved.glb",
      "faces": 3392,
      "watertight": true,
@@ -435,6 +503,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/bookshelf/raw.glb",
      "faces": 179810,
      "watertight": true,
@@ -443,6 +513,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/bookshelf/improved.glb",
      "faces": 7422,
      "watertight": true,
@@ -460,6 +532,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/cabinet/raw.glb",
      "faces": 227722,
      "watertight": true,
@@ -468,6 +542,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/cabinet/improved.glb",
      "faces": 12170,
      "watertight": true,
@@ -485,6 +561,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/clock/raw.glb",
      "faces": 114076,
      "watertight": true,
@@ -493,6 +571,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/clock/improved.glb",
      "faces": 9986,
      "watertight": true,
@@ -510,6 +590,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/coffee_table/raw.glb",
      "faces": 119718,
      "watertight": true,
@@ -518,6 +600,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/coffee_table/improved.glb",
      "faces": 13866,
      "watertight": false,
@@ -535,6 +619,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/desk/raw.glb",
      "faces": 104328,
      "watertight": true,
@@ -543,6 +629,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/desk/improved.glb",
      "faces": 7500,
      "watertight": true,
@@ -560,6 +648,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/filing_cabinet/raw.glb",
      "faces": 59870,
      "watertight": true,
@@ -568,6 +658,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/filing_cabinet/improved.glb",
      "faces": 13968,
      "watertight": true,
@@ -585,6 +677,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/lamp/raw.glb",
      "faces": 104646,
      "watertight": true,
@@ -593,6 +687,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/lamp/improved.glb",
      "faces": 11784,
      "watertight": true,
@@ -610,6 +706,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/laptop/raw.glb",
      "faces": 115578,
      "watertight": true,
@@ -618,6 +716,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/laptop/improved.glb",
      "faces": 14980,
      "watertight": true,
@@ -635,6 +735,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/mirror/raw.glb",
      "faces": 209254,
      "watertight": true,
@@ -643,6 +745,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/mirror/improved.glb",
      "faces": 9266,
      "watertight": true,
@@ -660,6 +764,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/monitor/raw.glb",
      "faces": 87916,
      "watertight": true,
@@ -668,6 +774,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/monitor/improved.glb",
      "faces": 9994,
      "watertight": true,
@@ -685,6 +793,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/office_chair/raw.glb",
      "faces": 100366,
      "watertight": true,
@@ -693,6 +803,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/office_chair/improved.glb",
      "faces": 15689,
      "watertight": false,
@@ -710,6 +822,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/picture_frame/raw.glb",
      "faces": 38220,
      "watertight": true,
@@ -718,6 +832,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/picture_frame/improved.glb",
      "faces": 9986,
      "watertight": true,
@@ -735,6 +851,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/planter/raw.glb",
      "faces": 168272,
      "watertight": true,
@@ -743,6 +861,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/planter/improved.glb",
      "faces": 11320,
      "watertight": true,
@@ -760,6 +880,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/side_table/raw.glb",
      "faces": 191958,
      "watertight": true,
@@ -768,6 +890,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/side_table/improved.glb",
      "faces": 9348,
      "watertight": false,
@@ -785,6 +909,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/sofa/raw.glb",
      "faces": 73766,
      "watertight": true,
@@ -793,6 +919,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/sofa/improved.glb",
      "faces": 14952,
      "watertight": true,
@@ -810,6 +938,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/stool/raw.glb",
      "faces": 151290,
      "watertight": true,
@@ -818,6 +948,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/stool/improved.glb",
      "faces": 7542,
      "watertight": true,
@@ -835,6 +967,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list02/table/raw.glb",
      "faces": 143138,
      "watertight": true,
@@ -843,6 +977,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list02/table/improved.glb",
      "faces": 4186,
      "watertight": true,
@@ -860,6 +996,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/bookshelf/raw.glb",
      "faces": 50746,
      "watertight": true,
@@ -868,6 +1006,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/bookshelf/improved.glb",
      "faces": 14990,
      "watertight": true,
@@ -885,6 +1025,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/cabinet/raw.glb",
      "faces": 143308,
      "watertight": true,
@@ -893,6 +1035,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/cabinet/improved.glb",
      "faces": 14990,
      "watertight": true,
@@ -910,6 +1054,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/clock/raw.glb",
      "faces": 56396,
      "watertight": true,
@@ -918,6 +1064,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/clock/improved.glb",
      "faces": 9800,
      "watertight": true,
@@ -935,6 +1083,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/coffee_table/raw.glb",
      "faces": 104698,
      "watertight": true,
@@ -943,6 +1093,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/coffee_table/improved.glb",
      "faces": 14984,
      "watertight": true,
@@ -960,6 +1112,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/desk/raw.glb",
      "faces": 44072,
      "watertight": true,
@@ -968,6 +1122,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/desk/improved.glb",
      "faces": 14498,
      "watertight": true,
@@ -985,6 +1141,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/filing_cabinet/raw.glb",
      "faces": 118868,
      "watertight": true,
@@ -993,6 +1151,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/filing_cabinet/improved.glb",
      "faces": 14840,
      "watertight": true,
@@ -1010,6 +1170,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/lamp/raw.glb",
      "faces": 90468,
      "watertight": true,
@@ -1018,6 +1180,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/lamp/improved.glb",
      "faces": 11970,
      "watertight": true,
@@ -1035,6 +1199,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/laptop/raw.glb",
      "faces": 98556,
      "watertight": true,
@@ -1043,6 +1209,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/laptop/improved.glb",
      "faces": 14942,
      "watertight": true,
@@ -1060,6 +1228,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/mirror/raw.glb",
      "faces": 119880,
      "watertight": true,
@@ -1068,6 +1238,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/mirror/improved.glb",
      "faces": 8114,
      "watertight": true,
@@ -1085,6 +1257,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/monitor/raw.glb",
      "faces": 94060,
      "watertight": true,
@@ -1093,6 +1267,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/monitor/improved.glb",
      "faces": 9988,
      "watertight": true,
@@ -1110,6 +1286,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/office_chair/raw.glb",
      "faces": 82634,
      "watertight": true,
@@ -1118,6 +1296,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/office_chair/improved.glb",
      "faces": 17855,
      "watertight": false,
@@ -1135,6 +1315,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/picture_frame/raw.glb",
      "faces": 98070,
      "watertight": true,
@@ -1143,6 +1325,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/picture_frame/improved.glb",
      "faces": 9986,
      "watertight": true,
@@ -1160,6 +1344,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/planter/raw.glb",
      "faces": 133146,
      "watertight": true,
@@ -1168,6 +1354,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/planter/improved.glb",
      "faces": 11576,
      "watertight": true,
@@ -1185,6 +1373,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/side_table/raw.glb",
      "faces": 75428,
      "watertight": true,
@@ -1193,6 +1383,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/side_table/improved.glb",
      "faces": 13636,
      "watertight": true,
@@ -1210,6 +1402,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/sofa/raw.glb",
      "faces": 129536,
      "watertight": true,
@@ -1218,6 +1412,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/sofa/improved.glb",
      "faces": 14992,
      "watertight": true,
@@ -1235,6 +1431,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/stool/raw.glb",
      "faces": 163414,
      "watertight": true,
@@ -1243,6 +1441,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/stool/improved.glb",
      "faces": 7580,
      "watertight": true,
@@ -1260,6 +1460,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list03/table/raw.glb",
      "faces": 119870,
      "watertight": true,
@@ -1268,6 +1470,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list03/table/improved.glb",
      "faces": 14068,
      "watertight": true,
@@ -1285,6 +1489,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/bookshelf/raw.glb",
      "faces": 116094,
      "watertight": true,
@@ -1293,6 +1499,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/bookshelf/improved.glb",
      "faces": 14980,
      "watertight": true,
@@ -1310,6 +1518,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/cabinet/raw.glb",
      "faces": 64152,
      "watertight": true,
@@ -1318,6 +1528,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/cabinet/improved.glb",
      "faces": 14954,
      "watertight": true,
@@ -1335,6 +1547,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/clock/raw.glb",
      "faces": 148884,
      "watertight": true,
@@ -1343,6 +1557,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/clock/improved.glb",
      "faces": 9726,
      "watertight": false,
@@ -1360,6 +1576,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/coffee_table/raw.glb",
      "faces": 99002,
      "watertight": true,
@@ -1368,6 +1586,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/coffee_table/improved.glb",
      "faces": 4268,
      "watertight": true,
@@ -1385,6 +1605,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/desk/raw.glb",
      "faces": 10256,
      "watertight": true,
@@ -1393,6 +1615,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/desk/improved.glb",
      "faces": 4542,
      "watertight": true,
@@ -1410,6 +1634,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/filing_cabinet/raw.glb",
      "faces": 161684,
      "watertight": true,
@@ -1418,6 +1644,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/filing_cabinet/improved.glb",
      "faces": 12858,
      "watertight": true,
@@ -1435,6 +1663,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/lamp/raw.glb",
      "faces": 96396,
      "watertight": true,
@@ -1443,6 +1673,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/lamp/improved.glb",
      "faces": 11996,
      "watertight": true,
@@ -1460,6 +1692,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/laptop/raw.glb",
      "faces": 139066,
      "watertight": true,
@@ -1468,6 +1702,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/laptop/improved.glb",
      "faces": 14982,
      "watertight": true,
@@ -1485,6 +1721,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/mirror/raw.glb",
      "faces": 114782,
      "watertight": true,
@@ -1493,6 +1731,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/mirror/improved.glb",
      "faces": 9636,
      "watertight": true,
@@ -1510,6 +1750,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/monitor/raw.glb",
      "faces": 103232,
      "watertight": true,
@@ -1518,6 +1760,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/monitor/improved.glb",
      "faces": 9868,
      "watertight": true,
@@ -1535,6 +1779,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/office_chair/raw.glb",
      "faces": 141446,
      "watertight": true,
@@ -1543,6 +1789,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/office_chair/improved.glb",
      "faces": 16938,
      "watertight": false,
@@ -1560,6 +1808,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/picture_frame/raw.glb",
      "faces": 72046,
      "watertight": true,
@@ -1568,6 +1818,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/picture_frame/improved.glb",
      "faces": 9768,
      "watertight": true,
@@ -1585,6 +1837,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/planter/raw.glb",
      "faces": 162028,
      "watertight": true,
@@ -1593,6 +1847,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/planter/improved.glb",
      "faces": 10020,
      "watertight": true,
@@ -1610,6 +1866,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/side_table/raw.glb",
      "faces": 84000,
      "watertight": true,
@@ -1618,6 +1876,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/side_table/improved.glb",
      "faces": 4392,
      "watertight": true,
@@ -1635,6 +1895,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/sofa/raw.glb",
      "faces": 138596,
      "watertight": true,
@@ -1643,6 +1905,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/sofa/improved.glb",
      "faces": 14996,
      "watertight": true,
@@ -1660,6 +1924,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/stool/raw.glb",
      "faces": 109384,
      "watertight": true,
@@ -1668,6 +1934,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/stool/improved.glb",
      "faces": 12182,
      "watertight": true,
@@ -1685,6 +1953,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list04/table/raw.glb",
      "faces": 123886,
      "watertight": true,
@@ -1693,6 +1963,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list04/table/improved.glb",
      "faces": 12244,
      "watertight": true,
@@ -1710,6 +1982,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/bookshelf/raw.glb",
      "faces": 46344,
      "watertight": true,
@@ -1718,6 +1992,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/bookshelf/improved.glb",
      "faces": 6520,
      "watertight": true,
@@ -1735,6 +2011,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/cabinet/raw.glb",
      "faces": 27532,
      "watertight": true,
@@ -1743,6 +2021,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/cabinet/improved.glb",
      "faces": 15000,
      "watertight": true,
@@ -1760,6 +2040,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/clock/raw.glb",
      "faces": 85012,
      "watertight": true,
@@ -1768,6 +2050,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/clock/improved.glb",
      "faces": 9990,
      "watertight": true,
@@ -1785,6 +2069,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/coffee_table/raw.glb",
      "faces": 114446,
      "watertight": true,
@@ -1793,6 +2079,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/coffee_table/improved.glb",
      "faces": 12506,
      "watertight": true,
@@ -1810,6 +2098,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/desk/raw.glb",
      "faces": 42794,
      "watertight": true,
@@ -1818,6 +2108,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/desk/improved.glb",
      "faces": 12426,
      "watertight": true,
@@ -1835,6 +2127,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/filing_cabinet/raw.glb",
      "faces": 153942,
      "watertight": true,
@@ -1843,6 +2137,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/filing_cabinet/improved.glb",
      "faces": 13696,
      "watertight": true,
@@ -1860,6 +2156,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/lamp/raw.glb",
      "faces": 185512,
      "watertight": true,
@@ -1868,6 +2166,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/lamp/improved.glb",
      "faces": 11516,
      "watertight": true,
@@ -1885,6 +2185,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/laptop/raw.glb",
      "faces": 81728,
      "watertight": true,
@@ -1893,6 +2195,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/laptop/improved.glb",
      "faces": 14962,
      "watertight": true,
@@ -1910,6 +2214,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/mirror/raw.glb",
      "faces": 79374,
      "watertight": true,
@@ -1918,6 +2224,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/mirror/improved.glb",
      "faces": 7068,
      "watertight": true,
@@ -1935,6 +2243,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/monitor/raw.glb",
      "faces": 106548,
      "watertight": true,
@@ -1943,6 +2253,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/monitor/improved.glb",
      "faces": 9996,
      "watertight": true,
@@ -1960,6 +2272,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/office_chair/raw.glb",
      "faces": 104322,
      "watertight": true,
@@ -1968,6 +2282,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/office_chair/improved.glb",
      "faces": 15601,
      "watertight": false,
@@ -1985,6 +2301,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/picture_frame/raw.glb",
      "faces": 64716,
      "watertight": true,
@@ -1993,6 +2311,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/picture_frame/improved.glb",
      "faces": 9968,
      "watertight": true,
@@ -2010,6 +2330,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/planter/raw.glb",
      "faces": 168348,
      "watertight": true,
@@ -2018,6 +2340,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/planter/improved.glb",
      "faces": 10990,
      "watertight": true,
@@ -2035,6 +2359,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/side_table/raw.glb",
      "faces": 80832,
      "watertight": true,
@@ -2043,6 +2369,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/side_table/improved.glb",
      "faces": 6386,
      "watertight": true,
@@ -2060,6 +2388,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/sofa/raw.glb",
      "faces": 96050,
      "watertight": true,
@@ -2068,6 +2398,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/sofa/improved.glb",
      "faces": 13030,
      "watertight": true,
@@ -2085,6 +2417,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/stool/raw.glb",
      "faces": 53514,
      "watertight": true,
@@ -2093,6 +2427,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/stool/improved.glb",
      "faces": 11102,
      "watertight": true,
@@ -2110,6 +2446,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list05/table/raw.glb",
      "faces": 85534,
      "watertight": true,
@@ -2118,6 +2456,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list05/table/improved.glb",
      "faces": 14984,
      "watertight": true,
@@ -2135,6 +2475,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/bookshelf/raw.glb",
      "faces": 72538,
      "watertight": true,
@@ -2143,6 +2485,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/bookshelf/improved.glb",
      "faces": 14866,
      "watertight": true,
@@ -2160,6 +2504,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/cabinet/raw.glb",
      "faces": 140294,
      "watertight": true,
@@ -2168,6 +2514,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/cabinet/improved.glb",
      "faces": 14962,
      "watertight": true,
@@ -2185,6 +2533,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/clock/raw.glb",
      "faces": 49266,
      "watertight": true,
@@ -2193,6 +2543,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/clock/improved.glb",
      "faces": 9982,
      "watertight": true,
@@ -2210,6 +2562,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/coffee_table/raw.glb",
      "faces": 63484,
      "watertight": true,
@@ -2218,6 +2572,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/coffee_table/improved.glb",
      "faces": 15572,
      "watertight": false,
@@ -2235,6 +2591,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/desk/raw.glb",
      "faces": 123616,
      "watertight": true,
@@ -2243,6 +2601,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/desk/improved.glb",
      "faces": 14846,
      "watertight": true,
@@ -2260,6 +2620,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/filing_cabinet/raw.glb",
      "faces": 113324,
      "watertight": true,
@@ -2268,6 +2630,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/filing_cabinet/improved.glb",
      "faces": 13828,
      "watertight": true,
@@ -2285,6 +2649,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/lamp/raw.glb",
      "faces": 190262,
      "watertight": true,
@@ -2293,6 +2659,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/lamp/improved.glb",
      "faces": 11432,
      "watertight": true,
@@ -2310,6 +2678,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/laptop/raw.glb",
      "faces": 210990,
      "watertight": true,
@@ -2318,6 +2688,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/laptop/improved.glb",
      "faces": 13748,
      "watertight": true,
@@ -2335,6 +2707,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/mirror/raw.glb",
      "faces": 141882,
      "watertight": true,
@@ -2343,6 +2717,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/mirror/improved.glb",
      "faces": 9128,
      "watertight": true,
@@ -2360,6 +2736,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/monitor/raw.glb",
      "faces": 142196,
      "watertight": true,
@@ -2368,6 +2746,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/monitor/improved.glb",
      "faces": 9914,
      "watertight": true,
@@ -2385,6 +2765,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/office_chair/raw.glb",
      "faces": 140624,
      "watertight": true,
@@ -2393,6 +2775,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/office_chair/improved.glb",
      "faces": 17296,
      "watertight": false,
@@ -2410,6 +2794,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/picture_frame/raw.glb",
      "faces": 131574,
      "watertight": true,
@@ -2418,6 +2804,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/picture_frame/improved.glb",
      "faces": 9630,
      "watertight": true,
@@ -2435,6 +2823,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/planter/raw.glb",
      "faces": 177756,
      "watertight": true,
@@ -2443,6 +2833,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/planter/improved.glb",
      "faces": 11200,
      "watertight": true,
@@ -2460,6 +2852,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/side_table/raw.glb",
      "faces": 89924,
      "watertight": true,
@@ -2468,6 +2862,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/side_table/improved.glb",
      "faces": 7570,
      "watertight": true,
@@ -2485,6 +2881,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/sofa/raw.glb",
      "faces": 103464,
      "watertight": true,
@@ -2493,6 +2891,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/sofa/improved.glb",
      "faces": 14688,
      "watertight": true,
@@ -2510,6 +2910,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/stool/raw.glb",
      "faces": 134340,
      "watertight": true,
@@ -2518,6 +2920,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/stool/improved.glb",
      "faces": 14348,
      "watertight": true,
@@ -2535,6 +2939,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list06/table/raw.glb",
      "faces": 84000,
      "watertight": true,
@@ -2543,6 +2949,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list06/table/improved.glb",
      "faces": 4310,
      "watertight": true,
@@ -2560,6 +2968,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/bookshelf/raw.glb",
      "faces": 63784,
      "watertight": true,
@@ -2568,6 +2978,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/bookshelf/improved.glb",
      "faces": 14158,
      "watertight": true,
@@ -2585,6 +2997,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/cabinet/raw.glb",
      "faces": 53316,
      "watertight": true,
@@ -2593,6 +3007,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/cabinet/improved.glb",
      "faces": 14950,
      "watertight": true,
@@ -2610,6 +3026,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/clock/raw.glb",
      "faces": 154304,
      "watertight": true,
@@ -2618,6 +3036,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/clock/improved.glb",
      "faces": 9980,
      "watertight": true,
@@ -2635,6 +3055,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/coffee_table/raw.glb",
      "faces": 71228,
      "watertight": true,
@@ -2643,6 +3065,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/coffee_table/improved.glb",
      "faces": 10202,
      "watertight": true,
@@ -2660,6 +3084,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/desk/raw.glb",
      "faces": 62258,
      "watertight": true,
@@ -2668,6 +3094,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/desk/improved.glb",
      "faces": 14996,
      "watertight": true,
@@ -2685,6 +3113,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/filing_cabinet/raw.glb",
      "faces": 92976,
      "watertight": true,
@@ -2693,6 +3123,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/filing_cabinet/improved.glb",
      "faces": 14812,
      "watertight": true,
@@ -2710,6 +3142,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/lamp/raw.glb",
      "faces": 441152,
      "watertight": true,
@@ -2718,6 +3152,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/lamp/improved.glb",
      "faces": 9800,
      "watertight": true,
@@ -2735,6 +3171,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/laptop/raw.glb",
      "faces": 159236,
      "watertight": true,
@@ -2743,6 +3181,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/laptop/improved.glb",
      "faces": 14986,
      "watertight": true,
@@ -2760,6 +3200,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/mirror/raw.glb",
      "faces": 56828,
      "watertight": true,
@@ -2768,6 +3210,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/mirror/improved.glb",
      "faces": 8524,
      "watertight": true,
@@ -2785,6 +3229,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/monitor/raw.glb",
      "faces": 145658,
      "watertight": true,
@@ -2793,6 +3239,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/monitor/improved.glb",
      "faces": 9562,
      "watertight": true,
@@ -2810,6 +3258,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/office_chair/raw.glb",
      "faces": 154042,
      "watertight": true,
@@ -2818,6 +3268,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/office_chair/improved.glb",
      "faces": 18013,
      "watertight": false,
@@ -2835,6 +3287,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/picture_frame/raw.glb",
      "faces": 126902,
      "watertight": true,
@@ -2843,6 +3297,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/picture_frame/improved.glb",
      "faces": 8946,
      "watertight": true,
@@ -2860,6 +3316,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/planter/raw.glb",
      "faces": 220832,
      "watertight": true,
@@ -2868,6 +3326,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/planter/improved.glb",
      "faces": 9880,
      "watertight": true,
@@ -2885,6 +3345,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/side_table/raw.glb",
      "faces": 145982,
      "watertight": true,
@@ -2893,6 +3355,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/side_table/improved.glb",
      "faces": 5702,
      "watertight": true,
@@ -2910,6 +3374,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/sofa/raw.glb",
      "faces": 104326,
      "watertight": true,
@@ -2918,6 +3384,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/sofa/improved.glb",
      "faces": 11506,
      "watertight": true,
@@ -2935,6 +3403,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/stool/raw.glb",
      "faces": 171240,
      "watertight": true,
@@ -2943,6 +3413,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/stool/improved.glb",
      "faces": 13844,
      "watertight": true,
@@ -2960,6 +3432,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list07/table/raw.glb",
      "faces": 145772,
      "watertight": true,
@@ -2968,6 +3442,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list07/table/improved.glb",
      "faces": 11002,
      "watertight": true,
@@ -2985,6 +3461,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/bookshelf/raw.glb",
      "faces": 87122,
      "watertight": true,
@@ -2993,6 +3471,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/bookshelf/improved.glb",
      "faces": 14566,
      "watertight": true,
@@ -3010,6 +3490,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/cabinet/raw.glb",
      "faces": 46844,
      "watertight": true,
@@ -3018,6 +3500,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/cabinet/improved.glb",
      "faces": 14990,
      "watertight": true,
@@ -3035,6 +3519,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/clock/raw.glb",
      "faces": 96828,
      "watertight": true,
@@ -3043,6 +3529,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/clock/improved.glb",
      "faces": 9970,
      "watertight": true,
@@ -3060,6 +3548,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/coffee_table/raw.glb",
      "faces": 73656,
      "watertight": true,
@@ -3068,6 +3558,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/coffee_table/improved.glb",
      "faces": 14952,
      "watertight": true,
@@ -3085,6 +3577,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/desk/raw.glb",
      "faces": 56812,
      "watertight": true,
@@ -3093,6 +3587,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/desk/improved.glb",
      "faces": 13974,
      "watertight": true,
@@ -3110,6 +3606,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/filing_cabinet/raw.glb",
      "faces": 101340,
      "watertight": true,
@@ -3118,6 +3616,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/filing_cabinet/improved.glb",
      "faces": 13292,
      "watertight": true,
@@ -3135,6 +3635,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/lamp/raw.glb",
      "faces": 125716,
      "watertight": true,
@@ -3143,6 +3645,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/lamp/improved.glb",
      "faces": 11866,
      "watertight": true,
@@ -3160,6 +3664,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/laptop/raw.glb",
      "faces": 108850,
      "watertight": true,
@@ -3168,6 +3674,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/laptop/improved.glb",
      "faces": 14890,
      "watertight": true,
@@ -3185,6 +3693,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/mirror/raw.glb",
      "faces": 77674,
      "watertight": true,
@@ -3193,6 +3703,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/mirror/improved.glb",
      "faces": 9990,
      "watertight": true,
@@ -3210,6 +3722,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/monitor/raw.glb",
      "faces": 47980,
      "watertight": true,
@@ -3218,6 +3732,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/monitor/improved.glb",
      "faces": 9988,
      "watertight": true,
@@ -3235,6 +3751,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/office_chair/raw.glb",
      "faces": 53350,
      "watertight": true,
@@ -3243,6 +3761,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/office_chair/improved.glb",
      "faces": 15297,
      "watertight": false,
@@ -3260,6 +3780,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/picture_frame/raw.glb",
      "faces": 37234,
      "watertight": true,
@@ -3268,6 +3790,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/picture_frame/improved.glb",
      "faces": 9880,
      "watertight": true,
@@ -3285,6 +3809,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/planter/raw.glb",
      "faces": 122628,
      "watertight": true,
@@ -3293,6 +3819,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/planter/improved.glb",
      "faces": 11480,
      "watertight": true,
@@ -3310,6 +3838,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/side_table/raw.glb",
      "faces": 87464,
      "watertight": true,
@@ -3318,6 +3848,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/side_table/improved.glb",
      "faces": 14430,
      "watertight": true,
@@ -3335,6 +3867,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/sofa/raw.glb",
      "faces": 77824,
      "watertight": true,
@@ -3343,6 +3877,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/sofa/improved.glb",
      "faces": 13492,
      "watertight": true,
@@ -3360,6 +3896,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/stool/raw.glb",
      "faces": 150424,
      "watertight": true,
@@ -3368,6 +3906,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/stool/improved.glb",
      "faces": 5632,
      "watertight": true,
@@ -3385,6 +3925,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list08/table/raw.glb",
      "faces": 89548,
      "watertight": true,
@@ -3393,6 +3935,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list08/table/improved.glb",
      "faces": 14820,
      "watertight": true,
@@ -3410,6 +3954,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/bookshelf/raw.glb",
      "faces": 49282,
      "watertight": true,
@@ -3418,6 +3964,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/bookshelf/improved.glb",
      "faces": 12488,
      "watertight": true,
@@ -3435,6 +3983,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/cabinet/raw.glb",
      "faces": 121966,
      "watertight": true,
@@ -3443,6 +3993,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/cabinet/improved.glb",
      "faces": 14770,
      "watertight": true,
@@ -3460,6 +4012,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/clock/raw.glb",
      "faces": 66276,
      "watertight": true,
@@ -3468,6 +4022,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/clock/improved.glb",
      "faces": 9984,
      "watertight": true,
@@ -3485,6 +4041,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/coffee_table/raw.glb",
      "faces": 85848,
      "watertight": true,
@@ -3493,6 +4051,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/coffee_table/improved.glb",
      "faces": 13606,
      "watertight": true,
@@ -3510,6 +4070,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/desk/raw.glb",
      "faces": 48776,
      "watertight": true,
@@ -3518,6 +4080,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/desk/improved.glb",
      "faces": 14712,
      "watertight": true,
@@ -3535,6 +4099,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/filing_cabinet/raw.glb",
      "faces": 76866,
      "watertight": true,
@@ -3543,6 +4109,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/filing_cabinet/improved.glb",
      "faces": 13780,
      "watertight": true,
@@ -3560,6 +4128,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/lamp/raw.glb",
      "faces": 134700,
      "watertight": true,
@@ -3568,6 +4138,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/lamp/improved.glb",
      "faces": 11968,
      "watertight": true,
@@ -3585,6 +4157,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/laptop/raw.glb",
      "faces": 22924,
      "watertight": true,
@@ -3593,6 +4167,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/laptop/improved.glb",
      "faces": 14998,
      "watertight": true,
@@ -3610,6 +4186,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/mirror/raw.glb",
      "faces": 74150,
      "watertight": true,
@@ -3618,6 +4196,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/mirror/improved.glb",
      "faces": 9978,
      "watertight": true,
@@ -3635,6 +4215,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/monitor/raw.glb",
      "faces": 72282,
      "watertight": true,
@@ -3643,6 +4225,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/monitor/improved.glb",
      "faces": 9946,
      "watertight": true,
@@ -3660,6 +4244,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/office_chair/raw.glb",
      "faces": 84104,
      "watertight": true,
@@ -3668,6 +4254,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/office_chair/improved.glb",
      "faces": 17092,
      "watertight": false,
@@ -3685,6 +4273,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/picture_frame/raw.glb",
      "faces": 68748,
      "watertight": true,
@@ -3693,6 +4283,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/picture_frame/improved.glb",
      "faces": 9878,
      "watertight": true,
@@ -3710,6 +4302,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/planter/raw.glb",
      "faces": 119324,
      "watertight": true,
@@ -3718,6 +4312,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/planter/improved.glb",
      "faces": 11946,
      "watertight": true,
@@ -3735,6 +4331,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/side_table/raw.glb",
      "faces": 290386,
      "watertight": true,
@@ -3743,6 +4341,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/side_table/improved.glb",
      "faces": 6430,
      "watertight": true,
@@ -3760,6 +4360,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/sofa/raw.glb",
      "faces": 101356,
      "watertight": true,
@@ -3768,6 +4370,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/sofa/improved.glb",
      "faces": 14068,
      "watertight": true,
@@ -3785,6 +4389,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/stool/raw.glb",
      "faces": 128270,
      "watertight": true,
@@ -3793,6 +4399,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/stool/improved.glb",
      "faces": 11086,
      "watertight": true,
@@ -3810,6 +4418,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list09/table/raw.glb",
      "faces": 115736,
      "watertight": true,
@@ -3818,6 +4428,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list09/table/improved.glb",
      "faces": 15210,
      "watertight": true,
@@ -3835,6 +4447,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/bookshelf/raw.glb",
      "faces": 80982,
      "watertight": true,
@@ -3843,6 +4457,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/bookshelf/improved.glb",
      "faces": 14918,
      "watertight": true,
@@ -3860,6 +4476,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/cabinet/raw.glb",
      "faces": 115880,
      "watertight": true,
@@ -3868,6 +4486,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/cabinet/improved.glb",
      "faces": 14864,
      "watertight": true,
@@ -3885,6 +4505,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/clock/raw.glb",
      "faces": 110210,
      "watertight": true,
@@ -3893,6 +4515,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/clock/improved.glb",
      "faces": 9984,
      "watertight": true,
@@ -3910,6 +4534,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/coffee_table/raw.glb",
      "faces": 132972,
      "watertight": true,
@@ -3918,6 +4544,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/coffee_table/improved.glb",
      "faces": 20476,
      "watertight": true,
@@ -3935,6 +4563,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/desk/raw.glb",
      "faces": 91586,
      "watertight": true,
@@ -3943,6 +4573,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/desk/improved.glb",
      "faces": 10628,
      "watertight": true,
@@ -3960,6 +4592,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/filing_cabinet/raw.glb",
      "faces": 89092,
      "watertight": true,
@@ -3968,6 +4602,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/filing_cabinet/improved.glb",
      "faces": 13560,
      "watertight": true,
@@ -3985,6 +4621,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/lamp/raw.glb",
      "faces": 82504,
      "watertight": true,
@@ -3993,6 +4631,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/lamp/improved.glb",
      "faces": 11996,
      "watertight": true,
@@ -4010,6 +4650,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/laptop/raw.glb",
      "faces": 74606,
      "watertight": true,
@@ -4018,6 +4660,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/laptop/improved.glb",
      "faces": 14930,
      "watertight": true,
@@ -4035,6 +4679,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/mirror/raw.glb",
      "faces": 121490,
      "watertight": true,
@@ -4043,6 +4689,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/mirror/improved.glb",
      "faces": 9266,
      "watertight": true,
@@ -4060,6 +4708,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/monitor/raw.glb",
      "faces": 165314,
      "watertight": true,
@@ -4068,6 +4718,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/monitor/improved.glb",
      "faces": 8606,
      "watertight": true,
@@ -4085,6 +4737,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/office_chair/raw.glb",
      "faces": 98940,
      "watertight": true,
@@ -4093,6 +4747,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/office_chair/improved.glb",
      "faces": 16269,
      "watertight": false,
@@ -4110,6 +4766,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/picture_frame/raw.glb",
      "faces": 96312,
      "watertight": true,
@@ -4118,6 +4776,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/picture_frame/improved.glb",
      "faces": 9930,
      "watertight": true,
@@ -4135,6 +4795,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/planter/raw.glb",
      "faces": 132834,
      "watertight": true,
@@ -4143,6 +4805,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/planter/improved.glb",
      "faces": 11232,
      "watertight": true,
@@ -4160,6 +4824,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/side_table/raw.glb",
      "faces": 48664,
      "watertight": true,
@@ -4168,6 +4834,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/side_table/improved.glb",
      "faces": 12644,
      "watertight": true,
@@ -4185,6 +4853,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/sofa/raw.glb",
      "faces": 184868,
      "watertight": true,
@@ -4193,6 +4863,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/sofa/improved.glb",
      "faces": 12266,
      "watertight": true,
@@ -4210,6 +4882,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/stool/raw.glb",
      "faces": 146798,
      "watertight": true,
@@ -4218,6 +4892,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/stool/improved.glb",
      "faces": 13414,
      "watertight": true,
@@ -4235,6 +4911,8 @@
     {
      "key": "raw",
      "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
      "glb": "results/list10/table/raw.glb",
      "faces": 65302,
      "watertight": true,
@@ -4243,6 +4921,8 @@
     {
      "key": "improved",
      "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
      "glb": "results/list10/table/improved.glb",
      "faces": 8144,
      "watertight": true,

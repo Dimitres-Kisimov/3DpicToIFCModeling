@@ -70,6 +70,31 @@ Archetype repair packs proven on 170 internet photos (10 lists × 17 categories)
 faces 111k→12k, 48 broken bases rebuilt evidence-driven, 91% watertight, 20/20
 valid IFC4 spot-proofs — generator-agnostic, applies behind ANY engine above.
 
+### Stage 7 — Second license audit: the 2025–26 wave (2026-07-11)
+Every notable open-weights image-to-3D release since the Stage-2 funnel was
+re-verified against the same rules (weights licence checked separately from code
+licence, dependency licences traced).
+
+**New USABLE candidates (royalty-free, EU-safe) — queued for a future pod run:**
+| Model | Org | Licence (code / weights) | Notes |
+|---|---|---|---|
+| Direct3D-S2 | DreamTechAI | MIT / MIT | was already on the Stage-3 shortlist; high-res sparse-SDF geometry, 10–24 GB |
+| Step1X-3D | StepFun | Apache-2.0 / Apache-2.0 | one of very few fully-permissive **textured** pipelines; 27–29 GB |
+| Hi3DGen (Stable3DGen) | Stable-X | MIT / MIT + Apache-2.0 | TRELLIS-based, NVIDIA-NC deps explicitly removed by authors for commercial use |
+| PartCrafter | PKU/CMU | MIT / MIT | part-level meshes (drawers/legs as parts) — interesting for furniture |
+| DeepMesh | Tsinghua | Apache-2.0 / Apache-2.0 | remesh stage — the licence-clean replacement for MeshAnything |
+
+**Newly confirmed BANNED (the "looks free, isn't" list grows):**
+| Model | Trap |
+|---|---|
+| CraftsMan3D | README says MIT, but the HF **weights** are tagged AGPL-3.0 — the artifact you download controls |
+| Era3D | AGPL-3.0 (and multiview-only anyway) |
+| PartPacker | NVIDIA Non-Commercial License |
+| Kiss3DGen | Apache tag, but pipeline hard-requires FLUX.1-dev (Non-Commercial) — licence-washing |
+| Amodal3R | weights CC-BY-4.0 but inference code S-Lab 1.0 NC — can't run one without the other |
+| **MeshAnything / V2** | **S-Lab License 1.0 — non-commercial without written permission.** Listed in the Stage-2 survey CSV; never integrated into the pipeline. Do not integrate — use DeepMesh instead. |
+| SPAR3D | SF3D's successor, same Stability revenue cap — benchmark-only |
+
 ---
 *Note: the raw size of the Stage-1 pool was the live HuggingFace tag listing at
 sweep time; the docs record the source URL, ranking method, and survivors — not

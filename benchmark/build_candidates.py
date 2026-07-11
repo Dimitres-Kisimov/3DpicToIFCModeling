@@ -20,12 +20,28 @@ VARIANT_LABELS = {
     "improved": "Repair packs (ours)",
 }
 
+# Emblem text per variant key — the AI that generated the mesh. Pod sweeps drop
+# <engine>.glb files into the item folders; anything unknown shows its filename.
+ENGINE_NAMES = {
+    "raw": "TripoSR",
+    "improved": "TripoSR",
+    "triposr": "TripoSR",
+    "triposg": "TripoSG",
+    "trellis": "TRELLIS 1.0",
+    "trellis2": "TRELLIS 2.0",
+    "instantmesh": "InstantMesh",
+    "sam3d": "SAM 3D",
+    "sf3d": "Stable Fast 3D",
+}
+OURS_KEYS = {"improved"}  # variants that carry the app's repair packs (OURS badge)
+
 
 def main():
     items = []
     for ldir in sorted(RES.glob("list*")):
         for cdir in sorted(p for p in ldir.iterdir() if p.is_dir()):
-            order = {"raw": 0, "improved": 1}          # baseline left, ours right, extras after
+            # baseline left, ours next, TripoSG (the pod-comparison baseline) third, extras after
+            order = {"raw": 0, "improved": 1, "triposg": 2}
             glbs = sorted(cdir.glob("*.glb"), key=lambda g: (order.get(g.stem, 9), g.stem))
             if not glbs:
                 continue
@@ -40,9 +56,12 @@ def main():
             for g in glbs:
                 key = g.stem
                 stats = meta.get(key if key in ("raw", "improved") else "", {})
+                base = key[:-9] if key.endswith("_repaired") else key
                 variants.append({
                     "key": key,
                     "label": VARIANT_LABELS.get(key, key),
+                    "engine": ENGINE_NAMES.get(base, base),
+                    "ours": key in OURS_KEYS or key.endswith("_repaired"),
                     "glb": str(g.relative_to(HERE)).replace("\\", "/"),
                     "faces": stats.get("faces"),
                     "watertight": stats.get("watertight"),
