@@ -40,7 +40,9 @@ CATEGORIES = {
     "stool":          ["stool furniture wooden", "bar stool"],
     "table":          ["dining table furniture", "wooden table"],
 }
-N_PER_CAT = 10
+# SCS_BENCH_N lets a sweep extend the lists (e.g. =11 adds one fresh photo per
+# category as list11 for the all-AI grand comparison) without renaming anything.
+N_PER_CAT = int(os.environ.get("SCS_BENCH_N", 10))
 
 # extra terms tried only when the primary terms leave a category short
 SPARE_TERMS = {
@@ -181,7 +183,9 @@ def main():
         if len(have) >= N_PER_CAT:
             print(f"[{cat}] already have {len(have)}")
             continue
-        candidates, seen = [], set()
+        # never reuse a photo that an earlier list already used
+        candidates = []
+        seen = {v.get("url") for v in sources.values() if v.get("url")}
         # Openverse FIRST: its images live on third-party hosts, while Wikimedia
         # rate-penalizes bulk downloads from upload.wikimedia.org (observed 429s).
         for term in CATEGORIES[cat]:

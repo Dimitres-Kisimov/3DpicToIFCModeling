@@ -34,6 +34,15 @@
         font-size:11px;font-weight:700;letter-spacing:.02em;padding:3px 9px;border-radius:9px;
         background:#eef3fa;color:#3d4f63;border:1px solid #d7e0ec}
 .emblem.ours{background:#fdf3e7;color:#e0812b;border-color:#f3d9bb}
+#groups{padding:8px 18px;border-bottom:1px solid var(--line);background:var(--card);
+        display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+#groups .preset{padding:5px 11px;border:1px solid var(--line);background:#fff;border-radius:14px;
+        cursor:pointer;font:inherit;font-size:12px}
+#groups .preset.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+#groups .sep{width:1px;height:18px;background:var(--line);margin:0 4px}
+#groups .chip{padding:3px 9px;border:1px solid var(--line);background:#fff;border-radius:12px;
+        cursor:pointer;font:inherit;font-size:11px;color:var(--mut)}
+#groups .chip.on{background:#e3edfd;color:var(--acc);border-color:#b9d2fb;font-weight:600}
 .cand .pick{margin:8px 12px 10px;padding:8px;border-radius:8px;border:1px solid var(--line);background:#fff;cursor:pointer;font:inherit}
 .cand.selected .pick{background:var(--good);color:#fff;border-color:var(--good)}
 #hint{position:fixed;bottom:8px;right:14px;color:var(--mut);font-size:11.5px}
@@ -53,6 +62,7 @@
     <button id="rotBtn" title="Toggle the X-up display rotation if a mesh appears sideways">↺ Rotation</button>
     <button id="exportBtn">⬇ Export selections.json</button>
   </div>
+  <div id="groups" title="Too many AIs for one window — pick a comparison group or toggle engines"></div>
   <div id="grid"></div>
 </div>
 <div id="hint">drag = orbit · wheel = zoom · right-drag = pan</div>
@@ -78,6 +88,54 @@ const keyOf = it => `${it.list}/${it.category}`;
 
 const resp = await fetch('candidates.json');
 state.data = await resp.json();
+
+// ---- comparison groups: with 10+ AIs one window is too much — user picks a group
+const ALL_KEYS = [...new Set(state.data.items.flatMap(i=>i.variants.map(v=>v.key)))];
+const PRESETS = {
+  'A/B: TripoSR vs OURS': k => k==='raw' || k==='improved',
+  'Generators vs TripoSG': k => ['triposg','trellis','trellis2','instantmesh','sam3d','sf3d'].includes(k.replace(/_repaired$/,'')),
+  'Multi-image':           k => /_mv$|^mv_|multiview/.test(k),
+  'All (advanced)':        _ => true,
+};
+state.preset = localStorage.getItem('viz_preset') || 'A/B: TripoSR vs OURS';
+try { state.engines = new Set(JSON.parse(localStorage.getItem('viz_engines'))); } catch(e) { state.engines = null; }
+if (!state.engines || !state.engines.size) state.engines = new Set(ALL_KEYS.filter(PRESETS[state.preset] || (_=>true)));
+
+function activeVariants(it){
+  const act = it.variants.filter(v => state.engines.has(v.key));
+  return act.length ? act : it.variants.slice(0, 2);   // never show an empty window
+}
+function renderGroups(){
+  const g = document.getElementById('groups'); g.innerHTML = '';
+  for (const name of Object.keys(PRESETS)){
+    const b = document.createElement('button');
+    b.className = 'preset' + (state.preset===name ? ' on' : '');
+    b.textContent = name;
+    b.onclick = () => {
+      state.preset = name;
+      state.engines = new Set(ALL_KEYS.filter(PRESETS[name]));
+      persistGroups(); renderGroups(); if (state.item) showItem(state.item);
+    };
+    g.appendChild(b);
+  }
+  g.appendChild(Object.assign(document.createElement('span'), {className:'sep'}));
+  for (const k of ALL_KEYS){
+    const sample = state.data.items.flatMap(i=>i.variants).find(v=>v.key===k);
+    const c = document.createElement('button');
+    c.className = 'chip' + (state.engines.has(k) ? ' on' : '');
+    c.textContent = sample && sample.label !== k ? sample.label : (sample && sample.engine) || k;
+    c.onclick = () => {
+      state.engines.has(k) ? state.engines.delete(k) : state.engines.add(k);
+      state.preset = ''; persistGroups(); renderGroups(); if (state.item) showItem(state.item);
+    };
+    g.appendChild(c);
+  }
+}
+function persistGroups(){
+  localStorage.setItem('viz_preset', state.preset);
+  localStorage.setItem('viz_engines', JSON.stringify([...state.engines]));
+}
+
 const lists = [...new Set(state.data.items.map(i=>i.list))];
 const listSel = document.getElementById('listSel');
 listSel.innerHTML = lists.map(l=>`<option>${l}</option>`).join('');
@@ -106,12 +164,14 @@ function disposeViewers(){
 
 function showItem(it){
   disposeViewers();
+  const act = activeVariants(it);
   document.getElementById('title').textContent = `${it.display} — ${it.list}`;
-  document.getElementById('meta').textContent = `generated ${it.generated_at||'?'} · ${it.variants.length} candidates`;
+  document.getElementById('meta').textContent =
+    `generated ${it.generated_at||'?'} · showing ${act.length}/${it.variants.length} candidates`;
   const ph=document.getElementById('photo');
   if(it.image){ ph.src=it.image; ph.hidden=false; } else ph.hidden=true;
   const grid=document.getElementById('grid'); grid.innerHTML='';
-  it.variants.forEach(v=>{
+  act.forEach(v=>{
     const card=document.createElement('div');
     card.className='cand'+(store.get(keyOf(it))===v.key?' selected':'');
     const stats=[v.faces?`${v.faces.toLocaleString()} faces`:null,
@@ -178,6 +238,7 @@ document.getElementById('exportBtn').onclick=()=>{
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='selections.json'; a.click();
 };
 
+renderGroups();
 renderSidebar();
 </script>
 </body>

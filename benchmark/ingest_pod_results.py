@@ -32,6 +32,7 @@ SCRIPTS = REPO / "backend" / "python-scripts"
 GEN_DIR = REPO / "data" / "generated_assets"
 GEN_MANIFEST = GEN_DIR / "manifest.json"
 RESULTS = HERE / "results"
+IFC_DIR = HERE / "ifc"                           # per-AI IFC folders: ifc/<engine>/<key>.ifc
 
 sys.path.insert(0, str(SCRIPTS))
 import trimesh                                   # noqa: E402
@@ -162,6 +163,10 @@ def main():
         if not ok:
             row["catalog"] = "rejected — not IFC compliant"
             continue
+        if not args.dry_run:                     # per-AI IFC folder, compliant files only
+            dest_ifc = IFC_DIR / model / f"{key}.ifc"
+            dest_ifc.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(ifc, dest_ifc)
         if args.dry_run:
             row["catalog"] = "would add (dry-run)"
             per_cat[capkey] = per_cat.get(capkey, 0) + 1
