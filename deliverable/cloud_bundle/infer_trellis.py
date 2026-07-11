@@ -10,7 +10,8 @@ the repo README for TRELLIS.2 has the right class — patch the import below.
 """
 import sys, os, json, time, traceback
 os.environ.setdefault("SPCONV_ALGO", "native")
-os.environ.setdefault("ATTN_BACKEND", "sdpa")   # sdpa = pod-proven; flash-attn wheels are ABI roulette
+os.environ.setdefault("ATTN_BACKEND", "sdpa")          # dense attention
+os.environ.setdefault("SPARSE_ATTN_BACKEND", "sdpa")   # SPARSE attention reads its OWN var (SAM3D manual fix #5's twin)
 
 manifest_path, outdir = sys.argv[1], sys.argv[2]
 model_id = sys.argv[3] if len(sys.argv) > 3 else "microsoft/TRELLIS-image-large"
