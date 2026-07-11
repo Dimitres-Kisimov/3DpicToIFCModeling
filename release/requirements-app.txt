@@ -1,0 +1,49 @@
+# ============================================================================
+# 3DpicToIFC - Python runtime dependencies (Stage A release).
+#
+# Versions are pinned to the exact set verified working on the development
+# machine (Python 3.14, Windows 11, 2026-07-11). Tested there; expected to
+# work on Python 3.11+.
+#
+# PyTorch: the extra index below serves CUDA 12.6 wheels. On a machine with
+# an NVIDIA GPU pip picks the +cu126 build (GPU acceleration); the same wheel
+# also runs fine on CPU-only machines - generation is just much slower.
+# ============================================================================
+--extra-index-url https://download.pytorch.org/whl/cu126
+
+# --- core numerics / imaging -------------------------------------------------
+numpy==2.4.3
+scipy==1.17.1
+pillow==12.1.1
+scikit-image==0.26.0
+matplotlib==3.10.8
+
+# --- deep learning stack (photo -> 3D, detection, classification, depth) ----
+torch==2.11.0
+torchvision==0.26.0
+transformers==5.5.4
+tokenizers==0.22.2
+safetensors==0.7.0
+accelerate==1.13.0
+huggingface-hub==1.10.2
+timm==1.0.27
+einops==0.8.2
+omegaconf==2.3.0
+
+# --- background removal / segmentation ---------------------------------------
+rembg==2.0.75
+onnxruntime==1.25.1
+sam2==1.1.0
+
+# --- 3D mesh processing / repair packs ----------------------------------------
+trimesh==4.11.5
+pymeshfix==0.18.1
+fast-simplification==0.1.13
+shapely==2.1.2
+
+# --- IFC / BIM export ----------------------------------------------------------
+ifcopenshell==0.8.4.post1
+
+# --- retrieval + room layout solver --------------------------------------------
+faiss-cpu==1.14.3
+ortools==9.15.6755
