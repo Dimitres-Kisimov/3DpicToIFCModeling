@@ -10,7 +10,7 @@ the repo README for TRELLIS.2 has the right class — patch the import below.
 """
 import sys, os, json, time, traceback
 os.environ.setdefault("SPCONV_ALGO", "native")
-os.environ.setdefault("ATTN_BACKEND", "flash-attn")
+os.environ.setdefault("ATTN_BACKEND", "sdpa")   # sdpa = pod-proven; flash-attn wheels are ABI roulette
 
 manifest_path, outdir = sys.argv[1], sys.argv[2]
 model_id = sys.argv[3] if len(sys.argv) > 3 else "microsoft/TRELLIS-image-large"
@@ -22,8 +22,14 @@ from PIL import Image
 from trellis.pipelines import TrellisImageTo3DPipeline
 from trellis.utils import postprocessing_utils
 
-print(f"[trellis] loading {model_id} ...", flush=True)
-pipe = TrellisImageTo3DPipeline.from_pretrained(model_id)
+# local snapshot load — same fix as infer_triposg (15fce17): newer hub versions
+# resolve the pipeline's relative ckpt paths as repo ids ("ckpts/..." -> 404)
+# unless from_pretrained gets a LOCAL directory.
+from huggingface_hub import snapshot_download
+print(f"[trellis] snapshot {model_id} ...", flush=True)
+local = snapshot_download(model_id)
+print(f"[trellis] loading {local} ...", flush=True)
+pipe = TrellisImageTo3DPipeline.from_pretrained(local)
 pipe.cuda()
 print(f"[trellis] loaded. {len(items)} inputs.", flush=True)
 
