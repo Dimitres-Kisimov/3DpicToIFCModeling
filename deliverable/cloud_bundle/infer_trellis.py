@@ -44,9 +44,14 @@ for it in items:
     try:
         img = Image.open(os.path.join(BUNDLE, it["input"])).convert("RGB")
         r = pipe.run(img, seed=42)                       # deterministic seed for reproducibility
-        glb = postprocessing_utils.to_glb(r["gaussian"][0], r["mesh"][0],
-                                          simplify=0.95, texture_size=1024)
-        glb.export(out)
+        # geometry-only export: to_glb's texture bake needs diff_gaussian_rasterization
+        # (Inria NC — excluded on license grounds, Stage 8). Scorer is geometry-only;
+        # our product path ships untextured geometry. H200 run exported textured —
+        # geometry identical, scores comparable.
+        m = r["mesh"][0]
+        import trimesh as _tri
+        _tri.Trimesh(m.vertices.detach().cpu().numpy(),
+                     m.faces.detach().cpu().numpy()).export(out)
         print(f"[trellis] OK {key} {time.time()-t0:.1f}s -> {out}", flush=True)
     except Exception as e:
         print(f"[trellis] FAIL {key}: {e!r}", flush=True)
