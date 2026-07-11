@@ -578,6 +578,9 @@ pod-proven**) in `deliverable/manuals/`, and the four queued models have draft i
 | PartCrafter | wgsxm (PKU/CMU) | MIT / MIT | ≥8 GB (README) | no — part-level meshes | DRAFT manual ready (`PARTCRAFTER.md`) |
 | MIDI-3D *(optional)* | VAST-AI | Apache-2.0 / Apache-2.0 | ~30 GB textured scene (README) | optional | DRAFT manual ready (`MIDI3D.md`) — scene-level, outside the per-object protocol |
 | Unique3D *(optional)* | AiuniAI | MIT / weights unpinned (no HF repo id in README) | *not recorded* | yes | DRAFT manual ready (`UNIQUE3D.md`) — weight provenance unverifiable, held back |
+| SceneGen *(census trio)* | SJTU (3DV '26) | MIT / MIT — **but** pipeline pulls `facebook/VGGT-1B` = **CC-BY-NC-4.0** → benchmark-only pending pod check | ≥16 GB (README; A100/3090 verified) | **yes** | kit ready — awaiting cheap-pod run (`SCENEGEN.md`, `RUNBOOK_CENSUS_TRIO.md`) |
+| Cupid *(census trio)* | cupid3d / B. Huang (CVPR '26) | MIT / MIT (TRELLIS-text-xlarge finetune) | ≥16 GB (README) | **yes** + camera pose | kit ready — awaiting cheap-pod run (`CUPID.md`) |
+| 3DTopia-XL *(census trio)* | NTU | Apache-2.0 / Apache-2.0 | *not stated* in README | **yes** — PBR (albedo/rough/metal) | kit ready — awaiting cheap-pod run (`TOPIA_XL.md`) |
 
 License tags verified against the HuggingFace API on 2026-07-11 (`wushuang98/Direct3D-S2` = mit,
 `stepfun-ai/Step1X-3D` = apache-2.0, `Stable-X/trellis-normal-v0-1` = mit +
@@ -586,9 +589,22 @@ apache-2.0); code license files quoted verbatim in each manual. When Study D run
 Study-A protocol unchanged (same 10 inputs, same `eval_accuracy.py` scorer, seed 42), so its rows
 drop directly into the §2 accuracy table.
 
-Sources: `docs/HUGGINGFACE_MODEL_NARROWING.md` (Stage 7), `deliverable/manuals/README.md`
-(next-wave board) and the six draft manuals, `deliverable/cloud_bundle/install_models.sh` +
-`run_cloud_benchmark.py` (nextwave entries).
+The three *census trio* rows come from the full `image-to-3d` tag census
+(`docs/HF_CENSUS_2026-07.md`, 2026-07-11): the only survivors of a 625-model enumeration after
+real-license verification. Their tags were re-verified the same day (`haoningwu/SceneGen` = mit,
+`hbb1/Cupid` = mit, `FrozenBurning/3DTopia-XL` = apache-2.0, all `gated: False`) — with one
+finding the census's "MIT verified end-to-end" missed: SceneGen's checkpoint recipe requires
+`facebook/VGGT-1B`, whose HF tag is **cc-by-nc-4.0**, so SceneGen is research-benchmark-only
+unless the pod run shows inference works without it. Their run kit (draft manuals + infer
+scripts + `install_models.sh censustrio` + `queue_trio.sh`) targets a cheap 24 GB pod
+(~$3–4 total, `deliverable/cloud_bundle/RUNBOOK_CENSUS_TRIO.md`); if all three lose, the census
+headline — *no untested permissive HF model beats the current stack* — becomes a documented
+result of this chapter.
+
+Sources: `docs/HUGGINGFACE_MODEL_NARROWING.md` (Stage 7), `docs/HF_CENSUS_2026-07.md` (census
+trio), `deliverable/manuals/README.md` (next-wave board) and the nine draft manuals,
+`deliverable/cloud_bundle/install_models.sh` + `run_cloud_benchmark.py` (nextwave + censustrio
+entries), `deliverable/cloud_bundle/RUNBOOK_CENSUS_TRIO.md`.
 
 ---
 

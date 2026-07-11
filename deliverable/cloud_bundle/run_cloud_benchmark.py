@@ -30,6 +30,12 @@ MODELS = {
     "step1x3d":    {"venv": "step1x3d",    "script": "infer_step1x3d.py",    "args": []},
     "hi3dgen":     {"venv": "hi3dgen",     "script": "infer_hi3dgen.py",     "args": []},
     "partcrafter": {"venv": "partcrafter", "script": "infer_partcrafter.py", "args": []},
+    # Census trio (docs/HF_CENSUS_2026-07.md, 2026-07-11) — DRAFT scripts, not yet pod-proven.
+    # See manuals/SCENEGEN.md, CUPID.md, TOPIA_XL.md + RUNBOOK_CENSUS_TRIO.md.
+    # scenegen pulls facebook/VGGT-1B (CC-BY-NC-4.0) — research benchmark ONLY, never ship.
+    "scenegen":    {"venv": "scenegen",    "script": "infer_scenegen.py",    "args": []},
+    "cupid":       {"venv": "cupid",       "script": "infer_cupid.py",       "args": []},
+    "3dtopiaxl":   {"venv": "3dtopiaxl",   "script": "infer_3dtopiaxl.py",   "args": []},
 }
 
 ap = argparse.ArgumentParser()

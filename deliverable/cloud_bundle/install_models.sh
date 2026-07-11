@@ -14,10 +14,17 @@
 #   hi3dgen     Stable-X/trellis-normal-v0-1    MIT    (repo is Stable-X/Stable3DGen — NOT /Hi3DGen)
 #   partcrafter wgsxm/PartCrafter               MIT    (part-level meshes; avoid RMBG-1.4 masking)
 #
+# Census trio (docs/HF_CENSUS_2026-07.md, 2026-07-11 — DRAFT recipes, not yet pod-proven; see manuals/):
+#   scenegen    haoningwu/SceneGen              MIT    (code = Mengmouxu/SceneGen; pulls facebook/VGGT-1B
+#                                                       CC-BY-NC-4.0 — research benchmark ONLY)
+#   cupid       hbb1/Cupid                      MIT    (code = cupid3d/Cupid; github.com/hbb1/Cupid is a stale stub)
+#   3dtopiaxl   FrozenBurning/3DTopia-XL        Apache (PBR PrimX; torch 2.1.2/cu118 — oldest pin in the fleet)
+#
 # Usage:  bash install_models.sh                      # installs the default set: trellis trellis2 triposg
 #         bash install_models.sh trellis triposg      # only these
 #         bash install_models.sh all                  # all five proven-set models
 #         bash install_models.sh nextwave             # the four Stage-7 draft models
+#         bash install_models.sh censustrio           # the three census challengers (cheap 24GB pod)
 #
 # Design (from compare_4way.sh):
 #   * NO `set -e` — one model failing must not abort the others.
@@ -32,6 +39,7 @@ mkdir -p "$REPOS" "$ENVS" "$LOGS"
 MODELS=("$@"); [ ${#MODELS[@]} -eq 0 ] && MODELS=(trellis trellis2 triposg)
 [ "${MODELS[0]:-}" = "all" ] && MODELS=(trellis trellis2 triposg instantmesh sam3d)
 [ "${MODELS[0]:-}" = "nextwave" ] && MODELS=(direct3ds2 step1x3d hi3dgen partcrafter)
+[ "${MODELS[0]:-}" = "censustrio" ] && MODELS=(scenegen cupid 3dtopiaxl)
 
 log(){ echo -e "\n=== [$(date +%H:%M:%S)] $* ==="; }
 mkvenv(){ [ -d "$ENVS/$1" ] || python -m venv "$ENVS/$1" --system-site-packages; }
@@ -253,6 +261,72 @@ install_partcrafter(){
   echo "partcrafter install done -> $LOGS/install_partcrafter.log"
 }
 
+# ============== CENSUS TRIO (docs/HF_CENSUS_2026-07.md, 2026-07-11) — DRAFT, not yet pod-proven ==============
+
+# ---------------------------------------------------------------- SceneGen ----
+install_scenegen(){
+  local V="$ENVS/scenegen"; log "install: scenegen (Mengmouxu/SceneGen — DRAFT, manuals/SCENEGEN.md)"
+  { mkvenv scenegen; source "$V/bin/activate"
+    # NAMING TRAP: code = Mengmouxu/SceneGen (haoningwu3639/SceneGen 404s); weights = haoningwu/SceneGen.
+    [ -d "$REPOS/SceneGen" ] || git clone --recurse-submodules https://github.com/Mengmouxu/SceneGen "$REPOS/SceneGen"
+    cd "$REPOS/SceneGen"
+    # TRELLIS-family setup.sh — README uses `--new-env` (conda) + `--demo` (gradio); drop both in the venv:
+    . ./setup.sh --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast || true
+    pip install -q rembg onnxruntime || true
+    mkdir -p checkpoints
+    # ⚠️ facebook/VGGT-1B is CC-BY-NC-4.0 (HF API 2026-07-11) — research benchmark ONLY,
+    # never ship; see manuals/SCENEGEN.md licence section.
+    python -c "
+from huggingface_hub import snapshot_download
+snapshot_download('haoningwu/SceneGen',        local_dir='checkpoints/scenegen')
+snapshot_download('facebook/sam2-hiera-large', local_dir='checkpoints/sam2-hiera-large')
+snapshot_download('facebook/VGGT-1B',          local_dir='checkpoints/VGGT-1B')
+" || true
+    deactivate
+  } >"$LOGS/install_scenegen.log" 2>&1
+  echo "scenegen install done -> $LOGS/install_scenegen.log"
+}
+
+# ------------------------------------------------------------------- Cupid ----
+install_cupid(){
+  local V="$ENVS/cupid"; log "install: cupid (cupid3d/Cupid — DRAFT, manuals/CUPID.md)"
+  { mkvenv cupid; source "$V/bin/activate"
+    # NAMING TRAP: code = cupid3d/Cupid (hbb1/Cupid on GitHub is a stale stub); weights = hbb1/Cupid on HF.
+    # README default: torch 2.4.0 + cu118, CUDA 11.8/12.2 tested — cu124 wheel on our CUDA-12 pods (Hi3DGen lesson).
+    pip install -q torch==2.4.0 torchvision==0.19.0 --index-url https://download.pytorch.org/whl/cu124 || true
+    [ -d "$REPOS/Cupid" ] || git clone --recurse-submodules https://github.com/cupid3d/Cupid "$REPOS/Cupid"
+    cd "$REPOS/Cupid"
+    # TRELLIS-family setup.sh, two extra flags vs SceneGen (--pytorch3d --moge); drop --new-env (conda):
+    . ./setup.sh --basic --xformers --flash-attn --diffoctreerast --spconv --mipgaussian --kaolin --nvdiffrast --pytorch3d --moge || true
+    pip install -q rembg onnxruntime || true
+    python -c "from huggingface_hub import snapshot_download; snapshot_download('hbb1/Cupid')" || true
+    deactivate
+  } >"$LOGS/install_cupid.log" 2>&1
+  echo "cupid install done -> $LOGS/install_cupid.log"
+}
+
+# -------------------------------------------------------------- 3DTopia-XL ----
+install_3dtopiaxl(){
+  local V="$ENVS/3dtopiaxl"; log "install: 3dtopiaxl (3DTopia/3DTopia-XL — DRAFT, manuals/TOPIA_XL.md)"
+  { mkvenv 3dtopiaxl; source "$V/bin/activate"
+    # authors' base is python 3.9 + torch 2.1.2 + cu118 (conda README) — venv equivalent, keep it LOCAL:
+    pip install -q torch==2.1.2 torchvision==0.16.2 --index-url https://download.pytorch.org/whl/cu118 || true
+    pip install -q xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118 || pip install -q xformers || true
+    [ -d "$REPOS/3DTopia-XL" ] || git clone --depth 1 https://github.com/3DTopia/3DTopia-XL "$REPOS/3DTopia-XL"
+    cd "$REPOS/3DTopia-XL"
+    pip install -q -r requirements.txt || true
+    # install.sh compiles mvpraymarch + utils (make) + simple-knn + cubvh — needs nvcc + CUDA_HOME:
+    bash install.sh || true
+    pip install -q rembg onnxruntime omegaconf || true
+    # weights are two flat .pt files (no snapshot layout) — README wget, into ./pretrained/:
+    mkdir -p pretrained
+    wget -q -nc -P pretrained https://huggingface.co/FrozenBurning/3DTopia-XL/resolve/main/model_sview_dit_fp16.pt || true
+    wget -q -nc -P pretrained https://huggingface.co/FrozenBurning/3DTopia-XL/resolve/main/model_vae_fp16.pt || true
+    deactivate
+  } >"$LOGS/install_3dtopiaxl.log" 2>&1
+  echo "3dtopiaxl install done -> $LOGS/install_3dtopiaxl.log"
+}
+
 # pre-clone repos SHARED across venvs first, so parallel installs don't race on git clone
 if has trellis; then
   [ -d "$REPOS/TRELLIS" ] || git clone --recurse-submodules https://github.com/microsoft/TRELLIS "$REPOS/TRELLIS" >/dev/null 2>&1
@@ -275,6 +349,9 @@ for m in "${MODELS[@]}"; do
     step1x3d) install_step1x3d & pids+=($!);;        # DRAFT — not yet pod-proven
     hi3dgen) install_hi3dgen & pids+=($!);;          # DRAFT — not yet pod-proven
     partcrafter) install_partcrafter & pids+=($!);;  # DRAFT — not yet pod-proven
+    scenegen) install_scenegen & pids+=($!);;        # DRAFT census trio — VGGT-1B is NC, benchmark only
+    cupid) install_cupid & pids+=($!);;              # DRAFT census trio
+    3dtopiaxl) install_3dtopiaxl & pids+=($!);;      # DRAFT census trio
     *) echo "unknown model: $m";;
   esac
 done

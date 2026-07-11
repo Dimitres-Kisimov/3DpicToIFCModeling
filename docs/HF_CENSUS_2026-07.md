@@ -38,7 +38,7 @@ untested permissive HF model beats our current stack.**
 
 | # | Model | Org | Likes | License | Why |
 |---|---|---|---|---|---|
-| 1 | **SceneGen** (`haoningwu/SceneGen`) | SJTU, 3DV '26 | 12 | MIT **verified** end-to-end | Purpose-built for indoor/furniture content; single image → multi-asset scene in one pass; mask-conditioned; textured; **16 GB VRAM stated** — fits our gating. Test single-object crops AND room shots. |
+| 1 | **SceneGen** (`haoningwu/SceneGen`, code at `Mengmouxu/SceneGen`) | SJTU, 3DV '26 | 12 | MIT code — **but checkpoint requires `facebook/VGGT-1B` = CC-BY-NC → BENCHMARK-ONLY** (correction 2026-07-11, deep verification) | Purpose-built for indoor/furniture; single image + mask → multi-asset textured scene; 16 GB. Scientifically valuable; cannot ship in the product unless a VGGT-free path is proven. |
 | 2 | **Cupid** (`hbb1/Cupid`) | Binbin Huang (2DGS author) | 0 (new) | MIT **verified** | The only clean-license model chasing the same reconstruction-fidelity frontier as Pixal3D/SAM 3D; TRELLIS-format weights = cheap integration into our harness. High variance — benchmark before investing. |
 | 3 | **3DTopia-XL** (`3DTopia/3DTopia-XL`) | NTU | 48 | Apache-2.0 **verified** | Only permissive PBR-native mesh generator; ~5 s inference. Probably loses to TripoSG on F-score but closes the census. |
 
