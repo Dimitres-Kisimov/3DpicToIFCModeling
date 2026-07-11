@@ -16,14 +16,22 @@ BUNDLE = os.path.dirname(os.path.abspath(manifest_path))
 REPO = "/workspace/repos/InstantMesh"
 
 # stage inputs into one dir, named by key so outputs are identifiable.
-# Force RGB: Zero123++ raises on mode-'L' images and one bad photo kills the
-# whole single-process batch (learned from list11_table, 2026-07-11).
+# Force RGB: Zero123++ raises on mode-'L' images (learned from list11_table).
+# Stage on the CONTAINER disk, not the network volume — the volume throws
+# transient Errno-5 I/O errors under load (killed the 187-sweep twice); retry
+# each save 3x for good measure.
+import tempfile, time as _time
 from PIL import Image
-stage = os.path.join(outdir, "_inputs")
-os.makedirs(stage, exist_ok=True)
+stage = tempfile.mkdtemp(prefix="im_inputs_")          # container /tmp, not the volume
 for it in items:
     src = it["input"] if os.path.isabs(it["input"]) else os.path.join(BUNDLE, it["input"])
-    Image.open(src).convert("RGB").save(os.path.join(stage, it["key"] + ".png"))
+    for attempt in range(3):
+        try:
+            Image.open(src).convert("RGB").save(os.path.join(stage, it["key"] + ".png"))
+            break
+        except OSError as e:
+            print(f"[instantmesh] stage retry {it['key']} ({e})", flush=True)
+            _time.sleep(2)
 
 run_out = os.path.join(outdir, "_run")
 print(f"[instantmesh] running run.py on {len(items)} inputs (loads model once) ...", flush=True)
