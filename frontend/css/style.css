@@ -184,6 +184,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui,
 .thumb.generated { border-color: #f4cf9a; }
 .thumb.generated.sel { border-color: var(--ours); box-shadow: 0 0 0 2px var(--warn-soft) inset; }
 .genbadge { position: absolute; top: 5px; right: 5px; background: var(--ours); color: #fff; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.25); z-index: 1; }
+.genbadge.eng { top: auto; bottom: 5px; }   /* engine abbreviation badge sits at the bottom */
 .gen-del { position: absolute; top: 4px; left: 4px; width: 18px; height: 18px; border-radius: 50%; border: none; background: rgba(214,69,69,.9); color: #fff; font-size: 10px; line-height: 1; cursor: pointer; z-index: 2; }
 .gen-del:hover { background: #b02a2a; }
 .genph { width: 100%; height: 96px; display: flex; align-items: center; justify-content: center; background: var(--warn-soft); color: var(--ours); border-radius: 6px; margin-bottom: 4px; font-size: 24px; }

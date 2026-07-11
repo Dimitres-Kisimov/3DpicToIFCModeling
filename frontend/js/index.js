@@ -453,6 +453,20 @@ document.addEventListener('DOMContentLoaded', () => {
   engineSel?.addEventListener('change', syncGraftRow);
   syncGraftRow();
 
+  // Engine registry: big engines (TripoSG / TRELLIS.2 / SAM 3D) appear greyed
+  // with a plain-language reason unless this machine can actually run them.
+  // The two built-in options stay untouched if the fetch fails.
+  fetch('/api/engines').then((r) => r.json()).then((d) => {
+    if (!d.success || !engineSel) return;
+    d.engines.filter((e) => !e.builtin).forEach((e) => {
+      const opt = document.createElement('option');
+      opt.value = e.id;
+      opt.textContent = e.available ? `${e.label}` : `${e.label} — ${e.reason}`;
+      opt.disabled = !e.available;
+      engineSel.appendChild(opt);
+    });
+  }).catch(() => { /* selector keeps its built-in options */ });
+
   updateStatus('Initializing...');
 });
 

@@ -1,0 +1,61 @@
+{
+  "comment": "3D-generation engine registry. Built-ins always ship with the app; the big engines light up only when SCS_ENGINES_DIR points at a directory holding their venvs + weights (the pod archive restored onto a >=16 GB GPU machine). VRAM gating keeps under-spec machines from selecting something that would crash them. Stable Fast 3D is deliberately absent: Stability Community License caps commercial use at $1M revenue - benchmark-only, see docs/HUGGINGFACE_MODEL_NARROWING.md.",
+  "engines": [
+    {
+      "id": "triposr",
+      "abbr": "TSR",
+      "label": "Detailed — new 3D model",
+      "builtin": true,
+      "min_vram_gb": 0,
+      "license": "MIT",
+      "manual": null,
+      "notes": "The built-in generator + repair packs. Runs on any PC; an NVIDIA GPU with 4+ GB makes it fast."
+    },
+    {
+      "id": "detect",
+      "abbr": "CAT",
+      "label": "Fast — from catalog",
+      "builtin": true,
+      "min_vram_gb": 0,
+      "license": "MIT app / CC-BY catalog",
+      "manual": null,
+      "notes": "Retrieval from the 929-mesh ABO catalog — instant, deterministic, the measured quality ceiling."
+    },
+    {
+      "id": "triposg",
+      "abbr": "TSG",
+      "label": "TripoSG — benchmark champion (F-score 0.393)",
+      "builtin": false,
+      "min_vram_gb": 16,
+      "license": "MIT",
+      "venv": "envs/triposg",
+      "script": "infer_triposg.py",
+      "manual": "TripoSG.md",
+      "notes": "Best measured generator in the 5-AI study. Needs a 16 GB GPU and the engines pack installed."
+    },
+    {
+      "id": "trellis2",
+      "abbr": "TRL2",
+      "label": "TRELLIS.2-4B — Microsoft, newest",
+      "builtin": false,
+      "min_vram_gb": 24,
+      "license": "MIT",
+      "venv": "envs/trellis2",
+      "script": "infer_trellis2.py",
+      "manual": "TRELLIS2.md",
+      "notes": "Microsoft's 2026 successor to TRELLIS. Needs a 24 GB GPU and the engines pack installed."
+    },
+    {
+      "id": "sam3d",
+      "abbr": "SAM3D",
+      "label": "SAM 3D — Meta (F-score 0.368)",
+      "builtin": false,
+      "min_vram_gb": 24,
+      "license": "SAM License (commercial OK)",
+      "venv": "envs/sam3d",
+      "script": "infer_sam3d.py",
+      "manual": "SAM3D.md",
+      "notes": "Benchmark runner-up; wins cabinets/boxy shapes. Needs a 24 GB GPU and the engines pack installed."
+    }
+  ]
+}

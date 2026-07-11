@@ -59,6 +59,9 @@ app.use('/api/generated', express.static(path.join(__dirname, '../data/generated
 // now rides on the ONE app — see /hub.html for the index of every comparison page.
 app.use('/gallery', express.static(path.join(__dirname, '../deliverable/cloud_gallery')));
 
+// Engine manuals (markdown sources) — rendered by /manuals.html
+app.use('/manuals-src', express.static(path.join(__dirname, '../deliverable/manuals')));
+
 // ============================================================================
 // ROUTES
 // ============================================================================

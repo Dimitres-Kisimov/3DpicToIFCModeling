@@ -718,14 +718,18 @@ def cmd_register_upload(args):
         if _render_thumb(dest, GEN_DIR / thumb_fn):
             thumb = thumb_fn
 
+    # which AI made it — short badge shown in the picker (TSR/TSG/TRL2/SAM3D/SF3D/CAT)
+    engine = str(args.get("engine") or "").strip().upper()[:8] or None
+
     item = {"id": uid, "category": cat, "glb": fn, "dims_m": dims,
-            "thumb": thumb, "generated": True, "source_file": orig}
+            "thumb": thumb, "generated": True, "source_file": orig,
+            "engine": engine}
     man = _read_gen_manifest()
     man.setdefault("items", []).append(item)
     GEN_MANIFEST.write_text(json.dumps(man, indent=1), encoding="utf-8")
 
     return {"ok": True, "item": {"id": uid, "category": cat, "dims_m": dims,
-                                 "thumb": thumb, "generated": True}}
+                                 "thumb": thumb, "generated": True, "engine": engine}}
 
 
 def _rot_zone_offsets(zrects, cx, cz, delta_deg):

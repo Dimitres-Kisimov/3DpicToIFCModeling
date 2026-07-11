@@ -128,7 +128,8 @@
             ? `<img src="${it.thumb_url}" loading="lazy" title="made by you">`
             : `<div class="genph" title="made by you">◆</div>`)
         : `<img src="/thumb/${it.preview || it.thumb}" loading="lazy">`;
-      const badge = it.generated ? `<span class="genbadge">OURS</span>` : '';
+      const badge = it.generated
+        ? `<span class="genbadge${it.engine ? ' eng' : ''}">${it.engine || 'OURS'}</span>` : '';
       const del = it.generated
         ? `<button class="gen-del" data-del="${it.id}" title="delete this generated item">✕</button>` : '';
       cell.innerHTML = badge + del + visual + `<div>${it.id}</div><div>${dim}</div>`;

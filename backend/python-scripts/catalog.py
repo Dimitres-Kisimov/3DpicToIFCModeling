@@ -142,7 +142,8 @@ def _generated_items(category):
                     "generated_glb": ("/api/generated/" + fn) if fn else None,
                     "product_type": "GENERATED",
                     "dims_m": list(dims) + [None] * (3 - len(dims)) if len(dims) < 3 else dims,
-                    "faces": None, "generated": True})
+                    "faces": None, "generated": True,
+                    "engine": e.get("engine")})   # which AI made it — picker badge
     return out
 
 

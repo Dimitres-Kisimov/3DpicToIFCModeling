@@ -18,6 +18,7 @@ const config = require('../config/env');
 const instantMeshAdapter = require('../ai/instantMesh');
 const stableFast3DAdapter = require('../ai/stablefast3d');
 const triposrAdapter = require('../ai/triposr');
+const bigEngine = require('../ai/bigEngine');   // TripoSG/TRELLIS.2/SAM3D — VRAM-gated
 const gpuQueue = require('../services/gpuQueue');   // serialize GPU jobs — never two on the 6 GB card
 const roomApi = require('../services/roomApi');
 const detectWorker = require('../services/detectWorker');
@@ -46,12 +47,13 @@ function detectCachePut(hash, result) {
 // immediately pickable in "Build a room" with an OURS badge. Fire-and-forget:
 // never delays the generation response; keep_source leaves the GLB in /outputs
 // for the viewer.
-function autoRegisterGenerated(glbPath, category) {
+function autoRegisterGenerated(glbPath, category, engine) {
   if (!glbPath) return;
   roomApi.call('register_upload', {
     path: glbPath,
     orig_name: `${category || 'object'}.glb`,
     category: category || undefined,
+    engine: engine || undefined,     // picker badge shows which AI made it
     keep_source: true,
   }, { timeout: 120000 })
     .then((r) => {
@@ -145,6 +147,20 @@ const upload = multer({
 });
 
 // ============================================================================
+// GET /api/engines — the engine registry with availability for THIS machine.
+// The frontend builds its selector from this; unavailable entries carry a
+// plain-language reason ("Needs a 24 GB graphics card — you have 6 GB").
+// ============================================================================
+
+router.get('/engines', async (req, res) => {
+  try {
+    res.json({ success: true, engines: await bigEngine.listEngines() });
+  } catch (e) {
+    res.status(500).json({ success: false, error: { message: e.message } });
+  }
+});
+
+// ============================================================================
 // POST /api/generate - Generate 3D model from image
 // ============================================================================
 
@@ -188,7 +204,7 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
         glbUrl: t.glbUrl, label: md.object_label,
         confidence: md.clip_confidence, faces: md.faces, glbSize: md.glbSize,
       });
-      autoRegisterGenerated(t.glbPath, md.ifc_category);   // B3: appears in the room picker
+      autoRegisterGenerated(t.glbPath, md.ifc_category, 'TSR');   // B3: appears in the room picker
       return res.json({
         success: true,
         model: 'triposr',
@@ -211,6 +227,33 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
           glbSize: md.glbSize,
           device: md.device,
         },
+      });
+    }
+
+    // Big external engines (TripoSG / TRELLIS.2 / SAM 3D) — only reachable when
+    // /api/engines reported them available (VRAM + installed engines pack).
+    const bigSpec = bigEngine.getEngine(requested);
+    if (bigSpec && !bigSpec.builtin) {
+      const engines = await bigEngine.listEngines();
+      const st = engines.find((e) => e.id === requested);
+      if (!st || !st.available) {
+        return res.status(409).json({
+          success: false,
+          error: { code: 'ENGINE_UNAVAILABLE', message: (st && st.reason) || 'engine not available on this machine' },
+        });
+      }
+      logger.info('GENERATE', `Starting big-engine pipeline: ${requested}`, { imagePath });
+      const g = await gpuQueue.run(
+        () => bigEngine.runBigEngine(requested, imagePath, config.OUTPUT_DIR), requested);
+      autoRegisterGenerated(g.glbPath, undefined, g.engine);   // badge = which AI made it
+      return res.json({
+        success: true,
+        model: requested,
+        requestedModel: requested,
+        glb: g.glbUrl,
+        glbPath: g.glbPath,
+        mesh_source: requested,
+        metadata: { engine: g.engine, faces: g.faces },
       });
     }
 
@@ -243,7 +286,9 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
       confidence: result.detection?.confidence,
       glbSize: result.glb_size_bytes,
     });
-    autoRegisterGenerated(result.glbPath, result.category);   // B3: appears in the room picker
+    autoRegisterGenerated(result.glbPath, result.category,
+      result.mesh_source === 'retrieval' ? 'CAT'
+        : result.mesh_source === 'primitive' ? 'PRIM' : 'CAT');   // B3: appears in the room picker
 
     return res.json({
       success: true,
