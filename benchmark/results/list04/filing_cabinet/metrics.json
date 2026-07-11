@@ -1,0 +1,63 @@
+{
+ "category": "filing_cabinet",
+ "display": "Filing Cabinet",
+ "list": 4,
+ "image": "images/filing_cabinet/list04.jpg",
+ "started_at": "2026-07-11T06:08:11",
+ "raw": {
+  "faces": 161684,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.506,
+  "clip": {
+   "label": "other object",
+   "score": 0.222,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 12858,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "boxy",
+   "label": "filing_cabinet",
+   "faces_in": 161684,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0136,
+    "score": 0.04871,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x5",
+   "decimated_to": 14998,
+   "finalize": {
+    "crumbs_dropped": 36,
+    "healed": 1,
+    "parts": 1
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 11,
+    "contact_spread": [
+     0.089,
+     0.044
+    ]
+   },
+   "support": "rebuilt: plinth",
+   "contact_flatten": 4,
+   "faces_out": 12858
+  },
+  "iou": 0.495,
+  "clip": {
+   "label": "stool",
+   "score": 0.32,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:09:13",
+ "seconds": 61.8
+}

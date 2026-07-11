@@ -1,0 +1,58 @@
+{
+ "category": "picture_frame",
+ "display": "Picture Frame",
+ "list": 7,
+ "image": "images/picture_frame/list07.jpg",
+ "started_at": "2026-07-11T07:03:39",
+ "raw": {
+  "faces": 126902,
+  "components": 3,
+  "watertight": true,
+  "iou": 0.781,
+  "clip": {
+   "label": "filing cabinet",
+   "score": 0.322,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 8946,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "picture_frame",
+   "faces_in": 126902,
+   "debris_dropped": 2,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.1398,
+    "score": 0.01771,
+    "applied": "soft-blend (44798/61405 verts)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0497
+   },
+   "finalize": {
+    "crumbs_dropped": 79,
+    "healed": 1,
+    "parts": 1
+   },
+   "contact_flatten": 6,
+   "faces_out": 8946
+  },
+  "iou": 0.655,
+  "clip": {
+   "label": "filing cabinet",
+   "score": 0.272,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:04:29",
+ "seconds": 50.3
+}

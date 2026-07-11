@@ -1,0 +1,63 @@
+{
+ "category": "monitor",
+ "display": "Monitor",
+ "list": 5,
+ "image": "images/monitor/list05.jpg",
+ "started_at": "2026-07-11T06:28:32",
+ "raw": {
+  "faces": 106548,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.835,
+  "clip": {
+   "label": "stool",
+   "score": 0.756,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9996,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "monitor",
+   "faces_in": 106548,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.007,
+    "score": 0.03127,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.043
+   },
+   "finalize": {
+    "crumbs_dropped": 2,
+    "healed": 0,
+    "parts": 1
+   },
+   "contact_flatten": 39,
+   "faces_out": 9996
+  },
+  "iou": 0.786,
+  "clip": {
+   "label": "stool",
+   "score": 0.212,
+   "match": false
+  }
+ },
+ "ifc": {
+  "ok": true,
+  "size_kb": 247,
+  "furniture_elements": 1,
+  "note": ""
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:29:24",
+ "seconds": 51.6
+}

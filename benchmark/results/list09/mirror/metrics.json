@@ -1,0 +1,58 @@
+{
+ "category": "mirror",
+ "display": "Mirror",
+ "list": 9,
+ "image": "images/mirror/list09.jpg",
+ "started_at": "2026-07-11T07:33:57",
+ "raw": {
+  "faces": 74150,
+  "components": 2,
+  "watertight": true,
+  "iou": 0.524,
+  "clip": {
+   "label": "other object",
+   "score": 0.238,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9978,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "mirror",
+   "faces_in": 74150,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x2",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0351,
+    "score": 0.10606,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 1,
+    "half_thickness": 0.0518
+   },
+   "finalize": {
+    "crumbs_dropped": 9,
+    "healed": 0,
+    "parts": 2
+   },
+   "contact_flatten": 16,
+   "faces_out": 9978
+  },
+  "iou": 0.558,
+  "clip": {
+   "label": "office chair",
+   "score": 0.555,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:34:56",
+ "seconds": 59.0
+}

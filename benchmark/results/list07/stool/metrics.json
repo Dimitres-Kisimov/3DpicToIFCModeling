@@ -1,0 +1,70 @@
+{
+ "category": "stool",
+ "display": "Stool",
+ "list": 7,
+ "image": "images/stool/list07.jpg",
+ "started_at": "2026-07-11T07:07:24",
+ "raw": {
+  "faces": 171240,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.732,
+  "clip": {
+   "label": "stool",
+   "score": 0.724,
+   "match": true
+  }
+ },
+ "improved": {
+  "faces": 13844,
+  "components": 5,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "stool",
+   "faces_in": 171240,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0022,
+    "score": 0.0341,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 37,
+    "healed": 1,
+    "parts": 2
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 9,
+    "contact_spread": [
+     0.063,
+     0.064
+    ]
+   },
+   "support_evidence": {
+    "stub_components": 1,
+    "stub_clusters": 1,
+    "round_footprint": false,
+    "bottom_cover": 0.552,
+    "quadrants": 4
+   },
+   "support": "rebuilt: legsN at 4 detected stub positions",
+   "contact_flatten": 68,
+   "faces_out": 13844
+  },
+  "iou": 0.754,
+  "clip": {
+   "label": "stool",
+   "score": 0.701,
+   "match": true
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:08:28",
+ "seconds": 63.7
+}

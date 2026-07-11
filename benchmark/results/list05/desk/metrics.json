@@ -1,0 +1,71 @@
+{
+ "category": "desk",
+ "display": "Desk",
+ "list": 5,
+ "image": "images/desk/list05.jpg",
+ "started_at": "2026-07-11T06:23:37",
+ "raw": {
+  "faces": 42794,
+  "components": 4,
+  "watertight": true,
+  "iou": 0.346,
+  "clip": {
+   "label": "filing cabinet",
+   "score": 0.172,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 12426,
+  "components": 5,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "desk",
+   "faces_in": 42794,
+   "debris_dropped": 2,
+   "watertight": "pymeshfix x2",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0932,
+    "score": 0.04316,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 8,
+    "healed": 0,
+    "parts": 2
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 4,
+    "contact_spread": [
+     0.0,
+     0.0
+    ]
+   },
+   "support_evidence": {
+    "stub_components": 0,
+    "stub_clusters": 0,
+    "round_footprint": false,
+    "bottom_cover": 0.533,
+    "quadrants": 4
+   },
+   "support": "rebuilt: legsN at 4 detected stub positions",
+   "contact_flatten": 68,
+   "faces_out": 12426
+  },
+  "iou": 0.378,
+  "clip": {
+   "label": "office chair",
+   "score": 0.457,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:24:29",
+ "seconds": 51.4
+}

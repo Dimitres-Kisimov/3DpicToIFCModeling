@@ -1,0 +1,64 @@
+{
+ "category": "picture_frame",
+ "display": "Picture Frame",
+ "list": 6,
+ "image": "images/picture_frame/list06.jpg",
+ "started_at": "2026-07-11T06:46:54",
+ "raw": {
+  "faces": 131574,
+  "components": 5,
+  "watertight": true,
+  "iou": 0.701,
+  "clip": {
+   "label": "stool",
+   "score": 0.612,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9630,
+  "components": 6,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "picture_frame",
+   "faces_in": 131574,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x5",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0093,
+    "score": 0.01492,
+    "applied": "soft-blend (55456/65753 verts)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0487
+   },
+   "finalize": {
+    "crumbs_dropped": 49,
+    "healed": 1,
+    "parts": 6
+   },
+   "contact_flatten": 58,
+   "faces_out": 9630
+  },
+  "iou": 0.68,
+  "clip": {
+   "label": "laptop",
+   "score": 0.283,
+   "match": false
+  }
+ },
+ "ifc": {
+  "ok": true,
+  "size_kb": 246,
+  "furniture_elements": 1,
+  "note": ""
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:47:58",
+ "seconds": 64.0
+}

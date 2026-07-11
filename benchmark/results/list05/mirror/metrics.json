@@ -1,0 +1,64 @@
+{
+ "category": "mirror",
+ "display": "Mirror",
+ "list": 5,
+ "image": "images/mirror/list05.jpg",
+ "started_at": "2026-07-11T06:27:35",
+ "raw": {
+  "faces": 79374,
+  "components": 4,
+  "watertight": true,
+  "iou": 0.493,
+  "clip": {
+   "label": "other object",
+   "score": 0.36,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 7068,
+  "components": 3,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "mirror",
+   "faces_in": 79374,
+   "debris_dropped": 1,
+   "watertight": "pymeshfix x3",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0111,
+    "score": 0.019,
+    "applied": "soft-blend (27980/39379 verts)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0583
+   },
+   "finalize": {
+    "crumbs_dropped": 55,
+    "healed": 1,
+    "parts": 3
+   },
+   "contact_flatten": 13,
+   "faces_out": 7068
+  },
+  "iou": 0.561,
+  "clip": {
+   "label": "other object",
+   "score": 0.341,
+   "match": false
+  }
+ },
+ "ifc": {
+  "ok": true,
+  "size_kb": 217,
+  "furniture_elements": 1,
+  "note": ""
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:28:32",
+ "seconds": 56.9
+}

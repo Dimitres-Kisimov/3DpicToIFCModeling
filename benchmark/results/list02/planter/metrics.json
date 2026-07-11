@@ -1,0 +1,48 @@
+{
+ "category": "planter",
+ "display": "Planter",
+ "list": 2,
+ "image": "images/planter/list02.jpg",
+ "started_at": "2026-07-11T05:42:43",
+ "raw": {
+  "faces": 168272,
+  "components": 4,
+  "watertight": true,
+  "iou": 0.709,
+  "clip": {
+   "label": "planter",
+   "score": 0.626,
+   "match": true
+  }
+ },
+ "improved": {
+  "faces": 11320,
+  "components": 6,
+  "watertight": true,
+  "repair": {
+   "archetype": "slender",
+   "label": "planter",
+   "faces_in": 168272,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x4",
+   "smooth": "taubin x6",
+   "decimated_to": 11998,
+   "finalize": {
+    "crumbs_dropped": 73,
+    "healed": 3,
+    "parts": 6
+   },
+   "contact_flatten": 30,
+   "faces_out": 11320
+  },
+  "iou": 0.711,
+  "clip": {
+   "label": "planter",
+   "score": 0.607,
+   "match": true
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T05:43:56",
+ "seconds": 73.3
+}

@@ -1,0 +1,63 @@
+{
+ "category": "cabinet",
+ "display": "Cabinet",
+ "list": 8,
+ "image": "images/cabinet/list08.jpg",
+ "started_at": "2026-07-11T07:10:41",
+ "raw": {
+  "faces": 46844,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.898,
+  "clip": {
+   "label": "bookshelf",
+   "score": 0.239,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14990,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "boxy",
+   "label": "cabinet",
+   "faces_in": 46844,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0044,
+    "score": 0.00874,
+    "applied": "soft-blend (23266/23418 verts)"
+   },
+   "smooth": "taubin x5",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 4,
+    "healed": 0,
+    "parts": 1
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 141,
+    "contact_spread": [
+     0.843,
+     0.427
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 99,
+   "faces_out": 14990
+  },
+  "iou": 0.896,
+  "clip": {
+   "label": "picture frame",
+   "score": 0.226,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:12:00",
+ "seconds": 79.1
+}

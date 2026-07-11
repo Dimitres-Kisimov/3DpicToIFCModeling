@@ -1,0 +1,71 @@
+{
+ "category": "stool",
+ "display": "Stool",
+ "list": 3,
+ "image": "images/stool/list03.jpg",
+ "started_at": "2026-07-11T06:02:20",
+ "raw": {
+  "faces": 163414,
+  "components": 3,
+  "watertight": true,
+  "iou": 0.593,
+  "clip": {
+   "label": "stool",
+   "score": 0.437,
+   "match": true
+  }
+ },
+ "improved": {
+  "faces": 7580,
+  "components": 5,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "stool",
+   "faces_in": 163414,
+   "debris_dropped": 1,
+   "watertight": "pymeshfix x2",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0003,
+    "score": 0.03422,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 14998,
+   "finalize": {
+    "crumbs_dropped": 37,
+    "healed": 2,
+    "parts": 2
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 5,
+    "contact_spread": [
+     0.0,
+     0.0
+    ]
+   },
+   "support_evidence": {
+    "stub_components": 0,
+    "stub_clusters": 0,
+    "round_footprint": false,
+    "bottom_cover": 0.71,
+    "quadrants": 4
+   },
+   "support": "rebuilt: legsN at 4 detected stub positions",
+   "contact_flatten": 68,
+   "faces_out": 7580
+  },
+  "iou": 0.457,
+  "clip": {
+   "label": "office chair",
+   "score": 0.863,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:03:11",
+ "seconds": 51.0
+}

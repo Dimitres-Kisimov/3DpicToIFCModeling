@@ -1,0 +1,64 @@
+{
+ "category": "cabinet",
+ "display": "Cabinet",
+ "list": 7,
+ "image": "images/cabinet/list07.jpg",
+ "started_at": "2026-07-11T06:53:25",
+ "raw": {
+  "faces": 53316,
+  "components": 3,
+  "watertight": true,
+  "iou": 0.613,
+  "clip": {
+   "label": "stool",
+   "score": 0.265,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14950,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "boxy",
+   "label": "cabinet",
+   "faces_in": 53316,
+   "debris_dropped": 1,
+   "watertight": "pymeshfix x2",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0108,
+    "score": 0.01078,
+    "applied": "soft-blend (25514/26498 verts)"
+   },
+   "smooth": "taubin x5",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 15,
+    "healed": 2,
+    "parts": 2
+   },
+   "support_health": {
+    "bottom_comps": 1,
+    "biggest_bottom_frac": 0.0498,
+    "contact_verts": 90,
+    "contact_spread": [
+     0.41,
+     0.197
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 65,
+   "faces_out": 14950
+  },
+  "iou": 0.615,
+  "clip": {
+   "label": "stool",
+   "score": 0.318,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:54:25",
+ "seconds": 59.3
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TripoSR A/B proof</title><style>
+:root{--bg:#f6f8fb;--card:#fff;--ink:#1c2733;--mut:#5b6b7c;--line:#e3e9f1;--acc:#2f81f7;
+--good:#1a7f4b;--bad:#b3261e;--warn:#8a6d00}
+*{box-sizing:border-box}body{margin:0;font:15px/1.55 'Segoe UI',system-ui,sans-serif;
+background:var(--bg);color:var(--ink);padding:28px 4vw}
+h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:26px 0 10px}
+.sub{color:var(--mut);margin:0 0 22px}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:18px 20px;margin:0 0 16px;box-shadow:0 1px 2px rgba(20,40,80,.05)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.row{display:grid;grid-template-columns:160px 1fr 1fr 1fr;gap:14px;align-items:start;
+border-top:1px solid var(--line);padding:16px 0}
+.row:first-of-type{border-top:none}
+.cell img{width:100%;border-radius:8px;border:1px solid var(--line);background:#fff}
+.lbl{font-size:12px;letter-spacing:.4px;text-transform:uppercase;color:var(--mut);margin:0 0 6px}
+.name{font-weight:600;margin:0 0 2px}.meta{font-size:12.5px;color:var(--mut)}
+.k{display:inline-block;background:#eef3fa;border-radius:6px;padding:1px 7px;margin:2px 3px 0 0;
+font-size:12px;color:#33475e}
+.k.good{background:#e5f4ec;color:var(--good)}.k.bad{background:#fbeae9;color:var(--bad)}
+.k.warn{background:#faf3d9;color:var(--warn)}
+.fail{background:#fff6f5;border:1px dashed #e5b5b1;border-radius:8px;padding:14px;color:var(--bad)}
+.badge{font-size:12px;padding:2px 9px;border-radius:99px;background:#eef3fa;color:#33475e}
+table{border-collapse:collapse;width:100%}td,th{padding:7px 10px;border-bottom:1px solid var(--line);
+text-align:left;font-size:14px}th{color:var(--mut);font-weight:600}
+.foot{color:var(--mut);font-size:12.5px;margin-top:26px}
+</style></head><body><h1>TripoSR A/B proof — 10 lists × 17 items</h1><p class='sub'>Campaign window: 2026-07-11 05:13:52 → 2026-07-11 08:00:09 local · Each row: internet photo (never from the catalog) → the mesh TripoSR ships in the app today → the same mesh after our archetype repair packs. Every item carries its exact generation timestamp. <a href='angles.html'>📸 Photo-angle guide</a> · <a href='visualizer.html'>🎛 Candidate visualizer (interactive 3D, pick the winner)</a></p><div class='card'><h2 style='margin-top:0'>Campaign result — 170 items generated</h2><table><tr><th>Metric</th><th>TripoSR today</th><th>Our improvement</th><th></th></tr><tr><td>Mean faces</td><td>111,143</td><td><b>12,039</b></td><td class='meta'>smaller = faster viewer & lighter IFC</td></tr><tr><td>Watertight items</td><td>100%</td><td><b>91%</b></td><td class='meta'>closed solids (what clean IFC export needs)</td></tr><tr><td>Coherent object (≤6 parts)</td><td>99%</td><td><b>94%</b></td><td class='meta'>vs hundreds of floating fragments</td></tr><tr><td>Silhouette IoU vs photo</td><td>0.662</td><td><b>0.646</b></td><td class='meta'>best-of-8-viewpoints match to the cutout</td></tr><tr><td>Broken bases rebuilt</td><td>—</td><td><b>48</b></td><td class='meta'>evidence-driven legs/pedestal/trestle/plinth grafts</td></tr></table><p class='meta'>IFC spot-proofs: 20/20 valid mesh-geometry IFC4 exports via the app's own exporter.</p></div><div class='card'><b>Why post-repair (continuity):</b> the June-23 study measured the single-view ceiling (Chamfer 0.169 / F-score 0.155, precision 0.81 / recall 0.09) and diagnosed 4 structural failure modes: asymmetric legs, hallucinated backs, noisy topology, fragmentation. The repair packs target exactly those: detected-plane symmetry, panel flattening, watertight+decimate, and evidence-driven support rebuild — clean parametric primitives (the BIM-correct route from the June-21 research) grafted onto what the generator gets right.</div><div class='grid'><div class="card"><p class="name"><a href="list01.html">List 1</a> <span class="badge">17/17 ok</span></p><p class="meta">2026-07-11 05:13:52 → 2026-07-11 05:30:32 local</p></div><div class="card"><p class="name"><a href="list02.html">List 2</a> <span class="badge">17/17 ok</span></p><p class="meta">2026-07-11 05:30:32 → 2026-07-11 05:47:31 local</p></div><div class="card"><p class="name"><a href="list03.html">List 3</a> <span class="badge">17/17 ok</span></p><p class="meta">2026-07-11 05:47:31 → 2026-07-11 06:04:08 local</p></div><div class="card"><p class="name"><a href="list04.html">List 4</a> <span class="badge">17/17 ok</span></p><p class="meta">2026-07-11 06:04:08 → 2026-07-11 06:20:06 local</p></div><div class="card"><p class="name"><a href="list05.html">List 5</a> <span class="badge">17/17 ok</span></p><p class="meta">2026-07-11 06:20:06 → 2026-07-11 06:35:52 local</p></div><div class="card"><p class="name"><a href="list06.html">List 6</a> <span class="badge">17/17 ok</span></p><p class="meta">2026-07-11 06:35:53 → 2026-07-11 06:52:31 local</p></div><div class="card"><p class="name"><a href="list07.html">List 7</a> <span class="badge">17/17 ok</span></p><p class="meta">2026-07-11 06:52:31 → 2026-07-11 07:09:25 local</p></div><div class="card"><p class="name"><a href="list08.html">List 8</a> <span class="badge">17/17 ok</span></p><p class="meta">2026-07-11 07:09:25 → 2026-07-11 07:26:28 local</p></div><div class="card"><p class="name"><a href="list09.html">List 9</a> <span class="badge">17/17 ok</span></p><p class="meta">2026-07-11 07:26:29 → 2026-07-11 07:42:44 local</p></div><div class="card"><p class="name"><a href="list10.html">List 10</a> <span class="badge">17/17 ok</span></p><p class="meta">2026-07-11 07:42:44 → 2026-07-11 08:00:09 local</p></div></div>
+<p class="foot">SCS photo→BIM · TripoSR A/B proof · generated locally, app untouched.</p>
+</body></html>

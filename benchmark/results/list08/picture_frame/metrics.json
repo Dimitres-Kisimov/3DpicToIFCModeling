@@ -1,0 +1,58 @@
+{
+ "category": "picture_frame",
+ "display": "Picture Frame",
+ "list": 8,
+ "image": "images/picture_frame/list08.jpg",
+ "started_at": "2026-07-11T07:20:39",
+ "raw": {
+  "faces": 37234,
+  "components": 2,
+  "watertight": true,
+  "iou": 0.458,
+  "clip": {
+   "label": "stool",
+   "score": 0.256,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9880,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "picture_frame",
+   "faces_in": 37234,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x2",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0134,
+    "score": 0.01365,
+    "applied": "soft-blend (15700/18617 verts)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 9998,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0479
+   },
+   "finalize": {
+    "crumbs_dropped": 11,
+    "healed": 1,
+    "parts": 2
+   },
+   "contact_flatten": 137,
+   "faces_out": 9880
+  },
+  "iou": 0.455,
+  "clip": {
+   "label": "office chair",
+   "score": 0.205,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:21:30",
+ "seconds": 50.8
+}

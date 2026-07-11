@@ -1,0 +1,57 @@
+{
+ "category": "mirror",
+ "display": "Mirror",
+ "list": 7,
+ "image": "images/mirror/list07.jpg",
+ "started_at": "2026-07-11T07:00:51",
+ "raw": {
+  "faces": 56828,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.53,
+  "clip": {
+   "label": "other object",
+   "score": 0.444,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 8524,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "mirror",
+   "faces_in": 56828,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 2,
+    "offset": -0.0059,
+    "score": 0.03984,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0371
+   },
+   "finalize": {
+    "crumbs_dropped": 21,
+    "healed": 1,
+    "parts": 2
+   },
+   "contact_flatten": 5,
+   "faces_out": 8524
+  },
+  "iou": 0.526,
+  "clip": {
+   "label": "other object",
+   "score": 0.488,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:01:40",
+ "seconds": 48.3
+}

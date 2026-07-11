@@ -1,0 +1,47 @@
+{
+ "category": "laptop",
+ "display": "Laptop",
+ "list": 7,
+ "image": "images/laptop/list07.jpg",
+ "started_at": "2026-07-11T06:59:52",
+ "raw": {
+  "faces": 159236,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.827,
+  "clip": {
+   "label": "stool",
+   "score": 0.548,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14986,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "prop",
+   "label": "laptop",
+   "faces_in": 159236,
+   "watertight": "pymeshfix x1",
+   "smooth": "taubin x8",
+   "decimated_to": 14998,
+   "finalize": {
+    "crumbs_dropped": 6,
+    "healed": 0,
+    "parts": 1
+   },
+   "contact_flatten": 16,
+   "faces_out": 14986
+  },
+  "iou": 0.831,
+  "clip": {
+   "label": "stool",
+   "score": 0.482,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:00:51",
+ "seconds": 59.2
+}

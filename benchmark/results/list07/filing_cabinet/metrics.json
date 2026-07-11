@@ -1,0 +1,64 @@
+{
+ "category": "filing_cabinet",
+ "display": "Filing Cabinet",
+ "list": 7,
+ "image": "images/filing_cabinet/list07.jpg",
+ "started_at": "2026-07-11T06:57:18",
+ "raw": {
+  "faces": 92976,
+  "components": 2,
+  "watertight": true,
+  "iou": 0.597,
+  "clip": {
+   "label": "office chair",
+   "score": 0.643,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14812,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "boxy",
+   "label": "filing_cabinet",
+   "faces_in": 92976,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x2",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0149,
+    "score": 0.02289,
+    "applied": "soft-blend (35688/46440 verts)"
+   },
+   "smooth": "taubin x5",
+   "decimated_to": 14998,
+   "finalize": {
+    "crumbs_dropped": 35,
+    "healed": 1,
+    "parts": 2
+   },
+   "support_health": {
+    "bottom_comps": 1,
+    "biggest_bottom_frac": 0.0252,
+    "contact_verts": 37,
+    "contact_spread": [
+     0.658,
+     0.058
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 15,
+   "faces_out": 14812
+  },
+  "iou": 0.593,
+  "clip": {
+   "label": "stool",
+   "score": 0.56,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:58:22",
+ "seconds": 63.4
+}

@@ -1,0 +1,63 @@
+{
+ "category": "table",
+ "display": "Table",
+ "list": 3,
+ "image": "images/table/list03.jpg",
+ "started_at": "2026-07-11T06:03:11",
+ "raw": {
+  "faces": 119870,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.771,
+  "clip": {
+   "label": "sofa",
+   "score": 0.484,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14068,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "table",
+   "faces_in": 119870,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.027,
+    "score": 0.01404,
+    "applied": "mirror-merge"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 264,
+    "healed": 2,
+    "parts": 2
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 173,
+    "contact_spread": [
+     0.952,
+     0.167
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 145,
+   "faces_out": 14068
+  },
+  "iou": 0.715,
+  "clip": {
+   "label": "filing cabinet",
+   "score": 0.185,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:04:08",
+ "seconds": 57.3
+}

@@ -1,0 +1,57 @@
+{
+ "category": "mirror",
+ "display": "Mirror",
+ "list": 3,
+ "image": "images/mirror/list03.jpg",
+ "started_at": "2026-07-11T05:55:40",
+ "raw": {
+  "faces": 119880,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.649,
+  "clip": {
+   "label": "stool",
+   "score": 0.375,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 8114,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "mirror",
+   "faces_in": 119880,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0792,
+    "score": 0.05166,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0504
+   },
+   "finalize": {
+    "crumbs_dropped": 36,
+    "healed": 1,
+    "parts": 2
+   },
+   "contact_flatten": 49,
+   "faces_out": 8114
+  },
+  "iou": 0.68,
+  "clip": {
+   "label": "stool",
+   "score": 0.221,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T05:56:32",
+ "seconds": 51.9
+}

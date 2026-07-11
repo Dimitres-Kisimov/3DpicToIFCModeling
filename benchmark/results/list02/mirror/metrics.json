@@ -1,0 +1,57 @@
+{
+ "category": "mirror",
+ "display": "Mirror",
+ "list": 2,
+ "image": "images/mirror/list02.jpg",
+ "started_at": "2026-07-11T05:39:07",
+ "raw": {
+  "faces": 209254,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.792,
+  "clip": {
+   "label": "stool",
+   "score": 0.496,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9266,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "mirror",
+   "faces_in": 209254,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 2,
+    "offset": 0.0514,
+    "score": 0.04376,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 9998,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0607
+   },
+   "finalize": {
+    "crumbs_dropped": 23,
+    "healed": 1,
+    "parts": 1
+   },
+   "contact_flatten": 16,
+   "faces_out": 9266
+  },
+  "iou": 0.86,
+  "clip": {
+   "label": "filing cabinet",
+   "score": 0.363,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T05:40:06",
+ "seconds": 58.8
+}

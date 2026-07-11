@@ -1,0 +1,57 @@
+{
+ "category": "mirror",
+ "display": "Mirror",
+ "list": 8,
+ "image": "images/mirror/list08.jpg",
+ "started_at": "2026-07-11T07:18:03",
+ "raw": {
+  "faces": 77674,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.882,
+  "clip": {
+   "label": "sofa",
+   "score": 0.332,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9990,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "mirror",
+   "faces_in": 77674,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0061,
+    "score": 0.02734,
+    "applied": "soft-blend (15892/38839 verts)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0421
+   },
+   "finalize": {
+    "crumbs_dropped": 5,
+    "healed": 0,
+    "parts": 1
+   },
+   "contact_flatten": 80,
+   "faces_out": 9990
+  },
+  "iou": 0.813,
+  "clip": {
+   "label": "other object",
+   "score": 0.212,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:18:53",
+ "seconds": 50.2
+}

@@ -1,0 +1,77 @@
+{
+ "category": "desk",
+ "display": "Desk",
+ "list": 3,
+ "image": "images/desk/list03.jpg",
+ "started_at": "2026-07-11T05:51:44",
+ "raw": {
+  "faces": 44072,
+  "components": 3,
+  "watertight": true,
+  "iou": 0.58,
+  "clip": {
+   "label": "stool",
+   "score": 0.209,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14498,
+  "components": 6,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "desk",
+   "faces_in": 44072,
+   "debris_dropped": 1,
+   "watertight": "pymeshfix x2",
+   "symmetry": {
+    "axis": 2,
+    "offset": 0.0454,
+    "score": 0.04222,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 14998,
+   "finalize": {
+    "crumbs_dropped": 3,
+    "healed": 0,
+    "parts": 2
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 60,
+    "contact_spread": [
+     0.149,
+     0.198
+    ]
+   },
+   "support_evidence": {
+    "stub_components": 1,
+    "stub_clusters": 1,
+    "round_footprint": false,
+    "bottom_cover": 0.426,
+    "quadrants": 4
+   },
+   "support": "rebuilt: legsN at 4 detected stub positions",
+   "contact_flatten": 68,
+   "faces_out": 14498
+  },
+  "iou": 0.522,
+  "clip": {
+   "label": "stool",
+   "score": 0.374,
+   "match": false
+  }
+ },
+ "ifc": {
+  "ok": true,
+  "size_kb": 244,
+  "furniture_elements": 1,
+  "note": ""
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T05:52:37",
+ "seconds": 53.4
+}

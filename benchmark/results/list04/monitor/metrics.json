@@ -1,0 +1,57 @@
+{
+ "category": "monitor",
+ "display": "Monitor",
+ "list": 4,
+ "image": "images/monitor/list04.jpg",
+ "started_at": "2026-07-11T06:12:01",
+ "raw": {
+  "faces": 103232,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.775,
+  "clip": {
+   "label": "other object",
+   "score": 0.221,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9868,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "monitor",
+   "faces_in": 103232,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0047,
+    "score": 0.01159,
+    "applied": "soft-blend (48098/51604 verts)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0436
+   },
+   "finalize": {
+    "crumbs_dropped": 31,
+    "healed": 1,
+    "parts": 1
+   },
+   "contact_flatten": 117,
+   "faces_out": 9868
+  },
+  "iou": 0.77,
+  "clip": {
+   "label": "other object",
+   "score": 0.208,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:12:56",
+ "seconds": 55.2
+}

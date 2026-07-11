@@ -1,0 +1,64 @@
+{
+ "category": "side_table",
+ "display": "Side Table",
+ "list": 9,
+ "image": "images/side_table/list09.jpg",
+ "started_at": "2026-07-11T07:38:44",
+ "raw": {
+  "faces": 290386,
+  "components": 5,
+  "watertight": true,
+  "iou": 0.525,
+  "clip": {
+   "label": "other object",
+   "score": 0.256,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 6430,
+  "components": 6,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "side_table",
+   "faces_in": 290386,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x5",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0014,
+    "score": 0.01652,
+    "applied": "mirror-merge"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 1462,
+    "healed": 4,
+    "parts": 6
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 17,
+    "contact_spread": [
+     0.365,
+     0.064
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 13,
+   "faces_out": 6430
+  },
+  "iou": 0.501,
+  "clip": {
+   "label": "planter",
+   "score": 0.291,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:39:52",
+ "seconds": 68.8
+}

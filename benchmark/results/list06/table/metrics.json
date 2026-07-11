@@ -1,0 +1,69 @@
+{
+ "category": "table",
+ "display": "Table",
+ "list": 6,
+ "image": "images/table/list06.png",
+ "started_at": "2026-07-11T06:51:51",
+ "raw": {
+  "faces": 84000,
+  "components": 3,
+  "watertight": true,
+  "iou": 0.78,
+  "clip": {
+   "label": "monitor",
+   "score": 0.392,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 4310,
+  "components": 3,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "table",
+   "faces_in": 84000,
+   "debris_dropped": 1,
+   "watertight": "pymeshfix x2",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0362,
+    "score": 0.02175,
+    "applied": "mirror-merge"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 14999,
+   "finalize": {
+    "crumbs_dropped": 280,
+    "healed": 2,
+    "parts": 5
+   },
+   "support_health": {
+    "bottom_comps": 3,
+    "biggest_bottom_frac": 0.0075,
+    "contact_verts": 136,
+    "contact_spread": [
+     0.466,
+     0.265
+    ]
+   },
+   "support_evidence": {
+    "stub_components": 3,
+    "stub_clusters": 2,
+    "round_footprint": false
+   },
+   "support": "rebuilt: trestle at 2 detected stub positions",
+   "contact_flatten": 8,
+   "faces_out": 4310
+  },
+  "iou": 0.497,
+  "clip": {
+   "label": "office chair",
+   "score": 0.499,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:52:31",
+ "seconds": 39.9
+}

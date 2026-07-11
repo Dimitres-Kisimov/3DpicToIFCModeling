@@ -1,0 +1,47 @@
+{
+ "category": "planter",
+ "display": "Planter",
+ "list": 6,
+ "image": "images/planter/list06.jpg",
+ "started_at": "2026-07-11T06:47:58",
+ "raw": {
+  "faces": 177756,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.795,
+  "clip": {
+   "label": "stool",
+   "score": 0.571,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 11200,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "slender",
+   "label": "planter",
+   "faces_in": 177756,
+   "watertight": "pymeshfix x1",
+   "smooth": "taubin x6",
+   "decimated_to": 12000,
+   "finalize": {
+    "crumbs_dropped": 91,
+    "healed": 1,
+    "parts": 1
+   },
+   "contact_flatten": 45,
+   "faces_out": 11200
+  },
+  "iou": 0.799,
+  "clip": {
+   "label": "stool",
+   "score": 0.698,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:49:00",
+ "seconds": 62.3
+}

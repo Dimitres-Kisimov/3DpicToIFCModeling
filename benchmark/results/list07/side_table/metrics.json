@@ -1,0 +1,70 @@
+{
+ "category": "side_table",
+ "display": "Side Table",
+ "list": 7,
+ "image": "images/side_table/list07.jpg",
+ "started_at": "2026-07-11T07:05:31",
+ "raw": {
+  "faces": 145982,
+  "components": 2,
+  "watertight": true,
+  "iou": 0.548,
+  "clip": {
+   "label": "stool",
+   "score": 0.402,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 5702,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "side_table",
+   "faces_in": 145982,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x2",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0338,
+    "score": 0.02078,
+    "applied": "mirror-merge"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 14999,
+   "finalize": {
+    "crumbs_dropped": 671,
+    "healed": 2,
+    "parts": 2
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 20,
+    "contact_spread": [
+     0.487,
+     0.224
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 15,
+   "faces_out": 5702
+  },
+  "iou": 0.569,
+  "clip": {
+   "label": "other object",
+   "score": 0.388,
+   "match": false
+  }
+ },
+ "ifc": {
+  "ok": true,
+  "size_kb": 175,
+  "furniture_elements": 1,
+  "note": ""
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:06:26",
+ "seconds": 55.5
+}

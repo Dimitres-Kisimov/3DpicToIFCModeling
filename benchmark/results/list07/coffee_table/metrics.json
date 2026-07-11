@@ -1,0 +1,69 @@
+{
+ "category": "coffee_table",
+ "display": "Coffee Table",
+ "list": 7,
+ "image": "images/coffee_table/list07.jpg",
+ "started_at": "2026-07-11T06:55:27",
+ "raw": {
+  "faces": 71228,
+  "components": 3,
+  "watertight": true,
+  "iou": 0.516,
+  "clip": {
+   "label": "other object",
+   "score": 0.476,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 10202,
+  "components": 3,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "coffee_table",
+   "faces_in": 71228,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x3",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0388,
+    "score": 0.03408,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 26,
+    "healed": 2,
+    "parts": 3
+   },
+   "support_health": {
+    "bottom_comps": 1,
+    "biggest_bottom_frac": 0.0109,
+    "contact_verts": 10,
+    "contact_spread": [
+     0.266,
+     0.098
+    ]
+   },
+   "support_evidence": {
+    "stub_components": 1,
+    "stub_clusters": 1,
+    "round_footprint": false
+   },
+   "support": "rebuilt: pedestal",
+   "contact_flatten": 58,
+   "faces_out": 10202
+  },
+  "iou": 0.437,
+  "clip": {
+   "label": "other object",
+   "score": 0.419,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:56:19",
+ "seconds": 52.4
+}

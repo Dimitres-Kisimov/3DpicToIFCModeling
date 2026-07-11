@@ -1,0 +1,47 @@
+{
+ "category": "lamp",
+ "display": "Lamp",
+ "list": 9,
+ "image": "images/lamp/list09.jpg",
+ "started_at": "2026-07-11T07:32:09",
+ "raw": {
+  "faces": 134700,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.79,
+  "clip": {
+   "label": "stool",
+   "score": 0.711,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 11968,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "slender",
+   "label": "lamp",
+   "faces_in": 134700,
+   "watertight": "pymeshfix x1",
+   "smooth": "taubin x6",
+   "decimated_to": 11998,
+   "finalize": {
+    "crumbs_dropped": 9,
+    "healed": 0,
+    "parts": 1
+   },
+   "contact_flatten": 53,
+   "faces_out": 11968
+  },
+  "iou": 0.795,
+  "clip": {
+   "label": "stool",
+   "score": 0.738,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:33:05",
+ "seconds": 56.1
+}

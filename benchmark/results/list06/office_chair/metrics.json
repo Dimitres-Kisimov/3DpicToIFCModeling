@@ -1,0 +1,60 @@
+{
+ "category": "office_chair",
+ "display": "Office Chair",
+ "list": 6,
+ "image": "images/office_chair/list06.jpg",
+ "started_at": "2026-07-11T06:45:43",
+ "raw": {
+  "faces": 140624,
+  "components": 4,
+  "watertight": true,
+  "iou": 0.474,
+  "clip": {
+   "label": "other object",
+   "score": 0.551,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 17296,
+  "components": 47,
+  "watertight": false,
+  "repair": {
+   "archetype": "swivel_seat",
+   "label": "office_chair",
+   "faces_in": 140624,
+   "debris_dropped": 1,
+   "watertight": "pymeshfix x3",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0293,
+    "score": 0.02203,
+    "applied": "soft-blend (39579/64908 verts)"
+   },
+   "decimated_to": 44998,
+   "finalize": {
+    "crumbs_dropped": 48,
+    "healed": 2,
+    "parts": 3
+   },
+   "contact_flatten": 31,
+   "faces_out": 44762,
+   "graft": "5-star base grafted (app-proven)"
+  },
+  "iou": 0.466,
+  "clip": {
+   "label": "office chair",
+   "score": 0.573,
+   "match": true
+  }
+ },
+ "ifc": {
+  "ok": true,
+  "size_kb": 246,
+  "furniture_elements": 1,
+  "note": ""
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:46:54",
+ "seconds": 70.3
+}

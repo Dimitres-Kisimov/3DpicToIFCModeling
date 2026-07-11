@@ -1,0 +1,63 @@
+{
+ "category": "desk",
+ "display": "Desk",
+ "list": 7,
+ "image": "images/desk/list07.jpg",
+ "started_at": "2026-07-11T06:56:20",
+ "raw": {
+  "faces": 62258,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.669,
+  "clip": {
+   "label": "planter",
+   "score": 0.301,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14996,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "desk",
+   "faces_in": 62258,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.017,
+    "score": 0.00896,
+    "applied": "soft-blend (30813/31127 verts)"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 2,
+    "healed": 0,
+    "parts": 1
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 25,
+    "contact_spread": [
+     0.773,
+     0.054
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 5,
+   "faces_out": 14996
+  },
+  "iou": 0.665,
+  "clip": {
+   "label": "planter",
+   "score": 0.214,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:57:18",
+ "seconds": 58.7
+}

@@ -1,0 +1,57 @@
+{
+ "category": "monitor",
+ "display": "Monitor",
+ "list": 6,
+ "image": "images/monitor/list06.jpg",
+ "started_at": "2026-07-11T06:44:51",
+ "raw": {
+  "faces": 142196,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.748,
+  "clip": {
+   "label": "stool",
+   "score": 0.328,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9914,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "monitor",
+   "faces_in": 142196,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0001,
+    "score": 0.01375,
+    "applied": "soft-blend (61793/71094 verts)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0481
+   },
+   "finalize": {
+    "crumbs_dropped": 28,
+    "healed": 0,
+    "parts": 1
+   },
+   "contact_flatten": 50,
+   "faces_out": 9914
+  },
+  "iou": 0.802,
+  "clip": {
+   "label": "laptop",
+   "score": 0.235,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:45:43",
+ "seconds": 51.9
+}

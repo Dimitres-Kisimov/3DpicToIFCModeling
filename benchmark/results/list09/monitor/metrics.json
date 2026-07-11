@@ -1,0 +1,58 @@
+{
+ "category": "monitor",
+ "display": "Monitor",
+ "list": 9,
+ "image": "images/monitor/list09.jpg",
+ "started_at": "2026-07-11T07:34:56",
+ "raw": {
+  "faces": 72282,
+  "components": 5,
+  "watertight": true,
+  "iou": 0.786,
+  "clip": {
+   "label": "filing cabinet",
+   "score": 0.259,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9946,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "monitor",
+   "faces_in": 72282,
+   "debris_dropped": 4,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 2,
+    "offset": 0.0873,
+    "score": 0.01165,
+    "applied": "soft-blend (31050/33422 verts)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0405
+   },
+   "finalize": {
+    "crumbs_dropped": 27,
+    "healed": 0,
+    "parts": 1
+   },
+   "contact_flatten": 158,
+   "faces_out": 9946
+  },
+  "iou": 0.751,
+  "clip": {
+   "label": "stool",
+   "score": 0.2,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:35:51",
+ "seconds": 55.1
+}

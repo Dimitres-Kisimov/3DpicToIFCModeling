@@ -1,0 +1,71 @@
+{
+ "category": "coffee_table",
+ "display": "Coffee Table",
+ "list": 9,
+ "image": "images/coffee_table/list09.jpg",
+ "started_at": "2026-07-11T07:29:25",
+ "raw": {
+  "faces": 85848,
+  "components": 6,
+  "watertight": true,
+  "iou": 0.526,
+  "clip": {
+   "label": "stool",
+   "score": 0.19,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 13606,
+  "components": 4,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "coffee_table",
+   "faces_in": 85848,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x6",
+   "symmetry": {
+    "axis": 2,
+    "offset": 0.0203,
+    "score": 0.03186,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 14998,
+   "finalize": {
+    "crumbs_dropped": 27,
+    "healed": 2,
+    "parts": 6
+   },
+   "support_health": {
+    "bottom_comps": 2,
+    "biggest_bottom_frac": 0.0228,
+    "contact_verts": 6,
+    "contact_spread": [
+     0.0,
+     0.0
+    ]
+   },
+   "support_evidence": {
+    "stub_components": 2,
+    "stub_clusters": 1,
+    "round_footprint": false,
+    "bottom_cover": 0.541,
+    "quadrants": 3
+   },
+   "support": "rebuilt: legsN at 3 detected stub positions",
+   "contact_flatten": 51,
+   "faces_out": 13606
+  },
+  "iou": 0.577,
+  "clip": {
+   "label": "stool",
+   "score": 0.273,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:30:22",
+ "seconds": 57.6
+}

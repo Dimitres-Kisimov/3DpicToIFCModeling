@@ -1,0 +1,58 @@
+{
+ "category": "picture_frame",
+ "display": "Picture Frame",
+ "list": 2,
+ "image": "images/picture_frame/list02.jpg",
+ "started_at": "2026-07-11T05:41:56",
+ "raw": {
+  "faces": 38220,
+  "components": 6,
+  "watertight": true,
+  "iou": 0.571,
+  "clip": {
+   "label": "desk",
+   "score": 0.214,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9986,
+  "components": 4,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "picture_frame",
+   "faces_in": 38220,
+   "debris_dropped": 2,
+   "watertight": "pymeshfix x4",
+   "symmetry": {
+    "axis": 2,
+    "offset": 0.0001,
+    "score": 0.01634,
+    "applied": "soft-blend (12772/17678 verts)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 9998,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0376
+   },
+   "finalize": {
+    "crumbs_dropped": 6,
+    "healed": 0,
+    "parts": 4
+   },
+   "contact_flatten": 137,
+   "faces_out": 9986
+  },
+  "iou": 0.515,
+  "clip": {
+   "label": "monitor",
+   "score": 0.162,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T05:42:43",
+ "seconds": 46.4
+}

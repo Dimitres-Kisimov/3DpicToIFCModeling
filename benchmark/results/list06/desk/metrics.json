@@ -1,0 +1,64 @@
+{
+ "category": "desk",
+ "display": "Desk",
+ "list": 6,
+ "image": "images/desk/list06.jpg",
+ "started_at": "2026-07-11T06:39:47",
+ "raw": {
+  "faces": 123616,
+  "components": 3,
+  "watertight": true,
+  "iou": 0.684,
+  "clip": {
+   "label": "stool",
+   "score": 0.285,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14846,
+  "components": 3,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "desk",
+   "faces_in": 123616,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x3",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.031,
+    "score": 0.03738,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 14998,
+   "finalize": {
+    "crumbs_dropped": 17,
+    "healed": 1,
+    "parts": 3
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 49,
+    "contact_spread": [
+     0.103,
+     0.255
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 36,
+   "faces_out": 14846
+  },
+  "iou": 0.683,
+  "clip": {
+   "label": "stool",
+   "score": 0.357,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:40:47",
+ "seconds": 59.9
+}

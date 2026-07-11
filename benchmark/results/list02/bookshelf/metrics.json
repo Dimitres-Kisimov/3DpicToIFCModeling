@@ -1,0 +1,64 @@
+{
+ "category": "bookshelf",
+ "display": "Bookshelf",
+ "list": 2,
+ "image": "images/bookshelf/list02.jpg",
+ "started_at": "2026-07-11T05:30:32",
+ "raw": {
+  "faces": 179810,
+  "components": 3,
+  "watertight": true,
+  "iou": 0.787,
+  "clip": {
+   "label": "stool",
+   "score": 0.507,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 7422,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "boxy",
+   "label": "bookshelf",
+   "faces_in": 179810,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x3",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.024,
+    "score": 0.02424,
+    "applied": "soft-blend (63759/89781 verts)"
+   },
+   "smooth": "taubin x5",
+   "decimated_to": 14998,
+   "finalize": {
+    "crumbs_dropped": 102,
+    "healed": 3,
+    "parts": 6
+   },
+   "support_health": {
+    "bottom_comps": 1,
+    "biggest_bottom_frac": 0.0035,
+    "contact_verts": 120,
+    "contact_spread": [
+     0.628,
+     0.409
+    ]
+   },
+   "support": "rebuilt: plinth",
+   "contact_flatten": 4,
+   "faces_out": 7422
+  },
+  "iou": 0.781,
+  "clip": {
+   "label": "stool",
+   "score": 0.225,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T05:32:38",
+ "seconds": 126.0
+}

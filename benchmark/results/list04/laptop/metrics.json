@@ -1,0 +1,53 @@
+{
+ "category": "laptop",
+ "display": "Laptop",
+ "list": 4,
+ "image": "images/laptop/list04.jpg",
+ "started_at": "2026-07-11T06:10:13",
+ "raw": {
+  "faces": 139066,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.732,
+  "clip": {
+   "label": "other object",
+   "score": 0.258,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14982,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "prop",
+   "label": "laptop",
+   "faces_in": 139066,
+   "watertight": "pymeshfix x1",
+   "smooth": "taubin x8",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 8,
+    "healed": 0,
+    "parts": 1
+   },
+   "contact_flatten": 144,
+   "faces_out": 14982
+  },
+  "iou": 0.738,
+  "clip": {
+   "label": "office chair",
+   "score": 0.199,
+   "match": false
+  }
+ },
+ "ifc": {
+  "ok": true,
+  "size_kb": 248,
+  "furniture_elements": 1,
+  "note": ""
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:11:12",
+ "seconds": 59.4
+}

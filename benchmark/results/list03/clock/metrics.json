@@ -1,0 +1,57 @@
+{
+ "category": "clock",
+ "display": "Clock",
+ "list": 3,
+ "image": "images/clock/list03.jpg",
+ "started_at": "2026-07-11T05:49:54",
+ "raw": {
+  "faces": 56396,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.67,
+  "clip": {
+   "label": "stool",
+   "score": 0.191,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9800,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "clock",
+   "faces_in": 56396,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0001,
+    "score": 0.01562,
+    "applied": "soft-blend (21634/28186 verts)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 9996,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0404
+   },
+   "finalize": {
+    "crumbs_dropped": 16,
+    "healed": 1,
+    "parts": 1
+   },
+   "contact_flatten": 7,
+   "faces_out": 9800
+  },
+  "iou": 0.68,
+  "clip": {
+   "label": "monitor",
+   "score": 0.12,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T05:50:46",
+ "seconds": 51.6
+}

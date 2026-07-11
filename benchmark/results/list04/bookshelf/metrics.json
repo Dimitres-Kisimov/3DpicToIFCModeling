@@ -1,0 +1,63 @@
+{
+ "category": "bookshelf",
+ "display": "Bookshelf",
+ "list": 4,
+ "image": "images/bookshelf/list04.jpg",
+ "started_at": "2026-07-11T06:04:08",
+ "raw": {
+  "faces": 116094,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.814,
+  "clip": {
+   "label": "filing cabinet",
+   "score": 0.361,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14980,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "boxy",
+   "label": "bookshelf",
+   "faces_in": 116094,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0492,
+    "score": 0.06286,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x5",
+   "decimated_to": 14998,
+   "finalize": {
+    "crumbs_dropped": 9,
+    "healed": 0,
+    "parts": 1
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 39,
+    "contact_spread": [
+     0.268,
+     0.32
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 12,
+   "faces_out": 14980
+  },
+  "iou": 0.806,
+  "clip": {
+   "label": "filing cabinet",
+   "score": 0.268,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:05:12",
+ "seconds": 64.0
+}

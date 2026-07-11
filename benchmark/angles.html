@@ -1,0 +1,31 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Photo-angle guide</title><style>
+:root{--bg:#f6f8fb;--card:#fff;--ink:#1c2733;--mut:#5b6b7c;--line:#e3e9f1;--acc:#2f81f7;
+--good:#1a7f4b;--bad:#b3261e;--warn:#8a6d00}
+*{box-sizing:border-box}body{margin:0;font:15px/1.55 'Segoe UI',system-ui,sans-serif;
+background:var(--bg);color:var(--ink);padding:28px 4vw}
+h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:26px 0 10px}
+.sub{color:var(--mut);margin:0 0 22px}
+a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:18px 20px;margin:0 0 16px;box-shadow:0 1px 2px rgba(20,40,80,.05)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.row{display:grid;grid-template-columns:160px 1fr 1fr 1fr;gap:14px;align-items:start;
+border-top:1px solid var(--line);padding:16px 0}
+.row:first-of-type{border-top:none}
+.cell img{width:100%;border-radius:8px;border:1px solid var(--line);background:#fff}
+.lbl{font-size:12px;letter-spacing:.4px;text-transform:uppercase;color:var(--mut);margin:0 0 6px}
+.name{font-weight:600;margin:0 0 2px}.meta{font-size:12.5px;color:var(--mut)}
+.k{display:inline-block;background:#eef3fa;border-radius:6px;padding:1px 7px;margin:2px 3px 0 0;
+font-size:12px;color:#33475e}
+.k.good{background:#e5f4ec;color:var(--good)}.k.bad{background:#fbeae9;color:var(--bad)}
+.k.warn{background:#faf3d9;color:var(--warn)}
+.fail{background:#fff6f5;border:1px dashed #e5b5b1;border-radius:8px;padding:14px;color:var(--bad)}
+.badge{font-size:12px;padding:2px 9px;border-radius:99px;background:#eef3fa;color:#33475e}
+table{border-collapse:collapse;width:100%}td,th{padding:7px 10px;border-bottom:1px solid var(--line);
+text-align:left;font-size:14px}th{color:var(--mut);font-weight:600}
+.foot{color:var(--mut);font-size:12.5px;margin-top:26px}
+</style></head><body><p class="sub"><a href="index.html">← All lists</a> · <a href="angles.html">📸 Photo-angle guide</a></p><h1>📸 Photo-angle guide</h1><p class='sub'>TripoSR is single-view — it hallucinates everything the camera doesn't see. The best photo shows two faces + the top and lets the symmetry repair rebuild the rest.</p><div class='card'><p><b>Universal rules:</b> one item, fully in frame with ~10% margin · plain contrasting background · even diffuse light, no harsh shadows · no occlusion · camera at about half the object's height.</p><table><tr><th>Items</th><th>Ideal angle</th><th>Why</th></tr><tr><td><b>Desk · Table · Coffee/Side Table · Stool</b></td><td>¾ front (30–45° off), elevated ~15–20°</td><td class='meta'>Top surface AND all legs visible — the least for the model to hallucinate.</td></tr><tr><td><b>Office Chair</b></td><td>¾ front at seat height</td><td class='meta'>The base is rebuilt parametrically anyway; give the model a clear seat and back.</td></tr><tr><td><b>Sofa</b></td><td>¾ front, ~10° up, full length in frame</td><td class='meta'>Shows seat, arm and back planes.</td></tr><tr><td><b>Cabinet · Filing Cabinet · Bookshelf</b></td><td>¾ front ~30°, camera at half height, doors closed</td><td class='meta'>Two crisp faces; open wire cages reconstruct poorly.</td></tr><tr><td><b>Lamp · Planter</b></td><td>¾ side against a plain wall, lamp switched OFF</td><td class='meta'>Whole pole/stem visible; a lit lamp breaks segmentation.</td></tr><tr><td><b>Monitor / Laptop</b></td><td>Monitor: frontal · Laptop: ¾ front, open ~110°</td><td class='meta'>These become slabs/L-shapes; face detail matters most.</td></tr><tr><td><b>Mirror · Picture Frame · Clock</b></td><td>Frontal, tilted 5–10° (mirror: avoid reflecting yourself)</td><td class='meta'>Wall panels are flattened to slabs; frontal maximizes face detail.</td></tr></table></div>
+<p class="foot">SCS photo→BIM · TripoSR A/B proof · generated locally, app untouched.</p>
+</body></html>

@@ -1,0 +1,57 @@
+{
+ "category": "clock",
+ "display": "Clock",
+ "list": 9,
+ "image": "images/clock/list09.jpg",
+ "started_at": "2026-07-11T07:28:31",
+ "raw": {
+  "faces": 66276,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.898,
+  "clip": {
+   "label": "stool",
+   "score": 0.42,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9984,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "clock",
+   "faces_in": 66276,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0181,
+    "score": 0.0162,
+    "applied": "soft-blend (25071/33140 verts)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 9998,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0466
+   },
+   "finalize": {
+    "crumbs_dropped": 7,
+    "healed": 0,
+    "parts": 1
+   },
+   "contact_flatten": 32,
+   "faces_out": 9984
+  },
+  "iou": 0.882,
+  "clip": {
+   "label": "stool",
+   "score": 0.362,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:29:25",
+ "seconds": 53.6
+}

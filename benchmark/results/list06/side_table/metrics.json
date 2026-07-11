@@ -1,0 +1,69 @@
+{
+ "category": "side_table",
+ "display": "Side Table",
+ "list": 6,
+ "image": "images/side_table/list06.jpg",
+ "started_at": "2026-07-11T06:49:00",
+ "raw": {
+  "faces": 89924,
+  "components": 2,
+  "watertight": true,
+  "iou": 0.665,
+  "clip": {
+   "label": "other object",
+   "score": 0.491,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 7570,
+  "components": 3,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "side_table",
+   "faces_in": 89924,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x2",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0002,
+    "score": 0.01729,
+    "applied": "mirror-merge"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 14999,
+   "finalize": {
+    "crumbs_dropped": 339,
+    "healed": 2,
+    "parts": 7
+   },
+   "support_health": {
+    "bottom_comps": 5,
+    "biggest_bottom_frac": 0.0267,
+    "contact_verts": 28,
+    "contact_spread": [
+     0.227,
+     0.034
+    ]
+   },
+   "support_evidence": {
+    "stub_components": 5,
+    "stub_clusters": 2,
+    "round_footprint": false
+   },
+   "support": "rebuilt: trestle at 2 detected stub positions",
+   "contact_flatten": 8,
+   "faces_out": 7570
+  },
+  "iou": 0.465,
+  "clip": {
+   "label": "stool",
+   "score": 0.328,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T06:49:51",
+ "seconds": 51.0
+}

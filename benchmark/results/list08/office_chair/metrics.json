@@ -1,0 +1,54 @@
+{
+ "category": "office_chair",
+ "display": "Office Chair",
+ "list": 8,
+ "image": "images/office_chair/list08.jpg",
+ "started_at": "2026-07-11T07:19:40",
+ "raw": {
+  "faces": 53350,
+  "components": 3,
+  "watertight": true,
+  "iou": 0.563,
+  "clip": {
+   "label": "picture frame",
+   "score": 0.278,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 15297,
+  "components": 6,
+  "watertight": false,
+  "repair": {
+   "archetype": "swivel_seat",
+   "label": "office_chair",
+   "faces_in": 53350,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x3",
+   "symmetry": {
+    "axis": 2,
+    "offset": 0.0127,
+    "score": 0.01221,
+    "applied": "soft-blend (24279/26673 verts)"
+   },
+   "decimated_to": 45000,
+   "finalize": {
+    "crumbs_dropped": 0,
+    "healed": 0,
+    "parts": 3
+   },
+   "contact_flatten": 16,
+   "faces_out": 45000,
+   "graft": "5-star base grafted (app-proven)"
+  },
+  "iou": 0.413,
+  "clip": {
+   "label": "office chair",
+   "score": 0.352,
+   "match": true
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:20:39",
+ "seconds": 59.0
+}

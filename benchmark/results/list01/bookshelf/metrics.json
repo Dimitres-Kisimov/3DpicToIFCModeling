@@ -1,0 +1,69 @@
+{
+ "category": "bookshelf",
+ "display": "Bookshelf",
+ "list": 1,
+ "image": "images/bookshelf/list01.jpg",
+ "started_at": "2026-07-11T05:13:52",
+ "raw": {
+  "faces": 82480,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.679,
+  "clip": {
+   "label": "other object",
+   "score": 0.286,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14916,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "boxy",
+   "label": "bookshelf",
+   "faces_in": 82480,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0565,
+    "score": 0.04306,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x5",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 23,
+    "healed": 1,
+    "parts": 1
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 34,
+    "contact_spread": [
+     0.649,
+     0.262
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 20,
+   "faces_out": 14916
+  },
+  "iou": 0.68,
+  "clip": {
+   "label": "stool",
+   "score": 0.438,
+   "match": false
+  }
+ },
+ "ifc": {
+  "ok": true,
+  "size_kb": 244,
+  "furniture_elements": 1,
+  "note": ""
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T05:14:55",
+ "seconds": 63.1
+}

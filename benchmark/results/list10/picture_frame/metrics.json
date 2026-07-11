@@ -1,0 +1,58 @@
+{
+ "category": "picture_frame",
+ "display": "Picture Frame",
+ "list": 10,
+ "image": "images/picture_frame/list10.jpg",
+ "started_at": "2026-07-11T07:53:58",
+ "raw": {
+  "faces": 96312,
+  "components": 6,
+  "watertight": true,
+  "iou": 0.547,
+  "clip": {
+   "label": "stool",
+   "score": 0.306,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 9930,
+  "components": 4,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "picture_frame",
+   "faces_in": 96312,
+   "debris_dropped": 2,
+   "watertight": "pymeshfix x4",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0452,
+    "score": 0.05087,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 2,
+    "half_thickness": 0.0468
+   },
+   "finalize": {
+    "crumbs_dropped": 2,
+    "healed": 1,
+    "parts": 4
+   },
+   "contact_flatten": 11,
+   "faces_out": 9930
+  },
+  "iou": 0.58,
+  "clip": {
+   "label": "stool",
+   "score": 0.287,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T07:54:54",
+ "seconds": 56.9
+}
