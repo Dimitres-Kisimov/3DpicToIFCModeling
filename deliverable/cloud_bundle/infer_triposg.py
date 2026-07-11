@@ -14,6 +14,7 @@ manifest_path, outdir = sys.argv[1], sys.argv[2]
 os.makedirs(outdir, exist_ok=True)
 items = json.load(open(manifest_path, encoding="utf-8"))
 BUNDLE = os.path.dirname(os.path.abspath(manifest_path))
+sys.path.insert(0, "/workspace/repos/TripoSG")   # the `triposg` package lives in the cloned repo
 
 import torch
 from PIL import Image
@@ -30,20 +31,14 @@ except Exception:
         return pil.convert("RGB")
 
 # --- load pipeline ONCE -------------------------------------------------------
+# TripoSG's custom pipeline must load from a LOCAL snapshot (it needs the repo
+# structure on disk + the `triposg` package on sys.path for its custom scheduler).
 print("[triposg] loading VAST-AI/TripoSG ...", flush=True)
-pipe = None
-try:
-    from triposg.pipelines.pipeline_triposg import TripoSGPipeline
-    pipe = TripoSGPipeline.from_pretrained("VAST-AI/TripoSG").to("cuda", torch.float16)
-except Exception as e:
-    print(f"[triposg] primary loader failed ({e!r}); trying diffusers AutoPipeline", flush=True)
-    try:
-        from diffusers import DiffusionPipeline
-        pipe = DiffusionPipeline.from_pretrained("VAST-AI/TripoSG", trust_remote_code=True).to("cuda")
-    except Exception as e2:
-        print(f"[triposg] FATAL: could not load TripoSG: {e2!r}", flush=True)
-        traceback.print_exc(); sys.exit(2)
-print(f"[triposg] loaded. {len(items)} inputs.", flush=True)
+from huggingface_hub import snapshot_download
+local_dir = snapshot_download("VAST-AI/TripoSG")
+from triposg.pipelines.pipeline_triposg import TripoSGPipeline
+pipe = TripoSGPipeline.from_pretrained(local_dir).to("cuda", torch.float16)
+print(f"[triposg] loaded from {local_dir}. {len(items)} inputs.", flush=True)
 
 def to_mesh(out):
     """Normalize TripoSG output (verts,faces tuple OR object with .vertices/.faces) to a Trimesh."""
