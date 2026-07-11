@@ -7,7 +7,9 @@ of images, so we stage all inputs into one dir, run once, then collect + convert
 """
 import sys, os, json, time, shutil, subprocess, glob, traceback
 
-manifest_path, outdir = sys.argv[1], sys.argv[2]
+# outdir MUST be absolute: run.py executes with cwd=REPO, so a relative staging
+# path resolves against the repo, not the bundle (caused the 0/170 MISSING-obj run)
+manifest_path, outdir = sys.argv[1], os.path.abspath(sys.argv[2])
 os.makedirs(outdir, exist_ok=True)
 items = json.load(open(manifest_path, encoding="utf-8"))
 BUNDLE = os.path.dirname(os.path.abspath(manifest_path))
