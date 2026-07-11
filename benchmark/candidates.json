@@ -4929,6 +4929,412 @@
      "iou": 0.415
     }
    ]
+  },
+  {
+   "list": "list11",
+   "category": "bookshelf",
+   "display": "Bookshelf",
+   "image": "images/bookshelf/list11.jpg",
+   "generated_at": "2026-07-11T21:10:03",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/bookshelf/raw.glb",
+     "faces": 123758,
+     "watertight": true,
+     "iou": 0.543
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/bookshelf/improved.glb",
+     "faces": 14328,
+     "watertight": true,
+     "iou": 0.529
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "cabinet",
+   "display": "Cabinet",
+   "image": "images/cabinet/list11.jpg",
+   "generated_at": "2026-07-11T21:10:36",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/cabinet/raw.glb",
+     "faces": 87692,
+     "watertight": true,
+     "iou": 0.703
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/cabinet/improved.glb",
+     "faces": 14952,
+     "watertight": true,
+     "iou": 0.684
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "clock",
+   "display": "Clock",
+   "image": "images/clock/list11.jpg",
+   "generated_at": "2026-07-11T21:11:13",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/clock/raw.glb",
+     "faces": 152640,
+     "watertight": true,
+     "iou": 0.839
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/clock/improved.glb",
+     "faces": 9974,
+     "watertight": true,
+     "iou": 0.935
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "coffee_table",
+   "display": "Coffee Table",
+   "image": "images/coffee_table/list11.jpg",
+   "generated_at": "2026-07-11T21:11:43",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/coffee_table/raw.glb",
+     "faces": 59058,
+     "watertight": true,
+     "iou": 0.466
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/coffee_table/improved.glb",
+     "faces": 13822,
+     "watertight": true,
+     "iou": 0.435
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "desk",
+   "display": "Desk",
+   "image": "images/desk/list11.jpg",
+   "generated_at": "2026-07-11T21:12:32",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/desk/raw.glb",
+     "faces": 69228,
+     "watertight": true,
+     "iou": 0.557
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/desk/improved.glb",
+     "faces": 13286,
+     "watertight": true,
+     "iou": 0.559
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "filing_cabinet",
+   "display": "Filing Cabinet",
+   "image": "images/filing_cabinet/list11.jpg",
+   "generated_at": "2026-07-11T21:13:28",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/filing_cabinet/raw.glb",
+     "faces": 183150,
+     "watertight": true,
+     "iou": 0.727
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/filing_cabinet/improved.glb",
+     "faces": 10292,
+     "watertight": true,
+     "iou": 0.709
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "lamp",
+   "display": "Lamp",
+   "image": "images/lamp/list11.jpg",
+   "generated_at": "2026-07-11T21:14:31",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/lamp/raw.glb",
+     "faces": 120934,
+     "watertight": true,
+     "iou": 0.821
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/lamp/improved.glb",
+     "faces": 11912,
+     "watertight": true,
+     "iou": 0.83
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "laptop",
+   "display": "Laptop",
+   "image": "images/laptop/list11.jpg",
+   "generated_at": "2026-07-11T21:15:07",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/laptop/raw.glb",
+     "faces": 102432,
+     "watertight": true,
+     "iou": 0.68
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/laptop/improved.glb",
+     "faces": 14952,
+     "watertight": true,
+     "iou": 0.65
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "mirror",
+   "display": "Mirror",
+   "image": "images/mirror/list11.jpg",
+   "generated_at": "2026-07-11T21:15:39",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/mirror/raw.glb",
+     "faces": 51054,
+     "watertight": true,
+     "iou": 0.367
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/mirror/improved.glb",
+     "faces": 7968,
+     "watertight": true,
+     "iou": 0.289
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "monitor",
+   "display": "Monitor",
+   "image": "images/monitor/list11.jpg",
+   "generated_at": "2026-07-11T21:16:21",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/monitor/raw.glb",
+     "faces": 112024,
+     "watertight": true,
+     "iou": 0.629
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/monitor/improved.glb",
+     "faces": 9690,
+     "watertight": true,
+     "iou": 0.639
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "office_chair",
+   "display": "Office Chair",
+   "image": "images/office_chair/list11.jpg",
+   "generated_at": "2026-07-11T21:17:11",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/office_chair/raw.glb",
+     "faces": 70402,
+     "watertight": true,
+     "iou": 0.294
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/office_chair/improved.glb",
+     "faces": 16442,
+     "watertight": false,
+     "iou": 0.287
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "picture_frame",
+   "display": "Picture Frame",
+   "image": "images/picture_frame/list11.jpg",
+   "generated_at": "2026-07-11T21:18:11",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/picture_frame/raw.glb",
+     "faces": 237136,
+     "watertight": true,
+     "iou": 0.926
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/picture_frame/improved.glb",
+     "faces": 9990,
+     "watertight": true,
+     "iou": 0.8
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "planter",
+   "display": "Planter",
+   "image": "images/planter/list11.jpg",
+   "generated_at": "2026-07-11T21:19:07",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/planter/raw.glb",
+     "faces": 55222,
+     "watertight": true,
+     "iou": 0.309
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/planter/improved.glb",
+     "faces": 11658,
+     "watertight": true,
+     "iou": 0.302
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "side_table",
+   "display": "side_table",
+   "image": null,
+   "generated_at": null,
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/side_table/raw.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/side_table/improved.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    }
+   ]
   }
  ]
 }
