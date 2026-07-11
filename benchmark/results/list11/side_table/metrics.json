@@ -1,0 +1,70 @@
+{
+ "category": "side_table",
+ "display": "Side Table",
+ "list": 11,
+ "image": "images/side_table/list11.jpg",
+ "started_at": "2026-07-11T21:19:40",
+ "raw": {
+  "faces": 134056,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.665,
+  "clip": {
+   "label": "stool",
+   "score": 0.724,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14704,
+  "components": 5,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "side_table",
+   "faces_in": 134056,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0063,
+    "score": 0.03176,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 14998,
+   "finalize": {
+    "crumbs_dropped": 13,
+    "healed": 1,
+    "parts": 1
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 10,
+    "contact_spread": [
+     0.051,
+     0.049
+    ]
+   },
+   "support_evidence": {
+    "stub_components": 0,
+    "stub_clusters": 0,
+    "round_footprint": false,
+    "bottom_cover": 0.673,
+    "quadrants": 4
+   },
+   "support": "rebuilt: legsN at 4 detected stub positions",
+   "contact_flatten": 68,
+   "faces_out": 14704
+  },
+  "iou": 0.7,
+  "clip": {
+   "label": "office chair",
+   "score": 0.48,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T21:20:28",
+ "seconds": 48.4
+}

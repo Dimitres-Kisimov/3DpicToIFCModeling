@@ -1,0 +1,63 @@
+{
+ "category": "table",
+ "display": "Table",
+ "list": 11,
+ "image": "images/table/list11.jpg",
+ "started_at": "2026-07-11T21:21:35",
+ "raw": {
+  "faces": 139370,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.815,
+  "clip": {
+   "label": "sofa",
+   "score": 0.467,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 15300,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "table",
+   "faces_in": 139370,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.002,
+    "score": 0.01317,
+    "applied": "mirror-merge"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 14999,
+   "finalize": {
+    "crumbs_dropped": 250,
+    "healed": 2,
+    "parts": 2
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 124,
+    "contact_spread": [
+     0.88,
+     0.118
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 67,
+   "faces_out": 15300
+  },
+  "iou": 0.821,
+  "clip": {
+   "label": "planter",
+   "score": 0.31,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T21:22:07",
+ "seconds": 32.5
+}

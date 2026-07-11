@@ -1,0 +1,57 @@
+{
+ "category": "monitor",
+ "display": "Monitor",
+ "list": 11,
+ "image": "images/monitor/list11.jpg",
+ "started_at": "2026-07-11T21:16:21",
+ "raw": {
+  "faces": 112024,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.629,
+  "clip": {
+   "label": "monitor",
+   "score": 0.185,
+   "match": true
+  }
+ },
+ "improved": {
+  "faces": 9690,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "panel",
+   "label": "monitor",
+   "faces_in": 112024,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 2,
+    "offset": -0.0034,
+    "score": 0.10284,
+    "applied": "none (asymmetric)"
+   },
+   "smooth": "taubin x4",
+   "decimated_to": 10000,
+   "panel_flatten": {
+    "axis": 1,
+    "half_thickness": 0.0629
+   },
+   "finalize": {
+    "crumbs_dropped": 5,
+    "healed": 1,
+    "parts": 1
+   },
+   "contact_flatten": 14,
+   "faces_out": 9690
+  },
+  "iou": 0.639,
+  "clip": {
+   "label": "office chair",
+   "score": 0.249,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T21:17:11",
+ "seconds": 49.7
+}

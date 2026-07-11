@@ -220,11 +220,12 @@ def aggregate_stats():
 
 def build_index(infos):
     cards = []
-    for i in range(1, 11):
+    for i in range(1, 12):
         info = next((x for x in infos if x and x["list"] == i), None)
+        extra = " · all-AI grand comparison" if i == 11 else ""
         if info:
             cards.append(f'<div class="card"><p class="name"><a href="list{i:02d}.html">List {i}</a> '
-                         f'<span class="badge">{info["ok"]}/17 ok</span></p>'
+                         f'<span class="badge">{info["ok"]}/17 ok</span>{extra}</p>'
                          f'<p class="meta">{info["window"] or "in progress"}</p></div>')
         else:
             cards.append(f'<div class="card"><p class="name">List {i}</p><p class="meta">queued…</p></div>')
@@ -251,7 +252,7 @@ def build_index(infos):
 def main():
     sources_path = HERE / "images" / "sources.json"
     sources = json.loads(sources_path.read_text(encoding="utf-8")) if sources_path.exists() else {}
-    infos = [build_list_page(i, sources) for i in range(1, 11)]
+    infos = [build_list_page(i, sources) for i in range(1, 12)]   # list11 = all-AI grand comparison
     build_angles()
     build_index(infos)
     print("gallery rebuilt:", sum(1 for i in infos if i), "list pages")

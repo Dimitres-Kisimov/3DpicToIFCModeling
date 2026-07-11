@@ -1,0 +1,63 @@
+{
+ "category": "sofa",
+ "display": "Sofa",
+ "list": 11,
+ "image": "images/sofa/list11.jpg",
+ "started_at": "2026-07-11T21:20:28",
+ "raw": {
+  "faces": 152042,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.839,
+  "clip": {
+   "label": "stool",
+   "score": 0.438,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14992,
+  "components": 1,
+  "watertight": true,
+  "repair": {
+   "archetype": "upholstered",
+   "label": "sofa",
+   "faces_in": 152042,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0217,
+    "score": 0.01276,
+    "applied": "soft-blend (70404/76021 verts)"
+   },
+   "smooth": "taubin x14",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 4,
+    "healed": 0,
+    "parts": 1
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 336,
+    "contact_spread": [
+     0.903,
+     0.246
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 285,
+   "faces_out": 14992
+  },
+  "iou": 0.833,
+  "clip": {
+   "label": "stool",
+   "score": 0.436,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T21:21:03",
+ "seconds": 34.9
+}

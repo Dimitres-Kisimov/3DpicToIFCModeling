@@ -1,0 +1,70 @@
+{
+ "category": "desk",
+ "display": "Desk",
+ "list": 11,
+ "image": "images/desk/list11.jpg",
+ "started_at": "2026-07-11T21:12:32",
+ "raw": {
+  "faces": 69228,
+  "components": 5,
+  "watertight": true,
+  "iou": 0.557,
+  "clip": {
+   "label": "stool",
+   "score": 0.168,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 13286,
+  "components": 6,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "desk",
+   "faces_in": 69228,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x5",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.0993,
+    "score": 0.02918,
+    "applied": "mirror-merge"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 299,
+    "healed": 6,
+    "parts": 6
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 83,
+    "contact_spread": [
+     0.463,
+     0.089
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 73,
+   "faces_out": 13286
+  },
+  "iou": 0.559,
+  "clip": {
+   "label": "stool",
+   "score": 0.35,
+   "match": false
+  }
+ },
+ "ifc": {
+  "ok": true,
+  "size_kb": 244,
+  "furniture_elements": 1,
+  "note": ""
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T21:13:28",
+ "seconds": 56.2
+}

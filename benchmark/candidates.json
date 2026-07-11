@@ -5310,9 +5310,9 @@
   {
    "list": "list11",
    "category": "side_table",
-   "display": "side_table",
-   "image": null,
-   "generated_at": null,
+   "display": "Side Table",
+   "image": "images/side_table/list11.jpg",
+   "generated_at": "2026-07-11T21:19:40",
    "variants": [
     {
      "key": "raw",
@@ -5320,9 +5320,9 @@
      "engine": "TripoSR",
      "ours": false,
      "glb": "results/list11/side_table/raw.glb",
-     "faces": null,
-     "watertight": null,
-     "iou": null
+     "faces": 134056,
+     "watertight": true,
+     "iou": 0.665
     },
     {
      "key": "improved",
@@ -5330,9 +5330,96 @@
      "engine": "TripoSR",
      "ours": true,
      "glb": "results/list11/side_table/improved.glb",
-     "faces": null,
-     "watertight": null,
-     "iou": null
+     "faces": 14704,
+     "watertight": true,
+     "iou": 0.7
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "sofa",
+   "display": "Sofa",
+   "image": "images/sofa/list11.jpg",
+   "generated_at": "2026-07-11T21:20:28",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/sofa/raw.glb",
+     "faces": 152042,
+     "watertight": true,
+     "iou": 0.839
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/sofa/improved.glb",
+     "faces": 14992,
+     "watertight": true,
+     "iou": 0.833
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "stool",
+   "display": "Stool",
+   "image": "images/stool/list11.jpg",
+   "generated_at": "2026-07-11T21:21:03",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/stool/raw.glb",
+     "faces": 91526,
+     "watertight": true,
+     "iou": 0.604
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/stool/improved.glb",
+     "faces": 13690,
+     "watertight": true,
+     "iou": 0.566
+    }
+   ]
+  },
+  {
+   "list": "list11",
+   "category": "table",
+   "display": "Table",
+   "image": "images/table/list11.jpg",
+   "generated_at": "2026-07-11T21:21:35",
+   "variants": [
+    {
+     "key": "raw",
+     "label": "TripoSR today",
+     "engine": "TripoSR",
+     "ours": false,
+     "glb": "results/list11/table/raw.glb",
+     "faces": 139370,
+     "watertight": true,
+     "iou": 0.815
+    },
+    {
+     "key": "improved",
+     "label": "Repair packs (ours)",
+     "engine": "TripoSR",
+     "ours": true,
+     "glb": "results/list11/table/improved.glb",
+     "faces": 15300,
+     "watertight": true,
+     "iou": 0.821
     }
    ]
   }

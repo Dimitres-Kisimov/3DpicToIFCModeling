@@ -1,0 +1,64 @@
+{
+ "category": "bookshelf",
+ "display": "Bookshelf",
+ "list": 11,
+ "image": "images/bookshelf/list11.jpg",
+ "started_at": "2026-07-11T21:10:03",
+ "raw": {
+  "faces": 123758,
+  "components": 3,
+  "watertight": true,
+  "iou": 0.543,
+  "clip": {
+   "label": "stool",
+   "score": 0.415,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 14328,
+  "components": 3,
+  "watertight": true,
+  "repair": {
+   "archetype": "boxy",
+   "label": "bookshelf",
+   "faces_in": 123758,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x3",
+   "symmetry": {
+    "axis": 1,
+    "offset": -0.0243,
+    "score": 0.01807,
+    "applied": "soft-blend (43882/61767 verts)"
+   },
+   "smooth": "taubin x5",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 54,
+    "healed": 2,
+    "parts": 3
+   },
+   "support_health": {
+    "bottom_comps": 1,
+    "biggest_bottom_frac": 0.0924,
+    "contact_verts": 233,
+    "contact_spread": [
+     0.671,
+     0.33
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 201,
+   "faces_out": 14328
+  },
+  "iou": 0.529,
+  "clip": {
+   "label": "office chair",
+   "score": 0.36,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T21:10:36",
+ "seconds": 32.9
+}

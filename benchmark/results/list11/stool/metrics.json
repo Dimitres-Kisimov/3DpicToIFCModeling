@@ -1,0 +1,63 @@
+{
+ "category": "stool",
+ "display": "Stool",
+ "list": 11,
+ "image": "images/stool/list11.jpg",
+ "started_at": "2026-07-11T21:21:03",
+ "raw": {
+  "faces": 91526,
+  "components": 1,
+  "watertight": true,
+  "iou": 0.604,
+  "clip": {
+   "label": "other object",
+   "score": 0.184,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 13690,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "legged",
+   "label": "stool",
+   "faces_in": 91526,
+   "watertight": "pymeshfix x1",
+   "symmetry": {
+    "axis": 1,
+    "offset": 0.018,
+    "score": 0.02627,
+    "applied": "mirror-merge"
+   },
+   "smooth": "taubin x8",
+   "decimated_to": 15000,
+   "finalize": {
+    "crumbs_dropped": 267,
+    "healed": 2,
+    "parts": 2
+   },
+   "support_health": {
+    "bottom_comps": 0,
+    "biggest_bottom_frac": 0.0,
+    "contact_verts": 93,
+    "contact_spread": [
+     0.972,
+     0.099
+    ]
+   },
+   "support": "healthy (kept original)",
+   "contact_flatten": 45,
+   "faces_out": 13690
+  },
+  "iou": 0.566,
+  "clip": {
+   "label": "stool",
+   "score": 0.241,
+   "match": true
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T21:21:35",
+ "seconds": 31.5
+}

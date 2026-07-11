@@ -1,0 +1,48 @@
+{
+ "category": "lamp",
+ "display": "Lamp",
+ "list": 11,
+ "image": "images/lamp/list11.jpg",
+ "started_at": "2026-07-11T21:14:31",
+ "raw": {
+  "faces": 120934,
+  "components": 2,
+  "watertight": true,
+  "iou": 0.821,
+  "clip": {
+   "label": "planter",
+   "score": 0.41,
+   "match": false
+  }
+ },
+ "improved": {
+  "faces": 11912,
+  "components": 2,
+  "watertight": true,
+  "repair": {
+   "archetype": "slender",
+   "label": "lamp",
+   "faces_in": 120934,
+   "debris_dropped": 0,
+   "watertight": "pymeshfix x2",
+   "smooth": "taubin x6",
+   "decimated_to": 12000,
+   "finalize": {
+    "crumbs_dropped": 22,
+    "healed": 1,
+    "parts": 2
+   },
+   "contact_flatten": 516,
+   "faces_out": 11912
+  },
+  "iou": 0.83,
+  "clip": {
+   "label": "planter",
+   "score": 0.438,
+   "match": false
+  }
+ },
+ "status": "ok",
+ "finished_at": "2026-07-11T21:15:07",
+ "seconds": 35.9
+}
