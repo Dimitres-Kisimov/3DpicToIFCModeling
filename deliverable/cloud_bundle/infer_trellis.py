@@ -10,8 +10,9 @@ the repo README for TRELLIS.2 has the right class — patch the import below.
 """
 import sys, os, json, time, traceback
 os.environ.setdefault("SPCONV_ALGO", "native")
-os.environ.setdefault("ATTN_BACKEND", "sdpa")          # dense attention
-os.environ.setdefault("SPARSE_ATTN_BACKEND", "sdpa")   # SPARSE attention reads its OWN var (SAM3D manual fix #5's twin)
+os.environ.setdefault("ATTN_BACKEND", "sdpa")            # dense attention (sdpa supported here)
+os.environ.setdefault("SPARSE_ATTN_BACKEND", "xformers")  # sparse attention supports ONLY xformers|flash_attn
+#   (v1 sparse module raises on 'sdpa'; xformers==0.0.28.post3 is the torch-2.5.1_cu121-matched wheel)
 
 manifest_path, outdir = sys.argv[1], sys.argv[2]
 model_id = sys.argv[3] if len(sys.argv) > 3 else "microsoft/TRELLIS-image-large"
