@@ -1,0 +1,91 @@
+{
+ "buildings": [
+  {
+   "id": "b_7e52aca674",
+   "name": "house - building",
+   "file": "b_7e52aca674__small_building.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC4",
+    "name": "house - building",
+    "spaces": 2,
+    "storeys": 1,
+    "products": 14,
+    "size_mb": 0.2,
+    "unit_scale": 0.001,
+    "est_populate_min": 1,
+    "warnings": []
+   }
+  },
+  {
+   "id": "b_fd30573002",
+   "name": "Projektname",
+   "file": "b_fd30573002__kleine_wohnung.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC4",
+    "name": "Projektname",
+    "spaces": 28,
+    "storeys": 4,
+    "products": 621,
+    "size_mb": 9.7,
+    "unit_scale": 1,
+    "est_populate_min": 2,
+    "warnings": []
+   }
+  },
+  {
+   "id": "b_0e5868e366",
+   "name": "Building",
+   "file": "b_0e5868e366__schependomlaan.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC2X3",
+    "name": "Building",
+    "spaces": 100,
+    "storeys": 6,
+    "products": 3752,
+    "size_mb": 47,
+    "unit_scale": 0.001,
+    "est_populate_min": 13,
+    "warnings": []
+   }
+  },
+  {
+   "id": "b_3358e4d75a",
+   "name": "COPROPIETE",
+   "file": "b_3358e4d75a__19_rue_Marc_Antoine_Petit_Ground_floor.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC2X3",
+    "name": "COPROPIETE",
+    "spaces": 29,
+    "storeys": 1,
+    "products": 381,
+    "size_mb": 3.9,
+    "unit_scale": 1,
+    "est_populate_min": 1,
+    "warnings": [
+     "building looks rotated or irregular â€” layouts may be conservative"
+    ]
+   }
+  },
+  {
+   "id": "b_b47d0c14b1",
+   "name": "Duplex Apartment",
+   "file": "b_b47d0c14b1__duplex_roundtrip.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC2X3",
+    "name": "Duplex Apartment",
+    "spaces": 21,
+    "storeys": 4,
+    "products": 312,
+    "size_mb": 5.5,
+    "unit_scale": 1,
+    "est_populate_min": 1,
+    "warnings": []
+   }
+  }
+ ]
+}

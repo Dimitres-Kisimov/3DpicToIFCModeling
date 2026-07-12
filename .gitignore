@@ -108,3 +108,5 @@ deliverable/building/*/*.xkt
 # uploaded building IFCs + per-building geometry caches (runtime data, can be 100s of MB)
 data/buildings/
 benchmark/results/list01/filing_cabinet/triposg.glb
+deliverable/research_export/
+deliverable/research_export.zip
