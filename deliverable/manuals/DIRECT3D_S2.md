@@ -4,6 +4,11 @@
 > **not** from a completed pod run. Install steps, entry point and the issues table are *anticipated*;
 > fill in the real fix chain after the first run, like the proven manuals (TripoSG.md, SAM3D.md).
 
+> **Campaign note — gate failed (2026-07-12, A100):** Direct3D-S2 got its one-engine slot in the
+> `newwave.sh` queue; the 1-mesh preflight gate **failed on the draft recipe** and the slot was skipped
+> by policy (no GPU debugging loops — see `logs/nw_direct3ds2.log` on the pod volume). No mesh reached
+> the catalog. **The DRAFT banner stands.**
+
 **Status:** Licence-cleared in the Stage-7 audit ([HUGGINGFACE_MODEL_NARROWING.md](../../docs/HUGGINGFACE_MODEL_NARROWING.md));
 queued for the next-wave pod run. **Gigascale sparse-SDF geometry** (512³ or 1024³ SDF resolution) —
 the highest-resolution *untextured* generator on the shortlist. Single-image → mesh, `.obj` export in

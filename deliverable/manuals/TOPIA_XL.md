@@ -4,6 +4,12 @@
 > **not** from a completed pod run. Install steps, entry point and the issues table are *anticipated*;
 > fill in the real fix chain after the first run, like the proven manuals (TripoSG.md, SAM3D.md).
 
+> **Campaign note — gate failed (2026-07-12, A100):** 3DTopia-XL got two slots. Its `newwave.sh`
+> preflight gate **failed on the draft recipe** (slot skipped by policy — no GPU debugging loops), and
+> the `endgame.sh` retry (install already paid for) **did not land a verified >50 KB mesh before the pod
+> hit zero balance** — no 3DTopia-XL item reached the catalog. The `EG_TOPIA_GATE_*` log lines and any
+> late meshes are recoverable from the stopped pod's volume via a top-up. **The DRAFT banner stands.**
+
 **Why we test it:** #3 of the three challengers from the full HuggingFace tag census
 ([HF_CENSUS_2026-07.md](../../docs/HF_CENSUS_2026-07.md)) — the only **permissive PBR-native**
 mesh generator in the whole tag (PrimX primitive diffusion → mesh with albedo/roughness/metallic),

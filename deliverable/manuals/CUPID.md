@@ -4,6 +4,11 @@
 > **not** from a completed pod run. Install steps, entry point and the issues table are *anticipated*;
 > fill in the real fix chain after the first run, like the proven manuals (TripoSG.md, SAM3D.md).
 
+> **Campaign note (2026-07-12):** Cupid was **ON HOLD per user directive** before the new-engine queue
+> ran (a safety check found no adverse signals — safetensors-only, MIT — but the hold stands
+> regardless), so it **never received a slot**: nothing here is pod-verified either way. **The DRAFT
+> banner stands.**
+
 **Why we test it:** #2 of the three challengers from the full HuggingFace tag census
 ([HF_CENSUS_2026-07.md](../../docs/HF_CENSUS_2026-07.md)) — the only clean-licence model chasing
 the same **reconstruction-fidelity** frontier as Pixal3D/SAM 3D (pose-grounded: jointly models the

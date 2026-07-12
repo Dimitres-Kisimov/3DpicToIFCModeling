@@ -3,6 +3,11 @@
 > **DRAFT.** Written from the repo README + LICENSE + `scripts/inference_partcrafter.py` + HF API
 > (fetched 2026-07-11), **not** from a completed pod run. Fill in the real fix chain after the first run.
 
+> **Campaign note — gate failed (2026-07-12, A100):** PartCrafter got its one-engine slot in the
+> `newwave.sh` queue; the 1-mesh preflight gate **failed on the draft recipe** and the slot was skipped
+> by policy (see `logs/nw_partcrafter.log` on the pod volume). No mesh reached the catalog. **The DRAFT
+> banner stands.**
+
 **Status:** Licence-cleared in the Stage-7 audit ([HUGGINGFACE_MODEL_NARROWING.md](../../docs/HUGGINGFACE_MODEL_NARROWING.md));
 queued for the next-wave pod run. **Structured PART-LEVEL generation**: one image → N separate part
 meshes (a TripoSG-family DiT with part-aware attention — the inference helper is literally called

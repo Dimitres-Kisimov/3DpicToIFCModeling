@@ -4,6 +4,11 @@
 > **not** from a completed pod run. Install steps, entry point and the issues table are *anticipated*;
 > fill in the real fix chain after the first run, like the proven manuals (TripoSG.md, SAM3D.md).
 
+> **Campaign note — gate failed (2026-07-12, A100):** SceneGen got its one-engine slot in the
+> `newwave.sh` queue (benchmark-only tier — VGGT-1B dependency is NC); the 1-mesh preflight gate
+> **failed on the draft recipe** and the slot was skipped by policy (see `logs/nw_scenegen.log` on the
+> pod volume). No mesh reached the catalog. **The DRAFT banner stands.**
+
 **Why we test it:** #1 of the three challengers from the full HuggingFace tag census
 ([HF_CENSUS_2026-07.md](../../docs/HF_CENSUS_2026-07.md)) — purpose-built for **indoor/furniture**
 content, single image + object masks → multi-asset **textured** scene in one feedforward pass,

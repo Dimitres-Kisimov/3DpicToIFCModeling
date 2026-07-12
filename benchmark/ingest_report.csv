@@ -1,0 +1,41 @@
+id,model,category,repair,ifc,catalog
+pod_instantmesh_bed,instantmesh,bed,,,already ingested
+pod_instantmesh_bookshelf,instantmesh,bookshelf,,,already ingested
+pod_instantmesh_cabinet,instantmesh,cabinet,,,already ingested
+pod_instantmesh_chair,instantmesh,chair,,,already ingested
+pod_instantmesh_desk,instantmesh,desk,,,already ingested
+pod_instantmesh_lamp,instantmesh,lamp,,,already ingested
+pod_instantmesh_office_chair,instantmesh,office_chair,,,already ingested
+pod_instantmesh_sofa,instantmesh,sofa,,,already ingested
+pod_instantmesh_stool,instantmesh,stool,,,already ingested
+pod_instantmesh_table,instantmesh,table,,,already ingested
+pod_sam3d_bed,sam3d,bed,ok 150000->9186f,ok IFC4 ok (4 products),added
+pod_sam3d_bookshelf,sam3d,bookshelf,ok 150000->14976f,ok IFC4 ok (4 products),added
+pod_sam3d_cabinet,sam3d,cabinet,ok 150000->14992f,ok IFC4 ok (4 products),added
+pod_sam3d_chair,sam3d,chair,ok 150000->7974f,ok IFC4 ok (4 products),added
+pod_sam3d_desk,sam3d,desk,ok 150000->16306f,ok IFC4 ok (4 products),added
+pod_sam3d_lamp,sam3d,lamp,ok 131012->11998f,ok IFC4 ok (4 products),added
+pod_sam3d_office_chair,sam3d,office_chair,ok 150000->44982f,ok IFC4 ok (4 products),added
+pod_sam3d_sofa,sam3d,sofa,ok 150000->14972f,ok IFC4 ok (4 products),added
+pod_sam3d_stool,sam3d,stool,ok 150000->14746f,ok IFC4 ok (4 products),added
+pod_sam3d_table,sam3d,table,ok 150000->24464f,ok IFC4 ok (4 products),added
+pod_trellis_bed,trellis,bed,ok 1117490->11272f,ok IFC4 ok (4 products),added
+pod_trellis_bookshelf,trellis,bookshelf,ok 231692->14982f,ok IFC4 ok (4 products),added
+pod_trellis_cabinet,trellis,cabinet,ok 981028->14982f,ok IFC4 ok (4 products),added
+pod_trellis_chair,trellis,chair,ok 924876->14974f,ok IFC4 ok (4 products),added
+pod_trellis_desk,trellis,desk,ok 522228->15316f,ok IFC4 ok (4 products),added
+pod_trellis_lamp,trellis,lamp,ok 127238->11918f,ok IFC4 ok (4 products),added
+pod_trellis_office_chair,trellis,office_chair,ok 549712->44994f,ok IFC4 ok (4 products),added
+pod_trellis_sofa,trellis,sofa,ok 1441376->5984f,ok IFC4 ok (4 products),added
+pod_trellis_stool,trellis,stool,ok 328920->7848f,ok IFC4 ok (4 products),added
+pod_trellis_table,trellis,table,ok 600692->16898f,ok IFC4 ok (4 products),added
+pod_triposg_bed,triposg,bed,ok 2597772->8152f,ok IFC4 ok (4 products),added
+pod_triposg_bookshelf,triposg,bookshelf,ok 1454718->13992f,ok IFC4 ok (4 products),added
+pod_triposg_cabinet,triposg,cabinet,ok 1589670->14996f,ok IFC4 ok (4 products),added
+pod_triposg_chair,triposg,chair,ok 2707376->4413f,ok IFC4 ok (4 products),added
+pod_triposg_desk,triposg,desk,ok 857124->14990f,ok IFC4 ok (4 products),added
+pod_triposg_lamp,triposg,lamp,ok 412764->11422f,ok IFC4 ok (4 products),added
+pod_triposg_office_chair,triposg,office_chair,ok 1956732->44994f,ok IFC4 ok (4 products),added
+pod_triposg_sofa,triposg,sofa,ok 2258640->14966f,ok IFC4 ok (4 products),added
+pod_triposg_stool,triposg,stool,ok 1280930->14958f,ok IFC4 ok (4 products),added
+pod_triposg_table,triposg,table,ok 433076->5520f,ok IFC4 ok (4 products),added

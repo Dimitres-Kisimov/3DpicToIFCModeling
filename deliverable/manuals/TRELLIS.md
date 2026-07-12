@@ -67,6 +67,22 @@ glb.export("x.glb")
 pass and only failed at the final GLB export** (#6, #8). Always test to a written `.glb`, and **honor the
 repo's pinned commit hashes** — "latest" breaks the API.
 
+## A100 campaign addendum — issues #10–#14 (2026-07-11→12 campaign)
+
+The A100 campaign re-proved TRELLIS from a fresh pod (r10 + 187-item sweep; 197 TRL items in the final
+IFC-gated catalog) and hit five blockers the H200 run never saw. The env that finally worked:
+**torch 2.5.1+cu121** (NOT the pod's torch 2.13/cu130 base — see #12), `xformers==0.0.28.post3`,
+**real kaolin 0.18.0** (the #5 stub is fine for TRELLIS alone, but the shared A100 stack installed the
+full wheel), `ATTN_BACKEND=sdpa` for dense + `SPARSE_ATTN_BACKEND=xformers` for sparse attention.
+
+| # | Symptom | Cause | Fix |
+|---|---|---|---|
+| 10 | `from_pretrained("microsoft/TRELLIS-image-large")` dies with a hub **404 on `ckpts/...`** | TRELLIS wraps the real loading error in a **bare `except`** and falls through to hub resolution, so the pipeline's **relative ckpt paths** (`ckpts/…`) get resolved as repo ids by newer `huggingface_hub` — the 404 is a red herring | `snapshot_download(model_id)` first, then `from_pretrained(<local dir>)` — same class as the TripoSG `15fce17` fix (commits 39543ff, da0217e). *verified 2026-07-12 (A100)* |
+| 11 | `SLatGaussianDecoder` fails wanting `flash_attn` even with `ATTN_BACKEND=sdpa` set | the **sparse** attention module reads its **own** `SPARSE_ATTN_BACKEND` env var and supports **only `xformers` \| `flash_attn`** — v1's sparse module has **no sdpa path**, so a dense-only pin still leaves a flash_attn import in the gaussian-decoder path (and TRELLIS's bare except turned the real error into the misleading #10 404) | `SPARSE_ATTN_BACKEND=xformers` + **`xformers==0.0.28.post3` from the cu121 index** (the torch-2.5.1-matched build); keep `ATTN_BACKEND=sdpa` for dense (85fd61c). *verified 2026-07-12 (A100)* |
+| 12 | kaolin install "succeeds" but `import kaolin` fails — either an ancient 0.1 package or `undefined symbol: c10_cuda_check_implementation` | **kaolin has NO wheel for torch 2.13/cu130.** A plain `pip install kaolin` grabs the broken PyPI kaolin 0.1 source package, or an ABI-mismatched wheel — the undefined-c10-symbol error means the wheel came from the wrong source | pin the env to **torch 2.5.1+cu121** and install `kaolin==0.18.0 -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-2.5.1_cu121.html` (the NVIDIA find-links index); **always verify with an actual `import kaolin`** (fix_round3.sh, night_shift2.sh). *verified 2026-07-12 (A100)* |
+| 13 | `to_glb` needs `diff_gaussian_rasterization` — which is **Inria non-commercial** | #9 again, but now a **licence decision**, not a convenience call: the texture bake's rasterizer is excluded per the Stage-8 licence audit | **geometry-only GLB export is the licence-clean path** — export `r["mesh"][0]` directly (e8690ec, infer_trellis.py); the scorer is geometry-only, so results are scorer-equivalent to the textured H200 run. *verified 2026-07-12 (A100)* |
+| 14 | utils3d API drift (again) on the fresh env | any "latest" utils3d breaks TRELLIS — the H200 lesson (#8) holds unchanged on the new stack | utils3d **MUST** be the pinned commit `9a4eb15e4021b67b12c460c7057d642626897ec8`, every rebuild, no exceptions. *verified 2026-07-12 (A100)* |
+
 ## Verdict for the paper
 Most-downloaded open-source model (1.1 M), MIT — but the **highest integration cost** by far, and it
 **depends on nvdiffrast (NVIDIA license)**, so it's a commercial flag. Strong quality expected; scores TBD.

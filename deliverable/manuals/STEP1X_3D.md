@@ -4,6 +4,11 @@
 > completed pod run. Install steps and the issues table are *anticipated*; fill in the real fix chain
 > after the first run, like the proven manuals (TripoSG.md, SAM3D.md).
 
+> **Campaign note — gate failed (2026-07-12, A100):** Step1X-3D got its one-engine slot in the
+> `newwave.sh` queue; the 1-mesh preflight gate **failed on the draft recipe** and the slot was skipped
+> by policy (see `logs/nw_step1x3d.log` on the pod volume). No mesh reached the catalog. **The DRAFT
+> banner stands.**
+
 **Status:** Licence-cleared in the Stage-7 audit ([HUGGINGFACE_MODEL_NARROWING.md](../../docs/HUGGINGFACE_MODEL_NARROWING.md));
 queued for the next-wave pod run. Two-stage pipeline: **geometry** (1300M-param flow model, GLB out)
 then **texture synthesis** on the untextured mesh. One of the very few **fully-permissive textured**

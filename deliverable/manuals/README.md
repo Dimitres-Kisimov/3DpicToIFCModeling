@@ -8,18 +8,21 @@ README-promised happy path.
 **Test environment:** RunPod **H200 (143 GB)**, template *RunPod PyTorch 2.8.0*, **torch 2.8.0+cu128,
 CUDA 12.8**, 120 GB disk, Ubuntu, 160 vCPU. (An A100 80 GB works for all of these too.)
 
-## Status board (updated 2026-07-01)
+## Status board (updated 2026-07-12 — after the A100 campaign)
 
 | # | Model | License | Status | Mean F@0.02 | Manual |
 |---|---|---|---|---|---|
-| 1 | **TripoSG** | MIT | ✅ **WORKS** — 10/10 meshes | **0.393** | [TripoSG.md](TripoSG.md) |
-| 2 | **SAM 3D Objects** | SAM License | ✅ **WORKS** — 10/10 meshes (sdpa backend) | **0.368** | [SAM3D.md](SAM3D.md) |
-| 3 | **TRELLIS-image-large** | MIT | ✅ **WORKS** — 10/10 meshes (mesh-only) | **0.347** | [TRELLIS.md](TRELLIS.md) |
-| 4 | **InstantMesh** | Apache-2.0 | ✅ **WORKS** — 10/10 meshes | **0.328** | [InstantMesh.md](InstantMesh.md) |
-| 5 | **TRELLIS.2-4B** | MIT | ⏳ deferred (separate repo) | tbd | [TRELLIS2.md](TRELLIS2.md) |
+| 1 | **TripoSG** | MIT | ✅ **WORKS** — 10/10 + full 187-sweep | **0.393** | [TripoSG.md](TripoSG.md) |
+| 2 | **SAM 3D Objects** | SAM License | ✅ **WORKS** — 10/10 (sdpa backend); A100 rebuild proven | **0.368** | [SAM3D.md](SAM3D.md) |
+| 3 | **TRELLIS-image-large** | MIT | ✅ **WORKS** — 10/10 + full 187-sweep (geometry-only) | **0.347** | [TRELLIS.md](TRELLIS.md) |
+| 4 | **InstantMesh** | Apache-2.0 | ✅ **WORKS** — 10/10; 187-sweep fixed + completed | **0.328** | [InstantMesh.md](InstantMesh.md) |
+| 5 | **SF3D (Stable Fast 3D)** | Stability Community | ✅ **WORKS** — 10/10 + 187-sweep + raw/cutout A/B (2026-07-12) | (campaign CSV) | [SF3D.md](SF3D.md) |
+| 6 | **TRELLIS.2-4B** | MIT | 🟨 **software-proven 2026-07-12** (`PIPELINE_OK`); mesh blocked on the Meta **DINOv3 gate** | tbd | [TRELLIS2.md](TRELLIS2.md) |
 | — | TripoSR | MIT | ✅ baseline (run locally) | 0.278/0.295 | (see investigation report) |
 
-**4 of 5 cloud generators working** (all but the deferred TRELLIS.2). Generator ranking:
+**Five generators fully working** after the 2026-07-11→12 A100 campaign (final IFC-gated catalog: 605
+items — TSG 196, TRL 197, SF3D 192, SAM3D 10, IM 10). TRELLIS 2.0 is import-gate-proven and armed to
+run the moment Meta grants DINOv3 access. Generator ranking on the research-10:
 **TripoSG > SAM 3D > TRELLIS > InstantMesh > TripoSR.**
 
 Reference baselines for the same 10 furniture types: **TripoSR·SAM2 = 0.278, TripoSR·rembg = 0.295,
@@ -44,7 +47,39 @@ Draft infer scripts for the four queued models exist in `cloud_bundle/` (`infer_
 `infer_step1x3d.py`, `infer_hi3dgen.py`, `infer_partcrafter.py`) plus matching `install_models.sh`
 entries (`bash install_models.sh nextwave`). All marked DRAFT until the first `.glb` lands.
 
+**Campaign outcome (2026-07-12):** the new engines got one-slot-each runs on the A100
+(`newwave.sh` / `endgame.sh` / `hi3dgen_rider.sh`), each behind the 1-mesh preflight gate. **None
+passed the gate before the pod stopped at zero balance** — no verified new-engine mesh reached the
+catalog, so every one of these manuals **keeps its DRAFT banner** (each carries its own gate-failure
+note). Cupid never ran: ON HOLD per user directive.
+
 ---
+
+## Campaign-verified operations playbook (2026-07-11→12, A100)
+
+Engine-agnostic rules the campaign proved the hard way — apply them to **every** future pod run:
+
+1. **Preflight gate before every batch:** the engine must generate **ONE real mesh, >50 KB**, from the
+   preflight manifest before its batch slot runs. An import error then costs one minute, not a silent
+   180-item fabrication (`queue3_verified.sh`).
+2. **Identical-output postcheck:** after a sweep, count **distinct file sizes**. More than 10 outputs
+   with **fewer than 3 distinct sizes** = fabricated → mark SUSPECT, never score it. Corollary: **never
+   write placeholder output on failure** — fail loudly and skip (SAM3D fix #17).
+3. **Per-slot weight eviction on 30 GB container disks:** one engine at a time; evict the HF weight
+   cache (and tear down the env, freeze list saved) after each slot — a 30 GB disk fits exactly one
+   engine's env+weights comfortably (`queue4_rebuild.sh`).
+4. **`pkill` self-match traps:** a `pkill -f pattern` whose pattern appears in the *launching shell's*
+   own command line kills the launcher before `nohup` runs. **ALWAYS bracket a character:**
+   `pkill -f 'infer_sam3[d]'`. And **heredocs containing the target string ALSO self-match** — keep
+   kill commands in a **separate call** from any script body that mentions the pattern.
+5. **One git writer at a time:** never let two agents/shells commit or push the repo concurrently —
+   serialize all git writes through a single owner per window.
+6. **GitHub push limits:** files **>100 MB are rejected** outright, and **multi-GB pushes 500** —
+   chunk commits/pushes to **<300 MB** each (the mesh archives went up as 4 chunks).
+7. **`pip cache purge` between engine installs:** cached wheels compiled against a previous torch
+   **poison later rebuilds** — purge between engines, and build compiled extensions with
+   `--no-cache-dir --no-build-isolation --force-reinstall` (TRELLIS2 fix #2). Related: re-pin torch
+   after any batch install (SAM3D fix #16).
 
 ## Universal gotchas (hit *every* model — fix these first)
 

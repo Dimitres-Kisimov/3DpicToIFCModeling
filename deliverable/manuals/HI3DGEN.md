@@ -3,6 +3,11 @@
 > **DRAFT.** Written from the repo README + LICENSE + `app.py` + HF/GitHub APIs (fetched 2026-07-11),
 > **not** from a completed pod run. Fill in the real fix chain after the first run.
 
+> **Campaign note — gate failed (2026-07-12, A100):** Hi3DGen got a `newwave.sh` slot and then a second
+> chance as `hi3dgen_rider.sh` (riding the Study E TRELLIS env, which carries ~90% of its deps). The
+> 1-mesh preflight gate **did not pass before the pod stopped at zero balance** — no Hi3DGen mesh
+> reached the catalog (`logs/hi3dgen.log` on the pod volume has the failure). **The DRAFT banner stands.**
+
 **Status:** Licence-cleared in the Stage-7 audit ([HUGGINGFACE_MODEL_NARROWING.md](../../docs/HUGGINGFACE_MODEL_NARROWING.md));
 queued for the next-wave pod run. **Normal-bridged geometry**: image → normal map (StableNormal_turbo)
 → TRELLIS-style sparse-structure + SLAT sampling → mesh. Geometry-only (`formats=["mesh"]`).

@@ -4,6 +4,9 @@
 (2nd of 5 generators, behind only TripoSG 0.393). Avg **8.7 s/image** (fastest measured). The model that
 **never ran on the original Windows box** (no `pytorch3d`/`kaolin` wheels) runs cleanly on Linux.
 License: **SAM License** (custom, commercial-OK); **dataset SA-3DAO is CC-BY-NC** (most legal care needed).
+**Re-proven end-to-end on the 2026-07-11→12 A100 campaign** after a full from-zero env rebuild (r10
+10/10 into the final catalog) — that rebuild added fixes **#13–#17** below, including a numpy resolution
+that **supersedes #8** on the A100/kaolin-0.18 stack.
 
 ## The one thing that mattered: use the `sdpa` attention backend, not flash_attn
 SAM 3D's `inference_pipeline.py` **force-sets `ATTN_BACKEND=flash_attn` at module load.** Its published
@@ -27,10 +30,15 @@ export HUGGING_FACE_HUB_TOKEN=hf_xxx HF_TOKEN=hf_xxx          # read token, gate
 python -m venv /workspace/envs/sam3d2 && source /workspace/envs/sam3d2/bin/activate
 git clone --depth 1 https://github.com/facebookresearch/sam-3d-objects /workspace/repos/SAM3D
 
-# 1) Official torch base + prebuilt kaolin/pytorch3d/gsplat wheels (Meta's requirements.*.txt find-links)
+# 1) Official torch base first
 pip install torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cu121
+# CAUTION (fix #13): requirements.p3d.txt is a GIT-SOURCE build of pytorch3d, NOT prebuilt wheels —
+# install it with --no-build-isolation and TORCH_CUDA_ARCH_LIST set, BEFORE the inference reqs:
+pip install --no-build-isolation -r /workspace/repos/SAM3D/requirements.p3d.txt
+# CAUTION (fix #13): install the inference reqs PER-LINE with soft-fail — one bad line otherwise
+# aborts the whole file (sam3d_final.sh does exactly this):
 pip install -r /workspace/repos/SAM3D/requirements.inference.txt     # installs spconv-cu121, timm, etc.
-#    (requirements.p3d.txt brings pytorch3d/kaolin/gsplat prebuilt wheels for torch-2.5.1_cu121)
+# CAUTION (fix #16): re-check torch after ANY batch install — generic installs silently bump it.
 
 # 2) flash_attn: the requirements wheel is ABI-WRONG. We DON'T need it (see sdpa below), but if you ever
 #    do, install the torch-2.5-matched wheel (cxx11abiFALSE for the pytorch.org build):
@@ -87,6 +95,11 @@ import trimesh; trimesh.Trimesh(mesh.vertices.detach().cpu().numpy(),
 | 10 | `'Image' object has no attribute 'astype'` | Meta's `merge_mask_to_rgba` does `image[...,:3]` + `mask.astype(...)` — wants **numpy**, I passed PIL | return `(numpy_rgb, numpy_0/1_mask)` from the mask helper |
 | 11 | `'list' object has no attribute 'vertices'` | `out['mesh']` is a **LIST** (batch dim) of `MeshExtractResult`, not a single mesh | unwrap `out['mesh'][0]`; coerce torch `.vertices/.faces` → trimesh |
 | 12 | local scorer `MemoryError` on 10th mesh | raw meshes are **130 k–1.06 M faces**; ten of them exhaust Windows RAM (py3.14) | **decimate to 150 k faces** (open3d quadric, vertex-colors preserved) before scoring/display |
+| 13 | `pip install -r requirements.p3d.txt` dies with `No module named 'torch'` and **pip aborts the whole file** | `requirements.p3d.txt` is a **git-source build of pytorch3d**, NOT prebuilt wheels — under build isolation the build env has no torch, and one failing line kills every remaining line of the `-r` install | install it with **`--no-build-isolation` + `TORCH_CUDA_ARCH_LIST` set**; install `requirements.inference.txt` **per-line with soft-fail** so one bad line can't abort the rest (sam3d_final.sh). *verified 2026-07-12 (A100)* |
+| 14 | `ModuleNotFoundError: hydra`, and `pip install hydra` doesn't fix it | the import name is `hydra`, but the PyPI package is **`hydra-core`** (plain `hydra` is an unrelated package) | `pip install hydra-core`. *verified 2026-07-12 (A100)* |
+| 15 | `AttributeError`/`KeyError` on **`np.long`** from spconv's dtype table | spconv's dtype table wants `np.long` — a **numpy-2.x** symbol — while this manual's old `numpy==1.26.4` pin (fix #8) predates it | **`numpy==2.1.*` works with `kaolin==0.18.0`** — this **supersedes the 1.26.4 pin (#8)** on the A100 stack; sam3d_final.sh keeps a 1.26.4↔2.1 toggle and lets the import gate decide (night_shift.sh landed 2.1). *verified 2026-07-12 (A100)* |
+| 16 | after a dependency-chase batch install, **every compiled wheel** (pytorch3d/kaolin/spconv) is suddenly ABI-broken | a generic `pip install X` during the chase **silently bumped torch 2.5.1 → 2.13**, orphaning every extension compiled against 2.5.1 | **re-pin torch after any batch install** (`pip install torch==2.5.1 torchvision==0.20.1 --index-url …/cu121`) and re-run the import gate before trusting the env. *verified 2026-07-12 (A100)* |
+| 17 | a "successful" batch of 180 outputs — **every file identical** | the old infer script's **glob-fallback copied a repo asset when generation failed**, fabricating 180 identical outputs that looked like a completed run | **never write placeholder output on failure** — fail loudly and skip (infer_sam3d.py rewrite); 1-mesh >50 KB **preflight gates** + **distinct-file-size postchecks** are now standard for every engine (queue3_verified.sh). *verified 2026-07-12 (A100)* |
 
 ## Verdict for the paper
 **2nd-best generator (0.368), fastest (8.7 s), and uniquely outputs pose (scale/rotation/translation)** —
