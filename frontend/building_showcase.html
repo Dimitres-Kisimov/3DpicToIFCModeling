@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Populated Buildings Showcase — four IFC shells, furnished by the app</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏙️</text></svg>">
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--ink:#1c2733;--mut:#5b6b7c;--line:#e3e9f1;--brand:#2f6bff;--ours:#e0812b}
+*{box-sizing:border-box}body{margin:0;font:14px/1.55 'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+header{padding:18px 26px;border-bottom:1px solid var(--line);background:var(--card)}
+header h1{margin:0;font-size:21px}header p{margin:6px 0 0;color:var(--mut);font-size:13px}
+header a{color:var(--brand);text-decoration:none}
+main{max-width:1280px;margin:0 auto;padding:10px 26px 60px}
+h2{margin:34px 0 4px;font-size:17px}
+.date{display:inline-block;margin-left:10px;font-size:11.5px;font-weight:700;color:var(--ours);background:#fdf3e7;border:1px solid #f3d9bb;border-radius:9px;padding:2px 9px;vertical-align:2px}
+.sub{color:var(--mut);font-size:12.5px;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img{width:100%;display:block;background:#fff;cursor:zoom-in}
+figcaption{padding:8px 12px;font-size:12px;color:var(--mut)}
+.note{background:#eef4ff;border:1px solid #cfe0ff;border-radius:10px;padding:11px 15px;font-size:13px;margin:16px 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏙️ Populated Buildings Showcase</h1>
+  <p>Four public IFC shells, furnished end-to-end by the app's ergonomics engine — every capture is a real,
+  reproducible output (Building tab → load shell → Populate). Dates are the commit dates of the captures.
+  <a href="/hub.html">← Research hub</a> · try it live in the <a href="/">app's Building tab</a></p>
+</header>
+<main>
+
+<div class="note"><b>How to read these:</b> each building shows per-floor <b>2D plans</b> and <b>3D views</b> of the
+same populated state, plus X-ray showcases where furniture is visible through walls. Generated items
+(badge <b>OURS</b> / engine tags) sit beside catalog items; the object tables in the X-ray shots report
+capacity refusals and reachability warnings honestly.</div>
+
+<h2>Duplex (two levels)<span class="date">captured 2026-07-07 · density study 2026-07-09</span></h2>
+<p class="sub">The primary demo shell — includes the X-ray showcase with a photo-generated “office chair (ours)” placed in Bedroom 2.</p>
+<div class="grid">
+  <figure><img src="/fleet/showcase_duplex_xray.png" loading="lazy" onclick="window.open(this.src)"><figcaption>X-ray showcase — furniture through walls, OURS item chip, per-room capacity &amp; reachability table</figcaption></figure>
+  <figure><img src="/fleet/showcase_duplex_floor.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Solid floor view of the same populated state</figcaption></figure>
+  <figure><img src="/fleet/duplex__Level_1_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Level 1 — 2D plan</figcaption></figure>
+  <figure><img src="/fleet/duplex__Level_1_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Level 1 — 3D</figcaption></figure>
+  <figure><img src="/fleet/duplex__Level_2_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Level 2 — 2D plan</figcaption></figure>
+  <figure><img src="/fleet/duplex__Level_2_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Level 2 — 3D</figcaption></figure>
+</div>
+
+<h2>Density &amp; capacity study (duplex + German office)<span class="date">2026-07-09</span></h2>
+<p class="sub">The capacity guard under load: medium vs dense populations, and the refusal screen when a request exceeds the floor-area budget.</p>
+<div class="grid">
+  <figure><img src="/fleet/density_duplex_medium_L1_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Duplex L1 — medium density</figcaption></figure>
+  <figure><img src="/fleet/density_duplex_dense_L1_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Duplex L1 — dense population</figcaption></figure>
+  <figure><img src="/fleet/density_duplex_dense_L2_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Duplex L2 — dense population</figcaption></figure>
+  <figure><img src="/fleet/density_german_dense_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>German office — dense population</figcaption></figure>
+  <figure><img src="/fleet/density_overload_blocked.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b>The capacity guard firing</b> — overload refused with named items, not silently crammed</figcaption></figure>
+</div>
+
+<h2>German office floor (BT A, 1. OG)<span class="date">captured 2026-07-07</span></h2>
+<div class="grid">
+  <figure><img src="/fleet/showcase_german_apartment_xray.png" loading="lazy" onclick="window.open(this.src)"><figcaption>X-ray showcase</figcaption></figure>
+  <figure><img src="/fleet/german__BT_A_1010_OG01_RDOK_3_000_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>2D plan, populated</figcaption></figure>
+  <figure><img src="/fleet/german__BT_A_1010_OG01_RDOK_3_000_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>3D view, populated</figcaption></figure>
+</div>
+
+<h2>House (ground floor)<span class="date">captured 2026-07-07</span></h2>
+<div class="grid">
+  <figure><img src="/fleet/house__00_groundfloor_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>2D plan, populated</figcaption></figure>
+  <figure><img src="/fleet/house__00_groundfloor_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>3D view, populated</figcaption></figure>
+</div>
+
+<h2>Schependomlaan (four storeys)<span class="date">captured 2026-07-07</span></h2>
+<p class="sub">The scale test — a real-world public IFC populated storey by storey with the same per-room logic.</p>
+<div class="grid">
+  <figure><img src="/fleet/schependomlaan__00_begane_grond_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Ground floor — 2D</figcaption></figure>
+  <figure><img src="/fleet/schependomlaan__00_begane_grond_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Ground floor — 3D</figcaption></figure>
+  <figure><img src="/fleet/schependomlaan__01_eerste_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>1st floor — 2D</figcaption></figure>
+  <figure><img src="/fleet/schependomlaan__01_eerste_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>1st floor — 3D</figcaption></figure>
+  <figure><img src="/fleet/schependomlaan__02_tweede_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>2nd floor — 2D</figcaption></figure>
+  <figure><img src="/fleet/schependomlaan__02_tweede_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>2nd floor — 3D</figcaption></figure>
+  <figure><img src="/fleet/schependomlaan__03_derde_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>3rd floor — 2D</figcaption></figure>
+  <figure><img src="/fleet/schependomlaan__03_derde_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>3rd floor — 3D</figcaption></figure>
+</div>
+
+<div class="note">Campaign context: the generated items visible in these buildings passed the repair→IFC4 gate before
+entering the catalog (engine badges in the pickers). The 2026-07-11→12 A100 campaign added 605 engine-badged items
+(TripoSG · TRELLIS · SF3D · SAM 3D · InstantMesh) — repopulating any of these shells today draws from that richer catalog.</div>
+
+</main>
+</body>
+</html>
