@@ -4068,6 +4068,86 @@
      "faces": null,
      "watertight": null,
      "iou": null
+    },
+    {
+     "key": "triposg_v1",
+     "label": "triposg_v1",
+     "engine": "TSG v1 \u00b7 repair only (today)",
+     "ours": false,
+     "glb": "results/list05/bookshelf/triposg_v1.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v2",
+     "label": "triposg_v2",
+     "engine": "TSG v2 \u00b7 +Taubin smooth",
+     "ours": false,
+     "glb": "results/list05/bookshelf/triposg_v2.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v3",
+     "label": "triposg_v3",
+     "engine": "TSG v3 \u00b7 +Laplacian smooth",
+     "ours": false,
+     "glb": "results/list05/bookshelf/triposg_v3.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v4",
+     "label": "triposg_v4",
+     "engine": "TSG v4 \u00b7 +Humphrey smooth",
+     "ours": false,
+     "glb": "results/list05/bookshelf/triposg_v4.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v5",
+     "label": "triposg_v5",
+     "engine": "TSG v5 \u00b7 +lean 5k",
+     "ours": false,
+     "glb": "results/list05/bookshelf/triposg_v5.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v6",
+     "label": "triposg_v6",
+     "engine": "TSG v6 \u00b7 +photo colour",
+     "ours": false,
+     "glb": "results/list05/bookshelf/triposg_v6.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v7",
+     "label": "triposg_v7",
+     "engine": "TSG v7 \u00b7 Taubin+colour",
+     "ours": false,
+     "glb": "results/list05/bookshelf/triposg_v7.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v8",
+     "label": "triposg_v8",
+     "engine": "TSG v8 \u00b7 all-in",
+     "ours": false,
+     "glb": "results/list05/bookshelf/triposg_v8.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4124,6 +4204,86 @@
      "engine": "TRELLIS 1.0",
      "ours": false,
      "glb": "results/list05/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v1",
+     "label": "triposg_v1",
+     "engine": "TSG v1 \u00b7 repair only (today)",
+     "ours": false,
+     "glb": "results/list05/cabinet/triposg_v1.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v2",
+     "label": "triposg_v2",
+     "engine": "TSG v2 \u00b7 +Taubin smooth",
+     "ours": false,
+     "glb": "results/list05/cabinet/triposg_v2.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v3",
+     "label": "triposg_v3",
+     "engine": "TSG v3 \u00b7 +Laplacian smooth",
+     "ours": false,
+     "glb": "results/list05/cabinet/triposg_v3.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v4",
+     "label": "triposg_v4",
+     "engine": "TSG v4 \u00b7 +Humphrey smooth",
+     "ours": false,
+     "glb": "results/list05/cabinet/triposg_v4.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v5",
+     "label": "triposg_v5",
+     "engine": "TSG v5 \u00b7 +lean 5k",
+     "ours": false,
+     "glb": "results/list05/cabinet/triposg_v5.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v6",
+     "label": "triposg_v6",
+     "engine": "TSG v6 \u00b7 +photo colour",
+     "ours": false,
+     "glb": "results/list05/cabinet/triposg_v6.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v7",
+     "label": "triposg_v7",
+     "engine": "TSG v7 \u00b7 Taubin+colour",
+     "ours": false,
+     "glb": "results/list05/cabinet/triposg_v7.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v8",
+     "label": "triposg_v8",
+     "engine": "TSG v8 \u00b7 all-in",
+     "ours": false,
+     "glb": "results/list05/cabinet/triposg_v8.glb",
      "faces": null,
      "watertight": null,
      "iou": null
@@ -4304,6 +4464,86 @@
      "faces": null,
      "watertight": null,
      "iou": null
+    },
+    {
+     "key": "triposg_v1",
+     "label": "triposg_v1",
+     "engine": "TSG v1 \u00b7 repair only (today)",
+     "ours": false,
+     "glb": "results/list05/desk/triposg_v1.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v2",
+     "label": "triposg_v2",
+     "engine": "TSG v2 \u00b7 +Taubin smooth",
+     "ours": false,
+     "glb": "results/list05/desk/triposg_v2.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v3",
+     "label": "triposg_v3",
+     "engine": "TSG v3 \u00b7 +Laplacian smooth",
+     "ours": false,
+     "glb": "results/list05/desk/triposg_v3.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v4",
+     "label": "triposg_v4",
+     "engine": "TSG v4 \u00b7 +Humphrey smooth",
+     "ours": false,
+     "glb": "results/list05/desk/triposg_v4.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v5",
+     "label": "triposg_v5",
+     "engine": "TSG v5 \u00b7 +lean 5k",
+     "ours": false,
+     "glb": "results/list05/desk/triposg_v5.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v6",
+     "label": "triposg_v6",
+     "engine": "TSG v6 \u00b7 +photo colour",
+     "ours": false,
+     "glb": "results/list05/desk/triposg_v6.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v7",
+     "label": "triposg_v7",
+     "engine": "TSG v7 \u00b7 Taubin+colour",
+     "ours": false,
+     "glb": "results/list05/desk/triposg_v7.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v8",
+     "label": "triposg_v8",
+     "engine": "TSG v8 \u00b7 all-in",
+     "ours": false,
+     "glb": "results/list05/desk/triposg_v8.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4419,6 +4659,86 @@
      "engine": "TRELLIS 1.0",
      "ours": false,
      "glb": "results/list05/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v1",
+     "label": "triposg_v1",
+     "engine": "TSG v1 \u00b7 repair only (today)",
+     "ours": false,
+     "glb": "results/list05/lamp/triposg_v1.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v2",
+     "label": "triposg_v2",
+     "engine": "TSG v2 \u00b7 +Taubin smooth",
+     "ours": false,
+     "glb": "results/list05/lamp/triposg_v2.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v3",
+     "label": "triposg_v3",
+     "engine": "TSG v3 \u00b7 +Laplacian smooth",
+     "ours": false,
+     "glb": "results/list05/lamp/triposg_v3.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v4",
+     "label": "triposg_v4",
+     "engine": "TSG v4 \u00b7 +Humphrey smooth",
+     "ours": false,
+     "glb": "results/list05/lamp/triposg_v4.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v5",
+     "label": "triposg_v5",
+     "engine": "TSG v5 \u00b7 +lean 5k",
+     "ours": false,
+     "glb": "results/list05/lamp/triposg_v5.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v6",
+     "label": "triposg_v6",
+     "engine": "TSG v6 \u00b7 +photo colour",
+     "ours": false,
+     "glb": "results/list05/lamp/triposg_v6.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v7",
+     "label": "triposg_v7",
+     "engine": "TSG v7 \u00b7 Taubin+colour",
+     "ours": false,
+     "glb": "results/list05/lamp/triposg_v7.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v8",
+     "label": "triposg_v8",
+     "engine": "TSG v8 \u00b7 all-in",
+     "ours": false,
+     "glb": "results/list05/lamp/triposg_v8.glb",
      "faces": null,
      "watertight": null,
      "iou": null
@@ -4658,6 +4978,86 @@
      "faces": null,
      "watertight": null,
      "iou": null
+    },
+    {
+     "key": "triposg_v1",
+     "label": "triposg_v1",
+     "engine": "TSG v1 \u00b7 repair only (today)",
+     "ours": false,
+     "glb": "results/list05/office_chair/triposg_v1.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v2",
+     "label": "triposg_v2",
+     "engine": "TSG v2 \u00b7 +Taubin smooth",
+     "ours": false,
+     "glb": "results/list05/office_chair/triposg_v2.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v3",
+     "label": "triposg_v3",
+     "engine": "TSG v3 \u00b7 +Laplacian smooth",
+     "ours": false,
+     "glb": "results/list05/office_chair/triposg_v3.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v4",
+     "label": "triposg_v4",
+     "engine": "TSG v4 \u00b7 +Humphrey smooth",
+     "ours": false,
+     "glb": "results/list05/office_chair/triposg_v4.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v5",
+     "label": "triposg_v5",
+     "engine": "TSG v5 \u00b7 +lean 5k",
+     "ours": false,
+     "glb": "results/list05/office_chair/triposg_v5.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v6",
+     "label": "triposg_v6",
+     "engine": "TSG v6 \u00b7 +photo colour",
+     "ours": false,
+     "glb": "results/list05/office_chair/triposg_v6.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v7",
+     "label": "triposg_v7",
+     "engine": "TSG v7 \u00b7 Taubin+colour",
+     "ours": false,
+     "glb": "results/list05/office_chair/triposg_v7.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v8",
+     "label": "triposg_v8",
+     "engine": "TSG v8 \u00b7 all-in",
+     "ours": false,
+     "glb": "results/list05/office_chair/triposg_v8.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4894,6 +5294,86 @@
      "faces": null,
      "watertight": null,
      "iou": null
+    },
+    {
+     "key": "triposg_v1",
+     "label": "triposg_v1",
+     "engine": "TSG v1 \u00b7 repair only (today)",
+     "ours": false,
+     "glb": "results/list05/sofa/triposg_v1.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v2",
+     "label": "triposg_v2",
+     "engine": "TSG v2 \u00b7 +Taubin smooth",
+     "ours": false,
+     "glb": "results/list05/sofa/triposg_v2.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v3",
+     "label": "triposg_v3",
+     "engine": "TSG v3 \u00b7 +Laplacian smooth",
+     "ours": false,
+     "glb": "results/list05/sofa/triposg_v3.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v4",
+     "label": "triposg_v4",
+     "engine": "TSG v4 \u00b7 +Humphrey smooth",
+     "ours": false,
+     "glb": "results/list05/sofa/triposg_v4.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v5",
+     "label": "triposg_v5",
+     "engine": "TSG v5 \u00b7 +lean 5k",
+     "ours": false,
+     "glb": "results/list05/sofa/triposg_v5.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v6",
+     "label": "triposg_v6",
+     "engine": "TSG v6 \u00b7 +photo colour",
+     "ours": false,
+     "glb": "results/list05/sofa/triposg_v6.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v7",
+     "label": "triposg_v7",
+     "engine": "TSG v7 \u00b7 Taubin+colour",
+     "ours": false,
+     "glb": "results/list05/sofa/triposg_v7.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v8",
+     "label": "triposg_v8",
+     "engine": "TSG v8 \u00b7 all-in",
+     "ours": false,
+     "glb": "results/list05/sofa/triposg_v8.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4953,6 +5433,86 @@
      "faces": null,
      "watertight": null,
      "iou": null
+    },
+    {
+     "key": "triposg_v1",
+     "label": "triposg_v1",
+     "engine": "TSG v1 \u00b7 repair only (today)",
+     "ours": false,
+     "glb": "results/list05/stool/triposg_v1.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v2",
+     "label": "triposg_v2",
+     "engine": "TSG v2 \u00b7 +Taubin smooth",
+     "ours": false,
+     "glb": "results/list05/stool/triposg_v2.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v3",
+     "label": "triposg_v3",
+     "engine": "TSG v3 \u00b7 +Laplacian smooth",
+     "ours": false,
+     "glb": "results/list05/stool/triposg_v3.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v4",
+     "label": "triposg_v4",
+     "engine": "TSG v4 \u00b7 +Humphrey smooth",
+     "ours": false,
+     "glb": "results/list05/stool/triposg_v4.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v5",
+     "label": "triposg_v5",
+     "engine": "TSG v5 \u00b7 +lean 5k",
+     "ours": false,
+     "glb": "results/list05/stool/triposg_v5.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v6",
+     "label": "triposg_v6",
+     "engine": "TSG v6 \u00b7 +photo colour",
+     "ours": false,
+     "glb": "results/list05/stool/triposg_v6.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v7",
+     "label": "triposg_v7",
+     "engine": "TSG v7 \u00b7 Taubin+colour",
+     "ours": false,
+     "glb": "results/list05/stool/triposg_v7.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v8",
+     "label": "triposg_v8",
+     "engine": "TSG v8 \u00b7 all-in",
+     "ours": false,
+     "glb": "results/list05/stool/triposg_v8.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5009,6 +5569,86 @@
      "engine": "TRELLIS 1.0",
      "ours": false,
      "glb": "results/list05/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v1",
+     "label": "triposg_v1",
+     "engine": "TSG v1 \u00b7 repair only (today)",
+     "ours": false,
+     "glb": "results/list05/table/triposg_v1.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v2",
+     "label": "triposg_v2",
+     "engine": "TSG v2 \u00b7 +Taubin smooth",
+     "ours": false,
+     "glb": "results/list05/table/triposg_v2.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v3",
+     "label": "triposg_v3",
+     "engine": "TSG v3 \u00b7 +Laplacian smooth",
+     "ours": false,
+     "glb": "results/list05/table/triposg_v3.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v4",
+     "label": "triposg_v4",
+     "engine": "TSG v4 \u00b7 +Humphrey smooth",
+     "ours": false,
+     "glb": "results/list05/table/triposg_v4.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v5",
+     "label": "triposg_v5",
+     "engine": "TSG v5 \u00b7 +lean 5k",
+     "ours": false,
+     "glb": "results/list05/table/triposg_v5.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v6",
+     "label": "triposg_v6",
+     "engine": "TSG v6 \u00b7 +photo colour",
+     "ours": false,
+     "glb": "results/list05/table/triposg_v6.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v7",
+     "label": "triposg_v7",
+     "engine": "TSG v7 \u00b7 Taubin+colour",
+     "ours": false,
+     "glb": "results/list05/table/triposg_v7.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "triposg_v8",
+     "label": "triposg_v8",
+     "engine": "TSG v8 \u00b7 all-in",
+     "ours": false,
+     "glb": "results/list05/table/triposg_v8.glb",
      "faces": null,
      "watertight": null,
      "iou": null
