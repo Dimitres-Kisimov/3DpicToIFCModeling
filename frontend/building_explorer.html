@@ -32,6 +32,9 @@
     .research-note p{font-size:13.5px;line-height:1.65;color:#3a4453;margin:0 0 8px;}
     .research-note .byline{font-size:12px;color:#6b7688;font-style:italic;margin:0;}
     .research-note .why{background:#f6f8fc;border-radius:8px;padding:9px 12px;margin:4px 0 10px;font-size:13px;line-height:1.6;color:#3a4453;}
+    .vbtn { font:12px 'Segoe UI',sans-serif; padding:3px 10px; border:1px solid #dbe3ee;
+      border-radius:7px; background:#f6f8fc; cursor:pointer; color:#1f2733; }
+    .vbtn:hover { background:#e8eefc; border-color:#5570f0; }
   </style>
 </head>
 <body><div id="bsel" style="position:fixed;top:12px;left:12px;z-index:10;background:#fff;border:1px solid #e3e9f1;border-radius:10px;padding:8px 12px;font:13px 'Segoe UI',sans-serif;box-shadow:0 2px 10px rgba(20,40,80,.08)">
@@ -46,7 +49,17 @@
   </select>
   <a href="/building_showcase.html" style="margin-left:10px;color:#2f6bff;text-decoration:none">← showcase</a>
   <div id="bstatus" style="color:#5b6b7c;font-size:11.5px;margin-top:3px">drag = orbit · furnished by the ergonomics engine · clash-audited</div>
+  <div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap;align-items:center">
+    <span style="color:#5b6b7c;font-size:11.5px">view:</span>
+    <button class="vbtn" data-view="front">Front</button>
+    <button class="vbtn" data-view="back">Back</button>
+    <button class="vbtn" data-view="left">Left</button>
+    <button class="vbtn" data-view="right">Right</button>
+    <button class="vbtn" data-view="top">Top</button>
+    <button class="vbtn" data-view="corner">3D corner</button>
+  </div>
 </div>
+<canvas id="navCubeCanvas" width="150" height="150" style="position:fixed;right:14px;bottom:60px;width:150px;height:150px;z-index:6"></canvas>
   <section class="research-note">
     <h2>Populated building — ergonomic layout at scale</h2>
     <p>This viewer presents the populated building produced by the layout engine at full scale, with every room furnished according to its type using the ergonomic rule packs (Neufert, Panero-Zelnik, and ADA-derived clearances and aisles). It illustrates how the single-object photo-to-3D pipeline composes into whole-room and whole-building furnishing, the focus of Part 2 of the project.</p>
@@ -78,16 +91,44 @@
     model.on('error', (e) => {
       document.getElementById('loading').innerHTML = '❌ Failed to load: ' + e;
     });
+
+    // face views — jump the camera to any side of the building
+    function viewFace(f) {
+      const a = viewer.scene.aabb;
+      const c = [(a[0]+a[3])/2, (a[1]+a[4])/2, (a[2]+a[5])/2];
+      const d = Math.max(a[3]-a[0], a[4]-a[1], a[5]-a[2]) * 1.6;
+      const eyes = {
+        front:  [c[0], c[1] + d*0.15, c[2] + d],
+        back:   [c[0], c[1] + d*0.15, c[2] - d],
+        left:   [c[0] - d, c[1] + d*0.15, c[2]],
+        right:  [c[0] + d, c[1] + d*0.15, c[2]],
+        top:    [c[0], c[1] + d, c[2] + 0.001],
+        corner: [c[0] + d*0.8, c[1] + d*0.6, c[2] + d*0.8],
+      };
+      viewer.cameraFlight.flyTo({ eye: eyes[f], look: c,
+        up: f === 'top' ? [0, 0, -1] : [0, 1, 0], duration: 0.7 });
+    }
+    document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => viewFace(b.dataset.view));
+
+    // interactive orientation cube (click/drag a face to snap to it)
+    try {
+      if (xeokit.NavCubePlugin) {
+        new xeokit.NavCubePlugin(viewer, { canvasId: 'navCubeCanvas', visible: true,
+          color: '#e8eef6', frontColor: '#5570f0', backColor: '#7d93ff' });
+      } else {
+        document.getElementById('navCubeCanvas').style.display = 'none';
+      }
+    } catch (e) { document.getElementById('navCubeCanvas').style.display = 'none'; }
   </script>
 </body>
 </html>
 <script>
 const INFO = {
-  duplex:         ['Duplex Apartment — uploaded round-trip IFC', '21 rooms · 26 furniture pieces · living/bedroom/kitchen sets'],
-  duplex_sample:  ['Duplex Apartment — bundled sample IFC', 'the demo building shipped with the app · 26 pieces'],
-  schependomlaan: ['Schependomlaan — 4-storey housing block', '45 furniture pieces across 4 storeys (Dutch room labels)'],
-  house:          ['COPROPIETE — 19 rue Marc-Antoine, ground floor', 'French office/lab floor · 15 pieces (bureaux → workstations)'],
-  german:         ['Kleine Wohnung — German apartment', '30 pieces (German room labels drive the room types)'],
+  duplex:         ['Duplex Apartment — uploaded round-trip IFC', '8 rooms furnished · 34 pieces · 0 clashes (exact-geometry verified)'],
+  duplex_sample:  ['Duplex Apartment — bundled sample IFC', 'the demo building shipped with the app · 34 pieces · 0 clashes'],
+  schependomlaan: ['Schependomlaan — 4-storey housing block', '34 rooms · 76 pieces across 4 storeys (Dutch room labels) · 0 clashes'],
+  house:          ['COPROPIETE — 19 rue Marc-Antoine, ground floor', 'building rotated 60.4° in world coords — solved in a de-rotated frame · 16 pieces · 0 clashes'],
+  german:         ['Kleine Wohnung — German apartment', '10 rooms · 30 pieces (German room labels drive the room types) · 0 clashes'],
   small_building: ['house - building — small house', '1 living room · sofa / table / lamp'],
 };
 const bkey = new URLSearchParams(location.search).get('b') || 'duplex';
