@@ -1,6 +1,6 @@
 # SCS · Photo → 3D → IFC → BIM — Full Report
 
-**Project:** 3DpicToIFCModeling (Bildungscampus / Dieter Schwarz Stiftung)
+**Project:** 3DpicToIFCModeling (SCS)
 **Date:** 2026-07-01
 **Branch / last commit:** `app-development` @ `d8186ca`
 **Author:** Dimitres Kisimov (with Claude Code)
@@ -187,7 +187,7 @@ optional and only buys furniture variety.
 
 ### 5.4 UI redesign + rebrand
 - "Technical Pro" dark theme (`style.css`, `index.html`), all JS hooks preserved.
-- Rebranded to **Bildungscampus / Dieter Schwarz Stiftung** navy blue with the BILDUNGS/CAMPUS
+- Rebranded to a navy-blue dark theme (institution branding since removed per requirements; originally an institution
   wordmark.
 
 ### 5.5 Export-IFC fixes

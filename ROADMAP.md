@@ -14,7 +14,7 @@ Legend: ✅ done · 🔜 next · 🧊 backlog · ⚠️ known issue
 - ✅ 5-generator benchmark (H200): F-score/Chamfer, gallery, best-of-each asset library
 - ✅ Inventory (accumulate across photos) + 3 export modes (together / each / table)
 - ✅ Export-IFC fixes (Windows path bug, export-from-generated-objects)
-- ✅ UI: Bildungscampus / Dieter Schwarz Stiftung dark theme
+- ✅ UI: navy dark theme (institution branding removed per requirements)
 
 ### Building-scale population (this phase)
 - ✅ **Load a real architectural IFC** (Duplex: 21 rooms, walls, doors) as the container — the tool

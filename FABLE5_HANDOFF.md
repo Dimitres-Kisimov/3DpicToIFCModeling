@@ -23,7 +23,7 @@ The plan (#3) and codebase map (#2) contain exact `file:line` references for eve
 touch — use them so you don't have to re-derive the architecture.
 
 ## What this project is
-Photo → 3D → IFC pipeline for SCS (Bildungscampus). Two apps today that MUST become one:
+Photo → 3D → IFC pipeline for SCS. Two apps today that MUST become one:
 - **Node :3000** (`backend/server.js`, `frontend/`) — photo→3D object generator (TripoSR) + IFC export.
 - **Flask :8000** (`backend/app_server.py`, `demo/app.html`) — room builder: catalog selection,
   space/"not enough space" check, both room sources (user-defined + loaded Duplex IFC), drag-reposition.

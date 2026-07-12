@@ -12,7 +12,7 @@ visual comparison pages. All pages are served by the Node app on **http://localh
 
 ## 1. What we did this session
 
-1. **Redesigned the generator UI (`:3000`)** — removed the Bildungscampus logo, simple end-user
+1. **Redesigned the generator UI (`:3000`)** — removed the institution logo, simple end-user
    layout, plain-language steps, a **"View your IFC" step linking viewer.autodesk.com**, cache-busting.
 2. **Fixed the 3D viewer** — orbit + zoom-to-cursor, reliable `flyTo(model)` fit, upright orientation
    (X-euler spin), **Fit view / Rotate** buttons, working **Clear view** (destroys `scene.models`),

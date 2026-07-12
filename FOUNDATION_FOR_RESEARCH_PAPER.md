@@ -1,6 +1,6 @@
 # Single-Image → BIM: Foundation Document for the Research Paper
 
-**Project:** 3DpicToIFCModeling — SCS / Bildungscampus (Dieter Schwarz Stiftung)
+**Project:** 3DpicToIFCModeling — SCS
 **Repo:** github.com/Dimitres-Kisimov/3DpicToIFCModeling · branch `app-development`
 **Date:** 2026-07-01 · **Author:** Dimitres Kisimov (with Claude Code)
 
@@ -284,7 +284,7 @@ the viewer.
    two caveats documented.
 3. **Building population Phase 1+2:** asset library + building aggregator (47 instances / 9 meshes).
 4. **Item-agnostic solver** revision (geometry-derived clearances/affinity).
-5. **UI:** dark "Technical Pro" theme → Bildungscampus navy rebrand.
+5. **UI:** dark "Technical Pro" theme → navy rebrand (branding later removed on request).
 6. **Export-IFC fixes:** Windows backslash-path download bug; export-from-generated-objects bug.
 7. **Inventory** persistence + clear-view + 3 export modes.
 8. **This session:** confirmed export chain (chair IFC in Autodesk); IFC→3D-space paths; downloaded a
