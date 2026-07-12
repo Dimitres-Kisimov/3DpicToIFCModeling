@@ -15,6 +15,7 @@ h2{margin:34px 0 4px;font-size:17px}
 .date{display:inline-block;margin-left:10px;font-size:11.5px;font-weight:700;color:var(--ours);background:#fdf3e7;border:1px solid #f3d9bb;border-radius:9px;padding:2px 9px;vertical-align:2px}
 .sub{color:var(--mut);font-size:12.5px;margin:0 0 12px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.grid.pairs{grid-template-columns:repeat(2,1fr)}
 figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 figure img{width:100%;display:block;background:#fff;cursor:zoom-in}
 figcaption{padding:8px 12px;font-size:12px;color:var(--mut)}
@@ -30,21 +31,23 @@ figcaption{padding:8px 12px;font-size:12px;color:var(--mut)}
 </header>
 <main>
 
-<div class="note"><b>How to read these:</b> each building shows per-floor <b>2D plans</b> and <b>3D views</b> of the
+<div class="note"><b>How to read these:</b> every floor appears twice — <b style="color:#d64545">BEFORE</b> (v1, prior to room-scoped clash validation: furniture could intersect walls or each other in non-rectangular rooms) and <b style="color:#1a7f4b">AFTER</b> (v2, clash-audited placement).  each building shows per-floor <b>2D plans</b> and <b>3D views</b> of the
 same populated state, plus X-ray showcases where furniture is visible through walls. Generated items
 (badge <b>OURS</b> / engine tags) sit beside catalog items; the object tables in the X-ray shots report
 capacity refusals and reachability warnings honestly.</div>
 
-<h2>Duplex (two levels)<span class="date">captured 2026-07-07 · density study 2026-07-09</span></h2>
+<h2>Duplex (two levels)<span class="date">v1 2026-07-07 · v2 clash-audited 2026-07-09</span></h2>
+<a href="/building_explorer.html?b=duplex" style="display:inline-block;margin:0 0 10px;padding:7px 14px;background:#2f6bff;color:#fff;border-radius:9px;text-decoration:none;font-size:13px">🌐 Explore the populated Duplex in 3D</a>
 <p class="sub">The primary demo shell — includes the X-ray showcase with a photo-generated “office chair (ours)” placed in Bedroom 2.</p>
-<div class="grid">
-  <figure><img src="/fleet/showcase_duplex_xray.png" loading="lazy" onclick="window.open(this.src)"><figcaption>X-ray showcase — furniture through walls, OURS item chip, per-room capacity &amp; reachability table</figcaption></figure>
-  <figure><img src="/fleet/showcase_duplex_floor.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Solid floor view of the same populated state</figcaption></figure>
-  <figure><img src="/fleet/duplex__Level_1_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Level 1 — 2D plan</figcaption></figure>
-  <figure><img src="/fleet/duplex__Level_1_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Level 1 — 3D</figcaption></figure>
-  <figure><img src="/fleet/duplex__Level_2_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Level 2 — 2D plan</figcaption></figure>
-  <figure><img src="/fleet/duplex__Level_2_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Level 2 — 3D</figcaption></figure>
-</div>
+<div class="grid"><figure><img src="/fleet/showcase_duplex_xray.png" loading="lazy" onclick="window.open(this.src)"><figcaption>X-ray showcase — furniture through walls, OURS item chip, per-room capacity &amp; reachability table</figcaption></figure><figure><img src="/fleet/showcase_duplex_floor.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Solid floor view of the same populated state</figcaption></figure></div>
+<div class="grid pairs"><figure><img src="/fleet/duplex__Level_1_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · Level 1 — 2D plan · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_duplex__Level_1_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · Level 1 — 2D plan · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/duplex__Level_1_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · Level 1 — 3D · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_duplex__Level_1_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · Level 1 — 3D · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/duplex__Level_2_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · Level 2 — 2D plan · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_duplex__Level_2_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · Level 2 — 2D plan · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/duplex__Level_2_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · Level 2 — 3D · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_duplex__Level_2_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · Level 2 — 3D · v2 clash-audited, 2026-07-09</figcaption></figure></div>
 
 <h2>Density &amp; capacity study (duplex + German office)<span class="date">2026-07-09</span></h2>
 <p class="sub">The capacity guard under load: medium vs dense populations, and the refusal screen when a request exceeds the floor-area budget.</p>
@@ -56,31 +59,39 @@ capacity refusals and reachability warnings honestly.</div>
   <figure><img src="/fleet/density_overload_blocked.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b>The capacity guard firing</b> — overload refused with named items, not silently crammed</figcaption></figure>
 </div>
 
-<h2>German office floor (BT A, 1. OG)<span class="date">captured 2026-07-07</span></h2>
-<div class="grid">
-  <figure><img src="/fleet/showcase_german_apartment_xray.png" loading="lazy" onclick="window.open(this.src)"><figcaption>X-ray showcase</figcaption></figure>
-  <figure><img src="/fleet/german__BT_A_1010_OG01_RDOK_3_000_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>2D plan, populated</figcaption></figure>
-  <figure><img src="/fleet/german__BT_A_1010_OG01_RDOK_3_000_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>3D view, populated</figcaption></figure>
-</div>
+<h2>German office floor (BT A, 1. OG)<span class="date">v1 2026-07-07 · v2 clash-audited 2026-07-09</span></h2>
+<a href="/building_explorer.html?b=german" style="display:inline-block;margin:0 0 10px;padding:7px 14px;background:#2f6bff;color:#fff;border-radius:9px;text-decoration:none;font-size:13px">🌐 Explore the German apartment in 3D</a>
+<div class="grid pairs"><figure><img src="/fleet/german__BT_A_1010_OG01_RDOK_3_000_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · 2D plan · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_german__BT_A_1010_OG01_RDOK_3_000_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · 2D plan · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/german__BT_A_1010_OG01_RDOK_3_000_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · 3D view · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_german__BT_A_1010_OG01_RDOK_3_000_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · 3D view · v2 clash-audited, 2026-07-09</figcaption></figure></div>
 
-<h2>House (ground floor)<span class="date">captured 2026-07-07</span></h2>
-<div class="grid">
-  <figure><img src="/fleet/house__00_groundfloor_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>2D plan, populated</figcaption></figure>
-  <figure><img src="/fleet/house__00_groundfloor_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>3D view, populated</figcaption></figure>
-</div>
+<h2>House (ground floor)<span class="date">v1 2026-07-07 · v2 clash-audited 2026-07-09</span></h2>
+<a href="/building_explorer.html?b=house" style="display:inline-block;margin:0 0 10px;padding:7px 14px;background:#2f6bff;color:#fff;border-radius:9px;text-decoration:none;font-size:13px">🌐 Explore the House in 3D</a>
+<div class="grid pairs"><figure><img src="/fleet/house__00_groundfloor_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · 2D plan · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_house__00_groundfloor_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · 2D plan · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/house__00_groundfloor_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · 3D view · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_house__00_groundfloor_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · 3D view · v2 clash-audited, 2026-07-09</figcaption></figure></div>
 
-<h2>Schependomlaan (four storeys)<span class="date">captured 2026-07-07</span></h2>
+<h2>Schependomlaan (four storeys)<span class="date">v1 2026-07-07 · v2 clash-audited 2026-07-09</span></h2>
+<a href="/building_explorer.html?b=schependomlaan" style="display:inline-block;margin:0 0 10px;padding:7px 14px;background:#2f6bff;color:#fff;border-radius:9px;text-decoration:none;font-size:13px">🌐 Explore Schependomlaan in 3D</a>
 <p class="sub">The scale test — a real-world public IFC populated storey by storey with the same per-room logic.</p>
-<div class="grid">
-  <figure><img src="/fleet/schependomlaan__00_begane_grond_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Ground floor — 2D</figcaption></figure>
-  <figure><img src="/fleet/schependomlaan__00_begane_grond_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>Ground floor — 3D</figcaption></figure>
-  <figure><img src="/fleet/schependomlaan__01_eerste_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>1st floor — 2D</figcaption></figure>
-  <figure><img src="/fleet/schependomlaan__01_eerste_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>1st floor — 3D</figcaption></figure>
-  <figure><img src="/fleet/schependomlaan__02_tweede_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>2nd floor — 2D</figcaption></figure>
-  <figure><img src="/fleet/schependomlaan__02_tweede_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>2nd floor — 3D</figcaption></figure>
-  <figure><img src="/fleet/schependomlaan__03_derde_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>3rd floor — 2D</figcaption></figure>
-  <figure><img src="/fleet/schependomlaan__03_derde_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption>3rd floor — 3D</figcaption></figure>
-</div>
+<div class="grid pairs"><figure><img src="/fleet/schependomlaan__00_begane_grond_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · Ground floor — 2D · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_schependomlaan__00_begane_grond_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · Ground floor — 2D · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/schependomlaan__00_begane_grond_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · Ground floor — 3D · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_schependomlaan__00_begane_grond_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · Ground floor — 3D · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/schependomlaan__01_eerste_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · 1st floor — 2D · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_schependomlaan__01_eerste_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · 1st floor — 2D · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/schependomlaan__01_eerste_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · 1st floor — 3D · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_schependomlaan__01_eerste_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · 1st floor — 3D · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/schependomlaan__02_tweede_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · 2nd floor — 2D · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_schependomlaan__02_tweede_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · 2nd floor — 2D · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/schependomlaan__02_tweede_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · 2nd floor — 3D · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_schependomlaan__02_tweede_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · 2nd floor — 3D · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/schependomlaan__03_derde_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · 3rd floor — 2D · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_schependomlaan__03_derde_verdieping_2d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · 3rd floor — 2D · v2 clash-audited, 2026-07-09</figcaption></figure>
+<figure><img src="/fleet/schependomlaan__03_derde_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#d64545">BEFORE clashes</b> · 3rd floor — 3D · v1, 2026-07-07</figcaption></figure>
+<figure><img src="/fleet/v2_schependomlaan__03_derde_verdieping_3d.png" loading="lazy" onclick="window.open(this.src)"><figcaption><b style="color:#1a7f4b">AFTER clashes removed</b> · 3rd floor — 3D · v2 clash-audited, 2026-07-09</figcaption></figure></div>
 
 <div class="note">Campaign context: the generated items visible in these buildings passed the repair→IFC4 gate before
 entering the catalog (engine badges in the pickers). The 2026-07-11→12 A100 campaign added 605 engine-badged items
