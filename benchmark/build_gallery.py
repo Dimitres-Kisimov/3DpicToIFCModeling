@@ -124,12 +124,23 @@ def item_row(list_no, cat, rec, sources):
         did.append("IFC export " + ("✓ valid, %s KB" % i.get("size_kb") if i.get("ok") else "✗ " + i.get("note", "")[:60]))
     done_html = ('<p class="meta" style="margin-top:6px">' + " · ".join(did) + "</p>") if did else ""
     arch = rep.get("archetype", "?")
+    # pod engines: any <engine>.png rendered next to the item's GLBs joins the row
+    ENGINE_LABEL = {"triposg": "TripoSG", "trellis": "TRELLIS 1.0", "trellis2": "TRELLIS 2.0",
+                    "instantmesh": "InstantMesh", "sam3d": "SAM 3D", "sf3d": "Stable Fast 3D"}
+    eng_cells = ""
+    for ep in sorted((RES / f"list{list_no:02d}" / cat).glob("*.png")):
+        if ep.stem in ("raw", "improved"):
+            continue
+        label = ENGINE_LABEL.get(ep.stem, ep.stem)
+        eng_cells += (f'<div class="cell"><p class="lbl">{label}</p>'
+                      f'<img loading="lazy" src="results/list{list_no:02d}/{cat}/{ep.name}">'
+                      f'<p class="meta"><a href="visualizer.html#list{list_no:02d}/{cat}">spin in 3D →</a></p></div>')
     return (f'<div class="row"><div class="cell">{head}<p class="meta">pack: <b>{arch}</b></p></div>'
             f'<div class="cell"><p class="lbl">Original photo</p><img loading="lazy" src="{img_rel}"></div>'
             f'<div class="cell"><p class="lbl">TripoSR today</p><img loading="lazy" src="results/list{list_no:02d}/{cat}/raw.png">'
             f'<div>{stats(raw)}</div></div>'
             f'<div class="cell"><p class="lbl">Our improvement</p><img loading="lazy" src="results/list{list_no:02d}/{cat}/improved.png">'
-            f'<div>{stats(imp)}</div>{done_html}</div></div>')
+            f'<div>{stats(imp)}</div>{done_html}</div>{eng_cells}</div>')
 
 
 def build_list_page(list_no, sources):

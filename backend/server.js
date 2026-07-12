@@ -62,6 +62,10 @@ app.use('/gallery', express.static(path.join(__dirname, '../deliverable/cloud_ga
 // Engine manuals (markdown sources) — rendered by /manuals.html
 app.use('/manuals-src', express.static(path.join(__dirname, '../deliverable/manuals')));
 
+// Benchmark galleries + candidate visualizer (used to live on :8000) — the 11
+// list pages, the multi-AI 3D visualizer, and the photo-angle guide, one origin.
+app.use('/benchmark', express.static(path.join(__dirname, '../benchmark')));
+
 // ============================================================================
 // ROUTES
 // ============================================================================

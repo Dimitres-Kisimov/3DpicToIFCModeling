@@ -185,6 +185,9 @@ def main():
         per_cat[capkey] = per_cat.get(capkey, 0) + 1
         added += 1
         row["catalog"] = "added"
+        if added % 25 == 0:                      # progressive flush — items appear in the
+            GEN_MANIFEST.write_text(json.dumps(man, indent=1), encoding="utf-8")
+            print(f"[ingest] {added} in catalog so far", flush=True)
 
     if not args.dry_run:
         GEN_MANIFEST.write_text(json.dumps(man, indent=1), encoding="utf-8")

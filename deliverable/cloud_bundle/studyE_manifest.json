@@ -1,0 +1,122 @@
+[
+ {
+  "key": "bed",
+  "type": "bed",
+  "views": [
+   "studyE_views/bed_az000.png",
+   "studyE_views/bed_az090.png",
+   "studyE_views/bed_az180.png",
+   "studyE_views/bed_az270.png"
+  ],
+  "gt": "gt/bed.glb",
+  "source_id": "studyE:bed"
+ },
+ {
+  "key": "bookshelf",
+  "type": "bookshelf",
+  "views": [
+   "studyE_views/bookshelf_az000.png",
+   "studyE_views/bookshelf_az090.png",
+   "studyE_views/bookshelf_az180.png",
+   "studyE_views/bookshelf_az270.png"
+  ],
+  "gt": "gt/bookshelf.glb",
+  "source_id": "studyE:bookshelf"
+ },
+ {
+  "key": "cabinet",
+  "type": "cabinet",
+  "views": [
+   "studyE_views/cabinet_az000.png",
+   "studyE_views/cabinet_az090.png",
+   "studyE_views/cabinet_az180.png",
+   "studyE_views/cabinet_az270.png"
+  ],
+  "gt": "gt/cabinet.glb",
+  "source_id": "studyE:cabinet"
+ },
+ {
+  "key": "chair",
+  "type": "chair",
+  "views": [
+   "studyE_views/chair_az000.png",
+   "studyE_views/chair_az090.png",
+   "studyE_views/chair_az180.png",
+   "studyE_views/chair_az270.png"
+  ],
+  "gt": "gt/chair.glb",
+  "source_id": "studyE:chair"
+ },
+ {
+  "key": "desk",
+  "type": "desk",
+  "views": [
+   "studyE_views/desk_az000.png",
+   "studyE_views/desk_az090.png",
+   "studyE_views/desk_az180.png",
+   "studyE_views/desk_az270.png"
+  ],
+  "gt": "gt/desk.glb",
+  "source_id": "studyE:desk"
+ },
+ {
+  "key": "lamp",
+  "type": "lamp",
+  "views": [
+   "studyE_views/lamp_az000.png",
+   "studyE_views/lamp_az090.png",
+   "studyE_views/lamp_az180.png",
+   "studyE_views/lamp_az270.png"
+  ],
+  "gt": "gt/lamp.glb",
+  "source_id": "studyE:lamp"
+ },
+ {
+  "key": "office_chair",
+  "type": "office_chair",
+  "views": [
+   "studyE_views/office_chair_az000.png",
+   "studyE_views/office_chair_az090.png",
+   "studyE_views/office_chair_az180.png",
+   "studyE_views/office_chair_az270.png"
+  ],
+  "gt": "gt/office_chair.glb",
+  "source_id": "studyE:office_chair"
+ },
+ {
+  "key": "sofa",
+  "type": "sofa",
+  "views": [
+   "studyE_views/sofa_az000.png",
+   "studyE_views/sofa_az090.png",
+   "studyE_views/sofa_az180.png",
+   "studyE_views/sofa_az270.png"
+  ],
+  "gt": "gt/sofa.glb",
+  "source_id": "studyE:sofa"
+ },
+ {
+  "key": "stool",
+  "type": "stool",
+  "views": [
+   "studyE_views/stool_az000.png",
+   "studyE_views/stool_az090.png",
+   "studyE_views/stool_az180.png",
+   "studyE_views/stool_az270.png"
+  ],
+  "gt": "gt/stool.glb",
+  "source_id": "studyE:stool"
+ },
+ {
+  "key": "table",
+  "type": "table",
+  "views": [
+   "studyE_views/table_az000.png",
+   "studyE_views/table_az090.png",
+   "studyE_views/table_az180.png",
+   "studyE_views/table_az270.png"
+  ],
+  "gt": "gt/table.glb",
+  "source_id": "studyE:table"
+ }
+]

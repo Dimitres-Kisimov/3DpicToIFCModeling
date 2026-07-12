@@ -26,6 +26,36 @@
      "faces": 14916,
      "watertight": true,
      "iou": 0.68
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/bookshelf/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/bookshelf/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/bookshelf/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -55,6 +85,36 @@
      "faces": 14864,
      "watertight": true,
      "iou": 0.812
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -84,6 +144,36 @@
      "faces": 9984,
      "watertight": true,
      "iou": 0.932
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/clock/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/clock/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/clock/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -113,6 +203,36 @@
      "faces": 12004,
      "watertight": true,
      "iou": 0.811
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/coffee_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/coffee_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/coffee_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -142,6 +262,36 @@
      "faces": 13774,
      "watertight": true,
      "iou": 0.731
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/desk/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/desk/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/desk/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -171,6 +321,36 @@
      "faces": 13076,
      "watertight": true,
      "iou": 0.573
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/filing_cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/filing_cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/filing_cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -200,6 +380,36 @@
      "faces": 11848,
      "watertight": true,
      "iou": 0.742
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/lamp/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/lamp/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -229,6 +439,36 @@
      "faces": 14818,
      "watertight": true,
      "iou": 0.725
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/laptop/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/laptop/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/laptop/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -258,6 +498,36 @@
      "faces": 9980,
      "watertight": true,
      "iou": 0.828
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/mirror/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/mirror/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/mirror/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -287,6 +557,36 @@
      "faces": 9952,
      "watertight": true,
      "iou": 0.778
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/monitor/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/monitor/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/monitor/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -316,6 +616,36 @@
      "faces": 15689,
      "watertight": false,
      "iou": 0.612
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/office_chair/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/office_chair/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/office_chair/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -345,6 +675,36 @@
      "faces": 9858,
      "watertight": false,
      "iou": 0.911
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/picture_frame/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/picture_frame/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/picture_frame/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -374,6 +734,36 @@
      "faces": 11186,
      "watertight": true,
      "iou": 0.646
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/planter/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/planter/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/planter/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -403,6 +793,36 @@
      "faces": 18284,
      "watertight": true,
      "iou": 0.737
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/side_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/side_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/side_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -432,6 +852,36 @@
      "faces": 14990,
      "watertight": true,
      "iou": 0.908
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/sofa/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/sofa/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/sofa/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -461,6 +911,36 @@
      "faces": 14436,
      "watertight": true,
      "iou": 0.437
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/stool/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/stool/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/stool/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -490,6 +970,36 @@
      "faces": 3392,
      "watertight": true,
      "iou": 0.512
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list01/table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list01/table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list01/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -519,6 +1029,36 @@
      "faces": 7422,
      "watertight": true,
      "iou": 0.781
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/bookshelf/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/bookshelf/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/bookshelf/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -548,6 +1088,36 @@
      "faces": 12170,
      "watertight": true,
      "iou": 0.668
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -577,6 +1147,36 @@
      "faces": 9986,
      "watertight": true,
      "iou": 0.829
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/clock/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/clock/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/clock/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -606,6 +1206,36 @@
      "faces": 13866,
      "watertight": false,
      "iou": 0.476
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/coffee_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/coffee_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/coffee_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -635,6 +1265,36 @@
      "faces": 7500,
      "watertight": true,
      "iou": 0.508
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/desk/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/desk/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/desk/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -664,6 +1324,36 @@
      "faces": 13968,
      "watertight": true,
      "iou": 0.414
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/filing_cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/filing_cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/filing_cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -693,6 +1383,36 @@
      "faces": 11784,
      "watertight": true,
      "iou": 0.475
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/lamp/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/lamp/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -722,6 +1442,36 @@
      "faces": 14980,
      "watertight": true,
      "iou": 0.797
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/laptop/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/laptop/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/laptop/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -751,6 +1501,36 @@
      "faces": 9266,
      "watertight": true,
      "iou": 0.86
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/mirror/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/mirror/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/mirror/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -780,6 +1560,36 @@
      "faces": 9994,
      "watertight": true,
      "iou": 0.706
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/monitor/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/monitor/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/monitor/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -809,6 +1619,36 @@
      "faces": 15689,
      "watertight": false,
      "iou": 0.612
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/office_chair/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/office_chair/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/office_chair/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -838,6 +1678,36 @@
      "faces": 9986,
      "watertight": true,
      "iou": 0.515
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/picture_frame/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/picture_frame/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/picture_frame/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -867,6 +1737,36 @@
      "faces": 11320,
      "watertight": true,
      "iou": 0.711
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/planter/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/planter/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/planter/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -896,6 +1796,36 @@
      "faces": 9348,
      "watertight": false,
      "iou": 0.727
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/side_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/side_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/side_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -925,6 +1855,36 @@
      "faces": 14952,
      "watertight": true,
      "iou": 0.835
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/sofa/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/sofa/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/sofa/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -954,6 +1914,36 @@
      "faces": 7542,
      "watertight": true,
      "iou": 0.449
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/stool/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/stool/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/stool/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -983,6 +1973,36 @@
      "faces": 4186,
      "watertight": true,
      "iou": 0.518
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list02/table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list02/table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list02/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1012,6 +2032,36 @@
      "faces": 14990,
      "watertight": true,
      "iou": 0.672
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/bookshelf/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/bookshelf/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/bookshelf/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1041,6 +2091,36 @@
      "faces": 14990,
      "watertight": true,
      "iou": 0.866
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1070,6 +2150,36 @@
      "faces": 9800,
      "watertight": true,
      "iou": 0.68
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/clock/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/clock/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/clock/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1099,6 +2209,36 @@
      "faces": 14984,
      "watertight": true,
      "iou": 0.65
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/coffee_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/coffee_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/coffee_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1128,6 +2268,36 @@
      "faces": 14498,
      "watertight": true,
      "iou": 0.522
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/desk/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/desk/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/desk/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1157,6 +2327,36 @@
      "faces": 14840,
      "watertight": true,
      "iou": 0.721
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/filing_cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/filing_cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/filing_cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1186,6 +2386,36 @@
      "faces": 11970,
      "watertight": true,
      "iou": 0.76
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/lamp/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/lamp/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1215,6 +2445,36 @@
      "faces": 14942,
      "watertight": true,
      "iou": 0.63
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/laptop/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/laptop/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/laptop/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1244,6 +2504,36 @@
      "faces": 8114,
      "watertight": true,
      "iou": 0.68
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/mirror/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/mirror/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/mirror/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1273,6 +2563,36 @@
      "faces": 9988,
      "watertight": true,
      "iou": 0.812
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/monitor/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/monitor/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/monitor/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1302,6 +2622,36 @@
      "faces": 17855,
      "watertight": false,
      "iou": 0.602
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/office_chair/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/office_chair/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/office_chair/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1331,6 +2681,36 @@
      "faces": 9986,
      "watertight": true,
      "iou": 0.708
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/picture_frame/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/picture_frame/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/picture_frame/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1360,6 +2740,36 @@
      "faces": 11576,
      "watertight": true,
      "iou": 0.737
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/planter/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/planter/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/planter/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1389,6 +2799,36 @@
      "faces": 13636,
      "watertight": true,
      "iou": 0.574
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/side_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/side_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/side_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1418,6 +2858,36 @@
      "faces": 14992,
      "watertight": true,
      "iou": 0.858
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/sofa/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/sofa/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/sofa/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1447,6 +2917,36 @@
      "faces": 7580,
      "watertight": true,
      "iou": 0.457
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/stool/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/stool/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/stool/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1476,6 +2976,36 @@
      "faces": 14068,
      "watertight": true,
      "iou": 0.715
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list03/table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list03/table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list03/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1505,6 +3035,36 @@
      "faces": 14980,
      "watertight": true,
      "iou": 0.806
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/bookshelf/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/bookshelf/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/bookshelf/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1534,6 +3094,36 @@
      "faces": 14954,
      "watertight": true,
      "iou": 0.606
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1563,6 +3153,36 @@
      "faces": 9726,
      "watertight": false,
      "iou": 0.834
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/clock/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/clock/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/clock/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1592,6 +3212,36 @@
      "faces": 4268,
      "watertight": true,
      "iou": 0.386
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/coffee_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/coffee_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/coffee_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1621,6 +3271,36 @@
      "faces": 4542,
      "watertight": true,
      "iou": 0.122
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/desk/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/desk/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/desk/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1650,6 +3330,36 @@
      "faces": 12858,
      "watertight": true,
      "iou": 0.495
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/filing_cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/filing_cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/filing_cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1679,6 +3389,36 @@
      "faces": 11996,
      "watertight": true,
      "iou": 0.599
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/lamp/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/lamp/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1708,6 +3448,36 @@
      "faces": 14982,
      "watertight": true,
      "iou": 0.738
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/laptop/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/laptop/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/laptop/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1737,6 +3507,36 @@
      "faces": 9636,
      "watertight": true,
      "iou": 0.799
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/mirror/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/mirror/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/mirror/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1766,6 +3566,36 @@
      "faces": 9868,
      "watertight": true,
      "iou": 0.77
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/monitor/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/monitor/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/monitor/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1795,6 +3625,36 @@
      "faces": 16938,
      "watertight": false,
      "iou": 0.542
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/office_chair/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/office_chair/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/office_chair/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1824,6 +3684,36 @@
      "faces": 9768,
      "watertight": true,
      "iou": 0.802
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/picture_frame/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/picture_frame/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/picture_frame/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1853,6 +3743,36 @@
      "faces": 10020,
      "watertight": true,
      "iou": 0.64
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/planter/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/planter/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/planter/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1882,6 +3802,36 @@
      "faces": 4392,
      "watertight": true,
      "iou": 0.482
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/side_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/side_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/side_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1911,6 +3861,36 @@
      "faces": 14996,
      "watertight": true,
      "iou": 0.838
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/sofa/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/sofa/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/sofa/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1940,6 +3920,36 @@
      "faces": 12182,
      "watertight": true,
      "iou": 0.548
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/stool/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/stool/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/stool/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1969,6 +3979,36 @@
      "faces": 12244,
      "watertight": true,
      "iou": 0.779
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list04/table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list04/table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list04/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -1998,6 +4038,36 @@
      "faces": 6520,
      "watertight": true,
      "iou": 0.581
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/bookshelf/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/bookshelf/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/bookshelf/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2027,6 +4097,36 @@
      "faces": 15000,
      "watertight": true,
      "iou": 0.469
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2056,6 +4156,36 @@
      "faces": 9990,
      "watertight": true,
      "iou": 0.754
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/clock/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/clock/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/clock/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2085,6 +4215,36 @@
      "faces": 12506,
      "watertight": true,
      "iou": 0.562
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/coffee_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/coffee_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/coffee_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2114,6 +4274,36 @@
      "faces": 12426,
      "watertight": true,
      "iou": 0.378
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/desk/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/desk/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/desk/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2143,6 +4333,36 @@
      "faces": 13696,
      "watertight": true,
      "iou": 0.65
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/filing_cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/filing_cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/filing_cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2172,6 +4392,36 @@
      "faces": 11516,
      "watertight": true,
      "iou": 0.651
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/lamp/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/lamp/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2201,6 +4451,36 @@
      "faces": 14962,
      "watertight": true,
      "iou": 0.563
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/laptop/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/laptop/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/laptop/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2230,6 +4510,36 @@
      "faces": 7068,
      "watertight": true,
      "iou": 0.561
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/mirror/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/mirror/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/mirror/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2259,6 +4569,36 @@
      "faces": 9996,
      "watertight": true,
      "iou": 0.786
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/monitor/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/monitor/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/monitor/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2288,6 +4628,36 @@
      "faces": 15601,
      "watertight": false,
      "iou": 0.534
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/office_chair/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/office_chair/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/office_chair/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2317,6 +4687,36 @@
      "faces": 9968,
      "watertight": true,
      "iou": 0.732
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/picture_frame/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/picture_frame/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/picture_frame/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2346,6 +4746,36 @@
      "faces": 10990,
      "watertight": true,
      "iou": 0.77
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/planter/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/planter/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/planter/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2375,6 +4805,36 @@
      "faces": 6386,
      "watertight": true,
      "iou": 0.408
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/side_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/side_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/side_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2404,6 +4864,36 @@
      "faces": 13030,
      "watertight": true,
      "iou": 0.878
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/sofa/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/sofa/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/sofa/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2433,6 +4923,36 @@
      "faces": 11102,
      "watertight": true,
      "iou": 0.446
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/stool/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/stool/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/stool/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2462,6 +4982,36 @@
      "faces": 14984,
      "watertight": true,
      "iou": 0.603
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list05/table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list05/table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list05/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2491,6 +5041,36 @@
      "faces": 14866,
      "watertight": true,
      "iou": 0.757
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/bookshelf/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/bookshelf/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/bookshelf/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2520,6 +5100,36 @@
      "faces": 14962,
      "watertight": true,
      "iou": 0.833
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2549,6 +5159,36 @@
      "faces": 9982,
      "watertight": true,
      "iou": 0.609
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/clock/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/clock/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/clock/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2578,6 +5218,36 @@
      "faces": 15572,
      "watertight": false,
      "iou": 0.401
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/coffee_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/coffee_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/coffee_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2607,6 +5277,36 @@
      "faces": 14846,
      "watertight": true,
      "iou": 0.683
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/desk/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/desk/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/desk/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2636,6 +5336,36 @@
      "faces": 13828,
      "watertight": true,
      "iou": 0.589
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/filing_cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/filing_cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/filing_cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2665,6 +5395,36 @@
      "faces": 11432,
      "watertight": true,
      "iou": 0.735
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/lamp/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/lamp/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2694,6 +5454,36 @@
      "faces": 13748,
      "watertight": true,
      "iou": 0.661
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/laptop/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/laptop/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/laptop/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2723,6 +5513,36 @@
      "faces": 9128,
      "watertight": true,
      "iou": 0.715
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/mirror/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/mirror/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/mirror/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2752,6 +5572,36 @@
      "faces": 9914,
      "watertight": true,
      "iou": 0.802
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/monitor/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/monitor/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/monitor/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2781,6 +5631,36 @@
      "faces": 17296,
      "watertight": false,
      "iou": 0.466
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/office_chair/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/office_chair/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/office_chair/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2810,6 +5690,36 @@
      "faces": 9630,
      "watertight": true,
      "iou": 0.68
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/picture_frame/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/picture_frame/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/picture_frame/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2839,6 +5749,36 @@
      "faces": 11200,
      "watertight": true,
      "iou": 0.799
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/planter/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/planter/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/planter/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2868,6 +5808,36 @@
      "faces": 7570,
      "watertight": true,
      "iou": 0.465
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/side_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/side_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/side_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2897,6 +5867,36 @@
      "faces": 14688,
      "watertight": true,
      "iou": 0.661
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/sofa/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/sofa/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/sofa/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2926,6 +5926,36 @@
      "faces": 14348,
      "watertight": true,
      "iou": 0.717
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/stool/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/stool/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/stool/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2955,6 +5985,36 @@
      "faces": 4310,
      "watertight": true,
      "iou": 0.497
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list06/table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list06/table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list06/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -2984,6 +6044,36 @@
      "faces": 14158,
      "watertight": true,
      "iou": 0.442
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/bookshelf/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/bookshelf/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/bookshelf/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3013,6 +6103,36 @@
      "faces": 14950,
      "watertight": true,
      "iou": 0.615
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3042,6 +6162,36 @@
      "faces": 9980,
      "watertight": true,
      "iou": 0.914
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/clock/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/clock/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/clock/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3071,6 +6221,36 @@
      "faces": 10202,
      "watertight": true,
      "iou": 0.437
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/coffee_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/coffee_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/coffee_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3100,6 +6280,36 @@
      "faces": 14996,
      "watertight": true,
      "iou": 0.665
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/desk/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/desk/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/desk/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3129,6 +6339,36 @@
      "faces": 14812,
      "watertight": true,
      "iou": 0.593
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/filing_cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/filing_cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/filing_cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3158,6 +6398,36 @@
      "faces": 9800,
      "watertight": true,
      "iou": 0.785
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/lamp/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/lamp/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3187,6 +6457,36 @@
      "faces": 14986,
      "watertight": true,
      "iou": 0.831
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/laptop/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/laptop/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/laptop/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3216,6 +6516,36 @@
      "faces": 8524,
      "watertight": true,
      "iou": 0.526
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/mirror/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/mirror/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/mirror/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3245,6 +6575,36 @@
      "faces": 9562,
      "watertight": true,
      "iou": 0.723
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/monitor/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/monitor/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/monitor/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3274,6 +6634,36 @@
      "faces": 18013,
      "watertight": false,
      "iou": 0.611
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/office_chair/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/office_chair/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/office_chair/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3303,6 +6693,36 @@
      "faces": 8946,
      "watertight": true,
      "iou": 0.655
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/picture_frame/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/picture_frame/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/picture_frame/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3332,6 +6752,36 @@
      "faces": 9880,
      "watertight": true,
      "iou": 0.684
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/planter/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/planter/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/planter/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3361,6 +6811,36 @@
      "faces": 5702,
      "watertight": true,
      "iou": 0.569
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/side_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/side_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/side_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3390,6 +6870,36 @@
      "faces": 11506,
      "watertight": true,
      "iou": 0.663
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/sofa/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/sofa/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/sofa/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3419,6 +6929,36 @@
      "faces": 13844,
      "watertight": true,
      "iou": 0.754
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/stool/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/stool/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/stool/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3448,6 +6988,36 @@
      "faces": 11002,
      "watertight": true,
      "iou": 0.544
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list07/table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list07/table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list07/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3477,6 +7047,36 @@
      "faces": 14566,
      "watertight": true,
      "iou": 0.56
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/bookshelf/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/bookshelf/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/bookshelf/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3506,6 +7106,36 @@
      "faces": 14990,
      "watertight": true,
      "iou": 0.896
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3535,6 +7165,36 @@
      "faces": 9970,
      "watertight": true,
      "iou": 0.786
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/clock/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/clock/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/clock/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3564,6 +7224,36 @@
      "faces": 14952,
      "watertight": true,
      "iou": 0.78
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/coffee_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/coffee_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/coffee_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3593,6 +7283,36 @@
      "faces": 13974,
      "watertight": true,
      "iou": 0.218
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/desk/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/desk/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/desk/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3622,6 +7342,36 @@
      "faces": 13292,
      "watertight": true,
      "iou": 0.576
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/filing_cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/filing_cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/filing_cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3651,6 +7401,36 @@
      "faces": 11866,
      "watertight": true,
      "iou": 0.786
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/lamp/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/lamp/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3680,6 +7460,36 @@
      "faces": 14890,
      "watertight": true,
      "iou": 0.687
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/laptop/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/laptop/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/laptop/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3709,6 +7519,26 @@
      "faces": 9990,
      "watertight": true,
      "iou": 0.813
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/mirror/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/mirror/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3738,6 +7568,36 @@
      "faces": 9988,
      "watertight": true,
      "iou": 0.469
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/monitor/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/monitor/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/monitor/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3767,6 +7627,36 @@
      "faces": 15297,
      "watertight": false,
      "iou": 0.413
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/office_chair/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/office_chair/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/office_chair/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3796,6 +7686,36 @@
      "faces": 9880,
      "watertight": true,
      "iou": 0.455
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/picture_frame/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/picture_frame/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/picture_frame/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3825,6 +7745,36 @@
      "faces": 11480,
      "watertight": true,
      "iou": 0.706
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/planter/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/planter/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/planter/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3854,6 +7804,36 @@
      "faces": 14430,
      "watertight": true,
      "iou": 0.726
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/side_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/side_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/side_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3883,6 +7863,36 @@
      "faces": 13492,
      "watertight": true,
      "iou": 0.568
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/sofa/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/sofa/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/sofa/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3912,6 +7922,36 @@
      "faces": 5632,
      "watertight": true,
      "iou": 0.518
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/stool/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/stool/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/stool/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3941,6 +7981,36 @@
      "faces": 14820,
      "watertight": true,
      "iou": 0.712
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list08/table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list08/table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list08/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3970,6 +8040,36 @@
      "faces": 12488,
      "watertight": true,
      "iou": 0.199
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/bookshelf/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/bookshelf/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/bookshelf/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -3999,6 +8099,36 @@
      "faces": 14770,
      "watertight": true,
      "iou": 0.647
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4028,6 +8158,36 @@
      "faces": 9984,
      "watertight": true,
      "iou": 0.882
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/clock/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/clock/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/clock/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4057,6 +8217,36 @@
      "faces": 13606,
      "watertight": true,
      "iou": 0.577
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/coffee_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/coffee_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/coffee_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4086,6 +8276,36 @@
      "faces": 14712,
      "watertight": true,
      "iou": 0.355
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/desk/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/desk/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/desk/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4115,6 +8335,36 @@
      "faces": 13780,
      "watertight": true,
      "iou": 0.689
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/filing_cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/filing_cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/filing_cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4144,6 +8394,36 @@
      "faces": 11968,
      "watertight": true,
      "iou": 0.795
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/lamp/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/lamp/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4173,6 +8453,36 @@
      "faces": 14998,
      "watertight": true,
      "iou": 0.462
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/laptop/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/laptop/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/laptop/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4202,6 +8512,36 @@
      "faces": 9978,
      "watertight": true,
      "iou": 0.558
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/mirror/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/mirror/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/mirror/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4231,6 +8571,36 @@
      "faces": 9946,
      "watertight": true,
      "iou": 0.751
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/monitor/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/monitor/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/monitor/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4260,6 +8630,36 @@
      "faces": 17092,
      "watertight": false,
      "iou": 0.612
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/office_chair/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/office_chair/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/office_chair/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4289,6 +8689,36 @@
      "faces": 9878,
      "watertight": true,
      "iou": 0.72
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/picture_frame/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/picture_frame/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/picture_frame/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4318,6 +8748,36 @@
      "faces": 11946,
      "watertight": true,
      "iou": 0.63
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/planter/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/planter/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/planter/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4347,6 +8807,36 @@
      "faces": 6430,
      "watertight": true,
      "iou": 0.501
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/side_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/side_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/side_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4376,6 +8866,36 @@
      "faces": 14068,
      "watertight": true,
      "iou": 0.712
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/sofa/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/sofa/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/sofa/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4405,6 +8925,36 @@
      "faces": 11086,
      "watertight": true,
      "iou": 0.662
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/stool/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/stool/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/stool/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4434,6 +8984,36 @@
      "faces": 15210,
      "watertight": true,
      "iou": 0.678
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list09/table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list09/table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list09/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4463,6 +9043,36 @@
      "faces": 14918,
      "watertight": true,
      "iou": 0.509
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/bookshelf/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/bookshelf/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/bookshelf/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4492,6 +9102,36 @@
      "faces": 14864,
      "watertight": true,
      "iou": 0.812
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4521,6 +9161,36 @@
      "faces": 9984,
      "watertight": true,
      "iou": 0.914
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/clock/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/clock/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/clock/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4550,6 +9220,36 @@
      "faces": 20476,
      "watertight": true,
      "iou": 0.761
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/coffee_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/coffee_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/coffee_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4579,6 +9279,36 @@
      "faces": 10628,
      "watertight": true,
      "iou": 0.526
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/desk/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/desk/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/desk/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4608,6 +9338,36 @@
      "faces": 13560,
      "watertight": true,
      "iou": 0.659
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/filing_cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/filing_cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/filing_cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4637,6 +9397,36 @@
      "faces": 11996,
      "watertight": true,
      "iou": 0.84
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/lamp/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/lamp/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4666,6 +9456,36 @@
      "faces": 14930,
      "watertight": true,
      "iou": 0.731
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/laptop/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/laptop/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/laptop/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4695,6 +9515,36 @@
      "faces": 9266,
      "watertight": true,
      "iou": 0.652
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/mirror/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/mirror/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/mirror/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4724,6 +9574,36 @@
      "faces": 8606,
      "watertight": true,
      "iou": 0.655
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/monitor/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/monitor/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/monitor/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4753,6 +9633,36 @@
      "faces": 16269,
      "watertight": false,
      "iou": 0.508
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/office_chair/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/office_chair/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/office_chair/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4782,6 +9692,36 @@
      "faces": 9930,
      "watertight": true,
      "iou": 0.58
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/picture_frame/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/picture_frame/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/picture_frame/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4811,6 +9751,36 @@
      "faces": 11232,
      "watertight": true,
      "iou": 0.543
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/planter/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/planter/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/planter/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4840,6 +9810,36 @@
      "faces": 12644,
      "watertight": true,
      "iou": 0.26
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/side_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/side_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/side_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4869,6 +9869,36 @@
      "faces": 12266,
      "watertight": true,
      "iou": 0.727
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/sofa/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/sofa/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/sofa/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4898,6 +9928,36 @@
      "faces": 13414,
      "watertight": true,
      "iou": 0.584
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/stool/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/stool/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/stool/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4927,6 +9987,36 @@
      "faces": 8144,
      "watertight": true,
      "iou": 0.415
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list10/table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list10/table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list10/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4956,6 +10046,36 @@
      "faces": 14328,
      "watertight": true,
      "iou": 0.529
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/bookshelf/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/bookshelf/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/bookshelf/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -4985,6 +10105,36 @@
      "faces": 14952,
      "watertight": true,
      "iou": 0.684
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5014,6 +10164,36 @@
      "faces": 9974,
      "watertight": true,
      "iou": 0.935
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/clock/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/clock/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/clock/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5043,6 +10223,36 @@
      "faces": 13822,
      "watertight": true,
      "iou": 0.435
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/coffee_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/coffee_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/coffee_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5072,6 +10282,36 @@
      "faces": 13286,
      "watertight": true,
      "iou": 0.559
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/desk/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/desk/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/desk/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5101,6 +10341,36 @@
      "faces": 10292,
      "watertight": true,
      "iou": 0.709
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/filing_cabinet/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/filing_cabinet/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/filing_cabinet/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5130,6 +10400,36 @@
      "faces": 11912,
      "watertight": true,
      "iou": 0.83
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/lamp/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/lamp/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/lamp/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5159,6 +10459,36 @@
      "faces": 14952,
      "watertight": true,
      "iou": 0.65
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/laptop/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/laptop/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/laptop/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5188,6 +10518,36 @@
      "faces": 7968,
      "watertight": true,
      "iou": 0.289
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/mirror/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/mirror/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/mirror/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5217,6 +10577,36 @@
      "faces": 9690,
      "watertight": true,
      "iou": 0.639
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/monitor/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/monitor/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/monitor/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5246,6 +10636,36 @@
      "faces": 16442,
      "watertight": false,
      "iou": 0.287
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/office_chair/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/office_chair/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/office_chair/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5275,6 +10695,36 @@
      "faces": 9990,
      "watertight": true,
      "iou": 0.8
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/picture_frame/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/picture_frame/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/picture_frame/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5304,6 +10754,36 @@
      "faces": 11658,
      "watertight": true,
      "iou": 0.302
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/planter/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/planter/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/planter/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5333,6 +10813,36 @@
      "faces": 14704,
      "watertight": true,
      "iou": 0.7
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/side_table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/side_table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/side_table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5362,6 +10872,36 @@
      "faces": 14992,
      "watertight": true,
      "iou": 0.833
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/sofa/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/sofa/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/sofa/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5391,6 +10931,36 @@
      "faces": 13690,
      "watertight": true,
      "iou": 0.566
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/stool/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/stool/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/stool/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   },
@@ -5420,6 +10990,36 @@
      "faces": 15300,
      "watertight": true,
      "iou": 0.821
+    },
+    {
+     "key": "triposg",
+     "label": "triposg",
+     "engine": "TripoSG",
+     "ours": false,
+     "glb": "results/list11/table/triposg.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "sf3d",
+     "label": "sf3d",
+     "engine": "Stable Fast 3D",
+     "ours": false,
+     "glb": "results/list11/table/sf3d.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
+    },
+    {
+     "key": "trellis",
+     "label": "trellis",
+     "engine": "TRELLIS 1.0",
+     "ours": false,
+     "glb": "results/list11/table/trellis.glb",
+     "faces": null,
+     "watertight": null,
+     "iou": null
     }
    ]
   }

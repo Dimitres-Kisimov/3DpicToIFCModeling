@@ -95,6 +95,7 @@ const PRESETS = {
   'A/B: TripoSR vs OURS': k => k==='raw' || k==='improved',
   'Generators vs TripoSG': k => ['triposg','trellis','trellis2','instantmesh','sam3d','sf3d'].includes(k.replace(/_repaired$/,'')),
   'Multi-image':           k => /_mv$|^mv_|multiview/.test(k),
+  'TSG upgrades (pick one!)': k => /^triposg(_v\d)?$/.test(k),
   'All (advanced)':        _ => true,
 };
 state.preset = localStorage.getItem('viz_preset') || 'A/B: TripoSR vs OURS';
@@ -114,7 +115,13 @@ function renderGroups(){
     b.onclick = () => {
       state.preset = name;
       state.engines = new Set(ALL_KEYS.filter(PRESETS[name]));
-      persistGroups(); renderGroups(); if (state.item) showItem(state.item);
+      // presets whose variants exist only on some items jump to the first item that has them
+      const wanted = [...state.engines];
+      if (!state.item || !state.item.variants.some(v => state.engines.has(v.key) && !['raw','improved'].includes(v.key))) {
+        const target = state.data.items.find(i => i.variants.some(v => wanted.includes(v.key) && !['raw','improved'].includes(v.key)));
+        if (target) { state.list = target.list; listSel.value = target.list; state.item = target; }
+      }
+      persistGroups(); renderGroups(); renderSidebar(); if (state.item) showItem(state.item);
     };
     g.appendChild(b);
   }
@@ -122,11 +129,21 @@ function renderGroups(){
   for (const k of ALL_KEYS){
     const sample = state.data.items.flatMap(i=>i.variants).find(v=>v.key===k);
     const c = document.createElement('button');
+    const onThisItem = state.item && state.item.variants.some(v => v.key === k);
     c.className = 'chip' + (state.engines.has(k) ? ' on' : '');
+    if (!onThisItem) { c.style.opacity = '.35'; c.title = 'not generated for the current item — click to jump to one that has it'; }
     c.textContent = sample && sample.label !== k ? sample.label : (sample && sample.engine) || k;
     c.onclick = () => {
-      state.engines.has(k) ? state.engines.delete(k) : state.engines.add(k);
-      state.preset = ''; persistGroups(); renderGroups(); if (state.item) showItem(state.item);
+      if (!onThisItem) {                       // jump to an item that actually has this variant
+        const t = state.data.items.find(i => i.variants.some(v => v.key === k));
+        if (t) { state.list = t.list; listSel.value = t.list; state.item = t; }
+      }
+      state.engines.add(k);
+      if (onThisItem && state.engines.has(k) && state.item.variants.some(v=>v.key===k)) {
+        // normal toggle only when the variant is visible here
+        if (c.classList.contains('on')) state.engines.delete(k);
+      }
+      state.preset = ''; persistGroups(); renderGroups(); renderSidebar(); if (state.item) showItem(state.item);
     };
     g.appendChild(c);
   }
@@ -141,6 +158,20 @@ const listSel = document.getElementById('listSel');
 listSel.innerHTML = lists.map(l=>`<option>${l}</option>`).join('');
 listSel.onchange = ()=>{ state.list=listSel.value; renderSidebar(); };
 state.list = lists[0];
+
+// deep-link: visualizer.html#list05/bookshelf opens that exact item
+const hash = decodeURIComponent(location.hash.slice(1));
+if (hash.includes('/')) {
+  const [hl, hc] = hash.split('/');
+  const target = state.data.items.find(i => i.list === hl && i.category === hc);
+  if (target) { state.list = hl; state.item = target; listSel.value = hl; }
+}
+window.addEventListener('hashchange', () => {
+  const h = decodeURIComponent(location.hash.slice(1));
+  const [hl, hc] = h.split('/');
+  const t = state.data.items.find(i => i.list === hl && i.category === hc);
+  if (t) { state.list = hl; listSel.value = hl; state.item = t; renderSidebar(); showItem(t); }
+});
 
 function renderSidebar(){
   const box = document.getElementById('items');
