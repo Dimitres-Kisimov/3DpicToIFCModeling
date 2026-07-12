@@ -175,6 +175,146 @@ def _rescale_to_real(mesh, cat):
     return mesh
 
 
+# Furniture colour fallbacks when a GLB carries no usable colour at all —
+# plausible material tones per category (wood, fabric, plastic), not white.
+_FURN_FALLBACK = {
+    "sofa":          [0.42, 0.45, 0.52, 1.0],
+    "bed":           [0.62, 0.58, 0.52, 1.0],
+    "table":         [0.55, 0.40, 0.26, 1.0],
+    "desk":          [0.52, 0.38, 0.25, 1.0],
+    "coffee_table":  [0.55, 0.40, 0.26, 1.0],
+    "side_table":    [0.55, 0.40, 0.26, 1.0],
+    "bookshelf":     [0.48, 0.35, 0.24, 1.0],
+    "cabinet":       [0.58, 0.44, 0.30, 1.0],
+    "filing_cabinet": [0.48, 0.50, 0.54, 1.0],
+    "office_chair":  [0.20, 0.20, 0.22, 1.0],
+    "chair":         [0.45, 0.33, 0.23, 1.0],
+    "lamp":          [0.82, 0.78, 0.70, 1.0],
+    "mirror":        [0.72, 0.76, 0.80, 1.0],
+    "planter":       [0.35, 0.48, 0.30, 1.0],
+}
+
+
+def _dominant_rgba(img):
+    """Dominant colour of a texture image — quantised bins scored by count ×
+    saturation, so a red sofa reads red (a plain mean averages to mud)."""
+    try:
+        im = img.convert("RGB")
+        im.thumbnail((128, 128))
+        q = im.quantize(colors=8)
+        pal = q.getpalette()
+        best, best_score = None, -1.0
+        for count, idx in q.getcolors():
+            r, g, b = pal[idx * 3: idx * 3 + 3]
+            mx, mn = max(r, g, b), min(r, g, b)
+            sat = (mx - mn) / mx if mx else 0.0
+            score = count * (0.35 + sat)
+            if score > best_score:
+                best_score, best = score, (r, g, b)
+        return [best[0] / 255.0, best[1] / 255.0, best[2] / 255.0, 1.0]
+    except Exception:
+        return None
+
+
+def _part_rgba(g):
+    """Best solid colour for one furniture submesh: a non-white authored
+    baseColorFactor, else its texture's dominant colour, else SimpleMaterial
+    diffuse, else the dominant vertex/face colour. None if truly colourless."""
+    vis = getattr(g, "visual", None)
+    mat = getattr(vis, "material", None)
+    if mat is not None:
+        bc = getattr(mat, "baseColorFactor", None)
+        if bc is not None:
+            try:
+                bc = [float(c) for c in np.asarray(bc, dtype=float).ravel()[:4]]
+                while len(bc) < 4:
+                    bc.append(1.0)
+                if max(bc) > 1.001:                      # 0-255 encoded
+                    bc = [c / 255.0 for c in bc]
+                if tuple(round(c, 2) for c in bc[:3]) != (1.0, 1.0, 1.0):
+                    return bc
+            except Exception:
+                pass
+        tex = getattr(mat, "baseColorTexture", None)
+        if tex is None:
+            tex = getattr(mat, "image", None)
+        if tex is not None:
+            c = _dominant_rgba(tex)
+            if c:
+                return c
+        dif = getattr(mat, "diffuse", None)
+        if dif is not None:
+            try:
+                d = np.asarray(dif, dtype=float).ravel()
+                if d.max() > 1.001:
+                    d = d / 255.0
+                if tuple(round(float(c), 2) for c in d[:3]) != (1.0, 1.0, 1.0):
+                    return [float(d[0]), float(d[1]), float(d[2]), 1.0]
+            except Exception:
+                pass
+    try:
+        if vis is not None and vis.kind in ("vertex", "face"):
+            cols = np.asarray(vis.vertex_colors if vis.kind == "vertex" else vis.face_colors)
+            u, cnt = np.unique(cols[:, :3] // 16, axis=0, return_counts=True)
+            dom = (u[int(cnt.argmax())].astype(float) * 16 + 8) / 255.0
+            return [float(dom[0]), float(dom[1]), float(dom[2]), 1.0]
+    except Exception:
+        pass
+    return None
+
+
+def _xform_all(combined, parts, M):
+    combined.apply_transform(M)
+    for p in parts:
+        p.apply_transform(M)
+
+
+def _rescale_parts_to_real(combined, parts, cat):
+    """_rescale_to_real, applied identically to the logic mesh AND its parts."""
+    t = TARGET_DIMS.get(cat)
+    if not t:
+        return
+    e = combined.extents
+    if min(e) < 1e-6:
+        return
+    if (e[0] - e[1]) * (t[0] - t[1]) < 0:              # aspect mismatch -> quarter turn
+        _xform_all(combined, parts, trimesh.transformations.rotation_matrix(np.pi / 2, [0, 0, 1]))
+        e = combined.extents
+    S = np.eye(4)
+    S[0, 0], S[1, 1], S[2, 2] = t[0] / e[0], t[1] / e[1], t[2] / e[2]
+    _xform_all(combined, parts, S)
+
+
+def _load_colored_furniture(path, cat=None):
+    """Load a furniture GLB as PER-MATERIAL PARTS, each baked to a solid PBR
+    baseColorFactor the xeokit viewers actually render. (The old
+    force='mesh' load silently dropped ALL visuals when flattening a
+    multi-material GLB — the white-furniture bug; and xeokit ignores COLOR_0
+    vertex colours, so baking into materials is the only path that shows up.)
+    Returns (combined_for_logic, parts_for_export) in the file's own frame."""
+    sc = trimesh.load(str(path))
+    raw = []
+    if isinstance(sc, trimesh.Trimesh):
+        raw = [sc]
+    else:
+        for node in sc.graph.nodes_geometry:
+            T, gname = sc.graph[node]
+            g = sc.geometry[gname]
+            if isinstance(g, trimesh.Trimesh) and len(g.faces):
+                p = g.copy()
+                p.apply_transform(T)
+                raw.append(p)
+    if not raw:
+        raise ValueError(f"no mesh geometry in {path}")
+    parts = []
+    for p in raw:
+        rgba = _part_rgba(p) or list(_FURN_FALLBACK.get(cat, [0.72, 0.68, 0.62, 1.0]))
+        parts.append(_tinted(p, rgba))
+    combined = parts[0].copy() if len(parts) == 1 else \
+        trimesh.util.concatenate([q.copy() for q in parts])
+    return combined, parts
+
+
 def build_shell_cache(f, s, ifc_path, force=False):
     """Build (once) the building's empty shell as a Y-up GLB in the geometry cache.
     This is the dominant populate cost (create_shape for every product) — caching
@@ -259,12 +399,11 @@ def load_generated(gid):
         e = next((x for x in man.get("items", []) if x.get("id") == gid), None)
         if not e or not (e.get("glb") or "").lower().endswith(".glb"):
             return None
-        m = trimesh.load(str(_GEN_DIR / e["glb"]), force="mesh")
-        m.apply_transform(trimesh.transformations.rotation_matrix(np.pi / 2, [1, 0, 0]))
         cat = e.get("category", "table")
-        if cat in TARGET_DIMS:
-            m = _rescale_to_real(m, cat)
-        return {"category": cat, "mesh": m}
+        m, parts = _load_colored_furniture(str(_GEN_DIR / e["glb"]), cat)
+        _xform_all(m, parts, trimesh.transformations.rotation_matrix(np.pi / 2, [1, 0, 0]))
+        _rescale_parts_to_real(m, parts, cat)
+        return {"category": cat, "mesh": m, "parts": parts}
     except Exception:
         return None
 
@@ -277,8 +416,9 @@ def load_assets():
     out = {}
     for cat, a in by_cat.items():
         try:
-            mesh = _rescale_to_real(trimesh.load(str(LIB / a["glb"]), force="mesh"), cat)
-            out[cat] = {"mesh": mesh, "ifc": a["ifc_class"]}
+            mesh, parts = _load_colored_furniture(str(LIB / a["glb"]), cat)
+            _rescale_parts_to_real(mesh, parts, cat)
+            out[cat] = {"mesh": mesh, "parts": parts, "ifc": a["ifc_class"]}
         except Exception:
             pass
     # on-desk electronics: procedural (the AI asset library has none) — placed ON
@@ -302,11 +442,11 @@ def load_assets():
             if not glb:
                 continue
             try:
-                m = trimesh.load(glb, force="mesh")
-                m.apply_transform(rotx90)              # ABO GLBs are Y-up; assets are Z-up
-                m = _rescale_to_real(m, cat)
+                m, parts = _load_colored_furniture(glb, cat)
+                _xform_all(m, parts, rotx90)           # ABO GLBs are Y-up; assets are Z-up
+                _rescale_parts_to_real(m, parts, cat)
                 ifc = _catalog.CATALOG_META.get(cat, ("IfcFurniture",))[0]
-                out[cat] = {"mesh": m, "ifc": ifc}
+                out[cat] = {"mesh": m, "parts": parts, "ifc": ifc}
             except Exception:
                 pass
     except Exception:
@@ -635,13 +775,14 @@ def main():
         # 2) choose furniture: explicit picks (may include the user's OWN
         # generated meshes as 'gen:<id>'), else a space-aware smart set
         raw_picks = explicit if explicit is not None else smart_furnish(rt, W, D, assets)
-        cats, custom_mesh = [], {}
+        cats, custom_mesh, custom_parts = [], {}, {}
         for ent in raw_picks:
             if isinstance(ent, str) and ent.startswith("gen:"):
                 info = load_generated(ent[4:])
                 if info:
                     cats.append(info["category"])
                     custom_mesh[len(cats) - 1] = info["mesh"]
+                    custom_parts[len(cats) - 1] = info.get("parts") or [info["mesh"]]
             elif ent in assets:
                 cats.append(ent)
         if not cats:
@@ -649,6 +790,12 @@ def main():
 
         def mesh_of(idx):
             return custom_mesh.get(idx, assets[cats[idx]]["mesh"])
+
+        def parts_of(idx):
+            if idx in custom_parts:
+                return custom_parts[idx]
+            a = assets[cats[idx]]
+            return a.get("parts") or [a["mesh"]]
 
         # 3) A3b — labeled fixed obstacles (columns/walls/beams/stairs) + door keep-clear
         keepouts = extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1)
@@ -696,7 +843,7 @@ def main():
             tops_of.setdefault(hosts[0], []).append(ti)
         top_children = {ti for lst in tops_of.values() for ti in lst}
 
-        objs, meshmap, expand = [], {}, {}
+        objs, meshmap, partsmap, expand = [], {}, {}, {}
         dropped = list(unhosted_tops)       # honest per-room "no space" report
         skipped_items += len(unhosted_tops)
         for i, cat in enumerate(cats):
@@ -736,6 +883,7 @@ def main():
                 entry["prefer"] = "center"   # a stool-ringed table is social — keep it open
             objs.append(entry)
             meshmap[oid] = mesh_of(i)
+            partsmap[oid] = parts_of(i)
             expand[oid] = {"extra_d": extra_d, "child": child_i,
                            "d_par": float(e[1]), "tops": tops_of.get(i, []),
                            "stools": stools_of.get(i, [])}
@@ -783,7 +931,8 @@ def main():
             acx, acz = cx - fx * extra / 2.0, cz - fzv * extra / 2.0
             room_items.append({"oid": oid, "cat": oid.rsplit("-", 1)[0],
                                "cx": acx, "cz": acz, "yaw": yaw,
-                               "mesh": meshmap[oid], "zones": zones_room.get(oid)})
+                               "mesh": meshmap[oid], "parts": partsmap.get(oid),
+                               "zones": zones_room.get(oid)})
             ci = info.get("child")
             if ci is not None:
                 ccat = cats[ci]
@@ -797,7 +946,7 @@ def main():
                                      - _math.atan2(fwd[1], fwd[0]))
                 room_items.append({"oid": f"{ccat}-{ci}", "cat": ccat,
                                    "cx": ccx, "cz": ccz, "yaw": cyaw,
-                                   "mesh": cmesh, "zones": None})
+                                   "mesh": cmesh, "parts": parts_of(ci), "zones": None})
             # stool petal ring: fan evenly around the table, each facing it
             stool_list = info.get("stools", [])
             if stool_list:
@@ -816,7 +965,8 @@ def main():
                                          - _math.atan2(sfwd[1], sfwd[0]))
                     room_items.append({"oid": f"{scat}-{si}", "cat": scat,
                                        "cx": sx, "cz": sz, "yaw": syaw,
-                                       "mesh": mesh_of(si), "zones": None})
+                                       "mesh": mesh_of(si), "parts": parts_of(si),
+                                       "zones": None})
 
             # on-desk electronics: slot offsets rotated with the desk; the
             # screen (+Y local) turned toward the desk's front — i.e. the chair
@@ -831,27 +981,38 @@ def main():
                 tyaw = _math.degrees(_math.atan2(-fx, fzv))    # +Y local -> (fx, fzv)
                 room_items.append({"oid": f"{tcat}-{ti}", "cat": tcat,
                                    "cx": tx, "cz": tz, "yaw": tyaw,
-                                   "mesh": mesh_of(ti), "zones": None,
-                                   "elev": par_h})
+                                   "mesh": mesh_of(ti), "parts": parts_of(ti),
+                                   "zones": None, "elev": par_h})
 
         boxes, room_cats = [], []
         for it in room_items:
             m = it["mesh"]
+            parts = it.get("parts") or [m]
             cx, cz, yaw = it["cx"], it["cz"], it["yaw"]
             wx, wy, cat = x0 + cx, y0 + cz, it["cat"]
+            Ryaw = (trimesh.transformations.rotation_matrix(np.radians(yaw), [0, 0, 1])
+                    if yaw else None)
             if movdir is not None:
                 # export the piece centred at footprint origin (base at 0), Y-up; the viewer positions
                 # it — so each piece is a separate, movable object (drag-to-reposition).
                 piece = m.copy()
-                if yaw:
-                    piece.apply_transform(trimesh.transformations.rotation_matrix(np.radians(yaw), [0, 0, 1]))
+                if Ryaw is not None:
+                    piece.apply_transform(Ryaw)
                 pb = piece.bounds
                 # true rotated footprint (works for facing angles, not just 90° steps)
                 bex, bey = float(pb[1][0] - pb[0][0]), float(pb[1][1] - pb[0][1])
-                piece.apply_translation([-(pb[0][0] + pb[1][0]) / 2, -(pb[0][1] + pb[1][1]) / 2, -pb[0][2]])
-                piece.apply_transform(trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0]))  # Z-up->Y-up
+                tvec = [-(pb[0][0] + pb[1][0]) / 2, -(pb[0][1] + pb[1][1]) / 2, -pb[0][2]]
+                rotx = trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0])  # Z-up->Y-up
+                psc = trimesh.Scene()
+                for kk, part in enumerate(parts):     # parts carry the colours
+                    p2 = part.copy()
+                    if Ryaw is not None:
+                        p2.apply_transform(Ryaw)
+                    p2.apply_translation(tvec)
+                    p2.apply_transform(rotx)
+                    psc.add_geometry(p2, node_name=f"p{kk}")
                 gname = f"piece_{placed}.glb"
-                piece.export(str(movdir / gname))
+                psc.export(str(movdir / gname))
                 pid = f"{cat}-{placed}"
                 elev = float(it.get("elev") or 0.0)
                 movable.append({"id": pid, "room": name, "category": cat, "glb": gname,
@@ -867,11 +1028,19 @@ def main():
                     boxes.append((wx - bex / 2, wx + bex / 2, wy - bey / 2, wy + bey / 2))
             else:
                 g2 = m.copy()
-                if yaw:
-                    g2.apply_transform(trimesh.transformations.rotation_matrix(np.radians(yaw), [0, 0, 1]))
+                if Ryaw is not None:
+                    g2.apply_transform(Ryaw)
                 b = g2.bounds
-                g2.apply_translation([wx - (b[0][0] + b[1][0]) / 2, wy - (b[0][1] + b[1][1]) / 2, fz - b[0][2]])
-                scene.add_geometry(g2, node_name=f"{name}-{cat}-{placed}")
+                elev = float(it.get("elev") or 0.0)   # on-desk items sit at desk-top height
+                tvec = [wx - (b[0][0] + b[1][0]) / 2, wy - (b[0][1] + b[1][1]) / 2,
+                        fz + elev - b[0][2]]
+                for kk, part in enumerate(parts):     # parts carry the colours
+                    p2 = part.copy()
+                    if Ryaw is not None:
+                        p2.apply_transform(Ryaw)
+                    p2.apply_translation(tvec)
+                    scene.add_geometry(p2, node_name=f"{name}-{cat}-{placed}-p{kk}")
+                g2.apply_translation(tvec)
                 fb = g2.bounds
                 boxes.append((fb[0][0], fb[1][0], fb[0][1], fb[1][1]))
             room_cats.append(cat)
