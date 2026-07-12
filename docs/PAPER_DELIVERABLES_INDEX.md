@@ -13,6 +13,7 @@ campaign and land in the same locations.
 | Comparative studies (A/B/C/D) | [COMPARATIVE_ANALYSIS.md](COMPARATIVE_ANALYSIS.md) | A,B ✅ · C ⏳ pod · D planned |
 | Multi-image reconstruction (Mode 2) | [MULTI_IMAGE_RESEARCH.md](MULTI_IMAGE_RESEARCH.md) — incl. Study E protocol | ✅ research; run ⏳ |
 | **Security & Compliance (dedicated section)** | [SECURITY_COMPLIANCE.md](SECURITY_COMPLIANCE.md) | ✅ |
+| **User guide + system functionality appendix** | [USER_GUIDE.md](USER_GUIDE.md) — screenshots (docs/guide_img/), Mermaid pipeline + architecture diagrams, per-tab functionality, badges, troubleshooting | ✅ |
 | Cost analysis | [COST_MODEL.md](COST_MODEL.md) | ✅ |
 | Accuracy deep-dive | [ACCURACY_RESULTS.md](ACCURACY_RESULTS.md) · `deliverable/CLOUD_BENCHMARK_FINDINGS.md` | ✅ |
 | IFC optimization algorithms | [IFC_OPTIMIZER.md](IFC_OPTIMIZER.md) | ✅ |
