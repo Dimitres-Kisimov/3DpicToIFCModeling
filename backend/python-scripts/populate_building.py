@@ -584,7 +584,8 @@ def footprint_rects(f, s, types, rot=None):
                 v = np.array(g.geometry.verts).reshape(-1, 3)
                 xy = v[:, :2] @ rot.T if rot is not None else v[:, :2]
                 rects.append((float(xy[:, 0].min()), float(xy[:, 0].max()),
-                              float(xy[:, 1].min()), float(xy[:, 1].max()), t))
+                              float(xy[:, 1].min()), float(xy[:, 1].max()),
+                              float(v[:, 2].min()), float(v[:, 2].max()), t))
             except Exception:
                 pass
     return rects
@@ -597,7 +598,7 @@ def footprint_rects(f, s, types, rot=None):
 # scan of a new building pays; repeat populates are solver-only.
 # ---------------------------------------------------------------------------
 CACHE_ROOT = REPO / "data" / "buildings" / "_cache"
-CACHE_VERSION = "v4"          # bump when the cached artefacts change shape (v4: de-rotated frame + theta)
+CACHE_VERSION = "v5"          # bump when the cached artefacts change shape (v5: z-ranged rects)
 
 
 def geometry_cache_dir(ifc_path):
@@ -723,15 +724,21 @@ _KIND = {"IfcColumn": "column", "IfcWall": "wall", "IfcWallStandardCase": "wall"
          "IfcStairFlight": "stair", "IfcRailing": "railing"}
 
 
-def extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1):
+def extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1, fz=None):
     """A3b — every fixed building element intruding into the room [x0..x1]×[y0..y1]
     as a LABELED keep-out rectangle relative to the room origin:
         [{"x","z","width","depth","kind": column|wall|beam|stair|railing|door}]
+    Rects carry z-ranges: only elements at THIS room's storey count — projecting
+    all storeys flat buried multi-storey rooms under upper-floor walls/stairs.
     Same-kind overlapping rects are merged; the solver treats obstacles pairwise, so
     cross-kind overlaps (a beam inside a wall) are harmless. Used by the auto-layout
     solver AND (via schedule data) the manual 2D editor."""
+    def at_storey(z0, z1):
+        return fz is None or (z0 < fz + 2.2 and z1 > fz + 0.05)
     keepouts = []
-    for (ex0, ex1, ey0, ey1, t) in obstacle_rects:
+    for (ex0, ex1, ey0, ey1, ez0, ez1, t) in obstacle_rects:
+        if not at_storey(ez0, ez1):
+            continue
         ix0, ix1, iy0, iy1 = max(ex0, x0), min(ex1, x1), max(ey0, y0), min(ey1, y1)
         if ix1 - ix0 > 0.04 and iy1 - iy0 > 0.04:
             # boundary walls too: when the space geometry runs to a wall's
@@ -739,7 +746,9 @@ def extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1):
             # MUST be blocked or furniture is placed inside the wall
             keepouts.append({"x": ix0 - x0, "z": iy0 - y0, "width": ix1 - ix0,
                              "depth": iy1 - iy0, "kind": _KIND.get(t, "fixed")})
-    for (dx0, dx1, dy0, dy1, _t) in door_rects:            # door keep-clear (egress)
+    for (dx0, dx1, dy0, dy1, dz0, dz1, _t) in door_rects:  # door keep-clear (egress)
+        if not at_storey(dz0, dz1):
+            continue
         if dx1 > x0 and dx0 < x1 and dy1 > y0 and dy0 < y1:
             cx, cy = (dx0 + dx1) / 2 - x0, (dy0 + dy1) / 2 - y0
             keepouts.append({"x": max(0, cx - 0.6), "z": max(0, cy - 0.6),
@@ -875,7 +884,7 @@ def main():
             return a.get("parts") or [a["mesh"]]
 
         # 3) A3b — labeled fixed obstacles (columns/walls/beams/stairs) + door keep-clear
-        keepouts = extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1)
+        keepouts = extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1, fz)
 
         # 3b) non-rectangular rooms (L-shaped, internal voids): block everything
         # inside the bbox that is OUTSIDE the space's true footprint, as column
