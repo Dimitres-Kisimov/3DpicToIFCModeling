@@ -475,17 +475,71 @@ def _chair_forward_xy(m):
         return (0.0, 1.0)
 
 
-def space_extent(sp, s, unit_scale=1.0):
-    """World bbox (x0, x1, y0, y1, zmin) in METRES for an IfcSpace — via solid
-    geometry when the kernel can process it, else the space's IfcBoundingBox
-    (footprint-only exports like Schependomlaan). Raw attributes are project
-    units, hence unit_scale; create_shape output is already metres."""
+def _rot2(deg):
+    """2×2 CCW rotation matrix for XY plan coordinates."""
+    r = np.radians(deg)
+    c, s_ = np.cos(r), np.sin(r)
+    return np.array([[c, -s_], [s_, c]])
+
+
+def detect_building_theta(f, s):
+    """Dominant wall orientation in degrees, in (-45, 45]. Buildings modelled
+    ROTATED in world coordinates (e.g. the rue-Marc-Antoine export: every wall
+    at 60.4°) break every axis-aligned assumption — room bboxes inflate into
+    the walls and obstacle rects go fat, so furniture lands inside walls.
+    The populate solves in a de-rotated local frame instead; 0.0 means the
+    building is already axis-aligned and nothing changes."""
+    import collections
+    angs = []
+    walls = list(f.by_type("IfcWallStandardCase")) or list(f.by_type("IfcWall"))
+    for w in walls[:24]:
+        try:
+            g = ifcopenshell.geom.create_shape(s, w)
+            v = np.array(g.geometry.verts).reshape(-1, 3)[:, :2]
+            c = v - v.mean(0)
+            _val, vec = np.linalg.eigh(c.T @ c)
+            a = np.degrees(np.arctan2(vec[1, -1], vec[0, -1])) % 90.0
+            angs.append(round(a * 2) / 2)                  # 0.5° bins
+        except Exception:
+            pass
+    if not angs:
+        return 0.0
+    a, n = collections.Counter(angs).most_common(1)[0]
+    if n < max(3, len(angs) // 3):
+        return 0.0                                          # no dominant direction
+    if a > 45.0:
+        a -= 90.0
+    return 0.0 if abs(a) < 1.0 else float(a)
+
+
+def space_extent(sp, s, unit_scale=1.0, rot=None):
+    """Plan bbox (x0, x1, y0, y1, zmin) in METRES for an IfcSpace, in the
+    building-local frame (rot = world→local 2×2, None for axis-aligned) — via
+    solid geometry when the kernel can process it, else the space's
+    IfcBoundingBox (footprint-only exports like Schependomlaan). Raw attributes
+    are project units, hence unit_scale; create_shape output is already metres."""
     try:
         g = ifcopenshell.geom.create_shape(s, sp)
         v = np.array(g.geometry.verts).reshape(-1, 3)
         if len(v):
-            return (float(v[:, 0].min()), float(v[:, 0].max()),
-                    float(v[:, 1].min()), float(v[:, 1].max()), float(v[:, 2].min()))
+            xy = v[:, :2] @ rot.T if rot is not None else v[:, :2]
+            poly = None
+            try:                    # true footprint — non-rectangular rooms
+                from shapely.geometry import Polygon
+                from shapely.ops import unary_union
+                fc = np.array(g.geometry.faces).reshape(-1, 3)
+                tris = []
+                for t in fc:        # vertical faces project to ~zero area and drop out
+                    p = Polygon(xy[t])
+                    if p.is_valid and p.area > 1e-4:
+                        tris.append(p)
+                if tris:
+                    poly = unary_union(tris).buffer(0)
+            except Exception:
+                poly = None
+            return (float(xy[:, 0].min()), float(xy[:, 0].max()),
+                    float(xy[:, 1].min()), float(xy[:, 1].max()),
+                    float(v[:, 2].min()), poly)
     except Exception:
         pass
     rep = getattr(sp, "Representation", None)
@@ -497,19 +551,25 @@ def space_extent(sp, s, unit_scale=1.0):
             for item in r.Items:
                 if item.is_a("IfcBoundingBox"):
                     m4 = np.array(up.get_local_placement(sp.ObjectPlacement))
-                    lo = m4 @ np.array(list(item.Corner.Coordinates[:3]) + [1.0])
-                    hi = lo[:3] + m4[:3, :3] @ np.array([float(item.XDim), float(item.YDim), float(item.ZDim)])
-                    x0, x1 = sorted((float(lo[0]), float(hi[0])))
-                    y0, y1 = sorted((float(lo[1]), float(hi[1])))
-                    z0 = min(float(lo[2]), float(hi[2]))
-                    u = float(unit_scale)
-                    return (x0 * u, x1 * u, y0 * u, y1 * u, z0 * u)
+                    org = np.array(list(item.Corner.Coordinates[:3]), dtype=float)
+                    dims = np.array([float(item.XDim), float(item.YDim), float(item.ZDim)])
+                    corners = []                 # all 8 corners — the box may be rotated
+                    for dx in (0, 1):
+                        for dy in (0, 1):
+                            for dz in (0, 1):
+                                p = m4 @ np.append(org + dims * [dx, dy, dz], 1.0)
+                                corners.append(p[:3])
+                    corners = np.array(corners) * float(unit_scale)
+                    xy = corners[:, :2] @ rot.T if rot is not None else corners[:, :2]
+                    return (float(xy[:, 0].min()), float(xy[:, 0].max()),
+                            float(xy[:, 1].min()), float(xy[:, 1].max()),
+                            float(corners[:, 2].min()), None)
     except Exception:
         pass
     return None
 
 
-def footprint_rects(f, s, types):
+def footprint_rects(f, s, types, rot=None):
     rects = []
     for t in types:
         try:
@@ -522,8 +582,9 @@ def footprint_rects(f, s, types):
             try:
                 g = ifcopenshell.geom.create_shape(s, e)
                 v = np.array(g.geometry.verts).reshape(-1, 3)
-                rects.append((float(v[:, 0].min()), float(v[:, 0].max()),
-                              float(v[:, 1].min()), float(v[:, 1].max()), t))
+                xy = v[:, :2] @ rot.T if rot is not None else v[:, :2]
+                rects.append((float(xy[:, 0].min()), float(xy[:, 0].max()),
+                              float(xy[:, 1].min()), float(xy[:, 1].max()), t))
             except Exception:
                 pass
     return rects
@@ -536,7 +597,7 @@ def footprint_rects(f, s, types):
 # scan of a new building pays; repeat populates are solver-only.
 # ---------------------------------------------------------------------------
 CACHE_ROOT = REPO / "data" / "buildings" / "_cache"
-CACHE_VERSION = "v3"          # bump when the cached artefacts change shape (v3: real decimation)
+CACHE_VERSION = "v4"          # bump when the cached artefacts change shape (v4: de-rotated frame + theta)
 
 
 def geometry_cache_dir(ifc_path):
@@ -631,23 +692,29 @@ def _colored_product_meshes(sh, prod):
 
 
 def cached_footprints(f, s, ifc_path):
-    """Obstacle + door world rects for the whole building, disk-cached."""
+    """Obstacle + door plan rects (building-local frame) + the building's world
+    rotation theta, disk-cached. Rooms, obstacles and the solver all work in the
+    de-rotated local frame; placements rotate back by theta at export."""
     d = geometry_cache_dir(ifc_path)
     fp = d / "footprints.json"
     if fp.exists():
         try:
             data = json.loads(fp.read_text(encoding="utf-8"))
             return ([tuple(r) for r in data["obstacles"]],
-                    [tuple(r) for r in data["doors"]])
+                    [tuple(r) for r in data["doors"]],
+                    float(data.get("theta", 0.0)))
         except Exception:
             pass
-    obstacles = footprint_rects(f, s, OBSTACLE_TYPES)
-    doors = footprint_rects(f, s, ["IfcDoor"])
+    theta = detect_building_theta(f, s)
+    rot = _rot2(-theta) if theta else None
+    obstacles = footprint_rects(f, s, OBSTACLE_TYPES, rot)
+    doors = footprint_rects(f, s, ["IfcDoor"], rot)
     try:
-        fp.write_text(json.dumps({"obstacles": obstacles, "doors": doors}), encoding="utf-8")
+        fp.write_text(json.dumps({"obstacles": obstacles, "doors": doors,
+                                  "theta": theta}), encoding="utf-8")
     except Exception:
         pass
-    return obstacles, doors
+    return obstacles, doors, theta
 
 
 # IFC element type -> human keep-out kind (A3b)
@@ -666,11 +733,12 @@ def extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1):
     keepouts = []
     for (ex0, ex1, ey0, ey1, t) in obstacle_rects:
         ix0, ix1, iy0, iy1 = max(ex0, x0), min(ex1, x1), max(ey0, y0), min(ey1, y1)
-        if ix1 - ix0 > 0.05 and iy1 - iy0 > 0.05:
-            # drop the room's own perimeter walls (they are the boundary, not obstacles)
-            if (ix0 > x0 + 0.25 and ix1 < x1 - 0.25) or (iy0 > y0 + 0.25 and iy1 < y1 - 0.25):
-                keepouts.append({"x": ix0 - x0, "z": iy0 - y0, "width": ix1 - ix0,
-                                 "depth": iy1 - iy0, "kind": _KIND.get(t, "fixed")})
+        if ix1 - ix0 > 0.04 and iy1 - iy0 > 0.04:
+            # boundary walls too: when the space geometry runs to a wall's
+            # centreline (French/Dutch exports), the intruding half-thickness
+            # MUST be blocked or furniture is placed inside the wall
+            keepouts.append({"x": ix0 - x0, "z": iy0 - y0, "width": ix1 - ix0,
+                             "depth": iy1 - iy0, "kind": _KIND.get(t, "fixed")})
     for (dx0, dx1, dy0, dy1, _t) in door_rects:            # door keep-clear (egress)
         if dx1 > x0 and dx0 < x1 and dy1 > y0 and dy0 < y1:
             cx, cy = (dx0 + dx1) / 2 - x0, (dy0 + dy1) / 2 - y0
@@ -714,7 +782,15 @@ def main():
         movdir.mkdir(parents=True, exist_ok=True)
     movable = []
     zones_map = {}                     # piece id -> [[x, y, w, d]] people-space, world XY
-    obstacle_rects, door_rects = cached_footprints(f, s, args.ifc)
+    obstacle_rects, door_rects, theta = cached_footprints(f, s, args.ifc)
+    rot_wl = _rot2(-theta) if theta else None      # world -> local (solve frame)
+    rot_lw = _rot2(theta) if theta else None       # local -> world (export)
+
+    def to_world_xy(lx, ly):
+        if rot_lw is None:
+            return lx, ly
+        w = rot_lw @ np.array([lx, ly], dtype=float)
+        return float(w[0]), float(w[1])
 
     scene = trimesh.Scene()
     n_shell = 0
@@ -760,10 +836,11 @@ def main():
         rt = room_type(name)
         if explicit is None and rt is None:                 # not furnishable + not picked
             continue
-        ext = space_extent(sp, s, unit_scale)
+        ext = space_extent(sp, s, unit_scale, rot_wl)
         if ext is None:
             continue
-        x0, x1, y0, y1, fz = ext
+        x0, x1, y0, y1, fz = ext[:5]
+        room_poly = ext[5] if len(ext) > 5 else None
         key = (name.strip(), round(x0, 1), round(y0, 1), round(fz, 1))
         if key in seen_rooms:
             continue            # exact duplicate shell — furnishing it twice stacks furniture
@@ -799,6 +876,28 @@ def main():
 
         # 3) A3b — labeled fixed obstacles (columns/walls/beams/stairs) + door keep-clear
         keepouts = extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1)
+
+        # 3b) non-rectangular rooms (L-shaped, internal voids): block everything
+        # inside the bbox that is OUTSIDE the space's true footprint, as column
+        # strips — otherwise furniture is placed in the void / the next room over
+        if room_poly is not None and room_poly.area > 1.0:
+            try:
+                from shapely.geometry import box as _sbox
+                bboxp = _sbox(x0, y0, x1, y1)
+                if room_poly.area < bboxp.area * 0.985:
+                    comp = bboxp.difference(room_poly.buffer(0.02))
+                    step = 0.6
+                    for cx0 in np.arange(x0, x1, step):
+                        col = comp.intersection(_sbox(cx0, y0, min(cx0 + step, x1), y1))
+                        pieces = getattr(col, "geoms", [col]) if not col.is_empty else []
+                        for cp in pieces:
+                            bx0, by0, bx1, by1 = cp.bounds
+                            if bx1 - bx0 >= 0.05 and by1 - by0 >= 0.05:
+                                keepouts.append({"x": bx0 - x0, "z": by0 - y0,
+                                                 "width": bx1 - bx0, "depth": by1 - by0,
+                                                 "kind": "void"})
+            except Exception:
+                pass
 
         # 4) solver objects — with the room-builder's HUMAN layer: small seating
         # pairs with a worksurface (its pull-out space is reserved in the solve;
@@ -945,7 +1044,7 @@ def main():
                 cyaw = _math.degrees(_math.atan2(acz - ccz, acx - ccx)
                                      - _math.atan2(fwd[1], fwd[0]))
                 room_items.append({"oid": f"{ccat}-{ci}", "cat": ccat,
-                                   "cx": ccx, "cz": ccz, "yaw": cyaw,
+                                   "cx": ccx, "cz": ccz, "yaw": cyaw, "mate": oid,
                                    "mesh": cmesh, "parts": parts_of(ci), "zones": None})
             # stool petal ring: fan evenly around the table, each facing it
             stool_list = info.get("stools", [])
@@ -989,7 +1088,9 @@ def main():
             m = it["mesh"]
             parts = it.get("parts") or [m]
             cx, cz, yaw = it["cx"], it["cz"], it["yaw"]
-            wx, wy, cat = x0 + cx, y0 + cz, it["cat"]
+            wx, wy = to_world_xy(x0 + cx, y0 + cz)   # solve frame -> true world
+            cat = it["cat"]
+            yaw = yaw + theta                        # de-rotated solve frame -> world
             Ryaw = (trimesh.transformations.rotation_matrix(np.radians(yaw), [0, 0, 1])
                     if yaw else None)
             if movdir is not None:
@@ -1021,11 +1122,16 @@ def main():
                                 "elev": round(elev, 3)})
                 if it.get("zones"):
                     # people-space halos, world XY — drawn by the 2D floor plan
-                    zones_map[pid] = [[round(x0 + zx, 3), round(y0 + zz, 3),
-                                       round(zw, 3), round(zd, 3)]
-                                      for (zx, zz, zw, zd) in it["zones"]]
+                    # (rotated buildings: centre rotated back, extents kept)
+                    zr = []
+                    for (zx, zz, zw, zd) in it["zones"]:
+                        zcx, zcy = to_world_xy(x0 + zx + zw / 2, y0 + zz + zd / 2)
+                        zr.append([round(zcx - zw / 2, 3), round(zcy - zd / 2, 3),
+                                   round(zw, 3), round(zd, 3)])
+                    zones_map[pid] = zr
                 if elev <= 0.01:            # on-desk items don't join floor clash boxes
-                    boxes.append((wx - bex / 2, wx + bex / 2, wy - bey / 2, wy + bey / 2))
+                    boxes.append(((wx - bex / 2, wx + bex / 2, wy - bey / 2, wy + bey / 2),
+                                  it["oid"], it.get("mate")))
             else:
                 g2 = m.copy()
                 if Ryaw is not None:
@@ -1042,16 +1148,21 @@ def main():
                     scene.add_geometry(p2, node_name=f"{name}-{cat}-{placed}-p{kk}")
                 g2.apply_translation(tvec)
                 fb = g2.bounds
-                boxes.append((fb[0][0], fb[1][0], fb[0][1], fb[1][1]))
+                if float(it.get("elev") or 0.0) <= 0.01:   # on-desk items sit above, not clashes
+                    boxes.append(((fb[0][0], fb[1][0], fb[0][1], fb[1][1]),
+                                  it["oid"], it.get("mate")))
             room_cats.append(cat)
             placed += 1
         for i in range(len(boxes)):
             for j in range(i + 1, len(boxes)):
-                ax0, ax1, ay0, ay1 = boxes[i]; bx0, bx1, by0, by1 = boxes[j]
+                (a, aid, am), (b, bid, bm) = boxes[i], boxes[j]
+                if am == bid or bm == aid:
+                    continue                # a chair tucked under ITS OWN desk is ergonomic, not a clash
+                ax0, ax1, ay0, ay1 = a; bx0, bx1, by0, by1 = b
                 if min(ax1, bx1) - max(ax0, bx0) > 0.02 and min(ay1, by1) - max(ay0, by0) > 0.02:
                     clashes += 1
         schedule.append({"room": name, "type": rt or "picked", "area_m2": round(W * D, 1),
-                         "placed": len(boxes), "items": room_cats,
+                         "placed": len(room_cats), "items": room_cats,
                          "dropped": dropped, "unreachable": unreachable})
         rooms_done += 1
 
