@@ -1,48 +1,129 @@
-# 3D Picture to IFC Modeling — SCS Studio
+# 3D Picture → IFC Modeling — SCS Studio
 
-AI-powered pipeline that converts a single 2D photograph into a 3D mesh and exports it to IFC format for architectural and BIM workflows.
+**Photo-to-BIM pipeline**: converts a single 2D photograph into a watertight, real-dimensioned,
+BIM-classified 3D object — then composes those objects into ergonomically furnished rooms and
+whole buildings, exported as optimized IFC4.
 
-**ONE app** (`npm start` → http://localhost:3000) with three workspaces sharing one 3D viewport:
+**One app** (`npm start` → http://localhost:3000), three workspaces sharing one 3D viewport,
+plus a full **Research & Comparisons hub** (`/hub.html`) documenting every experiment behind it.
 
-- **📷 Generate object** — photo → AI 3D → dimensioned, BIM-classified mesh. Every generated
-  object auto-registers into the room catalog (badge **OURS**, with a rendered 3D thumbnail).
-- **🛋️ Build a room** — pick furniture (515 ABO meshes + your own), the **people-aware CP-SAT
-  solver** places it with legroom/door-swing/bed-access zones, 4-way facing, back-to-wall,
-  circulation checked — or says honestly, per item, that there's **not enough space**. Fine-tune
-  on the **2D floor plan** (drag / exact X·Z·rotation, live collision, live 3D sync) and export
-  CSV / GLB / one optimized IFC.
-- **🏢 Building** — load a real architectural IFC, review per-room smart suggestions, populate
-  ergonomically around the building's own walls/beams/columns, drag pieces, save the GLB.
-- **▶ Demo run** — one click builds a full presentation-ready demo room.
-
-The former Flask room-builder (`:8000`) is retired — Node is the single front door.
+| Workspace | What it does |
+|-----------|--------------|
+| 📷 **Generate object** | photo → AI 3D → dimensioned, IFC-classified mesh. Every generated object passes the repair → IFC4-validation gate and auto-registers into the catalog (badge **OURS** + engine badge, rendered thumbnail). |
+| 🛋️ **Build a room** | pick furniture (515 ABO meshes + 605 engine-generated items + your own); the **people-aware CP-SAT solver** places it with legroom / door-swing / bed-access clearances, 4-way facing, back-to-wall and circulation checks — or reports honestly, per item, that there is **not enough space**. Fine-tune on the 2D floor plan (drag, exact X·Z·rotation, live collision, live 3D sync); export CSV / GLB / one optimized IFC. |
+| 🏢 **Building** | load a real architectural IFC; every `IfcSpace` gets a smart, space-aware furniture set placed around the building's own walls, beams, columns and doors — clash-free, per-floor navigable, drag-to-refine, saved as GLB. |
 
 ---
 
-## Building-Scale Population (new)
+## Quick start — what needs to happen for this to work
 
-Beyond single objects, the pipeline **auto-furnishes whole buildings**. The tool supplies the
-*furniture*; the *architecture* (walls/doors/rooms) comes from a loaded, real building IFC.
+**Prerequisites:** Node.js ≥ 18 · Python 3.11–3.14 · (optional) NVIDIA GPU, driver ≥ 520.
+Everything below is required once; afterwards `npm start` is the only command.
 
-1. **Load a real architectural building IFC** with named rooms — e.g. `sample_buildings/Duplex_Architecture.ifc` (21 rooms, walls, doors).
-2. **`populate_building.py`** reads every `IfcSpace` (room name + real footprint), extracts the
-   **obstacles that intrude into each room** (internal/party walls, beams, columns, stairs) + door
-   keep-clear zones, and runs the **CP-SAT ergonomic solver** (`spatial_layout.py` + `rule_packs.py`;
-   Neufert/Panero/ADA clearances + circulation) to place furniture **around the obstacles, clash-free**.
-3. Furniture per room is **your choice** (`--picks picks.json` → `{"Living Room": ["sofa","table"], ...}`),
-   or a sensible per-room-type default; items too big for a room are skipped.
-4. Output: one populated building GLB (→ xeokit) / IFC. **Pure CPU — no GPU.**
+```bash
+# 1. clone + Node dependencies (Express, xeokit)
+git clone https://github.com/Dimitres-Kisimov/3DpicToIFCModeling.git
+cd 3DpicToIFCModeling
+npm install
+
+# 2. Python dependencies
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126   # GPU
+#   (no NVIDIA GPU? drop the --index-url flag — everything runs CPU-only, slower)
+pip install -r requirements.txt
+pip install transformers ultralytics "rembg[cpu]" ifcopenshell huggingface_hub shapely ortools
+
+# 3. runtime config — defaults work out of the box
+cp .env.example .env        # PORT=3000 · USE_GPU=true|false · PYTHON_PATH=python
+
+# 4. ABO furniture library (retrieval catalog for "Build a room") — one-time, ~4.7 GB
+python backend/python-scripts/download_abo_subset.py
+python backend/python-scripts/build_abo_index.py       # DINOv2 + FAISS retrieval index
+
+# 5. run
+npm start                   # → http://localhost:3000
+```
+
+**Included in the repo** (nothing to fetch): the 605-item engine-generated catalog
+(`data/generated_assets/`), all six demo buildings (`sample_buildings/`, `data/buildings/`),
+the AI asset library, the full benchmark evidence (`benchmark/`), and the research hub.
+
+**Downloaded automatically on first use** (cached by HuggingFace):
+
+| Model | Size | Cache |
+|-------|------|-------|
+| stabilityai/TripoSR | ~1.3 GB | `~/.cache/huggingface/` |
+| Intel DPT dpt-hybrid-midas | ~470 MB | `~/.cache/huggingface/` |
+| rembg U²-Net | ~176 MB | `~/.u2net/` |
+| yolov8n-seg.pt | 6 MB | repo root (committed) |
+
+> **CPU-only fallback:** with `USE_GPU=false`, TripoSR runs on CPU (~10–20 min per image
+> instead of ~1–3 min). Room and building population are **pure CPU by design** — no GPU ever.
+
+---
+
+## Research & Comparisons hub — `/hub.html`
+
+Every experiment, benchmark and before/after, served from the same app:
+
+- 🌐 **Interactive 3D Building Explorer** — all six populated buildings in live 3D
+  (face-view buttons + NavCube, colored real-dimensioned furniture, 0 clashes,
+  exact-geometry verified)
+- 🧾 **A/B lists 01–11** — 187 internet photos × every engine, with renders, watertightness,
+  IoU stats and deep links into the spinning **Multi-AI Visualizer** (998 variants, engine
+  emblems, 90° rotate, winner voting)
+- 🏆 **5-model gallery** — TripoSG · SAM 3D · TRELLIS · InstantMesh · TripoSR on identical
+  inputs (H200 study; A100 re-run reproduces F-scores within 0.003)
+- 📖 **Engine manuals** — battle-tested install recipes, fix tables and lessons learned for
+  13 engines (`deliverable/manuals/`)
+- 🪑 chair-graft, smoothing, leg-size and IFC-optimizer before/afters; system test report
+
+**Offline export:** `deliverable/research_export.zip` (281 MB) packages the entire hub for
+people without GitHub — unzip, double-click `START_WINDOWS.bat`, done. Rebuild it anytime by
+re-running the staging steps in the export README.
+
+### Engine benchmark (Study C, A100 80GB, 187 photos — F-score ↑)
+
+| Engine | F-score | License status |
+|--------|---------|----------------|
+| **TripoSG** | **0.390** | MIT — production |
+| TRELLIS 1.0 | 0.346 | MIT — production (geometry-only export) |
+| InstantMesh | 0.342 | benchmark-only (Zero123++ CC-BY-NC dep) |
+| SF3D | 0.290 | Stability community license |
+| TripoSR (baseline) | — | MIT — the original engine, superseded |
+
+Model selection criteria, the HuggingFace census (625 → 11 EU-usable) and every elimination
+are documented in [`docs/MODEL_REQUIREMENTS_AND_ELIMINATIONS.md`](docs/MODEL_REQUIREMENTS_AND_ELIMINATIONS.md)
+and [`docs/HF_CENSUS_2026-07.md`](docs/HF_CENSUS_2026-07.md). Nothing enters the catalog without
+passing repair → `saveIFC` → **IFC4 validation**; per-engine IFC evidence lives in `benchmark/ifc/`.
+
+---
+
+## Building-scale population
+
+`populate_building.py` reads every `IfcSpace` (name, true footprint, floor level), extracts the
+obstacles intruding into each room (walls, beams, columns, stairs — **z-filtered to that room's
+own storey**) plus door keep-clear zones, and runs the CP-SAT ergonomic solver
+(`spatial_layout.py` + `rule_packs.py`; Neufert / Panero-Zelnik / ADA clearances, circulation,
+no-overlap) to place furniture around them.
+
+Robustness earned on real files:
+
+- **Rotated buildings** — the rue-Marc-Antoine export models every wall at 60.4° to the world
+  axes; the solver detects the rotation, solves in a de-rotated frame and rotates placements back.
+- **Non-rectangular rooms** — L-shapes and internal voids are blocked via the space's true
+  footprint polygon, not its bounding box.
+- **Colored, real-dimensioned furniture** — per-material parts with baked PBR colors
+  (xeokit renders no vertex colors), every asset normalised to its category's real Neufert
+  dimensions.
+- **Honest reporting** — items that don't fit are listed per room (`dropped`), never forced.
 
 ```bash
 python backend/python-scripts/populate_building.py sample_buildings/Duplex_Architecture.ifc outputs/duplex_populated.glb
 ```
 
-Verified on the Duplex: 8 rooms furnished, ergonomic placement, **0 clashes**.
-
-**Apps / viewers:** everything on `localhost:3000` (SCS Studio — generator, room builder,
-building populate, 2D plan editor) · building viewers
-`localhost:3000/{populated,empty,building}_building_viewer.html` · model gallery `localhost:8900`.
-Full write-up: [`FOUNDATION_FOR_RESEARCH_PAPER.md`](FOUNDATION_FOR_RESEARCH_PAPER.md).
+Verified across all six bundled buildings (exact polygon-intersection checks, not just
+bounding boxes): Duplex 8 rooms / 34 pieces, Schependomlaan (4 storeys) 34 rooms / 76 pieces,
+Kleine Wohnung 10 rooms / 30 pieces, COPROPIETE 16 pieces — **0 real clashes everywhere**.
 
 ---
 
@@ -51,132 +132,14 @@ Full write-up: [`FOUNDATION_FOR_RESEARCH_PAPER.md`](FOUNDATION_FOR_RESEARCH_PAPE
 | Layer | Technology |
 |-------|-----------|
 | Server | Node.js 24 + Express |
-| Frontend | Vanilla JS + xeokit SDK v2.6.108 |
-| 3D Viewer | xeokit (WebGL, local npm install) |
-| AI Inference | Python 3.14 subprocess, GPU-accelerated |
-| 3D Reconstruction | TripoSR (stabilityai/TripoSR) |
-| Segmentation | rembg (U²-Net) + YOLOv8 segmentation |
-| Depth Estimation | Intel DPT (dpt-hybrid-midas) via HuggingFace Transformers |
-| Mesh Processing | trimesh, scikit-image, scipy |
-| IFC Export | IfcOpenShell |
-| Deep Learning | PyTorch 2.11 + CUDA 12.6 |
-
----
-
-## Requirements
-
-### Hardware
-- NVIDIA GPU with CUDA support (tested on RTX 4050 Laptop, 6GB VRAM)
-- 8GB+ RAM
-- 10GB+ disk (model weights)
-
-### Software
-- Node.js 18+
-- Python 3.11–3.14
-- NVIDIA driver ≥ 520 (CUDA 12.x)
-
----
-
-## Installation
-
-### 1. Clone and install Node dependencies
-
-```bash
-git clone https://github.com/Dimitres-Kisimov/3DpicToIFCModeling.git
-cd 3DpicToIFCModeling
-npm install
-```
-
-### 2. Install Python dependencies
-
-```bash
-# PyTorch with CUDA 12.6 (required for GPU acceleration)
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu126
-
-# Core ML and mesh libraries
-pip install transformers ultralytics "rembg[cpu]" trimesh scikit-image scipy pillow numpy
-
-# IFC export
-pip install ifcopenshell
-
-# HuggingFace hub for model weight downloads
-pip install huggingface_hub
-```
-
-> **CPU-only fallback**: if you have no NVIDIA GPU, omit the `--index-url` flag.  
-> TripoSR will run on CPU (~10–20 min per image instead of ~1–3 min).
-
-### 3. Configure environment
-
-Copy `.env.example` to `.env` (or edit `.env` directly):
-
-```env
-PORT=3000
-USE_GPU=true                   # set false for CPU-only
-PYTHON_PATH=python
-PYTHON_SCRIPTS_DIR=./backend/python-scripts
-```
-
-### 4. Model weights
-
-Weights are fetched automatically on first use and cached by HuggingFace:
-
-| Model | Size | Cache |
-|-------|------|-------|
-| stabilityai/TripoSR | ~1.3 GB | `~/.cache/huggingface/` |
-| yolov8n-seg.pt | ~6 MB | repo root (committed) |
-| rembg u2net | ~176 MB | `~/.u2net/` |
-| Intel DPT dpt-hybrid-midas | ~470 MB | `~/.cache/huggingface/` |
-
-### 5. Start
-
-```bash
-npm start
-# open http://localhost:3000
-```
-
----
-
-## How it works
-
-```
-Photo
-  │
-  ▼
-rembg (U²-Net)          — remove background, isolate foreground object
-  │
-  ▼
-TripoSR inference       — transformer encodes image → predicts 3D volume
-  │                        marching cubes at 256³ resolution (GPU)
-  ▼
-Post-processing
-  ├─ Component filter   — drop floating debris (<0.5% faces) and spike artifacts
-  ├─ Orientation fix    — detect and correct upside-down meshes
-  ├─ Laplacian smooth   — 5 iterations, reduce faceted appearance
-  └─ PBR material       — median foreground color → GLTF baseColorFactor
-  │
-  ▼
-GLB export (trimesh)
-  │
-  ▼
-xeokit viewer           — WebGL render, orbit/pan/zoom, object picking
-  │
-  ▼
-IFC export              — IfcOpenShell writes geometry + transforms to .ifc
-```
-
-### AI model details
-
-**TripoSR** (default — "High quality" mode)
-- Single-image 3D reconstruction neural network by Stability AI
-- Transformer architecture trained on ~800K 3D objects
-- GPU: ~1–3 min at 256³ | CPU: ~10–20 min at 96³
-- Outputs a closed mesh with real geometry (not a depth relief)
-
-**InstantMesh / StableFast3D** (alternative modes)
-- Use YOLO segmentation + Intel DPT depth estimation
-- Produce a 2.5D depth-map mesh of the segmented object
-- Faster but geometrically less accurate than TripoSR
+| Frontend | Vanilla JS + xeokit SDK v2.6 (local npm install, WebGL) |
+| AI inference | Python subprocess bridge (JSON I/O), GPU optional |
+| 3D reconstruction | TripoSR (default) · TripoSG · TRELLIS · SF3D · SAM 3D (cloud-benchmarked) |
+| Retrieval | DINOv2 embeddings + FAISS over the ABO library |
+| Segmentation / depth | rembg (U²-Net), YOLOv8-seg, Intel DPT |
+| Layout solver | Google OR-Tools CP-SAT + shapely |
+| Mesh processing | trimesh, scikit-image, scipy |
+| IFC | IfcOpenShell (import, export, optimizer, IFC4 validation gate) |
 
 ---
 
@@ -185,44 +148,27 @@ IFC export              — IfcOpenShell writes geometry + transforms to .ifc
 ```
 3DpicToIFCModeling/
 ├── backend/
-│   ├── server.js                  # Express entry point
-│   ├── ai/
-│   │   ├── triposr.js             # TripoSR adapter (calls Python subprocess)
-│   │   ├── instantMesh.js         # InstantMesh adapter
-│   │   └── stablefast3d.js        # StableFast3D adapter
-│   ├── config/
-│   ├── middleware/
-│   ├── routes/
-│   ├── services/
-│   │   └── pythonBridge.js        # Spawns Python scripts, parses JSON output
+│   ├── server.js                  # Express entry point + static mounts
+│   ├── routes/                    # /api: upload, generate, rooms, buildings, export
+│   ├── services/pythonBridge.js   # spawns Python, parses JSON
 │   ├── python-scripts/
-│   │   ├── inference_base.py      # Shared: depth mesh, YOLO segmentation, logging
-│   │   ├── run_triposr.py         # TripoSR full pipeline
-│   │   ├── run_instantmesh.py     # InstantMesh pipeline
-│   │   ├── run_stablefast3d.py    # StableFast3D pipeline
-│   │   ├── cleanMesh.py
-│   │   ├── createIFCFurniture.py
-│   │   ├── fixOrientation.py
-│   │   ├── meshToGLB.py
-│   │   ├── normalizeMesh.py
-│   │   └── saveIFC.py
-│   └── triposr/                   # TripoSR source (Stability AI, MIT)
-│       └── tsr/
-│           ├── system.py
-│           ├── utils.py
-│           └── models/
-│               └── isosurface.py  # Patched: scikit-image marching_cubes
-│                                  # (replaces torchmcubes — no C ext needed)
-├── frontend/
-│   ├── index.html
-│   └── js/
-│       ├── xeokitViewer.js        # xeokit init, GLB load, camera, picking
-│       └── index.js               # UI: upload, model selection, IFC export
-├── yolov8n-seg.pt                 # YOLOv8 segmentation weights
-├── .env                           # Runtime config (not committed)
-├── package.json
-├── requirements.txt
-└── FULL_DOCUMENTATION.md          # Detailed pipeline and troubleshooting reference
+│   │   ├── run_triposr.py         # photo → mesh pipeline
+│   │   ├── repair_mesh.py …       # 7-archetype, 9-stage repair packs
+│   │   ├── spatial_layout.py      # CP-SAT room solver
+│   │   ├── rule_packs.py          # Neufert/Panero/ADA ergonomics
+│   │   ├── populate_building.py   # whole-building population (CPU)
+│   │   └── saveIFC.py             # IFC4 export + validation gate
+│   └── triposr/                   # TripoSR source (MIT), marching-cubes patched
+├── frontend/                      # SCS Studio + research hub + viewers/explorer
+├── benchmark/                     # 11 A/B lists, visualizer, results, per-AI IFC evidence
+├── data/
+│   ├── generated_assets/          # 605-item engine-badged catalog (committed)
+│   ├── buildings/                 # uploaded building IFCs (committed)
+│   └── mesh_library_abo/          # ABO retrieval library (built locally, step 4)
+├── deliverable/                   # manuals, cloud bundle, asset library, research export
+├── docs/                          # user guide, security & compliance, engineering record …
+├── sample_buildings/              # bundled demo IFC
+├── package.json · requirements.txt · .env.example
 ```
 
 ---
@@ -231,35 +177,56 @@ IFC export              — IfcOpenShell writes geometry + transforms to .ifc
 
 | Method | Path | Description |
 |--------|------|-------------|
-| `POST` | `/api/upload` | Upload image, returns `imageId` |
-| `POST` | `/api/generate` | Run AI model, returns GLB URL |
-| `GET` | `/api/status/:jobId` | Poll generation job status |
-| `POST` | `/api/export/ifc` | Export current scene to IFC |
-| `GET` | `/outputs/:file` | Serve generated GLB / IFC files |
-| `GET` | `/api/health` | Dependency version check |
+| `POST` | `/api/upload` | upload image → `imageId` |
+| `POST` | `/api/generate` | run AI model → GLB URL |
+| `GET`  | `/api/status/:jobId` | poll generation job |
+| `GET`  | `/api/rooms/:bid` | building's rooms + smart furniture suggestions |
+| `POST` | `/api/building/:bid/populate` | populate a building (per-room picks optional) |
+| `POST` | `/api/export/ifc` | export current scene to optimized IFC4 |
+| `GET`  | `/api/health` | dependency version check |
+
+---
+
+## Documentation
+
+| Document | Content |
+|----------|---------|
+| [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md) | every tab, badge and button, with screenshots |
+| [`docs/APP_FUNCTIONALITY_DEEP_DIVE.md`](docs/APP_FUNCTIONALITY_DEEP_DIVE.md) | every component, roadblock and fix, incl. photo-taking guidance |
+| [`docs/ENGINEERING_RECORD.md`](docs/ENGINEERING_RECORD.md) | TripoSR limitations, why training your own model is hard, 12-engine training-environment comparison, room-logic strengths/weaknesses |
+| [`docs/MODEL_REQUIREMENTS_AND_ELIMINATIONS.md`](docs/MODEL_REQUIREMENTS_AND_ELIMINATIONS.md) | company criteria, royalties, licences, system load — and every eliminated model |
+| [`docs/SECURITY_COMPLIANCE.md`](docs/SECURITY_COMPLIANCE.md) | licence audit method, EU territory exclusions, data handling |
+| [`docs/CAMPAIGN_LOG_2026-07-11.md`](docs/CAMPAIGN_LOG_2026-07-11.md) | the full A100 benchmark campaign log |
+| [`deliverable/manuals/`](deliverable/manuals/) | 13 engine manuals + ops playbook |
 
 ---
 
 ## Known issues
 
-- **Python 3.14**: `torchmcubes` has no wheels for this version — patched with `skimage.measure.marching_cubes` in `backend/triposr/tsr/models/isosurface.py`
-- **xeokit vertex colors**: xeokit's GLTFLoaderPlugin ignores `COLOR_0` vertex attributes — colors must be set via GLTF PBR `baseColorFactor` material
-- **Color accuracy**: mesh color is derived from median foreground pixels of the rembg-masked image; multi-color objects get a single averaged color
-- **TripoSR orientation**: upside-down output is corrected by a Y-centroid heuristic; unusual camera angles may still need manual rotation
+- **Python 3.14**: `torchmcubes` has no wheels — patched with `skimage.measure.marching_cubes`
+  in `backend/triposr/tsr/models/isosurface.py`
+- **xeokit vertex colors**: the GLTF loader ignores `COLOR_0` — all colors are baked as GLTF
+  PBR `baseColorFactor` materials (this is handled automatically everywhere)
+- **Geometry-only engine exports** (TRELLIS et al.) carry no textures; catalog items from them
+  get realistic per-category material tones instead
+- **TripoSR orientation**: upside-down output is corrected by a Y-centroid heuristic; unusual
+  camera angles may still need manual rotation
 
 ---
 
-## Licenses
+## Licenses & compliance
 
 | Component | License |
 |-----------|---------|
 | This project | MIT |
-| TripoSR (Stability AI) | MIT |
-| xeokit SDK | AGPL-3.0 / Commercial |
+| TripoSR (Stability AI) / TripoSG / TRELLIS | MIT |
+| SF3D | Stability community license |
+| xeokit SDK | AGPL-3.0 / commercial |
 | YOLOv8 (Ultralytics) | AGPL-3.0 |
-| PyTorch | BSD-3 |
-| rembg | MIT |
-| trimesh | MIT |
 | IfcOpenShell | LGPL-3.0 |
+| PyTorch / rembg / trimesh | BSD-3 / MIT / MIT |
 
-> **Commercial use note**: xeokit SDK and YOLOv8 are AGPL-3.0. For closed-source commercial deployment a commercial license is required from [xeokit.io](https://xeokit.io) and Ultralytics respectively.
+> **Commercial use:** xeokit SDK and YOLOv8 are AGPL-3.0 — closed-source commercial deployment
+> requires commercial licences from xeokit.io and Ultralytics.
+> **Territory compliance:** Hunyuan3D-family models are excluded entirely (EU territory
+> restriction — no research carve-out). Full audit: [`docs/SECURITY_COMPLIANCE.md`](docs/SECURITY_COMPLIANCE.md).
