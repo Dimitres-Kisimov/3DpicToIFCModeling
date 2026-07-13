@@ -66,7 +66,7 @@
     "unit_scale": 1,
     "est_populate_min": 1,
     "warnings": [
-     "building looks rotated or irregular \u00e2\u20ac\u201d layouts may be conservative"
+     "building looks rotated or irregular â€” layouts may be conservative"
     ]
    }
   },
@@ -106,12 +106,12 @@
   },
   {
    "id": "b_d37fb37a04",
-   "name": "Geb\u00e4ude",
+   "name": "Gebäude",
    "file": "b_d37fb37a04__Smiley-West.ifc",
    "status": "ready",
    "profile": {
     "schema": "IFC4",
-    "name": "Geb\u00e4ude",
+    "name": "Gebäude",
     "spaces": 140,
     "storeys": 5,
     "products": 1252,
@@ -123,9 +123,9 @@
   },
   {
    "id": "b_c843c15b4d",
-   "name": "SCS Tower \u2014 7 storeys (synthetic)",
+   "name": "SCS Tower — 7 storeys (synthetic)",
    "file": "b_c843c15b4d__SCS_Tower_7F.ifc",
-   "status": "preparing",
+   "status": "ready",
    "profile": {
     "schema": "IFC4",
     "name": "Projektname",
@@ -135,6 +135,23 @@
     "size_mb": 32.8,
     "unit_scale": 1,
     "est_populate_min": 5,
+    "warnings": []
+   }
+  },
+  {
+   "id": "b_e8f3508963",
+   "name": "HHS Office — institute (labs & workshops)",
+   "file": "b_e8f3508963__HHS-Office-Institute.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC2X3",
+    "name": "deBIMspecialist Kantoor",
+    "spaces": 33,
+    "storeys": 4,
+    "products": 2778,
+    "size_mb": 12.5,
+    "unit_scale": 0.001,
+    "est_populate_min": 9,
     "warnings": []
    }
   }

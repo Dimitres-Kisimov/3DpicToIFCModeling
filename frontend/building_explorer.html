@@ -49,6 +49,7 @@
     <option value="tower">SCS Tower — 7 storeys, 168 rooms (synthetic) — 2026-07-13</option>
     <option value="institute">Buerogebaeude — KIT Institute, 5 floors — 2026-07-13</option>
     <option value="smiley">Smiley West — 140 rooms, 5 floors — 2026-07-13</option>
+    <option value="hhs">HHS Office — institute, labs & workshops — 2026-07-14</option>
   </select>
   <a href="/building_showcase.html" style="margin-left:10px;color:#2f6bff;text-decoration:none">← showcase</a>
   <div id="bstatus" style="color:#5b6b7c;font-size:11.5px;margin-top:3px">drag = orbit · furnished by the ergonomics engine · clash-audited</div>
@@ -136,6 +137,7 @@ const INFO = {
   tower:          ['SCS Tower — 7-storey synthetic stack', '168 rooms · 6 inhabited floors x 28 rooms · built by stacking a real floor plate'],
   institute:      ['Buerogebaeude — KIT Institute (open data)', '5 floors · 82 rooms · German office building'],
   smiley:         ['Smiley West — KIT terraced housing (open data)', '5 floors · 140 rooms · the biggest room count in the fleet'],
+  hhs:            ['HHS Office — institute (open data, CC BY-ND)', '3 levels + roof · labs, workshops, meeting rooms · ASR-staffed: 20 workstations'],
 };
 const bkey = new URLSearchParams(location.search).get('b') || 'duplex';
 document.getElementById('bpick').value = bkey;
