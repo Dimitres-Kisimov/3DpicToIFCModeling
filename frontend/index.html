@@ -189,6 +189,12 @@
                 <input type="file" id="bAddFile" accept=".ifc" hidden>
             </div>
             <div id="bRooms"></div>
+            <div id="bDensityRow" class="floor-chips" hidden style="margin:6px 0">
+                <span style="font-size:12px;color:#6b7688;align-self:center">population:</span>
+                <button class="floor-chip" data-density="light">🌿 Light</button>
+                <button class="floor-chip active" data-density="medium">🏠 Medium</button>
+                <button class="floor-chip" data-density="dense">🏢 Dense</button>
+            </div>
             <button id="bPopulate" class="btn btn-primary btn-block" hidden>🏢 Populate building</button>
             <div id="bFloors" class="floor-chips" hidden></div>
             <button id="bFixClashes" class="btn btn-block" style="border-color:#e0812b;color:#b05e12" hidden>🧹 Resolve clashes</button>

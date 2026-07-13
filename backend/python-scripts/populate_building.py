@@ -90,12 +90,27 @@ def room_type(name):
     return None if c in ("skip", None) else c
 
 
-def smart_furnish(rt, W, D, assets):
+# population density tiers: the effective area scales the same Neufert-based
+# formulas (light staffs a room like a smaller one; dense like a larger one),
+# and dense adds room-appropriate extras on top
+DENSITY_FACTOR = {"light": 0.55, "medium": 1.0, "dense": 1.6}
+DENSE_EXTRAS = {                       # appended when density == dense and the room is big enough
+    "living":  (14, ["side_table", "planter"]),
+    "lounge":  (14, ["coffee_table", "planter"]),
+    "bed":     (14, ["bookshelf"]),
+    "office":  (12, ["planter", "filing_cabinet"]),
+    "kitchen": (12, ["stool", "stool"]),
+    "dining":  (16, ["cabinet"]),
+    "meeting": (16, ["cabinet", "planter"]),
+}
+
+
+def smart_furnish(rt, W, D, assets, density="medium"):
     """Space-aware: a sensible, FITTING furniture set for a room of this type + size (metres).
 
     Quantities scale with area so a small room isn't overfilled and a large one isn't bare.
     Neufert ~6.5 m²/workstation drives office density; seating/tables scale with area."""
-    area = W * D
+    area = W * D * DENSITY_FACTOR.get(density, 1.0)
     items = []
     if rt == "living":
         items += ["sofa"]
@@ -123,6 +138,10 @@ def smart_furnish(rt, W, D, assets):
         items += ["table"] + ["chair"] * min(8, max(2, int(area / 3)))
     elif rt == "meeting":
         items += ["table"] + ["office_chair"] * min(10, max(2, int(area / 2.5)))
+    if density == "dense" and rt in DENSE_EXTRAS:
+        min_area, extras = DENSE_EXTRAS[rt]
+        if W * D >= min_area:
+            items += extras
     return [c for c in items if c in assets]
 
 
@@ -824,6 +843,7 @@ def main():
     ap.add_argument("ifc"); ap.add_argument("out")
     ap.add_argument("--picks", default="")
     ap.add_argument("--movable", default="")   # dir: emit shell.glb + per-piece GLBs + furniture.json
+    ap.add_argument("--density", default="medium")   # light | medium | dense population
     args = ap.parse_args()
 
     picks = json.load(open(args.picks, encoding="utf-8")) if args.picks else {}
@@ -909,7 +929,8 @@ def main():
 
         # 2) choose furniture: explicit picks (may include the user's OWN
         # generated meshes as 'gen:<id>'), else a space-aware smart set
-        raw_picks = explicit if explicit is not None else smart_furnish(rt, W, D, assets)
+        raw_picks = explicit if explicit is not None else \
+            smart_furnish(rt, W, D, assets, args.density)
         cats, custom_mesh, custom_parts = [], {}, {}
         for ent in raw_picks:
             if isinstance(ent, str) and ent.startswith("gen:"):

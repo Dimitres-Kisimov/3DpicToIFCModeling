@@ -420,7 +420,9 @@ def cmd_building_rooms(args):
             rooms.append({**rec, "type": rt or "room", "furnishable": True,
                           "obstacles": pop.extract_room_obstacles(obstacle_rects, door_rects,
                                                                   x0, x1, y0, y1, zmin),
-                          "suggested": pop.smart_furnish(rt, W, D, assets) if rt else []})
+                          "suggested": pop.smart_furnish(rt, W, D, assets) if rt else [],
+                          "suggested_light": pop.smart_furnish(rt, W, D, assets, "light") if rt else [],
+                          "suggested_dense": pop.smart_furnish(rt, W, D, assets, "dense") if rt else []})
         else:
             rooms.append({**rec, "type": "space", "furnishable": False,
                           "obstacles": [], "suggested": []})

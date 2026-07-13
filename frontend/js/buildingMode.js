@@ -18,7 +18,8 @@
   let allCategories = [];
   let storeys = [];                 // [{name, elevation, top}]
   let roomsData = [];               // rooms incl. storey/rect/obstacles
-  let bTheta = 0;                   // building world-rotation (deg) — rooms/obstacles/zones
+  let bTheta = 0;
+  let density = 'medium';          // light | medium | dense — drives the suggested sets                   // building world-rotation (deg) — rooms/obstacles/zones
                                     // live in the solver's DE-ROTATED frame; pieces carry
                                     // world positions. All plan math runs in the local frame.
   function toLocal(px, py) {
@@ -158,7 +159,9 @@
       bTheta = data.theta || 0;
       await loadGenItems();              // your generated meshes join the picker
       renderRoomCards();
-      banner(`${roomsData.length} rooms across ${storeys.length} floors — edit the furniture, then Populate.`);
+      const dr = document.getElementById('bDensityRow');
+      if (dr) dr.hidden = false;
+      banner(`${roomsData.length} rooms across ${storeys.length} floors — pick a population level, edit the furniture, then Populate.`);
     } catch (e) {
       wrap.innerHTML = '';
       banner('Rooms load failed: ' + e, true);
@@ -167,6 +170,24 @@
 
   // group room cards under floor headers; mirrored same-name rooms on one
   // floor share picks — shown once with a ×N marker
+  function suggestedFor(r) {
+    if (density === 'light') return r.suggested_light || r.suggested || [];
+    if (density === 'dense') return r.suggested_dense || r.suggested || [];
+    return r.suggested || [];
+  }
+  function setDensity(d) {
+    density = d;
+    document.querySelectorAll('#bDensityRow [data-density]').forEach((b) =>
+      b.classList.toggle('active', b.dataset.density === d));
+    // reset every card to the tier's suggestion — edits after picking a tier stick
+    roomsData.forEach((r) => { if (r.furnishable !== false) roomPicks[r.name] = [...suggestedFor(r)]; });
+    renderRoomCards();
+    toast(`Population set to ${d} — room suggestions updated (your edits after this stick).`, 'info');
+  }
+  document.querySelectorAll('#bDensityRow [data-density]').forEach((b) => {
+    b.onclick = () => setDensity(b.dataset.density);
+  });
+
   function renderRoomCards() {
     const wrap = $('bRooms');
     wrap.innerHTML = '';
@@ -186,7 +207,7 @@
         if (seenNames.has(r.name)) return;
         seenNames.add(r.name);
         const copies = floorRooms.filter((x) => x.name === r.name).length;
-        if (!(r.name in roomPicks)) roomPicks[r.name] = [...r.suggested];
+        if (!(r.name in roomPicks)) roomPicks[r.name] = [...suggestedFor(r)];
         wrap.appendChild(roomCard(r, copies));
       });
     });
@@ -612,7 +633,7 @@
     try {
       const r = await fetch(`/api/building/${currentBuilding}/populate`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ picks: roomPicks }),
+        body: JSON.stringify({ picks: roomPicks, density }),
       });
       const d = await r.json();
       if (!d.ok) { banner('Populate failed: ' + (d.error || 'unknown'), true); return; }

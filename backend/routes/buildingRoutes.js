@@ -243,6 +243,8 @@ router.post('/building/:bid/populate', async (req, res, next) => {
     if (!b) return res.status(404).json({ error: 'unknown building' });
 
     const picks = (req.body && req.body.picks) || {};
+    const density = ['light', 'medium', 'dense'].includes(req.body && req.body.density)
+      ? req.body.density : 'medium';
     const movDir = scratchDir(b.id);
     fs.rmSync(movDir, { recursive: true, force: true });
     fs.mkdirSync(movDir, { recursive: true });
@@ -255,6 +257,7 @@ router.post('/building/:bid/populate', async (req, res, next) => {
         path.join(movDir, '_ignore.glb'),
         '--picks', picksPath,
         '--movable', movDir,
+        '--density', density,
       ], { timeout: populateTimeout(b) }),
       `building-populate:${b.id}`);
     const result = r.stdout && typeof r.stdout === 'object' ? r.stdout : null;
