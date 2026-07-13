@@ -14,11 +14,12 @@ const config = require('../config/env');
 // TripoSR cannot reconstruct a 5-star swivel base from one photo; this grafts a CAD base onto the
 // (good) generated seat/back. Runs on the pinned interpreter that has trimesh/pymeshfix.
 // Off-switch: env SCS_GRAFT_CHAIR_BASE=0. Scope: 'office' = office chairs only, else any chair.
-function runGraftChairBase(inPath, outPath) {
+function runGraftChairBase(inPath, outPath, style, label) {
   return new Promise((resolve) => {
     const script = path.join(__dirname, '..', 'python-scripts', 'graft_chair_base.py');
     const py = config.PYTHON_PATH;   // pinned interpreter comes from .env
-    const child = spawn(py, [script, inPath, outPath], { cwd: path.join(__dirname, '..', '..') });
+    const args = [script, inPath, outPath, '--style', style || 'auto', '--label', label || ''];
+    const child = spawn(py, args, { cwd: path.join(__dirname, '..', '..') });
     let out = '', err = '';
     child.stdout.on('data', (c) => { out += c.toString(); });
     child.stderr.on('data', (c) => { err += c.toString(); });
@@ -37,7 +38,10 @@ function shouldGraftChair(label, category) {
   if (mode === '0' || mode === 'false' || mode === 'off') return false;
   const l = (label || '').toLowerCase(), c = (category || '').toLowerCase();
   if (mode === 'allchairs') return c === 'chair' || /chair/.test(l);
-  return /office|swivel|desk chair/.test(l);   // default: office chairs only
+  // any chair-ish object qualifies for the AUTO graft — the script itself keeps
+  // the AI base when the bottom is intact, and picks casters vs plain legs from
+  // the label, so widening this is safe (CLIP often mislabels swivel chairs)
+  return /office|swivel|desk chair|chair/.test(l) || c === 'chair';
 }
 
 /**
@@ -84,15 +88,20 @@ async function runTripoSR(imagePath, outputDir, opts = {}) {
     // fragments. Keep the (good) generated seat/back, cut the broken base, graft a clean CAD
     // 5-star wheelbase. Office chairs only; env SCS_GRAFT_CHAIR_BASE=0 disables. The grafted GLB
     // is already mesh-optimized (decimated/smoothed) and the base is one solid component.
-    if (opts.forceGraft || shouldGraftChair(metadata.object_label, metadata.ifc_category)) {
+    const baseStyle = String(opts.baseStyle || 'auto').toLowerCase();
+    const explicitStyle = !['auto', 'keep'].includes(baseStyle);
+    if (baseStyle !== 'keep' &&
+        (opts.forceGraft || explicitStyle ||
+         shouldGraftChair(metadata.object_label, metadata.ifc_category))) {
       const graftedPath = outputGlbPath.replace(/\.glb$/i, '_grafted.glb');
-      logger.info('TripoSR', 'Office chair base graft', {
-        label: metadata.object_label, forced: !!opts.forceGraft,
+      logger.info('TripoSR', 'Chair base graft', {
+        label: metadata.object_label, forced: !!opts.forceGraft, style: baseStyle,
       });
-      const g = await runGraftChairBase(outputGlbPath, graftedPath);
+      const g = await runGraftChairBase(outputGlbPath, graftedPath,
+        explicitStyle ? baseStyle : 'auto', metadata.object_label || (opts.forceGraft ? 'office chair' : ''));
       if (g.ok) {
         finalGlbPath = graftedPath;
-        graftedBase = true;
+        graftedBase = !/kept AI base/.test(g.log || '');
         // If the user manually declared this an office chair, trust them over CLIP so the IFC
         // is tagged correctly (CLIP frequently mislabels swivel chairs as cabinet/desk).
         if (opts.forceGraft) {

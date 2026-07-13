@@ -55,8 +55,16 @@
                     <option value="triposr" selected>Detailed — new 3D model</option>
                     <option value="detect">Fast — from catalog</option>
                 </select>
-                <label id="graftBaseRow" class="check-row" title="AI can't rebuild a rolling 5-star base from one photo — tick this to add a clean one.">
-                    <input type="checkbox" id="graftBaseChk"> This is an <b>office chair</b> — add a clean 5-star base
+                <label id="graftBaseRow" class="check-row" title="AI cannot rebuild thin chair legs from one photo. Auto grafts a clean base only when the bottom is broken; or pick a style.">
+                    🪑 Chair base: <select id="baseStyleSel">
+                        <option value="auto" selected>Auto — fix if broken (recommended)</option>
+                        <option value="five_star">5-star casters (office)</option>
+                        <option value="four_star">4-star casters</option>
+                        <option value="pedestal">Round pedestal</option>
+                        <option value="sled">Sled frame</option>
+                        <option value="four_legs">4 straight legs</option>
+                        <option value="keep">Keep AI base as-is</option>
+                    </select>
                 </label>
                 <button id="generateBtn" class="btn btn-primary btn-block" disabled>Generate 3D model</button>
                 <div id="progressContainer" class="progress-container" style="display: none;">

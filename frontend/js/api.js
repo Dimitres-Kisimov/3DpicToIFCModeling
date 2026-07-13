@@ -69,7 +69,8 @@ async function generateModel(imageBlob, modelName, opts = {}) {
     const formData = new FormData();
     formData.append('image', imageBlob, 'uploaded_image');
     formData.append('model', modelName);
-    if (opts.graftBase) formData.append('graftBase', '1');   // office-chair: graft a clean 5-star base
+    if (opts.graftBase) formData.append('graftBase', '1');   // chair: force the base graft
+    if (opts.baseStyle) formData.append('baseStyle', opts.baseStyle);
 
     updateStatus(`Detecting object and generating 3D model...`);
 

@@ -196,8 +196,9 @@ if (generateBtn) {
     }, 500);
 
     try {
-      const graftBase = !!document.getElementById('graftBaseChk')?.checked;
-      const result = await generateModel(selectedImage, engine, { graftBase });
+      const baseStyle = document.getElementById('baseStyleSel')?.value || 'auto';
+      const graftBase = !['auto', 'keep'].includes(baseStyle);   // explicit style = force it
+      const result = await generateModel(selectedImage, engine, { graftBase, baseStyle });
       console.log('[app] Pipeline result:', result);
       applyPipelineResult(result);
       const glbPath = result.glb;

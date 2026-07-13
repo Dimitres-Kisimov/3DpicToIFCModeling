@@ -195,10 +195,11 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
     // primitive/retrieval pipeline (the default product path).
     if (requested === 'triposr') {
       const forceGraft = /^(1|true|on|yes)$/i.test(String(req.body.graftBase || ''));
+      const baseStyle = String(req.body.baseStyle || 'auto');
       logger.info('GENERATE', 'Starting TripoSR generative pipeline', { imagePath, forceGraft });
       // serialize on the GPU queue so concurrent requests can't OOM the 6 GB card
       const t = await gpuQueue.run(
-        () => triposrAdapter.runTripoSR(imagePath, config.OUTPUT_DIR, { forceGraft }), 'triposr');
+        () => triposrAdapter.runTripoSR(imagePath, config.OUTPUT_DIR, { forceGraft, baseStyle }), 'triposr');
       const md = t.metadata || {};
       logger.info('GENERATE', 'TripoSR pipeline complete', {
         glbUrl: t.glbUrl, label: md.object_label,
