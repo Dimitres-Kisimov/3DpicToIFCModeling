@@ -233,7 +233,27 @@
         const chip = document.createElement('span');
         chip.className = 'chip';
         chip.textContent = pickLabel(c) + ' ✕';
+        chip.title = 'click = remove · right-click = add copies';
         chip.onclick = () => { roomPicks[r.name].splice(i, 1); render(); };
+        chip.oncontextmenu = (ev) => {            // fast duplicate: right-click -> N copies
+          ev.preventDefault();
+          const n = parseInt(prompt(`Add how many more "${pickLabel(c)}" to ${r.name}?`, '4'), 10);
+          if (!n || n < 1) return;
+          const usable = usableArea(r);
+          let added = 0;
+          for (let k = 0; k < n; k++) {
+            if (spaceNeed([...roomPicks[r.name], c]) > usable) break;
+            roomPicks[r.name].push(c);
+            added++;
+          }
+          if (added < n) {
+            toast(`🚫 Only ${added} of ${n} copies fit "${r.name}" — more would exceed its ` +
+              `≈${usable.toFixed(1)} m² of usable space.`, 'bad');
+          } else {
+            toast(`＋${added} × ${pickLabel(c)} added to "${r.name}".`, 'info');
+          }
+          render();
+        };
         chips.appendChild(chip);
       });
       if (!roomPicks[r.name].length) {
