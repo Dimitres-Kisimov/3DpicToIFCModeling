@@ -598,7 +598,7 @@ def footprint_rects(f, s, types, rot=None):
 # scan of a new building pays; repeat populates are solver-only.
 # ---------------------------------------------------------------------------
 CACHE_ROOT = REPO / "data" / "buildings" / "_cache"
-CACHE_VERSION = "v5"          # bump when the cached artefacts change shape (v5: z-ranged rects)
+CACHE_VERSION = "v6"          # bump when the cached artefacts change shape (v6: walk-through openings)
 
 
 def geometry_cache_dir(ifc_path):
@@ -710,6 +710,13 @@ def cached_footprints(f, s, ifc_path):
     rot = _rot2(-theta) if theta else None
     obstacles = footprint_rects(f, s, OBSTACLE_TYPES, rot)
     doors = footprint_rects(f, s, ["IfcDoor"], rot)
+    # walk-through wall openings WITHOUT a door object (archways, passages):
+    # floor-level sill + human height + door-like width -> same keep-clear as a
+    # door, so furniture never blocks the walking path through a wall gap
+    for (ox0, ox1, oy0, oy1, oz0, oz1, _t) in footprint_rects(f, s, ["IfcOpeningElement"], rot):
+        w = max(ox1 - ox0, oy1 - oy0)
+        if oz1 - oz0 >= 1.4 and 0.6 <= w <= 3.0:
+            doors.append((ox0, ox1, oy0, oy1, oz0, oz1, "IfcOpeningElement"))
     try:
         fp.write_text(json.dumps({"obstacles": obstacles, "doors": doors,
                                   "theta": theta}), encoding="utf-8")
@@ -749,10 +756,52 @@ def extract_room_obstacles(obstacle_rects, door_rects, x0, x1, y0, y1, fz=None):
     for (dx0, dx1, dy0, dy1, dz0, dz1, _t) in door_rects:  # door keep-clear (egress)
         if not at_storey(dz0, dz1):
             continue
+        if fz is not None and dz0 > fz + 0.5:
+            continue                        # sill above floor = window, not a walking path
         if dx1 > x0 and dx0 < x1 and dy1 > y0 and dy0 < y1:
             cx, cy = (dx0 + dx1) / 2 - x0, (dy0 + dy1) / 2 - y0
             keepouts.append({"x": max(0, cx - 0.6), "z": max(0, cy - 0.6),
                              "width": 1.2, "depth": 1.2, "kind": "door"})
+
+    # walking paths through WALL GAPS with no IFC entity at all (two separate
+    # wall segments with a passage between them): scan each room edge — where
+    # an otherwise-walled edge has an uncovered span of door-like width,
+    # block a corridor-width keep-clear in front of it
+    walls = [(ex0, ex1, ey0, ey1) for (ex0, ex1, ey0, ey1, ez0, ez1, t) in obstacle_rects
+             if t.startswith("IfcWall") and at_storey(ez0, ez1)]
+
+    def _gap_spans(intervals, lo, hi):
+        iv = sorted([max(lo, a), min(hi, b)] for a, b in intervals if b > lo and a < hi)
+        merged = []
+        for a, b in iv:
+            if merged and a <= merged[-1][1] + 0.08:
+                merged[-1][1] = max(merged[-1][1], b)
+            else:
+                merged.append([a, b])
+        cov = sum(b - a for a, b in merged)
+        if cov < 0.4 * (hi - lo):
+            return []                       # barely-walled edge: not a wall with a gap
+        return [(b1, a2) for (a1, b1), (a2, b2) in zip(merged, merged[1:])
+                if 0.65 <= a2 - b1 <= 2.6]  # human passage widths only
+
+    BAND, DEPTH = 0.35, 1.1
+    for edge in ("S", "N", "W", "E"):
+        if edge in ("S", "N"):
+            ey = y0 if edge == "S" else y1
+            spans = _gap_spans([(w[0], w[1]) for w in walls
+                                if w[3] > ey - BAND and w[2] < ey + BAND], x0, x1)
+            for (g0, g1) in spans:
+                keepouts.append({"x": g0 - x0, "z": (ey - y0) if edge == "N" and ey - DEPTH > y0 else 0.0,
+                                 "width": g1 - g0, "depth": DEPTH, "kind": "door"})
+                if edge == "N":
+                    keepouts[-1]["z"] = max(0.0, y1 - DEPTH - y0)
+        else:
+            ex = x0 if edge == "W" else x1
+            spans = _gap_spans([(w[2], w[3]) for w in walls
+                                if w[1] > ex - BAND and w[0] < ex + BAND], y0, y1)
+            for (g0, g1) in spans:
+                keepouts.append({"x": 0.0 if edge == "W" else max(0.0, x1 - DEPTH - x0),
+                                 "z": g0 - y0, "width": DEPTH, "depth": g1 - g0, "kind": "door"})
 
     # merge overlaps within the SAME kind so labels survive
     merged = []
