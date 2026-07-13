@@ -1145,10 +1145,10 @@ def main():
         for it in room_items:
             m = it["mesh"]
             parts = it.get("parts") or [m]
-            cx, cz, yaw = it["cx"], it["cz"], it["yaw"]
+            cx, cz, yaw_local = it["cx"], it["cz"], it["yaw"]
             wx, wy = to_world_xy(x0 + cx, y0 + cz)   # solve frame -> true world
             cat = it["cat"]
-            yaw = yaw + theta                        # de-rotated solve frame -> world
+            yaw = yaw_local + theta                  # de-rotated solve frame -> world
             Ryaw = (trimesh.transformations.rotation_matrix(np.radians(yaw), [0, 0, 1])
                     if yaw else None)
             if movdir is not None:
@@ -1159,7 +1159,17 @@ def main():
                     piece.apply_transform(Ryaw)
                 pb = piece.bounds
                 # true rotated footprint (works for facing angles, not just 90° steps)
-                bex, bey = float(pb[1][0] - pb[0][0]), float(pb[1][1] - pb[0][1])
+                # — measured in the SOLVE frame (yaw only): for rotated buildings the
+                # world AABB is inflated ~40% and the 2D editor would over-flag clashes
+                if theta:
+                    lp = m.copy()
+                    if yaw_local:
+                        lp.apply_transform(trimesh.transformations.rotation_matrix(
+                            np.radians(yaw_local), [0, 0, 1]))
+                    lb = lp.bounds
+                    bex, bey = float(lb[1][0] - lb[0][0]), float(lb[1][1] - lb[0][1])
+                else:
+                    bex, bey = float(pb[1][0] - pb[0][0]), float(pb[1][1] - pb[0][1])
                 tvec = [-(pb[0][0] + pb[1][0]) / 2, -(pb[0][1] + pb[1][1]) / 2, -pb[0][2]]
                 rotx = trimesh.transformations.rotation_matrix(-np.pi / 2, [1, 0, 0])  # Z-up->Y-up
                 psc = trimesh.Scene()
@@ -1188,8 +1198,9 @@ def main():
                                    round(zw, 3), round(zd, 3)])
                     zones_map[pid] = zr
                 if elev <= 0.01:            # on-desk items don't join floor clash boxes
-                    boxes.append(((wx - bex / 2, wx + bex / 2, wy - bey / 2, wy + bey / 2),
-                                  it["oid"], it.get("mate")))
+                    boxes.append((((x0 + cx) - bex / 2, (x0 + cx) + bex / 2,
+                                   (y0 + cz) - bey / 2, (y0 + cz) + bey / 2),
+                                  it["oid"], it.get("mate")))   # solve-frame, like the dims
             else:
                 g2 = m.copy()
                 if Ryaw is not None:

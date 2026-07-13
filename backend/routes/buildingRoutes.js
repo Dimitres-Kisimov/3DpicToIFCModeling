@@ -230,7 +230,7 @@ router.get('/building/:bid/rooms', async (req, res, next) => {
       return res.status(result.status || 500).json({ error: result.error });
     }
     const payload = { rooms: result.rooms, categories: result.categories,
-                      storeys: result.storeys || [] };
+                      storeys: result.storeys || [], theta: result.theta || 0 };
     _roomsCache.set(key, payload);
     res.json(payload);
   } catch (err) { next(err); }

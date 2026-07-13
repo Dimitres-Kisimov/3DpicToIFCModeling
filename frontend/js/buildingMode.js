@@ -18,6 +18,20 @@
   let allCategories = [];
   let storeys = [];                 // [{name, elevation, top}]
   let roomsData = [];               // rooms incl. storey/rect/obstacles
+  let bTheta = 0;                   // building world-rotation (deg) — rooms/obstacles/zones
+                                    // live in the solver's DE-ROTATED frame; pieces carry
+                                    // world positions. All plan math runs in the local frame.
+  function toLocal(px, py) {
+    if (!bTheta) return [px, py];
+    const r = -bTheta * Math.PI / 180, c = Math.cos(r), s = Math.sin(r);
+    return [px * c - py * s, px * s + py * c];
+  }
+  function toWorld(lx, ly) {
+    if (!bTheta) return [lx, ly];
+    const r = bTheta * Math.PI / 180, c = Math.cos(r), s = Math.sin(r);
+    return [lx * c - ly * s, lx * s + ly * c];
+  }
+  window.bFrame = { toLocal, toWorld };
   let currentFloor = null;          // storey name, or null = whole building
   const bPieces = {};               // piece id -> {model, pos, category, glb, dims, room}
   let bShell = null;
@@ -141,6 +155,7 @@
       allCategories = data.categories || [];
       storeys = data.storeys || [];
       roomsData = data.rooms || [];
+      bTheta = data.theta || 0;
       await loadGenItems();              // your generated meshes join the picker
       renderRoomCards();
       banner(`${roomsData.length} rooms across ${storeys.length} floors — edit the furniture, then Populate.`);
@@ -325,7 +340,8 @@
   function pieceRect(p) {
     const w = (p.dims && p.dims[0]) || 0.6;
     const d = (p.dims && p.dims[1]) || 0.6;
-    return [p.pos[0] - w / 2, -p.pos[2] - d / 2, w, d];
+    const [cx, cy] = toLocal(p.pos[0], -p.pos[2]);
+    return [cx - w / 2, cy - d / 2, w, d];
   }
   function rectsOverlap(a, b) {
     return Math.min(a[0] + a[2], b[0] + b[2]) - Math.max(a[0], b[0]) > 0.02 &&
@@ -338,7 +354,7 @@
   // against the room(s) that actually hold its centre (its named home room first),
   // never against a neighbour's walls bleeding into the overlap.
   function roomsOf(p, rooms) {
-    const cx = p.pos[0], cz = -p.pos[2];
+    const [cx, cz] = toLocal(p.pos[0], -p.pos[2]);
     const inside = rooms.filter((rm) =>
       cx >= rm.rect[0] - 0.01 && cx <= rm.rect[0] + rm.rect[2] + 0.01 &&
       cz >= rm.rect[1] - 0.01 && cz <= rm.rect[1] + rm.rect[3] + 0.01);
@@ -385,18 +401,20 @@
     for (const pid of findClashes()) {
       if (isLegalPiece(pid)) continue;            // an earlier nudge may have freed it
       const p = bPieces[pid];
-      const px = p.pos[0], py = -p.pos[2];
+      const wx0 = p.pos[0], wz0 = p.pos[2];
+      const [px, py] = toLocal(wx0, -wz0);        // spiral in the solver frame
       let done = false;
       for (let rad = 0.1; rad <= 2.4 && !done; rad += 0.1) {
         for (let a = 0; a < 16 && !done; a++) {
           const th = (Math.PI * 2 * a) / 16;
-          p.pos[0] = Math.round((px + rad * Math.cos(th)) * 100) / 100;
-          p.pos[2] = -Math.round((py + rad * Math.sin(th)) * 100) / 100;
+          const [wx, wy] = toWorld(px + rad * Math.cos(th), py + rad * Math.sin(th));
+          p.pos[0] = Math.round(wx * 100) / 100;
+          p.pos[2] = -Math.round(wy * 100) / 100;
           if (isLegalPiece(pid)) done = true;
         }
       }
       if (done) { fixed++; refreshPiece(pid); }
-      else { p.pos[0] = px; p.pos[2] = -py; }     // no free spot in reach — leave, stays marked
+      else { p.pos[0] = wx0; p.pos[2] = wz0; }    // no free spot in reach — leave, stays marked
     }
     return { fixed, remaining: findClashes().size };
   }
@@ -419,9 +437,12 @@
     if (!v) return;
     const [x0, y0, W, D] = room.rect;
     const e = st ? st.elevation : 0;
+    const cs = [[x0, y0], [x0 + W, y0], [x0, y0 + D], [x0 + W, y0 + D]].map(([a, b]) => toWorld(a, b));
+    const xs = cs.map((c) => c[0]), ys = cs.map((c) => c[1]);
     try {
       // fly INTO the room: its world box (viewer frame: z = -y_ifc), dollhouse cut open
-      v.cameraFlight.flyTo({ aabb: [x0, e, -(y0 + D), x0 + W, e + 2.2, -y0], duration: 0.8 });
+      v.cameraFlight.flyTo({ aabb: [Math.min(...xs), e, -Math.max(...ys),
+                                    Math.max(...xs), e + 2.2, -Math.min(...ys)], duration: 0.8 });
     } catch (err) {}
     banner(`🧊 ${room.name} · ${room.area} m² — drag pieces to rearrange; unlock the camera to orbit.`);
   }
@@ -464,7 +485,10 @@
   // world-XY people-space rects for a piece at its CURRENT position
   function pieceZonesWorld(p) {
     const px = p.pos[0], py = -p.pos[2];
-    return (p.zonesRel || []).map(([dx, dy, w, d]) => [px + dx, py + dy, w, d]);
+    return (p.zonesRel || []).map(([dx, dy, w, d]) => {
+      const [lcx, lcy] = toLocal(px + dx + w / 2, py + dy + d / 2);
+      return [lcx - w / 2, lcy - d / 2, w, d];
+    });
   }
 
   function pieceIdFromPick(pr) {

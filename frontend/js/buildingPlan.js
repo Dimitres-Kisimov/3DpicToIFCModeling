@@ -40,7 +40,10 @@
   };
 
   // ------------------------------------------------------------------ geometry
-  function planPos(p) { return [p.pos[0], -p.pos[2]]; }
+  function planPos(p) {
+    const bf = window.bFrame;
+    return bf ? bf.toLocal(p.pos[0], -p.pos[2]) : [p.pos[0], -p.pos[2]];
+  }
   function pieceRect(p) {
     const [x, y] = planPos(p);
     const w = (p.dims && p.dims[0]) || 0.6;
@@ -205,8 +208,10 @@
   }
   function movePiece(pid, nx, ny) {
     const p = data.pieces[pid];
-    p.pos[0] = Math.round(nx * 100) / 100;
-    p.pos[2] = -Math.round(ny * 100) / 100;
+    const bf = window.bFrame;
+    const [wx, wy] = bf ? bf.toWorld(nx, ny) : [nx, ny];
+    p.pos[0] = Math.round(wx * 100) / 100;
+    p.pos[2] = -Math.round(wy * 100) / 100;
     try { p.model.position = p.pos; } catch (e) {}
     dragOK = bm().isLegalPiece(pid);
     draw();

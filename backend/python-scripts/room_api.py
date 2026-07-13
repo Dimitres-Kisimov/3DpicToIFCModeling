@@ -469,7 +469,7 @@ def cmd_building_rooms(args):
     storeys = [{"name": n, "elevation": round(elev_of[n], 3), "top": round(tops[n], 3)}
                for n in sorted(used, key=lambda n: elev_of.get(n, 0.0)) if n]
     return {"ok": True, "rooms": rooms, "categories": sorted(assets.keys()),
-            "storeys": storeys}
+            "storeys": storeys, "theta": _theta}
 
 
 def cmd_register_building(args):
