@@ -103,8 +103,8 @@ passing repair → `saveIFC` → **IFC4 validation**; per-engine IFC evidence li
 `populate_building.py` reads every `IfcSpace` (name, true footprint, floor level), extracts the
 obstacles intruding into each room (walls, beams, columns, stairs — **z-filtered to that room's
 own storey**) plus door keep-clear zones, and runs the CP-SAT ergonomic solver
-(`spatial_layout.py` + `rule_packs.py`; Neufert / Panero-Zelnik / ADA clearances, circulation,
-no-overlap) to place furniture around them.
+(`spatial_layout.py` + `rule_packs.py`; **ASR A1.2/A1.8 (Arbeitsstättenrichtlinie) for offices — default**,
+Neufert / Panero-Zelnik / ADA clearances, circulation, no-overlap) to place furniture around them.
 
 Robustness earned on real files:
 

@@ -2,6 +2,11 @@
 rule_packs.py — per-room-type ergonomic dimensioning, from established standards.
 
 Sources baked in (see docs/FINDINGS.md feasibility report):
+  * ASR — Technische Regeln fuer Arbeitsstaetten (Germany, DEFAULT for workplaces):
+      A1.2 Raumabmessungen & Bewegungsflaechen — >=1.5 m2 free movement per
+      workstation, >=1.00 m user-area depth at the desk; 8-10 m2/workstation
+      (Zellenbuero), 12-15 m2 (Grossraumbuero); A1.8 Verkehrswege — route widths
+      by occupancy, >=0.60 m access to each workstation. Kill-switch: SCS_ASR=0.
   * Neufert, Architects' Data — office ~5.5-6.5 m2/workstation; circulation aisle >=1.0 m
   * Panero & Zelnik, Human Dimension & Interior Space — seating circulation >=0.46 m
   * ADA / US Access Board — route 0.915 m, door clear 0.815 m, turning circle 1.525 m
@@ -20,6 +25,41 @@ ADA = {
     "door_clear": 0.815,       # 32"
     "turning_circle": 1.525,   # 60" diameter
 }
+
+ASR = {  # Arbeitsstaettenrichtlinie — Technische Regeln fuer Arbeitsstaetten (DE)
+    # ASR A1.2 sect. 5 Abs. 3 — Grundflaeche von Arbeitsraeumen (LEGAL MINIMUM):
+    #   "mindestens 8 m2 fuer einen Arbeitsplatz zuzueglich mindestens 6 m2
+    #    fuer jeden weiteren"
+    "area_first_ws": 8.0,
+    "area_addl_ws": 6.0,
+    # ASR A1.2 sect. 5.1.1 Abs. 2 / 5.1.2 — Bewegungsflaeche am Arbeitsplatz:
+    #   ">= 1,50 m2", "Tiefe und Breite ... muessen mindestens 1,00 m betragen"
+    "user_area_depth": 1.00,
+    "user_area_min_m2": 1.50,
+    # ASR A1.2 sect. 5 Abs. 4 — Richtwerte fuer Bueroraeume (guidance values):
+    #   Zellenbuero 8-10 m2/AP inkl. Moeblierung + anteilige Verkehrsflaechen,
+    #   Grossraumbuero 12-15 m2/AP
+    "area_per_ws_cell": 10.0,
+    "area_per_ws_open": 12.5,
+    "open_plan_from_m2": 50.0,
+    # ASR A1.8 sect. 4.2 Tabelle 2 — Verkehrswege fuer Fussgaengerverkehr:
+    "route_upto_5": 0.90,
+    "route_upto_20": 1.00,
+    "route_upto_100": 1.20,
+    # ASR A1.8 Tabelle 2 Zeile 8 — "Gaenge zu persoenlich zugewiesenen
+    # Arbeitsplaetzen": 0,60 m (enforced MORE strictly by the A3 circulation
+    # walk, which requires a 0.90 m person-path to every placed item)
+    "ws_access": 0.60,
+}
+ASR_ROOM_TYPES = {"office", "workspace", "meeting"}   # workplaces per ArbStaettV
+
+
+def asr_enabled(flag=None):
+    """ASR is the DEFAULT standard for workplace rooms; SCS_ASR=0 disables."""
+    import os
+    if flag is not None:
+        return bool(flag)
+    return os.environ.get("SCS_ASR", "1") != "0"
 
 _CLEARANCES = {
     "default": 0.15, "chair": 0.10, "office_chair": 0.10, "desk": 0.15,
@@ -83,13 +123,25 @@ ROOM_TYPES = {
 }
 
 
-def get_pack(room_type: str = "office", ada: bool = False) -> dict:
-    """Return the rule pack for a room type, with ADA minimums applied if requested."""
+def get_pack(room_type: str = "office", ada: bool = False, asr=None) -> dict:
+    """Return the rule pack for a room type. ADA minimums applied on request;
+    ASR (German workplace rules) applied BY DEFAULT for workplace room types."""
     pack = dict(ROOM_TYPES.get(room_type, ROOM_TYPES["office"]))
     if ada:
         pack["min_aisle"] = max(pack["min_aisle"], ADA["route_width"])
         pack["door_keep_clear"] = max(pack["door_keep_clear"], ADA["door_clear"])
         pack["turning_circle"] = ADA["turning_circle"]
+    if room_type in ASR_ROOM_TYPES and asr_enabled(asr):
+        # ASR A1.2 sect.5 Abs.4 Richtwert replaces the (denser) Neufert value
+        pack["area_per_person"] = max(pack.get("area_per_person", 6.0),
+                                      ASR["area_per_ws_cell"])
+        # ASR A1.8 Tab.2: route width for <=20 users; workstation access floor
+        pack["min_aisle"] = max(pack["min_aisle"], ASR["route_upto_20"])
+        pack["ws_access"] = ASR["ws_access"]
+        # ASR A1.2 sect.5 Abs.3 legal minimum: 8 m2 first + 6 m2 each further AP
+        pack["area_first_ws"] = ASR["area_first_ws"]
+        pack["area_addl_ws"] = ASR["area_addl_ws"]
+        pack["standard"] = "ASR A1.2 / A1.8 (Arbeitsstaettenrichtlinie)"
     return pack
 
 
@@ -198,7 +250,7 @@ def archetype_of(category: str, dims=None) -> str:
     return "free_accent"
 
 
-def placement_profile(category: str, dims=None, ada: bool = False) -> dict:
+def placement_profile(category: str, dims=None, ada: bool = False, asr=None) -> dict:
     """The full ergonomic profile for an object, driven by its archetype:
       {archetype, zones:{front/back/left/right: metres}, faces, wall}
     `zones` are the human interaction depths that must stay clear around the object; `faces`/`wall`
@@ -213,6 +265,19 @@ def placement_profile(category: str, dims=None, ada: bool = False) -> dict:
         return round(depth, 3)
 
     zones = {direction: _depth(key) for direction, key in arch["zones"].items()}
+    # ASR A1.2 5.1.1/5.1.2: the workstation's Bewegungsflaeche must satisfy BOTH
+    # >= 1.50 m2 AND >= 1.00 m depth/width. The zone is desk-wide, so the depth
+    # scales with the actual desk width (a 1.40 m desk needs 1.50/1.40 = 1.08 m).
+    # Applies to desks (workstations), not dining/coffee tables. SCS_ASR=0 off.
+    if _norm(category) == "desk" and asr_enabled(asr) and "front" in zones:
+        w = 1.40
+        if isinstance(dims, dict):
+            w = float(dims.get("width", w) or w)
+        elif dims:
+            vals = list(dims) + [0, w, 0]
+            w = float(vals[1]) or w
+        depth_needed = max(ASR["user_area_depth"], ASR["user_area_min_m2"] / max(w, 0.8))
+        zones["front"] = max(zones["front"], round(depth_needed, 2))
     # either-or zone groups (e.g. a bed needs at LEAST one long side reachable)
     zones_any = [[direction, _depth(key)] for direction, key in arch.get("zones_any", [])]
     return {"archetype": name, "zones": zones, "zones_any": zones_any,

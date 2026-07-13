@@ -130,7 +130,21 @@ def smart_furnish(rt, W, D, assets, density="medium"):
         items += ["cabinet"] * min(3, max(1, int(area / 6)))
         if area > 10: items += ["table"]
     elif rt == "office":
-        for _ in range(min(8, max(1, int(area / 6.5)))):  # ~6.5 m²/workstation (Neufert)
+        # ASR A1.2 (Arbeitsstaettenrichtlinie), verified against the legal text:
+        #  sect.5 Abs.3 LEGAL MINIMUM: 8 m2 for the first workstation + 6 m2 for
+        #    each further one -> hard cap no density tier may exceed;
+        #  sect.5 Abs.4 RICHTWERTE: 8-10 m2/AP Zellenbuero, 12-15 m2/AP
+        #    Grossraumbuero (>50 m2) -> staffing targets per tier.
+        # SCS_ASR=0 restores Neufert 6.5 m2/WS.
+        true_area = W * D
+        if os.environ.get("SCS_ASR", "1") != "0":
+            per_ws = 12.5 if true_area > 50 else 10.0     # Richtwert target
+            legal_cap = 1 + max(0, int((true_area - 8.0) / 6.0))   # 8 + 6n rule
+            n_ws = min(int(area / per_ws), legal_cap)
+            n_ws = min(12, max(1 if true_area >= 8.0 else 0, n_ws))
+        else:
+            n_ws = min(8, max(1, int(area / 6.5)))        # Neufert ~6.5 m2/WS
+        for _ in range(n_ws):
             items += ["desk", "office_chair", "monitor"]
         if area > 15: items += ["cabinet"]
         if area > 22: items += ["bookshelf"]
