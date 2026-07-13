@@ -390,17 +390,18 @@ def cmd_building_rooms(args):
     if elev_of and max(abs(v) for v in elev_of.values()) > 500:
         elev_of = {}                                  # broken data — fall back to geometry
 
-    obstacle_rects, door_rects = pop.cached_footprints(f, s, ifc_path)
+    obstacle_rects, door_rects, _theta = pop.cached_footprints(f, s, ifc_path)
+    _rot_wl = pop._rot2(-_theta) if _theta else None
 
     seen, rooms = set(), []
     for sp in _bt("IfcSpace"):
         name = (sp.LongName or sp.Name or "").strip()
         cls = pop.classify_room(name)                 # 'skip' | type | None (unknown)
         storey = _storey_of_space(sp)
-        ext = pop.space_extent(sp, s, unit_scale)     # solid geometry OR bbox fallback
+        ext = pop.space_extent(sp, s, unit_scale, _rot_wl)   # solid geometry OR bbox fallback
         if ext is None:
             continue
-        x0, x1, y0, y1, zmin = ext
+        x0, x1, y0, y1, zmin = ext[:5]
         W, D = x1 - x0, y1 - y0
         if W < 0.8 or D < 0.8:
             continue
@@ -418,7 +419,7 @@ def cmd_building_rooms(args):
             rt = cls if cls not in (None, "skip") else None
             rooms.append({**rec, "type": rt or "room", "furnishable": True,
                           "obstacles": pop.extract_room_obstacles(obstacle_rects, door_rects,
-                                                                  x0, x1, y0, y1),
+                                                                  x0, x1, y0, y1, zmin),
                           "suggested": pop.smart_furnish(rt, W, D, assets) if rt else []})
         else:
             rooms.append({**rec, "type": "space", "furnishable": False,
@@ -570,7 +571,7 @@ def cmd_prepare_building(args):
     f = ifcopenshell.open(str(path))
     s = ifcopenshell.geom.settings()
     s.set(s.USE_WORLD_COORDS, True)
-    obstacles, doors = pop.cached_footprints(f, s, path)
+    obstacles, doors, _theta2 = pop.cached_footprints(f, s, path)
     shell = pop.build_shell_cache(f, s, path)
     return {"ok": True, "obstacles": len(obstacles), "doors": len(doors),
             "shell": str(shell)}
