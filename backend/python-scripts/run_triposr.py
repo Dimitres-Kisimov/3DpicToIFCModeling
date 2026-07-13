@@ -30,7 +30,7 @@ def _segment_foreground(image_path):
     """Foreground segmentation. SCS_TRIPOSR_SEGMENTER selects the engine:
     'sam2' (default — SAM2, rembg fallback) or 'rembg' (force rembg). Forcing
     rembg lets us A/B the segmenter with the SAME post-processing."""
-    if os.environ.get("SCS_TRIPOSR_SEGMENTER", "sam2").lower() == "rembg":
+    if os.environ.get("SCS_TRIPOSR_SEGMENTER", "rembg").lower() == "rembg":
         log("Segmenter: rembg (forced via SCS_TRIPOSR_SEGMENTER)", "info")
         return _rembg_foreground(image_path)
     try:
