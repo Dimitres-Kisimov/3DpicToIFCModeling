@@ -46,6 +46,9 @@
     <option value="house">COPROPIETE — 19 rue Marc-Antoine, ground floor — 2026-07-12</option>
     <option value="german">Kleine Wohnung — German apartment — 2026-07-12</option>
     <option value="small_building">house - building (small house) — 2026-07-12</option>
+    <option value="tower">SCS Tower — 7 storeys, 168 rooms (synthetic) — 2026-07-13</option>
+    <option value="institute">Buerogebaeude — KIT Institute, 5 floors — 2026-07-13</option>
+    <option value="smiley">Smiley West — 140 rooms, 5 floors — 2026-07-13</option>
   </select>
   <a href="/building_showcase.html" style="margin-left:10px;color:#2f6bff;text-decoration:none">← showcase</a>
   <div id="bstatus" style="color:#5b6b7c;font-size:11.5px;margin-top:3px">drag = orbit · furnished by the ergonomics engine · clash-audited</div>
@@ -130,6 +133,9 @@ const INFO = {
   house:          ['COPROPIETE — 19 rue Marc-Antoine, ground floor', 'building rotated 60.4° in world coords — solved in a de-rotated frame · 16 pieces · 0 clashes'],
   german:         ['Kleine Wohnung — German apartment', '10 rooms · 30 pieces (German room labels drive the room types) · 0 clashes'],
   small_building: ['house - building — small house', '1 living room · sofa / table / lamp'],
+  tower:          ['SCS Tower — 7-storey synthetic stack', '168 rooms · 6 inhabited floors x 28 rooms · built by stacking a real floor plate'],
+  institute:      ['Buerogebaeude — KIT Institute (open data)', '5 floors · 82 rooms · German office building'],
+  smiley:         ['Smiley West — KIT terraced housing (open data)', '5 floors · 140 rooms · the biggest room count in the fleet'],
 };
 const bkey = new URLSearchParams(location.search).get('b') || 'duplex';
 document.getElementById('bpick').value = bkey;

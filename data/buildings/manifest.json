@@ -66,7 +66,7 @@
     "unit_scale": 1,
     "est_populate_min": 1,
     "warnings": [
-     "building looks rotated or irregular â€” layouts may be conservative"
+     "building looks rotated or irregular \u00e2\u20ac\u201d layouts may be conservative"
     ]
    }
   },
@@ -84,6 +84,57 @@
     "size_mb": 5.5,
     "unit_scale": 1,
     "est_populate_min": 1,
+    "warnings": []
+   }
+  },
+  {
+   "id": "b_02a4d40679",
+   "name": "Buerogebaeude",
+   "file": "b_02a4d40679__AC20-Institute-Var-2.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC4",
+    "name": "Buerogebaeude",
+    "spaces": 82,
+    "storeys": 5,
+    "products": 1184,
+    "size_mb": 10.4,
+    "unit_scale": 1,
+    "est_populate_min": 4,
+    "warnings": []
+   }
+  },
+  {
+   "id": "b_d37fb37a04",
+   "name": "Geb\u00e4ude",
+   "file": "b_d37fb37a04__Smiley-West.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC4",
+    "name": "Geb\u00e4ude",
+    "spaces": 140,
+    "storeys": 5,
+    "products": 1252,
+    "size_mb": 5.8,
+    "unit_scale": 1,
+    "est_populate_min": 4,
+    "warnings": []
+   }
+  },
+  {
+   "id": "b_c843c15b4d",
+   "name": "SCS Tower \u2014 7 storeys (synthetic)",
+   "file": "b_c843c15b4d__SCS_Tower_7F.ifc",
+   "status": "preparing",
+   "profile": {
+    "schema": "IFC4",
+    "name": "Projektname",
+    "spaces": 168,
+    "storeys": 8,
+    "products": 1353,
+    "size_mb": 32.8,
+    "unit_scale": 1,
+    "est_populate_min": 5,
     "warnings": []
    }
   }
