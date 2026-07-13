@@ -83,6 +83,16 @@ def _bottom_broken(m, up):
         return True
 
 
+def _ground_center(m, up):
+    """Feet on the floor (min = 0 on the up-axis), footprint centred at origin."""
+    b = m.bounds
+    tr = [0.0, 0.0, 0.0]
+    for ax in range(3):
+        tr[ax] = -b[0][ax] if ax == up else -(b[0][ax] + b[1][ax]) / 2
+    m.apply_translation(tr)
+    return m
+
+
 def _build_base(style, r, hub_h, wr, col_h):
     """Parametric chair base in local Z-up, feet/wheels at z=0."""
     parts = []
@@ -139,11 +149,21 @@ def build(inp, outp, do_clean=True, style="five_star", label=""):
     # NOTE: seat-leveling + orientation-canonicalize were removed — they reoriented the mesh and,
     # combined with the app viewer's fixed rotation, threw chairs sideways. The graft now keeps the
     # mesh in TripoSR's native frame, which the viewer already displays upright.
+    # gentle recline fix: only rotations that measurably reduce the seat tilt
+    # are kept (guarded inside _level_seat) — the old sideways-flip risk came
+    # from the removed axis-canonicalize, not from this. SCS_CHAIR_LEVEL=0 disables.
+    if os.environ.get("SCS_CHAIR_LEVEL", "1") != "0":
+        try:
+            m = _level_seat(m, int(np.argmax(m.extents)))
+        except Exception as ex:
+            print("leveling skipped:", ex)
+
     e = m.extents
     up = int(np.argmax(e))                      # tallest axis = the chair's vertical
 
     if style == "auto":
         if not _bottom_broken(m, up):
+            _ground_center(m, up)
             _apply_color(m, color)
             m.export(outp)
             print("kept AI base — bottom is intact (%d faces) -> %s" % (len(m.faces), outp))
@@ -212,6 +232,7 @@ def build(inp, outp, do_clean=True, style="five_star", label=""):
     base.apply_translation(tr)
 
     out = trimesh.util.concatenate([top, base])
+    _ground_center(out, up)                     # wheels on the floor, centred footprint
     _apply_color(out, color)
     out.export(outp)
     print("grafted: kept %d chair faces + clean %s base (%d faces) -> %s"

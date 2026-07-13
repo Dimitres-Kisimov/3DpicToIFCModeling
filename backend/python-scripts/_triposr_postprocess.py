@@ -132,7 +132,10 @@ def _filter_components_keep_legs(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
 # Stage 2 — Centre at origin
 # ---------------------------------------------------------------------------
 def _center(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
-    mesh.apply_translation(-mesh.bounding_box.centroid)
+    """Centre the footprint at the origin and GROUND the mesh (min-Y = 0) —
+    objects must come out standing on the floor, not floating half-sunk."""
+    b = mesh.bounds
+    mesh.apply_translation([-(b[0][0] + b[1][0]) / 2, -b[0][1], -(b[0][2] + b[1][2]) / 2])
     return mesh
 
 
