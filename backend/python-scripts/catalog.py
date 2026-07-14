@@ -50,6 +50,18 @@ CATALOG_META = {
     "water_dispenser":     ("IfcElectricAppliance",    (1.10, 0.35, 0.35), [0.70, 0.78, 0.85]),
     "coffee_machine":      ("IfcElectricAppliance",    (0.45, 0.30, 0.40), [0.18, 0.18, 0.20]),
     "locker":              ("IfcFurniture",            (1.80, 0.40, 0.50), [0.52, 0.56, 0.62]),
+    # tier-2 office realism
+    "printer":             ("IfcElectricAppliance",         (1.10, 0.60, 0.60), [0.85, 0.85, 0.87]),
+    "partition":           ("IfcFurniture",                 (1.60, 1.50, 0.06), [0.62, 0.66, 0.72]),
+    "phone_booth":         ("IfcFurniture",                 (2.20, 1.05, 1.05), [0.30, 0.34, 0.40]),
+    "fridge":              ("IfcElectricAppliance",         (1.75, 0.60, 0.65), [0.88, 0.89, 0.91]),
+    "microwave":           ("IfcElectricAppliance",         (0.30, 0.50, 0.38), [0.75, 0.76, 0.78]),
+    "coat_rack":           ("IfcFurniture",                 (1.75, 0.50, 0.50), [0.35, 0.28, 0.22]),
+    "flipchart":           ("IfcFurniture",                 (1.90, 0.70, 0.65), [0.90, 0.90, 0.92]),
+    "waste_bin":           ("IfcFurniture",                 (0.70, 0.35, 0.35), [0.35, 0.38, 0.42]),
+    "fire_extinguisher":   ("IfcFireSuppressionTerminal",   (0.60, 0.18, 0.16), [0.78, 0.12, 0.12]),
+    "first_aid_cabinet":   ("IfcFurniture",                 (0.45, 0.35, 0.15), [0.95, 0.95, 0.97]),
+    "server_rack":         ("IfcElectricDistributionBoard", (2.00, 0.60, 0.80), [0.15, 0.16, 0.18]),
 }
 # categories with real ABO meshes; the rest fall back to procedural primitives
 ABO_CATEGORIES = {"desk", "office_chair", "cabinet", "bookshelf", "sofa", "table", "stool", "lamp",

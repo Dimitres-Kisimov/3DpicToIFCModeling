@@ -101,6 +101,10 @@ def room_type(name):
     return None if c in ("skip", None) else c
 
 
+# wall-mounted safety equipment exports at its mounting height (metres):
+# fire extinguisher handle <= 1.0 m above floor; first-aid cabinet at eye level
+_CAT_ELEV = {"fire_extinguisher": 1.0, "first_aid_cabinet": 1.35}
+
 # population density tiers: the effective area scales the same Neufert-based
 # formulas (light staffs a room like a smaller one; dense like a larger one),
 # and dense adds room-appropriate extras on top
@@ -159,27 +163,32 @@ def smart_furnish(rt, W, D, assets, density="medium"):
             items += ["desk", "office_chair", "monitor"]
         if area > 15: items += ["cabinet"]
         if area > 22: items += ["bookshelf"]
+        if area > 20: items += ["printer", "waste_bin"]      # shared MFP + bin (tier-2)
+        if area > 40: items += ["fire_extinguisher"]         # ASR A2.2 spirit
     elif rt == "dining":
         items += ["table"] + ["chair"] * min(8, max(2, int(area / 3)))
     elif rt == "meeting":
         items += ["table"] + ["office_chair"] * min(10, max(2, int(area / 2.5)))
+        if area > 18: items += ["flipchart", "whiteboard"]   # tier-2
     elif rt == "presentation":    # lecture hall: front kit + audience rows
         items += ["presentation_screen", "lectern", "projector", "whiteboard"]
         items += ["chair"] * min(48, max(4, int(area / 1.4)))   # ~1.4 m2/seat
+        if area > 30: items += ["flipchart", "fire_extinguisher"]
     elif rt == "quiet":           # Ruheraum: sparse and calm
         items += ["armchair"]
         if area > 8:  items += ["armchair", "side_table"]
         if area > 10: items += ["lamp", "planter"]
         if area > 16: items += ["sofa", "bookshelf"]
     elif rt == "break":           # Pausenraum (ASR A4.2)
-        items += ["table", "coffee_machine"] + ["chair"] * min(8, max(2, int(area / 4)))
+        items += ["table", "coffee_machine", "waste_bin"] + ["chair"] * min(8, max(2, int(area / 4)))
         if area > 12: items += ["water_dispenser", "planter"]
+        if area > 14: items += ["fridge", "microwave", "first_aid_cabinet"]   # tier-2
         if area > 16: items += ["sofa", "side_table"]
         if area > 24: items += ["table"] + ["chair"] * 4 + ["locker"]
     elif rt == "reception":       # Empfang: front desk + waiting
-        items += ["desk", "office_chair", "monitor"]
+        items += ["desk", "office_chair", "monitor", "coat_rack"]
         items += ["armchair"] * min(4, max(1, int(area / 7)))
-        if area > 10: items += ["side_table", "planter"]
+        if area > 10: items += ["side_table", "planter", "waste_bin"]
         if area > 18: items += ["water_dispenser", "sofa"]
     if density == "dense" and rt in DENSE_EXTRAS:
         min_area, extras = DENSE_EXTRAS[rt]
@@ -218,6 +227,18 @@ TARGET_DIMS = {
     "water_dispenser":     (0.35, 0.35, 1.10),
     "coffee_machine":      (0.30, 0.40, 0.45),
     "locker":              (0.40, 0.50, 1.80),
+    # tier-2 office realism
+    "printer":             (0.60, 0.60, 1.10),
+    "partition":           (1.50, 0.06, 1.60),
+    "phone_booth":         (1.05, 1.05, 2.20),
+    "fridge":              (0.60, 0.65, 1.75),
+    "microwave":           (0.50, 0.38, 0.30),
+    "coat_rack":           (0.50, 0.50, 1.75),
+    "flipchart":           (0.70, 0.65, 1.90),
+    "waste_bin":           (0.35, 0.35, 0.70),
+    "fire_extinguisher":   (0.18, 0.16, 0.60),
+    "first_aid_cabinet":   (0.35, 0.15, 0.45),
+    "server_rack":         (0.60, 0.80, 2.00),
 }
 
 # floor-standing categories the AI library lacks — borrowed from the SAME ABO
@@ -271,6 +292,17 @@ _FURN_FALLBACK = {
     "water_dispenser":     [0.70, 0.78, 0.85, 1.0],
     "coffee_machine":      [0.18, 0.18, 0.20, 1.0],
     "locker":              [0.52, 0.56, 0.62, 1.0],
+    "printer":             [0.85, 0.85, 0.87, 1.0],
+    "partition":           [0.62, 0.66, 0.72, 1.0],
+    "phone_booth":         [0.30, 0.34, 0.40, 1.0],
+    "fridge":              [0.88, 0.89, 0.91, 1.0],
+    "microwave":           [0.75, 0.76, 0.78, 1.0],
+    "coat_rack":           [0.35, 0.28, 0.22, 1.0],
+    "flipchart":           [0.90, 0.90, 0.92, 1.0],
+    "waste_bin":           [0.35, 0.38, 0.42, 1.0],
+    "fire_extinguisher":   [0.78, 0.12, 0.12, 1.0],
+    "first_aid_cabinet":   [0.95, 0.95, 0.97, 1.0],
+    "server_rack":         [0.15, 0.16, 0.18, 1.0],
 }
 
 
@@ -509,6 +541,42 @@ def _projector_mesh_zup():
     return _tinted(trimesh.util.concatenate([m, lens]), [0.25, 0.26, 0.28, 1.0])
 
 
+def _coat_rack_mesh_zup():
+    pole = trimesh.creation.cylinder(radius=0.03, height=1.70)
+    pole.apply_translation([0, 0, 0.85])
+    base = trimesh.creation.cylinder(radius=0.22, height=0.04)
+    base.apply_translation([0, 0, 0.02])
+    parts = [pole, base]
+    for k in range(4):
+        import math as _m
+        ang = k * _m.pi / 2
+        hook = trimesh.creation.cylinder(radius=0.015, segment=[[0, 0, 1.62],
+                 [0.20 * _m.cos(ang), 0.20 * _m.sin(ang), 1.70]])
+        parts.append(hook)
+    return _tinted(trimesh.util.concatenate(parts), [0.35, 0.28, 0.22, 1.0])
+
+
+def _flipchart_mesh_zup():
+    board = trimesh.creation.box(extents=[0.68, 0.05, 0.95])
+    board.apply_transform(trimesh.transformations.rotation_matrix(-0.15, [1, 0, 0]))
+    board.apply_translation([0, 0.05, 1.35])
+    parts = [board]
+    for sx in (-1, 1):
+        leg = trimesh.creation.cylinder(radius=0.02, segment=[[sx * 0.30, -0.25, 0], [sx * 0.28, 0.02, 1.82]])
+        parts.append(leg)
+    leg = trimesh.creation.cylinder(radius=0.02, segment=[[0, 0.30, 0], [0, 0.08, 1.82]])
+    parts.append(leg)
+    return _tinted(trimesh.util.concatenate(parts), [0.90, 0.90, 0.92, 1.0])
+
+
+def _fire_extinguisher_mesh_zup():
+    body = trimesh.creation.cylinder(radius=0.075, height=0.50)
+    body.apply_translation([0, 0, 0.28])
+    top = trimesh.creation.cylinder(radius=0.025, height=0.10)
+    top.apply_translation([0.02, 0, 0.56])
+    return _tinted(trimesh.util.concatenate([body, top]), [0.78, 0.12, 0.12, 1.0])
+
+
 _GEN_DIR = REPO / "data" / "generated_assets"
 
 
@@ -560,6 +628,18 @@ def load_assets():
     out.setdefault("coffee_machine",
                    {"mesh": _box_item([0.30, 0.40, 0.45], [0.18, 0.18, 0.20, 1.0]), "ifc": "IfcElectricAppliance"})
     out.setdefault("locker", {"mesh": _box_item([0.40, 0.50, 1.80], [0.52, 0.56, 0.62, 1.0]), "ifc": "IfcFurniture"})
+    # tier-2 office realism — ASR approach zones come from the archetypes
+    out.setdefault("printer", {"mesh": _box_item([0.60, 0.60, 1.10], [0.85, 0.85, 0.87, 1.0]), "ifc": "IfcElectricAppliance"})
+    out.setdefault("partition", {"mesh": _box_item([1.50, 0.06, 1.60], [0.62, 0.66, 0.72, 1.0]), "ifc": "IfcFurniture"})
+    out.setdefault("phone_booth", {"mesh": _box_item([1.05, 1.05, 2.20], [0.30, 0.34, 0.40, 1.0]), "ifc": "IfcFurniture"})
+    out.setdefault("fridge", {"mesh": _box_item([0.60, 0.65, 1.75], [0.88, 0.89, 0.91, 1.0]), "ifc": "IfcElectricAppliance"})
+    out.setdefault("microwave", {"mesh": _box_item([0.50, 0.38, 0.30], [0.75, 0.76, 0.78, 1.0]), "ifc": "IfcElectricAppliance"})
+    out.setdefault("coat_rack", {"mesh": _coat_rack_mesh_zup(), "ifc": "IfcFurniture"})
+    out.setdefault("flipchart", {"mesh": _flipchart_mesh_zup(), "ifc": "IfcFurniture"})
+    out.setdefault("waste_bin", {"mesh": _box_item([0.35, 0.35, 0.70], [0.35, 0.38, 0.42, 1.0]), "ifc": "IfcFurniture"})
+    out.setdefault("fire_extinguisher", {"mesh": _fire_extinguisher_mesh_zup(), "ifc": "IfcFireSuppressionTerminal"})
+    out.setdefault("first_aid_cabinet", {"mesh": _box_item([0.35, 0.15, 0.45], [0.95, 0.95, 0.97, 1.0]), "ifc": "IfcFurniture"})
+    out.setdefault("server_rack", {"mesh": _box_item([0.60, 0.80, 2.00], [0.15, 0.16, 0.18, 1.0]), "ifc": "IfcElectricDistributionBoard"})
 
     # borrow the room builder's ABO meshes for the remaining categories, so the
     # building picker offers (almost) the same catalog as "Build a room"
@@ -1214,7 +1294,7 @@ def main():
         _TOP_SLOTS = [[0.0, -0.05], [-0.35, -0.02], [0.35, -0.02]]
         tops_of = {}                        # surface index -> [electronics indices]
         unhosted_tops = []                  # electronics with no desk/table in the room
-        for ti in [i for i, c in enumerate(cats) if c in ("monitor", "laptop", "coffee_machine")]:
+        for ti in [i for i, c in enumerate(cats) if c in ("monitor", "laptop", "coffee_machine", "microwave")]:
             hosts = sorted(surf_idx, key=lambda j: len(tops_of.get(j, [])))
             if not hosts:
                 unhosted_tops.append(cats[ti])
@@ -1315,7 +1395,8 @@ def main():
             room_items.append({"oid": oid, "cat": oid.rsplit("-", 1)[0],
                                "cx": acx, "cz": acz, "yaw": yaw,
                                "mesh": meshmap[oid], "parts": partsmap.get(oid),
-                               "zones": zones_room.get(oid)})
+                               "zones": zones_room.get(oid),
+                               "elev": _CAT_ELEV.get(oid.rsplit("-", 1)[0], 0.0)})
             ci = info.get("child")
             if ci is not None:
                 ccat = cats[ci]

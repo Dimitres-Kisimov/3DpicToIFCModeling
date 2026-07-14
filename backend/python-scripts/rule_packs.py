@@ -244,6 +244,13 @@ _CATEGORY_ARCHETYPE = {
     "lectern": "worksurface", "presentation_screen": "wall_mounted",
     "whiteboard": "wall_mounted", "projector": "free_accent",
     "water_dispenser": "appliance", "coffee_machine": "on_surface", "locker": "storage",
+    # tier-2 office realism (additive): ASR-relevant approach/clearance via archetypes
+    "printer": "appliance",             # standing approach >= 0.60 m (ASR access floor)
+    "phone_booth": "appliance",         # walk-in: entry approach kept clear
+    "partition": "divider",             # a solid the solver routes around, no wall pull
+    "coat_rack": "free_accent", "flipchart": "free_accent", "waste_bin": "free_accent",
+    "fire_extinguisher": "wall_mounted", "first_aid_cabinet": "wall_mounted",
+    "server_rack": "storage",
 }
 
 # archetype -> {zone direction: anthro key}, facing rule, wall side.
@@ -265,6 +272,8 @@ ARCHETYPES = {
     "on_surface":     {"zones": {},                                      "faces": "anchor", "wall": None},
     "wall_mounted":   {"zones": {},                                      "faces": "wall",   "wall": "back"},
     "free_accent":    {"zones": {},                                      "faces": None,     "wall": None},
+    # tier-2: free-standing solid (acoustic partition) — pure obstacle, mid-room OK
+    "divider":        {"zones": {},                                      "faces": None,     "wall": None},
 }
 
 

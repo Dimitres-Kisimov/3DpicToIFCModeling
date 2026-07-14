@@ -226,6 +226,11 @@
     lectern: [0.30, 2.0], presentation_screen: [0.29, 1.2], whiteboard: [0.18, 1.2],
     projector: [0, 0], armchair: [0.64, 1.8], water_dispenser: [0.12, 1.5],
     coffee_machine: [0, 0], locker: [0.20, 1.8],
+    printer: [0.36, 1.8], partition: [0.09, 1.3], phone_booth: [1.10, 1.6],
+    fridge: [0.39, 1.8], microwave: [0, 0], coat_rack: [0.25, 1.4],
+    flipchart: [0.46, 1.5], waste_bin: [0.12, 1.3],
+    fire_extinguisher: [0.03, 1.0], first_aid_cabinet: [0.05, 1.0],
+    server_rack: [0.48, 1.8],
   };
   const catOf = (pick) => pick.startsWith('gen:') ? genCat(pick.slice(4)) : pick;
   const spaceNeed = (picksArr) => picksArr.reduce((sum, p) => {
