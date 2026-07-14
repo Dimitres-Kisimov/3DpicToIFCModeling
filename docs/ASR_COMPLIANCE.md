@@ -22,6 +22,18 @@ rules for offices are **ASR A1.2** (Raumabmessungen und Bewegungsflächen) and
 | **Gänge zu persönlich zugewiesenen Arbeitsplätzen** — 0,60 m | ASR A1.8 Tabelle 2, Zeile 8 | Recorded in the pack (`ws_access`); enforced **more strictly** by the circulation walk, which requires a 0.90 m path to every placed item — items only reachable through a narrower gap are reported as *unreachable* |
 | **Door keep-clear** (egress spirit) | ASR A1.8 / A2.3 | 1.2 m keep-clear at every door, doorless opening and wall gap — nothing blocks a walking path (see the walking-path engine) |
 
+## Coverage: the WHOLE app follows ASR (user directive, 2026-07-14)
+
+Every room type now carries an ASR tier — none run on looser standards:
+
+| Tier | Room types | What applies |
+|---|---|---|
+| **Full A1.2 + A1.8** | office, workspace, meeting | Legal staffing floor (8 + 6n m²), Richtwerte, 1.5 m² / ≥ 1.00 m Bewegungsfläche per desk, routes ≥ 1.00 m (1.20 m workspace), ws-access |
+| **A1.8 Verkehrswege by occupancy** | presentation (1.20 m), reception (1.20 m), break / Pausenraum (1.00 m), quiet / Ruheraum (0.90 m) | Route widths from Tabelle 2 by expected users + the 0.60 m access floor (enforced at 0.90 m by the circulation walk) |
+| **A1.8 route envelope** | living, lounge, bed, dining, kitchen | ASR is not legally binding in dwellings; the ≤ 5-persons route width (0.90 m) is applied anyway as the app-wide conservative floor |
+
+`SCS_ASR=0` still disables all tiers at once (restores Neufert-only dimensioning).
+
 ## Interaction with density tiers
 
 Light / Medium / Dense staff office rooms **within** the ASR envelope:

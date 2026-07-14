@@ -51,7 +51,16 @@ ASR = {  # Arbeitsstaettenrichtlinie — Technische Regeln fuer Arbeitsstaetten 
     # walk, which requires a 0.90 m person-path to every placed item)
     "ws_access": 0.60,
 }
-ASR_ROOM_TYPES = {"office", "workspace", "meeting"}   # workplaces per ArbStaettV
+ASR_ROOM_TYPES = {"office", "workspace", "meeting"}   # desk workstations: full A1.2 staffing rules
+# every OTHER room is still a workplace people move through — ASR A1.8 route
+# widths apply by expected occupancy (user directive: the WHOLE app follows ASR;
+# residential types get the route envelope as a conservative floor)
+ASR_ROUTE_BY_TYPE = {
+    "presentation": "route_upto_100",   # lecture audiences: 1.20 m
+    "reception":    "route_upto_100",   # public circulation: 1.20 m
+    "break":        "route_upto_20",    # Pausenraum serves a floor: 1.00 m
+    "quiet":        "route_upto_5",     # Ruheraum, few users: 0.90 m
+}
 
 
 def asr_enabled(flag=None):
@@ -173,17 +182,29 @@ def get_pack(room_type: str = "office", ada: bool = False, asr=None) -> dict:
         pack["min_aisle"] = max(pack["min_aisle"], ADA["route_width"])
         pack["door_keep_clear"] = max(pack["door_keep_clear"], ADA["door_clear"])
         pack["turning_circle"] = ADA["turning_circle"]
-    if room_type in ASR_ROOM_TYPES and asr_enabled(asr):
-        # ASR A1.2 sect.5 Abs.4 Richtwert replaces the (denser) Neufert value
-        pack["area_per_person"] = max(pack.get("area_per_person", 6.0),
-                                      ASR["area_per_ws_cell"])
-        # ASR A1.8 Tab.2: route width for <=20 users; workstation access floor
-        pack["min_aisle"] = max(pack["min_aisle"], ASR["route_upto_20"])
-        pack["ws_access"] = ASR["ws_access"]
-        # ASR A1.2 sect.5 Abs.3 legal minimum: 8 m2 first + 6 m2 each further AP
-        pack["area_first_ws"] = ASR["area_first_ws"]
-        pack["area_addl_ws"] = ASR["area_addl_ws"]
-        pack["standard"] = "ASR A1.2 / A1.8 (Arbeitsstaettenrichtlinie)"
+    if asr_enabled(asr):
+        if room_type in ASR_ROOM_TYPES:
+            # ASR A1.2 sect.5 Abs.4 Richtwert replaces the (denser) Neufert value
+            pack["area_per_person"] = max(pack.get("area_per_person", 6.0),
+                                          ASR["area_per_ws_cell"])
+            # ASR A1.8 Tab.2: route width for <=20 users; workstation access floor
+            pack["min_aisle"] = max(pack["min_aisle"], ASR["route_upto_20"])
+            pack["ws_access"] = ASR["ws_access"]
+            # ASR A1.2 sect.5 Abs.3 legal minimum: 8 m2 first + 6 m2 each further AP
+            pack["area_first_ws"] = ASR["area_first_ws"]
+            pack["area_addl_ws"] = ASR["area_addl_ws"]
+            pack["standard"] = "ASR A1.2 / A1.8 (Arbeitsstaettenrichtlinie)"
+        elif room_type in ASR_ROUTE_BY_TYPE:
+            # non-desk workplace rooms: A1.8 Verkehrswege by expected occupancy
+            # + the 0.60 m access floor to every reachable spot
+            pack["min_aisle"] = max(pack["min_aisle"], ASR[ASR_ROUTE_BY_TYPE[room_type]])
+            pack["ws_access"] = ASR["ws_access"]
+            pack["standard"] = "ASR A1.8 Verkehrswege (Arbeitsstaettenrichtlinie)"
+        else:
+            # residential / unknown: ASR route width for few users (0.90 m) as a
+            # conservative envelope — the whole app follows one standard
+            pack["min_aisle"] = max(pack["min_aisle"], ASR["route_upto_5"])
+            pack["standard"] = "ASR A1.8 route envelope (applied app-wide)"
     return pack
 
 
