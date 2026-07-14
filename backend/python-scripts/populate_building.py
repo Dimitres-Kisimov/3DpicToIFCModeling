@@ -103,7 +103,8 @@ def room_type(name):
 
 # wall-mounted safety equipment exports at its mounting height (metres):
 # fire extinguisher handle <= 1.0 m above floor; first-aid cabinet at eye level
-_CAT_ELEV = {"fire_extinguisher": 1.0, "first_aid_cabinet": 1.35}
+_CAT_ELEV = {"fire_extinguisher": 1.0, "first_aid_cabinet": 1.35,
+             "whiteboard": 0.90, "presentation_screen": 0.80}
 
 # population density tiers: the effective area scales the same Neufert-based
 # formulas (light staffs a room like a smaller one; dense like a larger one),
@@ -569,6 +570,19 @@ def _flipchart_mesh_zup():
     return _tinted(trimesh.util.concatenate(parts), [0.90, 0.90, 0.92, 1.0])
 
 
+def _printer_mesh_zup():
+    """Office MFP the human way: the device sits ON its stand cabinet —
+    the working surface is at 0.75 m, never on the ground."""
+    stand = trimesh.creation.box(extents=[0.55, 0.55, 0.72])
+    stand.apply_translation([0, 0, 0.36])
+    body = trimesh.creation.box(extents=[0.58, 0.55, 0.34])
+    body.apply_translation([0, 0, 0.72 + 0.17])
+    tray = trimesh.creation.box(extents=[0.30, 0.28, 0.03])
+    tray.apply_translation([0, 0.18, 1.10])
+    m = trimesh.util.concatenate([stand, body, tray])
+    return _tinted(m, [0.85, 0.85, 0.87, 1.0])
+
+
 def _fire_extinguisher_mesh_zup():
     body = trimesh.creation.cylinder(radius=0.075, height=0.50)
     body.apply_translation([0, 0, 0.28])
@@ -629,7 +643,7 @@ def load_assets():
                    {"mesh": _box_item([0.30, 0.40, 0.45], [0.18, 0.18, 0.20, 1.0]), "ifc": "IfcElectricAppliance"})
     out.setdefault("locker", {"mesh": _box_item([0.40, 0.50, 1.80], [0.52, 0.56, 0.62, 1.0]), "ifc": "IfcFurniture"})
     # tier-2 office realism — ASR approach zones come from the archetypes
-    out.setdefault("printer", {"mesh": _box_item([0.60, 0.60, 1.10], [0.85, 0.85, 0.87, 1.0]), "ifc": "IfcElectricAppliance"})
+    out.setdefault("printer", {"mesh": _printer_mesh_zup(), "ifc": "IfcElectricAppliance"})
     out.setdefault("partition", {"mesh": _box_item([1.50, 0.06, 1.60], [0.62, 0.66, 0.72, 1.0]), "ifc": "IfcFurniture"})
     out.setdefault("phone_booth", {"mesh": _box_item([1.05, 1.05, 2.20], [0.30, 0.34, 0.40, 1.0]), "ifc": "IfcFurniture"})
     out.setdefault("fridge", {"mesh": _box_item([0.60, 0.65, 1.75], [0.88, 0.89, 0.91, 1.0]), "ifc": "IfcElectricAppliance"})
@@ -1209,7 +1223,15 @@ def main():
             wi = _take("whiteboard")
             if wi is not None:
                 e = mesh_of(wi).extents
-                _add(wi, W * 0.15 + float(e[0]) / 2, float(e[1]) / 2 + 0.03, 0, 0.9)
+                wb_cx = W * 0.15 + float(e[0]) / 2
+                if si is not None:                       # keep clear of the screen
+                    se = mesh_of(si).extents
+                    screen_left = W / 2 - float(se[0]) / 2
+                    wb_cx = min(wb_cx, screen_left - float(e[0]) / 2 - 0.10)
+                if wb_cx - float(e[0]) / 2 >= 0.05:      # fits left of the screen?
+                    _add(wi, wb_cx, float(e[1]) / 2 + 0.03, 0, 0.9)
+                else:
+                    dropped.append("whiteboard")
             li = _take("lectern")
             if li is not None and not _blocked(W * 0.22, 1.0, 0.7, 0.6):
                 _add(li, W * 0.22, 1.0, 180, 0.0)                    # faces the audience
@@ -1259,6 +1281,66 @@ def main():
             cats, custom_mesh = remaining, remap_mesh
             custom_parts = {k: v for k, v in remap_parts.items() if v}
 
+        # 3d) DOOR-FLANK HUMAN LOGIC (user spec): the coat rack hangs at the
+        # wall immediately LEFT or RIGHT of the door — where a human hangs a
+        # coat on entry. The waste bin's PRIMARY home is beside a workstation
+        # (handled as a desk child below); with no desk in the room it takes
+        # the OPPOSITE door flank, so coats never touch the bin.
+        door_flank_items = []
+        _door = next((k for k in keepouts if k.get("kind") == "door"), None)
+        _rack_is = [i for i, c in enumerate(cats) if c == "coat_rack"]
+        _bin_is = [i for i, c in enumerate(cats) if c == "waste_bin"]
+        _has_desk = any(c == "desk" for c in cats)
+        _df_consumed = set()
+        if _door is not None and (_rack_is or _bin_is):
+            _dcx = _door["x"] + _door["width"] / 2
+            _dcz = _door["z"] + _door["depth"] / 2
+            _wall = min({"W": _dcx, "E": W - _dcx, "S": _dcz, "N": D - _dcz}.items(),
+                        key=lambda kv: kv[1])[0]
+
+            def _flank(sgn, half):
+                if _wall in ("S", "N"):
+                    fx_ = _dcx + sgn * (_door["width"] / 2 + 0.15 + half)
+                    fz_ = (half + 0.06) if _wall == "S" else D - (half + 0.06)
+                else:
+                    fx_ = (half + 0.06) if _wall == "W" else W - (half + 0.06)
+                    fz_ = _dcz + sgn * (_door["depth"] / 2 + 0.15 + half)
+                return fx_, fz_
+
+            def _spot_ok(cx_, cz_, half):
+                if not (half <= cx_ <= W - half and half <= cz_ <= D - half):
+                    return False
+                for k in keepouts:
+                    if (min(cx_ + half, k["x"] + k["width"]) - max(cx_ - half, k["x"]) > 0.02 and
+                            min(cz_ + half, k["z"] + k["depth"]) - max(cz_ - half, k["z"]) > 0.02):
+                        return False
+                return True
+
+            def _take_flank(idx, order):
+                e = mesh_of(idx).extents
+                half = max(float(e[0]), float(e[1])) / 2
+                for sgn in order:
+                    fx_, fz_ = _flank(sgn, half)
+                    if _spot_ok(fx_, fz_, half):
+                        door_flank_items.append({
+                            "oid": f"{cats[idx]}-{idx}", "cat": cats[idx],
+                            "cx": fx_, "cz": fz_, "yaw": 0,
+                            "mesh": mesh_of(idx), "parts": parts_of(idx),
+                            "zones": None, "elev": 0.0})
+                        keepouts.append({"x": fx_ - half, "z": fz_ - half,
+                                         "width": half * 2, "depth": half * 2,
+                                         "kind": "fixed"})
+                        _df_consumed.add(idx)
+                        return sgn
+                return None
+
+            _rack_side = _take_flank(_rack_is[0], (1, -1)) if _rack_is else None
+            if _bin_is and not _has_desk:
+                _take_flank(_bin_is[0],
+                            (-_rack_side,) if _rack_side else (1, -1))
+        if _bin_is and _has_desk:
+            _df_consumed.add(_bin_is[0])      # becomes the first desk's side child
+
         # 4) solver objects — with the room-builder's HUMAN layer: small seating
         # pairs with a worksurface (its pull-out space is reserved in the solve;
         # afterwards the chair is placed in front of it, rotated to FACE it)
@@ -1290,6 +1372,16 @@ def main():
                 break
             pair_of[ci] = open_surfaces[0]
 
+        # PROJECTOR pairs with its projection surface (human logic): child of
+        # a presentation_screen, else a whiteboard — placed after the surface,
+        # ceiling-mounted on its axis at projection distance, facing it
+        proj_of = {}
+        surface_hosts = [i for i, c in enumerate(cats) if c == "presentation_screen"] or                         [i for i, c in enumerate(cats) if c == "whiteboard"]
+        if surface_hosts:
+            for pi_ in [i for i, c in enumerate(cats) if c == "projector"]:
+                proj_of[pi_] = surface_hosts[len(proj_of) % len(surface_hosts)]
+        proj_children = set(proj_of.keys())
+
         # on-desk electronics ride ON a worksurface, screens facing the chair
         _TOP_SLOTS = [[0.0, -0.05], [-0.35, -0.02], [0.35, -0.02]]
         tops_of = {}                        # surface index -> [electronics indices]
@@ -1306,7 +1398,8 @@ def main():
         dropped = list(unhosted_tops)       # honest per-room "no space" report
         skipped_items += len(unhosted_tops)
         for i, cat in enumerate(cats):
-            if i in pair_of or i in top_children or i in stool_children:
+            if i in pair_of or i in top_children or i in stool_children \
+                    or i in proj_children or i in _df_consumed:
                 continue                    # anchored child — placed after the solve
             e = ext_of[i]
             w_, d_ = float(e[0]), float(e[1])
@@ -1346,7 +1439,7 @@ def main():
             expand[oid] = {"extra_d": extra_d, "child": child_i,
                            "d_par": float(e[1]), "tops": tops_of.get(i, []),
                            "stools": stools_of.get(i, [])}
-        if not objs and not (rt == "presentation" and pres_items):
+        if not objs and not pres_items and not door_flank_items:
             continue
 
         # fit-as-many-as-possible is native now: the solver's optional placement keeps
@@ -1375,7 +1468,7 @@ def main():
                 skipped_items += 1
         circ = res.get("circulation") or {}
         unreachable = [oid.rsplit("-", 1)[0] for oid in (circ.get("unreachable") or [])]
-        if not placed_ps and not (rt == "presentation" and pres_items):
+        if not placed_ps and not pres_items and not door_flank_items:
             schedule.append({"room": name, "type": rt or "picked", "area_m2": round(W * D, 1),
                              "placed": 0, "items": [], "dropped": dropped,
                              "unreachable": unreachable})
@@ -1383,7 +1476,7 @@ def main():
 
         # resolve final per-item placements (parents pulled back to their true
         # centre; paired chairs in front of the surface, facing it)
-        room_items = list(pres_items) if rt == "presentation" else []
+        room_items = (list(pres_items) if rt == "presentation" else []) + door_flank_items
         zones_room = dict(res.get("zones") or {})
         for p in placed_ps:
             oid = p["id"]
@@ -1431,6 +1524,82 @@ def main():
                                        "cx": sx, "cz": sz, "yaw": syaw,
                                        "mesh": mesh_of(si), "parts": parts_of(si),
                                        "zones": None})
+
+            # waste bin's PRIMARY home: at arm's reach beside the FIRST desk.
+            # All rectangles are ROTATION-AWARE (a 90-degree desk swaps width/depth)
+            # and the spot is checked against keep-outs, every solver parent
+            # (even ones placed later in this loop) and children so far.
+            _pardix = int(oid.rsplit("-", 1)[1])
+            if (cats[_pardix] if _pardix < len(cats) else "") == "desk" and _bin_is                     and _bin_is[0] in _df_consumed and not any(
+                        it_.get("cat") == "waste_bin" for it_ in room_items):
+                import math as _mm
+
+                def _rot_half(ext, yaw_deg):
+                    r_ = _mm.radians(yaw_deg or 0.0)
+                    c_, s_ = abs(_mm.cos(r_)), abs(_mm.sin(r_))
+                    return (c_ * float(ext[0]) / 2 + s_ * float(ext[1]) / 2,
+                            s_ * float(ext[0]) / 2 + c_ * float(ext[1]) / 2)
+
+                bi = _bin_is[0]
+                be = mesh_of(bi).extents
+                bh = max(float(be[0]), float(be[1])) / 2
+                dhx, dhz = _rot_half(meshmap[oid].extents, yaw)
+                rxv_, rzv_ = fzv, -fx                       # desk's right-hand side (unit)
+                halfside = abs(rxv_) * dhx + abs(rzv_) * dhz
+                off2 = halfside + 0.12 + bh
+
+                def _bin_spot_free(bx_, bz_):
+                    if not (bh <= bx_ <= W - bh and bh <= bz_ <= D - bh):
+                        return False
+                    for k in keepouts:
+                        if (min(bx_ + bh, k["x"] + k["width"]) - max(bx_ - bh, k["x"]) > 0.02 and
+                                min(bz_ + bh, k["z"] + k["depth"]) - max(bz_ - bh, k["z"]) > 0.02):
+                            return False
+                    for it_ in room_items:
+                        if it_.get("elev", 0) > 0.5:
+                            continue
+                        ihx, ihz = _rot_half(it_["mesh"].extents, it_.get("yaw", 0))
+                        if (min(bx_ + bh, it_["cx"] + ihx + 0.03) - max(bx_ - bh, it_["cx"] - ihx - 0.03) > 0.02 and
+                                min(bz_ + bh, it_["cz"] + ihz + 0.03) - max(bz_ - bh, it_["cz"] - ihz - 0.03) > 0.02):
+                            return False
+                    for pp in placed_ps:                    # ALL solver parents incl. own desk
+                        phx, phz = _rot_half(meshmap[pp["id"]].extents, float(pp["rotation"][1]))
+                        px_, pz_ = pp["position"][0], pp["position"][2]
+                        if (min(bx_ + bh, px_ + phx + 0.03) - max(bx_ - bh, px_ - phx - 0.03) > 0.02 and
+                                min(bz_ + bh, pz_ + phz + 0.03) - max(bz_ - bh, pz_ - phz - 0.03) > 0.02):
+                            return False
+                    return True
+
+                for sx_, sz_ in ((acx + rxv_ * off2, acz + rzv_ * off2),
+                                 (acx - rxv_ * off2, acz - rzv_ * off2)):
+                    if _bin_spot_free(sx_, sz_):
+                        room_items.append({"oid": f"waste_bin-{bi}", "cat": "waste_bin",
+                                           "cx": sx_, "cz": sz_, "yaw": 0,
+                                           "mesh": mesh_of(bi), "parts": parts_of(bi),
+                                           "zones": None, "elev": 0.0})
+                        break
+                else:
+                    dropped.append("waste_bin")             # no clean spot — honesty over force
+
+            # projector children: on the surface's axis, projection distance out,
+            # ceiling height, turned to face the surface (throws ONTO it)
+            _pidx = int(oid.rsplit("-", 1)[1])
+            for pi_, host_i in proj_of.items():
+                if host_i != _pidx:
+                    continue
+                he = mesh_of(host_i).extents
+                dist = min(3.5, max(1.5, 1.2 * float(he[0])))
+                pcx = acx + fx * dist
+                pcz = acz + fzv * dist
+                # keep the mount inside the room
+                pcx = min(max(pcx, 0.5), W - 0.5)
+                pcz = min(max(pcz, 0.5), D - 0.5)
+                import math as _math
+                pyaw = _math.degrees(_math.atan2(acz - pcz, acx - pcx))
+                room_items.append({"oid": f"{cats[pi_]}-{pi_}", "cat": cats[pi_],
+                                   "cx": pcx, "cz": pcz, "yaw": pyaw,
+                                   "mesh": mesh_of(pi_), "parts": parts_of(pi_),
+                                   "zones": None, "elev": 2.2})
 
             # on-desk electronics: slot offsets rotated with the desk; the
             # screen (+Y local) turned toward the desk's front — i.e. the chair

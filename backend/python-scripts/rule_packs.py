@@ -83,7 +83,7 @@ ROOM_TYPES = {
         "area_per_person": 6.0,     # 5.5-6.5 m2/workstation (Neufert/BCO)
         "min_aisle": 1.00,
         "perimeter": {"desk", "cabinet", "filing_cabinet", "storage_cabinet",
-                      "bookshelf", "sofa", "side_table",
+                      "bookshelf", "sofa", "side_table", "printer", "locker",
                       "mirror", "picture_frame", "clock", "planter"},
         "groups": [   # (child_category, anchor_category, relation)
             ("office_chair", "desk", "in_front"),
@@ -91,6 +91,7 @@ ROOM_TYPES = {
             ("laptop", "desk", "on_top"),
             ("lamp", "desk", "on_top"),
             ("planter", "desk", "beside"),   # greenery flanks the workstation
+            ("waste_bin", "desk", "beside"),  # the human spot: at arm's reach
             ("stool", "table", "beside"),    # stools cluster around the side table
             ("chair", "table", "beside"),
         ],
@@ -126,7 +127,7 @@ ROOM_TYPES = {
         "area_per_person": 1.4,     # seated audience (lecture seating density)
         "min_aisle": 1.00,          # row aisles are enforced by the row layout itself
         "perimeter": {"presentation_screen", "whiteboard", "locker", "cabinet"},
-        "groups": [],               # audience placement is the dedicated row engine
+        "groups": [("flipchart", "lectern", "beside")],   # speaker's flipchart at hand
     },
     "quiet": {          # Ruheraum / focus room: sparse, generous clearances
         **_BASE,
