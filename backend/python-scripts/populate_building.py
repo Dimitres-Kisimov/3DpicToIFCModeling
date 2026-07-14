@@ -1241,16 +1241,19 @@ def main():
                         return i
                 return None
 
-            def _add(i, cx_, cz_, yaw_, elev_=0.0):
+            def _add(i, cx_, cz_, yaw_, elev_=0.0, rel=None):
                 pres_items.append({"oid": f"{cats[i]}-{i}", "cat": cats[i],
                                    "cx": cx_, "cz": cz_, "yaw": yaw_,
                                    "mesh": mesh_of(i), "parts": parts_of(i),
-                                   "zones": None, "elev": elev_})
+                                   "zones": None, "elev": elev_, "rel": rel})
 
             si = _take("presentation_screen")
+            disp_oid, disp_cx, disp_w = None, None, None
             if si is not None:
                 e = mesh_of(si).extents
-                _add(si, W / 2, float(e[1]) / 2 + 0.03, 0, 0.8)      # front wall, eye height
+                _add(si, W / 2, float(e[1]) / 2 + 0.03, 0, 0.8,      # front wall, eye height
+                     rel={"to": "front_wall", "kind": "mounted_on"})
+                disp_oid, disp_cx, disp_w = f"{cats[si]}-{si}", W / 2, float(e[0])
             wi = _take("whiteboard")
             if wi is not None:
                 e = mesh_of(wi).extents
@@ -1260,15 +1263,30 @@ def main():
                     screen_left = W / 2 - float(se[0]) / 2
                     wb_cx = min(wb_cx, screen_left - float(e[0]) / 2 - 0.10)
                 if wb_cx - float(e[0]) / 2 >= 0.05:      # fits left of the screen?
-                    _add(wi, wb_cx, float(e[1]) / 2 + 0.03, 0, 0.9)
+                    _add(wi, wb_cx, float(e[1]) / 2 + 0.03, 0, 0.9,
+                         rel={"to": "front_wall", "kind": "mounted_on"})
+                    if disp_oid is None:                 # no screen: whiteboard IS the display
+                        disp_oid, disp_cx, disp_w = f"{cats[wi]}-{wi}", wb_cx, float(e[0])
                 else:
                     dropped.append("whiteboard")
             li = _take("lectern")
             if li is not None and not _blocked(W * 0.22, 1.0, 0.7, 0.6):
-                _add(li, W * 0.22, 1.0, 180, 0.0)                    # faces the audience
+                _add(li, W * 0.22, 1.0, 180, 0.0,                    # faces the audience
+                     rel={"to": "audience", "kind": "faces"})
+            # the axis everything centres on (user rule): screen, else whiteboard
+            axis_cx = disp_cx if disp_cx is not None else W / 2
+            img_w = disp_w if disp_w is not None else 2.0
             pi = _take("projector")
             if pi is not None:
-                _add(pi, W / 2, D * 0.45, 0, 2.2)                    # overhead, mid-room
+                # CEILING mount aimed AT the display (user rule): throw distance
+                # 1.2x image width (1.5-3.5 m band); 2.20 m mount keeps ASR A1.8
+                # headroom (>= 2.10 m clear) under it
+                throw = min(3.5, max(1.5, 1.2 * img_w))
+                pz = min(max(throw, 1.2), D - 0.8)
+                px = min(max(axis_cx, 0.5), W - 0.5)
+                pyaw = _math.degrees(_math.atan2(0.06 - pz, axis_cx - px))
+                _add(pi, px, pz, pyaw, 2.2,
+                     rel={"to": disp_oid or "front_wall", "kind": "throws_onto"})
 
             chair_is = [i for i, c in enumerate(cats)
                         if c in ("chair", "office_chair", "armchair", "stool") and i not in consumed]
@@ -1280,16 +1298,27 @@ def main():
                 base_yaw = _math.degrees(_math.atan2(-1, 0) - _math.atan2(fwd[1], fwd[0]))
                 pitch_x = sw + 0.10
                 pitch_z = max(0.90, sd + 0.50)                       # ASR A1.8 row aisle
-                z = 2.3
+                # first row at the required viewing distance (~1.5x image width,
+                # never past mid-room so small halls still seat people)
+                z = max(2.3, min(1.5 * img_w, D * 0.5)) if disp_oid else 2.3
                 n = 0
+                margin = 0.65 + sw / 2
                 while z < D - 0.6 and n < len(chair_is):
-                    x = 0.65 + sw / 2
-                    while x < W - 0.65 and n < len(chair_is):
+                    # centre each row on the DISPLAY axis (user rule), clamped in-room
+                    n_fit = max(1, int((W - 2 * margin) / pitch_x) + 1)
+                    row_span = (n_fit - 1) * pitch_x
+                    x = min(max(axis_cx - row_span / 2, margin),
+                            max(margin, W - margin - row_span))
+                    slots = 0
+                    while x < W - margin + 1e-6 and slots < n_fit and n < len(chair_is):
                         if not _blocked(x, z, sw, sd):
-                            _add(chair_is[n], x, z, base_yaw, 0.0)
+                            _add(chair_is[n], x, z, base_yaw, 0.0,
+                                 rel={"to": disp_oid or "front_wall",
+                                      "kind": "audience_row_facing"})
                             consumed.add(chair_is[n])
                             n += 1
                         x += pitch_x
+                        slots += 1
                     z += pitch_z
                 for left in chair_is[n:]:
                     consumed.add(left)
@@ -1357,7 +1386,8 @@ def main():
                             "oid": f"{cats[idx]}-{idx}", "cat": cats[idx],
                             "cx": fx_, "cz": fz_, "yaw": 0,
                             "mesh": mesh_of(idx), "parts": parts_of(idx),
-                            "zones": None, "elev": 0.0})
+                            "zones": None, "elev": 0.0,
+                            "rel": {"to": "door", "kind": "door_flank"}})
                         keepouts.append({"x": fx_ - half, "z": fz_ - half,
                                          "width": half * 2, "depth": half * 2,
                                          "kind": "fixed"})
@@ -1440,12 +1470,24 @@ def main():
                 ce = ext_of[child_i]
                 extra_d = GAP + float(ce[1])
                 w_ = max(w_, float(ce[0]))
-            # a stool ring reserves a full band around the table in the solve
-            ring = 0.0
+            # a stool ring is RADIAL — reserve its circumscribing SQUARE, with
+            # the chord spread so adjacent petals never touch, and the front
+            # sector skipped when a paired chair sits there (mirrors the
+            # room-path _petal_radius fix)
+            ring_r, ring_side = 0.0, 0.0
             if stools_of.get(i):
-                ring = GAP + max(max(float(ext_of[si][0]), float(ext_of[si][1]))
-                                 for si in stools_of[i])
-            if w_ + 2 * ring > W - 0.5 or d_ + extra_d + 2 * ring > D - 0.5:
+                import math as _math
+                kids = stools_of[i]
+                kidmax = max(max(float(ext_of[si][0]), float(ext_of[si][1])) for si in kids)
+                n_eff = 2 * (len(kids) - 1) if (child_i is not None and len(kids) > 1) \
+                    else max(1, len(kids))
+                ring_r = max(w_, d_) / 2 + kidmax / 2 + GAP
+                if n_eff > 1:
+                    ring_r = max(ring_r, (kidmax + 0.06) / (2 * _math.sin(_math.pi / n_eff)))
+                ring_side = 2 * (ring_r + kidmax / 2)
+            ew = max(w_, ring_side)
+            ed = max(d_ + extra_d, ring_side)
+            if ew > W - 0.5 or ed > D - 0.5:
                 skipped_items += 1
                 dropped.append(cat)
                 if child_i is not None:
@@ -1460,9 +1502,9 @@ def main():
                     dropped.append(cats[si])
                 continue
             oid = f"{cat}-{i}"
-            entry = {"id": oid, "category": cat, "width": w_ + 2 * ring,
-                     "depth": float(d_ + extra_d + 2 * ring), "height": float(e[2])}
-            if ring > 0:
+            entry = {"id": oid, "category": cat, "width": float(ew),
+                     "depth": float(ed), "height": float(e[2])}
+            if ring_side > 0:
                 entry["prefer"] = "center"   # a stool-ringed table is social — keep it open
             elif cat == "planter":
                 entry["prefer"] = "corner"   # greenery lives in corners, never mid-room
@@ -1471,7 +1513,7 @@ def main():
             partsmap[oid] = parts_of(i)
             expand[oid] = {"extra_d": extra_d, "child": child_i,
                            "d_par": float(e[1]), "tops": tops_of.get(i, []),
-                           "stools": stools_of.get(i, [])}
+                           "stools": stools_of.get(i, []), "ring_r": ring_r}
         if not objs and not pres_items and not door_flank_items:
             continue
 
@@ -1536,18 +1578,26 @@ def main():
                                      - _math.atan2(fwd[1], fwd[0]))
                 room_items.append({"oid": f"{ccat}-{ci}", "cat": ccat,
                                    "cx": ccx, "cz": ccz, "yaw": cyaw, "mate": oid,
-                                   "mesh": cmesh, "parts": parts_of(ci), "zones": None})
-            # stool petal ring: fan evenly around the table, each facing it
+                                   "mesh": cmesh, "parts": parts_of(ci), "zones": None,
+                                   "rel": {"to": oid, "kind": "in_front_of"}})
+            # stool petal ring: fan around the table, each facing it — over the
+            # sides/back arc only when the paired chair occupies the front, and
+            # at the SHARED chord-spread radius the reservation was sized for
             stool_list = info.get("stools", [])
             if stool_list:
                 import math as _math
-                base = _math.atan2(fx, fzv)                    # start at the front
+                base = _math.atan2(fx, fzv)                    # front direction
                 pw = max(float(meshmap[oid].extents[0]), float(meshmap[oid].extents[1]))
+                kidmax_ = max(max(float(ext_of[si][0]), float(ext_of[si][1]))
+                              for si in stool_list)
+                r_ = max(float(info.get("ring_r") or 0.0), pw / 2 + kidmax_ / 2 + 0.12)
+                front_taken = info.get("child") is not None
                 for k, si in enumerate(stool_list):
                     scat = cats[si]
-                    se = ext_of[si]
-                    r_ = pw / 2 + max(float(se[0]), float(se[1])) / 2 + 0.12
-                    ang = base + 2 * _math.pi * k / len(stool_list)
+                    if front_taken:
+                        ang = base + _math.radians(90 + 180 * k / max(1, len(stool_list) - 1))
+                    else:
+                        ang = base + 2 * _math.pi * k / len(stool_list)
                     sx = acx + _math.sin(ang) * r_
                     sz = acz + _math.cos(ang) * r_
                     sfwd = _chair_forward_xy(mesh_of(si))
@@ -1556,7 +1606,8 @@ def main():
                     room_items.append({"oid": f"{scat}-{si}", "cat": scat,
                                        "cx": sx, "cz": sz, "yaw": syaw,
                                        "mesh": mesh_of(si), "parts": parts_of(si),
-                                       "zones": None})
+                                       "zones": None,
+                                       "rel": {"to": oid, "kind": "ring_around"}})
 
             # waste bin's PRIMARY home: at arm's reach beside the FIRST desk.
             # All rectangles are ROTATION-AWARE (a 90-degree desk swaps width/depth)
@@ -1609,7 +1660,8 @@ def main():
                         room_items.append({"oid": f"waste_bin-{bi}", "cat": "waste_bin",
                                            "cx": sx_, "cz": sz_, "yaw": 0,
                                            "mesh": mesh_of(bi), "parts": parts_of(bi),
-                                           "zones": None, "elev": 0.0})
+                                           "zones": None, "elev": 0.0,
+                                           "rel": {"to": oid, "kind": "beside"}})
                         break
                 else:
                     dropped.append("waste_bin")             # no clean spot — honesty over force
@@ -1632,7 +1684,8 @@ def main():
                 room_items.append({"oid": f"{cats[pi_]}-{pi_}", "cat": cats[pi_],
                                    "cx": pcx, "cz": pcz, "yaw": pyaw,
                                    "mesh": mesh_of(pi_), "parts": parts_of(pi_),
-                                   "zones": None, "elev": 2.2})
+                                   "zones": None, "elev": 2.2,
+                                   "rel": {"to": oid, "kind": "throws_onto"}})
 
             # on-desk electronics: slot offsets rotated with the desk; the
             # screen (+Y local) turned toward the desk's front — i.e. the chair
@@ -1648,9 +1701,12 @@ def main():
                 room_items.append({"oid": f"{tcat}-{ti}", "cat": tcat,
                                    "cx": tx, "cz": tz, "yaw": tyaw,
                                    "mesh": mesh_of(ti), "parts": parts_of(ti),
-                                   "zones": None, "elev": par_h})
+                                   "zones": None, "elev": par_h,
+                                   "rel": {"to": oid, "kind": "on_top_of"}})
 
         boxes, room_cats = [], []
+        oid2pid = {}         # solver oid -> published piece id (per room; parents
+                             # are appended before their children, so lookups hit)
         for it in room_items:
             m = it["mesh"]
             parts = it.get("parts") or [m]
@@ -1692,11 +1748,17 @@ def main():
                 gname = f"piece_{placed}.glb"
                 psc.export(str(movdir / gname))
                 pid = f"{cat}-{placed}"
+                oid2pid[it["oid"]] = pid
                 elev = float(it.get("elev") or 0.0)
-                movable.append({"id": pid, "room": name, "category": cat, "glb": gname,
-                                "pos": [round(wx, 3), round(fz + elev, 3), round(-wy, 3)],  # Y-up world
-                                "dims": [round(bex, 3), round(bey, 3)],
-                                "elev": round(elev, 3)})
+                entry = {"id": pid, "room": name, "category": cat, "glb": gname,
+                         "pos": [round(wx, 3), round(fz + elev, 3), round(-wy, 3)],  # Y-up world
+                         "dims": [round(bex, 3), round(bey, 3)],
+                         "elev": round(elev, 3)}
+                rel = it.get("rel")
+                if rel:      # human connection, in published ids (door/audience stay symbolic)
+                    entry["rel"] = {"to": oid2pid.get(rel["to"], rel["to"]),
+                                    "kind": rel["kind"]}
+                movable.append(entry)
                 if it.get("zones"):
                     # people-space halos, world XY — drawn by the 2D floor plan
                     # (rotated buildings: centre rotated back, extents kept)

@@ -208,6 +208,117 @@ def _chair_forward_xz(obj):
 _SCREEN_FLIP = {"monitor": 180.0, "laptop": 180.0}
 
 
+def _presentation_prepass(room, objects):
+    """Presentation halls — the user's standing rules ('never forget this'):
+    the display (screen, else whiteboard) owns the front wall; chair rows FACE
+    it, are CENTERED on its axis, and start at the required viewing distance
+    (~1.5x image width, min 2.3 m); the projector hangs from the CEILING at
+    2.20 m (ASR A1.8 headroom kept underneath), aimed at the display at throw
+    distance. Mirrors the building-path row engine. Consumed objects skip the
+    CP-SAT solve; floor items become keep-outs for it."""
+    W, D = float(room["width"]), float(room["depth"])
+    pos, keep, consumed = {}, [], set()
+
+    def _dims(o):
+        return float(o["dimensions"]["width"]), float(o["dimensions"]["depth"])
+
+    def _take(cat):
+        for o in objects:
+            if o.get("category") == cat and o["id"] not in consumed and not o.get("anchor"):
+                consumed.add(o["id"])
+                return o
+        return None
+
+    def _rect_free(x, z, w, d):
+        for k in list(room.get("obstacles", [])) + list(room.get("doors", [])) + keep:
+            if (min(x + w / 2, k["x"] + k["width"]) - max(x - w / 2, k["x"]) > 0.02
+                    and min(z + d / 2, k["z"] + k["depth"]) - max(z - d / 2, k["z"]) > 0.02):
+                return False
+        return True
+
+    def _put(o, x, z, yaw, elev=None, block=True):
+        p = {"id": o["id"], "position": [x, 0.0, z], "rotation": [0, yaw, 0], "placed": True}
+        if elev is not None:
+            p["elevation"] = elev
+        pos[o["id"]] = p
+        if block:
+            w, d = _dims(o)
+            keep.append({"x": x - w / 2 - 0.05, "z": z - d / 2 - 0.05,
+                         "width": w + 0.10, "depth": d + 0.10})
+
+    disp, disp_cx, img_w = None, W / 2, 2.0
+    scr = _take("presentation_screen")
+    if scr is not None:
+        w, d = _dims(scr)
+        _put(scr, W / 2, d / 2 + 0.03, 0, elev=0.8, block=False)     # front wall, eye height
+        scr["anchor"] = {"to": "front_wall", "relation": "mounted_on"}
+        disp, disp_cx, img_w = scr, W / 2, w
+    wb = _take("whiteboard")
+    if wb is not None:
+        w, d = _dims(wb)
+        cx = W * 0.15 + w / 2
+        if scr is not None:                       # keep clear of the screen
+            cx = min(cx, W / 2 - _dims(scr)[0] / 2 - w / 2 - 0.10)
+        if cx - w / 2 >= 0.05:
+            _put(wb, cx, d / 2 + 0.03, 0, elev=0.9, block=False)
+            wb["anchor"] = {"to": "front_wall", "relation": "mounted_on"}
+            if disp is None:                      # no screen: whiteboard IS the display
+                disp, disp_cx, img_w = wb, cx, w
+        else:
+            consumed.discard(wb["id"])            # no wall room left: back to the solver
+    lec = _take("lectern")
+    if lec is not None:
+        w, d = _dims(lec)
+        if _rect_free(W * 0.22, 1.0, w, d):
+            _put(lec, W * 0.22, 1.0, 180)                            # faces the audience
+            lec["anchor"] = {"to": "audience", "relation": "faces"}
+        else:
+            consumed.discard(lec["id"])
+    proj = _take("projector")
+    if proj is not None:
+        throw = min(3.5, max(1.5, 1.2 * img_w))
+        pz = min(max(throw, 1.2), D - 0.8)
+        px = min(max(disp_cx, 0.5), W - 0.5)
+        pyaw = math.degrees(math.atan2(disp_cx - px, 0.06 - pz))     # lens -> display
+        _put(proj, px, pz, pyaw, elev=2.2, block=False)              # >=2.10 m headroom
+        proj["anchor"] = {"to": disp["id"] if disp else "front_wall",
+                          "relation": "throws_onto"}
+
+    chairs = [o for o in objects
+              if o.get("category") in ("chair", "office_chair", "armchair", "stool")
+              and o["id"] not in consumed and not o.get("anchor")]
+    if chairs:
+        sw, sd = _dims(chairs[0])
+        pitch_x = sw + 0.10
+        pitch_z = max(0.90, sd + 0.50)                               # ASR A1.8 row aisle
+        z = max(2.3, min(1.5 * img_w, D * 0.5)) if disp is not None else 2.3
+        margin = 0.65 + sw / 2
+        n = 0
+        # parallel rows, every chair facing the front wall (the display) — angling
+        # each seat at the screen point makes edge chairs sliver-collide
+        fx2, fz2 = _chair_forward_xz(chairs[0])
+        row_yaw = 180.0 - math.degrees(math.atan2(fx2, fz2))
+        while z < D - 0.6 and n < len(chairs):
+            # centre each row — INCLUDING a partial last row — on the display axis
+            n_fit = max(1, int((W - 2 * margin) / pitch_x) + 1)
+            row_count = min(n_fit, len(chairs) - n)
+            span = (row_count - 1) * pitch_x
+            x = min(max(disp_cx - span / 2, margin), max(margin, W - margin - span))
+            slots = 0
+            while x < W - margin + 1e-6 and slots < row_count and n < len(chairs):
+                if _rect_free(x, z, sw, sd):
+                    c = chairs[n]
+                    _put(c, x, z, row_yaw)
+                    c["anchor"] = {"to": disp["id"] if disp else "front_wall",
+                                   "relation": "audience_row"}
+                    consumed.add(c["id"])
+                    n += 1
+                x += pitch_x
+                slots += 1
+            z += pitch_z
+    return pos, keep, consumed
+
+
 def _petal_radius(pw, pdep, kid_max, n_eff):
     """Ring radius for 'beside' petals around a pw×pdep parent: clear of the
     parent on its LONG axis plus breathing room, and wide enough that adjacent
@@ -243,12 +354,20 @@ def _resolve_layout(room: dict, objects: list):
         a = o.get("anchor")
         if a:
             direct.setdefault(a["to"], []).append(o)
+    # presentation halls: the row engine claims display/lectern/projector/rows
+    # BEFORE the solve (user rules: rows face + centre on the display, viewing
+    # distance, aimed ceiling projector) — runs after `direct` so the anchor
+    # tags it writes are report-only, never re-placed
+    pres_pos, pres_keep, pres_consumed = {}, [], set()
+    if (room.get("type") or "").strip() == "presentation":
+        pres_pos, pres_keep, pres_consumed = _presentation_prepass(room, objects)
     # wall-mounted decor (clock, picture frame, mirror, tv) never stands on the
     # floor — excluded from the solve, mounted on a wall afterwards
-    wall_items = [o for o in objects if not o.get("anchor")
+    wall_items = [o for o in objects if not o.get("anchor") and o["id"] not in pres_consumed
                   and rule_packs.archetype_of(o.get("category", ""), o.get("dimensions")) == "wall_mounted"]
     wall_ids = {o["id"] for o in wall_items}
-    free = [o for o in objects if not o.get("anchor") and o["id"] not in wall_ids]
+    free = [o for o in objects if not o.get("anchor")
+            and o["id"] not in wall_ids and o["id"] not in pres_consumed]
 
     # Reserve each group's full footprint in the solve: a desk's in-front chair and
     # a parent's beside-child expand its solver box, so groups can't collide.
@@ -284,8 +403,9 @@ def _resolve_layout(room: dict, objects: list):
         solver_objs.append(entry)
         meta[o["id"]] = {"w": w, "d": d, "extra_d": extra_d}
 
-    # columns/semi-walls + door keep-clear zones become fixed solver keep-outs
-    keepouts = list(room.get("obstacles", [])) + list(room.get("doors", []))
+    # columns/semi-walls + door keep-clear zones + row-engine floor items
+    # become fixed solver keep-outs
+    keepouts = list(room.get("obstacles", [])) + list(room.get("doors", [])) + pres_keep
     extras = {"unplaced": [], "circulation": None, "diagnostics": None, "zones": {}}
     try:
         import spatial_layout
@@ -304,6 +424,8 @@ def _resolve_layout(room: dict, objects: list):
         solver = "grid-fallback"
     box = {p["id"]: p for p in placements}
     pos = {}
+    pos.update(pres_pos)     # row-engine placements are final (merged first so
+                             # anchored children — flipchart by lectern — resolve)
 
     def _face(child, px, pz, ax, az):
         target = math.degrees(math.atan2(ax - px, az - pz))   # child -> anchor
