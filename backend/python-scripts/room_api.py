@@ -732,6 +732,7 @@ def cmd_register_upload(args):
     man = _read_gen_manifest()
     man.setdefault("items", []).append(item)
     GEN_MANIFEST.write_text(json.dumps(man, indent=1), encoding="utf-8")
+    renumber_generated_catalog()      # the new item gets its professional code at once
 
     return {"ok": True, "item": {"id": uid, "category": cat, "dims_m": dims,
                                  "thumb": thumb, "generated": True, "engine": engine}}
@@ -853,6 +854,70 @@ _DEMO_PICKS = [
 ]
 
 
+ENGINE_LABEL = {"TSG": "TripoSG", "TRL": "TRELLIS", "SF3D": "SF3D",
+                "SAM3D": "SAM 3D", "IM": "InstantMesh", "TSR": "TripoSR"}
+
+
+def renumber_generated_catalog():
+    """Professional numbering over the generated catalog (user directive):
+        <category>-<ENGINE>-<NNN>   e.g.  desk-TSG-042
+    Numbers run 1..N per (category, engine) bucket in stable manifest order.
+    Files are RENAMED to the code (two-phase, collision-safe), the manifest
+    gains num/code/display_name, and — because numbering is recomputed on
+    every call — deleting an item compacts the sequence automatically.
+    Immutable `id` stays untouched (building picks gen:<id> keep working)."""
+    import uuid as _uuid
+    man = _read_gen_manifest()
+    items = man.get("items", [])
+    buckets = {}
+    for it in items:
+        eng = (it.get("engine") or "TSR").upper()
+        it["engine"] = eng
+        buckets.setdefault(((it.get("category") or "item"), eng), []).append(it)
+    renames = []
+    for (cat, eng), lst in sorted(buckets.items()):
+        for n, it in enumerate(lst, 1):
+            code = f"{cat}-{eng}-{n:03d}"
+            it["num"] = n
+            it["code"] = code
+            it["display_name"] = "%s — %s — #%03d" % (
+                cat.replace("_", " "), ENGINE_LABEL.get(eng, eng), n)
+            for key, ext in (("glb", ".glb"), ("thumb", ".thumb.png")):
+                old = it.get(key)
+                new = code + ext
+                if old and old != new and (GEN_DIR / old).exists():
+                    renames.append((old, new, it, key))
+                elif old and old != new and (GEN_DIR / new).exists():
+                    it[key] = new              # file already renamed on a prior pass
+    # two-phase rename so a->b, b->a chains can never collide
+    staged = []
+    for old, new, it, key in renames:
+        tmp = old + "." + _uuid.uuid4().hex[:6] + ".mv"
+        try:
+            (GEN_DIR / old).rename(GEN_DIR / tmp)
+            staged.append((tmp, new, it, key))
+        except Exception:
+            pass
+    moved = 0
+    for tmp, new, it, key in staged:
+        try:
+            (GEN_DIR / tmp).rename(GEN_DIR / new)
+            it[key] = new
+            moved += 1
+        except Exception:
+            try:                                # roll the stray temp back
+                (GEN_DIR / tmp).rename(GEN_DIR / tmp[:-10])
+            except Exception:
+                pass
+    GEN_MANIFEST.write_text(json.dumps(man, indent=1), encoding="utf-8")
+    return {"items": len(items), "renamed": moved}
+
+
+def cmd_renumber_catalog(args):
+    """Recompute the professional numbering across the whole generated catalog."""
+    return {"ok": True, **renumber_generated_catalog()}
+
+
 def cmd_delete_generated(args):
     """Remove a user-generated (OURS) item: manifest entry + its files."""
     gid = (args.get("id") or "").strip()
@@ -871,7 +936,10 @@ def cmd_delete_generated(args):
                 pass
     man["items"] = [e for e in items if e.get("id") != gid]
     GEN_MANIFEST.write_text(json.dumps(man, indent=1), encoding="utf-8")
-    return {"ok": True, "id": gid, "category": entry.get("category")}
+    # user directive: deletion compacts the numbering and refreshes the list
+    stats = renumber_generated_catalog()
+    return {"ok": True, "id": gid, "category": entry.get("category"),
+            "renumbered": stats}
 
 
 def cmd_demo_run(args):
@@ -913,6 +981,7 @@ _COMMANDS = {
     "prepare_building": cmd_prepare_building,
     "register_upload": cmd_register_upload,
     "delete_generated": cmd_delete_generated,
+    "renumber_catalog": cmd_renumber_catalog,
     "demo_run": cmd_demo_run,
 }
 

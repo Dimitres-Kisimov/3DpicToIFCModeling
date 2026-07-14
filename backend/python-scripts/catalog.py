@@ -138,12 +138,14 @@ def _generated_items(category):
         fn = e.get("glb")
         thumb = e.get("thumb")
         out.append({"id": e.get("id"), "thumb": None, "preview": None,
+                    "code": e.get("code"),                       # professional numbering
+                    "display_name": e.get("display_name"),
+                    "engine": e.get("engine"),
                     "thumb_url": ("/api/generated/" + thumb) if thumb else None,   # C2 preview
                     "generated_glb": ("/api/generated/" + fn) if fn else None,
                     "product_type": "GENERATED",
                     "dims_m": list(dims) + [None] * (3 - len(dims)) if len(dims) < 3 else dims,
-                    "faces": None, "generated": True,
-                    "engine": e.get("engine")})   # which AI made it — picker badge
+                    "faces": None, "generated": True})
     return out
 
 

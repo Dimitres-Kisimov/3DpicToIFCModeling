@@ -132,7 +132,7 @@
         ? `<span class="genbadge${it.engine ? ' eng' : ''}">${it.engine || 'OURS'}</span>` : '';
       const del = it.generated
         ? `<button class="gen-del" data-del="${it.id}" title="delete this generated item">✕</button>` : '';
-      cell.innerHTML = badge + del + visual + `<div>${it.id}</div><div>${dim}</div>`;
+      cell.innerHTML = badge + del + visual + `<div>${it.code || it.id}</div><div>${dim}</div>`;
       cell.onclick = (ev) => {
         if (ev.target && ev.target.dataset && ev.target.dataset.del) {
           ev.stopPropagation();

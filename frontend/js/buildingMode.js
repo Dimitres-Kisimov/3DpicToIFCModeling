@@ -56,7 +56,7 @@
       const withGen = cats.filter((c) => c.generated_count > 0).map((c) => c.category);
       const lists = await Promise.all(withGen.map((c) =>
         fetch('/api/room/items/' + c).then((r) => r.json()).then((items) =>
-          items.filter((it) => it.generated).map((it) => ({ id: it.id, category: c })))));
+          items.filter((it) => it.generated).map((it) => ({ id: it.id, category: c, code: it.code })))));
       genItems = lists.flat();
     } catch (e) { genItems = []; }
   }
@@ -243,7 +243,7 @@
       allCategories.map((c) => `<option value="${c}">${c.replace(/_/g, ' ')}</option>`).join('') +
       (genItems.length
         ? `<optgroup label="◆ yours (generated)">` +
-          genItems.map((g) => `<option value="gen:${g.id}">◆ ${g.category.replace(/_/g, ' ')} · ${g.id.slice(4, 10)}</option>`).join('') +
+          genItems.map((g) => `<option value="gen:${g.id}">◆ ${g.code || (g.category.replace(/_/g, ' ') + ' · ' + g.id.slice(4, 10))}</option>`).join('') +
           `</optgroup>`
         : '') +
       `</select>`;
