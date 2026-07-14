@@ -921,7 +921,9 @@ def cmd_renumber_catalog(args):
 def cmd_delete_generated(args):
     """Remove a user-generated (OURS) item: manifest entry + its files."""
     gid = (args.get("id") or "").strip()
-    if not gid.startswith("gen_"):
+    # user-generated (gen_) AND engine-benchmark (pod_) items are both catalog
+    # entries the user may remove; the numbering compacts either way
+    if not (gid.startswith("gen_") or gid.startswith("pod_")):
         return {"ok": False, "error": "invalid id", "status": 400}
     man = _read_gen_manifest()
     items = man.get("items", [])
