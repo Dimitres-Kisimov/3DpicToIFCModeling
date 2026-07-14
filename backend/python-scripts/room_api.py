@@ -855,7 +855,8 @@ _DEMO_PICKS = [
 
 
 ENGINE_LABEL = {"TSG": "TripoSG", "TRL": "TRELLIS", "SF3D": "SF3D",
-                "SAM3D": "SAM 3D", "IM": "InstantMesh", "TSR": "TripoSR"}
+                "SAM3D": "SAM 3D", "IM": "InstantMesh", "TSR": "TripoSR",
+                "USER": "your upload", "CC0": "PolyHaven CC0"}
 
 
 def renumber_generated_catalog():

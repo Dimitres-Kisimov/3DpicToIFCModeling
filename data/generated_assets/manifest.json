@@ -6716,23 +6716,6 @@
    "display_name": "table \u2014 TripoSG \u2014 #001"
   },
   {
-   "id": "pod_triposg_list02_bookshelf",
-   "category": "bookshelf",
-   "glb": "bookshelf-TSG-002.glb",
-   "dims_m": [
-    1.8185,
-    1.8712,
-    0.1801
-   ],
-   "thumb": "bookshelf-TSG-002.thumb.png",
-   "generated": true,
-   "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list02_bookshelf.glb",
-   "engine": "TSG",
-   "num": 2,
-   "code": "bookshelf-TSG-002",
-   "display_name": "bookshelf \u2014 TripoSG \u2014 #002"
-  },
-  {
    "id": "pod_triposg_list02_cabinet",
    "category": "cabinet",
    "glb": "cabinet-TSG-002.glb",
@@ -7007,19 +6990,19 @@
   {
    "id": "pod_triposg_list03_bookshelf",
    "category": "bookshelf",
-   "glb": "bookshelf-TSG-003.glb",
+   "glb": "bookshelf-TSG-002.glb",
    "dims_m": [
     1.7974,
     1.8852,
     0.8839
    ],
-   "thumb": "bookshelf-TSG-003.thumb.png",
+   "thumb": "bookshelf-TSG-002.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list03_bookshelf.glb",
    "engine": "TSG",
-   "num": 3,
-   "code": "bookshelf-TSG-003",
-   "display_name": "bookshelf \u2014 TripoSG \u2014 #003"
+   "num": 2,
+   "code": "bookshelf-TSG-002",
+   "display_name": "bookshelf \u2014 TripoSG \u2014 #002"
   },
   {
    "id": "pod_triposg_list03_cabinet",
@@ -7296,19 +7279,19 @@
   {
    "id": "pod_triposg_list04_bookshelf",
    "category": "bookshelf",
-   "glb": "bookshelf-TSG-004.glb",
+   "glb": "bookshelf-TSG-003.glb",
    "dims_m": [
     1.2214,
     1.8774,
     0.693
    ],
-   "thumb": "bookshelf-TSG-004.thumb.png",
+   "thumb": "bookshelf-TSG-003.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list04_bookshelf.glb",
    "engine": "TSG",
-   "num": 4,
-   "code": "bookshelf-TSG-004",
-   "display_name": "bookshelf \u2014 TripoSG \u2014 #004"
+   "num": 3,
+   "code": "bookshelf-TSG-003",
+   "display_name": "bookshelf \u2014 TripoSG \u2014 #003"
   },
   {
    "id": "pod_triposg_list04_cabinet",
@@ -7585,19 +7568,19 @@
   {
    "id": "pod_triposg_list05_bookshelf",
    "category": "bookshelf",
-   "glb": "bookshelf-TSG-005.glb",
+   "glb": "bookshelf-TSG-004.glb",
    "dims_m": [
     1.8778,
     1.8697,
     0.9021
    ],
-   "thumb": "bookshelf-TSG-005.thumb.png",
+   "thumb": "bookshelf-TSG-004.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list05_bookshelf.glb",
    "engine": "TSG",
-   "num": 5,
-   "code": "bookshelf-TSG-005",
-   "display_name": "bookshelf \u2014 TripoSG \u2014 #005"
+   "num": 4,
+   "code": "bookshelf-TSG-004",
+   "display_name": "bookshelf \u2014 TripoSG \u2014 #004"
   },
   {
    "id": "pod_triposg_list05_cabinet",
@@ -7874,19 +7857,19 @@
   {
    "id": "pod_triposg_list06_bookshelf",
    "category": "bookshelf",
-   "glb": "bookshelf-TSG-006.glb",
+   "glb": "bookshelf-TSG-005.glb",
    "dims_m": [
     1.8722,
     1.7834,
     0.1815
    ],
-   "thumb": "bookshelf-TSG-006.thumb.png",
+   "thumb": "bookshelf-TSG-005.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list06_bookshelf.glb",
    "engine": "TSG",
-   "num": 6,
-   "code": "bookshelf-TSG-006",
-   "display_name": "bookshelf \u2014 TripoSG \u2014 #006"
+   "num": 5,
+   "code": "bookshelf-TSG-005",
+   "display_name": "bookshelf \u2014 TripoSG \u2014 #005"
   },
   {
    "id": "pod_triposg_list06_cabinet",
@@ -8163,19 +8146,19 @@
   {
    "id": "pod_triposg_list07_bookshelf",
    "category": "bookshelf",
-   "glb": "bookshelf-TSG-007.glb",
+   "glb": "bookshelf-TSG-006.glb",
    "dims_m": [
     1.5654,
     1.1158,
     1.6743
    ],
-   "thumb": "bookshelf-TSG-007.thumb.png",
+   "thumb": "bookshelf-TSG-006.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list07_bookshelf.glb",
    "engine": "TSG",
-   "num": 7,
-   "code": "bookshelf-TSG-007",
-   "display_name": "bookshelf \u2014 TripoSG \u2014 #007"
+   "num": 6,
+   "code": "bookshelf-TSG-006",
+   "display_name": "bookshelf \u2014 TripoSG \u2014 #006"
   },
   {
    "id": "pod_triposg_list07_cabinet",
@@ -8452,19 +8435,19 @@
   {
    "id": "pod_triposg_list08_bookshelf",
    "category": "bookshelf",
-   "glb": "bookshelf-TSG-008.glb",
+   "glb": "bookshelf-TSG-007.glb",
    "dims_m": [
     1.8701,
     1.8653,
     0.8107
    ],
-   "thumb": "bookshelf-TSG-008.thumb.png",
+   "thumb": "bookshelf-TSG-007.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list08_bookshelf.glb",
    "engine": "TSG",
-   "num": 8,
-   "code": "bookshelf-TSG-008",
-   "display_name": "bookshelf \u2014 TripoSG \u2014 #008"
+   "num": 7,
+   "code": "bookshelf-TSG-007",
+   "display_name": "bookshelf \u2014 TripoSG \u2014 #007"
   },
   {
    "id": "pod_triposg_list08_cabinet",
@@ -8724,19 +8707,19 @@
   {
    "id": "pod_triposg_list09_bookshelf",
    "category": "bookshelf",
-   "glb": "bookshelf-TSG-009.glb",
+   "glb": "bookshelf-TSG-008.glb",
    "dims_m": [
     1.8775,
     1.3557,
     0.5063
    ],
-   "thumb": "bookshelf-TSG-009.thumb.png",
+   "thumb": "bookshelf-TSG-008.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list09_bookshelf.glb",
    "engine": "TSG",
-   "num": 9,
-   "code": "bookshelf-TSG-009",
-   "display_name": "bookshelf \u2014 TripoSG \u2014 #009"
+   "num": 8,
+   "code": "bookshelf-TSG-008",
+   "display_name": "bookshelf \u2014 TripoSG \u2014 #008"
   },
   {
    "id": "pod_triposg_list09_cabinet",
@@ -9013,19 +8996,19 @@
   {
    "id": "pod_triposg_list10_bookshelf",
    "category": "bookshelf",
-   "glb": "bookshelf-TSG-010.glb",
+   "glb": "bookshelf-TSG-009.glb",
    "dims_m": [
     0.3421,
     1.8884,
     1.5454
    ],
-   "thumb": "bookshelf-TSG-010.thumb.png",
+   "thumb": "bookshelf-TSG-009.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list10_bookshelf.glb",
    "engine": "TSG",
-   "num": 10,
-   "code": "bookshelf-TSG-010",
-   "display_name": "bookshelf \u2014 TripoSG \u2014 #010"
+   "num": 9,
+   "code": "bookshelf-TSG-009",
+   "display_name": "bookshelf \u2014 TripoSG \u2014 #009"
   },
   {
    "id": "pod_triposg_list10_cabinet",
@@ -9298,23 +9281,6 @@
    "num": 10,
    "code": "table-TSG-010",
    "display_name": "table \u2014 TripoSG \u2014 #010"
-  },
-  {
-   "id": "pod_triposg_list11_bookshelf",
-   "category": "bookshelf",
-   "glb": "bookshelf-TSG-011.glb",
-   "dims_m": [
-    1.8708,
-    1.691,
-    0.7049
-   ],
-   "thumb": "bookshelf-TSG-011.thumb.png",
-   "generated": true,
-   "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list11_bookshelf.glb",
-   "engine": "TSG",
-   "num": 11,
-   "code": "bookshelf-TSG-011",
-   "display_name": "bookshelf \u2014 TripoSG \u2014 #011"
   },
   {
    "id": "pod_triposg_list11_cabinet",
@@ -10288,19 +10254,19 @@
   {
    "id": "pod_triposg_bookshelf",
    "category": "bookshelf",
-   "glb": "bookshelf-TSG-012.glb",
+   "glb": "bookshelf-TSG-010.glb",
    "dims_m": [
     1.868,
     1.8664,
     0.5131
    ],
-   "thumb": "bookshelf-TSG-012.thumb.png",
+   "thumb": "bookshelf-TSG-010.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\h200\\out\\triposg\\bookshelf.glb",
    "engine": "TSG",
-   "num": 12,
-   "code": "bookshelf-TSG-012",
-   "display_name": "bookshelf \u2014 TripoSG \u2014 #012"
+   "num": 10,
+   "code": "bookshelf-TSG-010",
+   "display_name": "bookshelf \u2014 TripoSG \u2014 #010"
   },
   {
    "id": "pod_triposg_cabinet",
@@ -10624,6 +10590,57 @@
    "num": 7,
    "code": "table-TSR-007",
    "display_name": "table \u2014 TripoSR \u2014 #007"
+  },
+  {
+   "id": "gen_a17792413a68",
+   "category": "armchair",
+   "glb": "armchair-CC0-001.glb",
+   "dims_m": [
+    0.848,
+    1.065,
+    0.766
+   ],
+   "thumb": "armchair-CC0-001.thumb.png",
+   "generated": true,
+   "source_file": "polyhaven_ArmChair_01.glb",
+   "engine": "CC0",
+   "num": 1,
+   "code": "armchair-CC0-001",
+   "display_name": "armchair \u2014 PolyHaven CC0 \u2014 #001"
+  },
+  {
+   "id": "gen_80a45eb0756f",
+   "category": "coffee_table",
+   "glb": "coffee_table-CC0-001.glb",
+   "dims_m": [
+    1.54,
+    0.523,
+    0.973
+   ],
+   "thumb": "coffee_table-CC0-001.thumb.png",
+   "generated": true,
+   "source_file": "polyhaven_CoffeeTable_01.glb",
+   "engine": "CC0",
+   "num": 1,
+   "code": "coffee_table-CC0-001",
+   "display_name": "coffee table \u2014 PolyHaven CC0 \u2014 #001"
+  },
+  {
+   "id": "gen_f013ad3ebe9e",
+   "category": "sofa",
+   "glb": "sofa-CC0-001.glb",
+   "dims_m": [
+    1.571,
+    0.797,
+    0.658
+   ],
+   "thumb": "sofa-CC0-001.thumb.png",
+   "generated": true,
+   "source_file": "polyhaven_Sofa_01.glb",
+   "engine": "CC0",
+   "num": 1,
+   "code": "sofa-CC0-001",
+   "display_name": "sofa \u2014 PolyHaven CC0 \u2014 #001"
   }
  ]
 }

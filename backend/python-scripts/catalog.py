@@ -70,7 +70,11 @@ ABO_CATEGORIES = {"desk", "office_chair", "cabinet", "bookshelf", "sofa", "table
 # own ergonomic dims), so they render as real furniture instead of plain placeholders.
 # (monitor + laptop stay clean procedural meshes — ABO has no electronics: its 3D subset
 #  is furniture/home-goods, so there are 0 monitor/laptop/keyboard meshes to fetch.)
-MESH_BORROW = {"coffee_table": "table", "side_table": "table", "filing_cabinet": "cabinet"}
+MESH_BORROW = {"coffee_table": "table", "side_table": "table", "filing_cabinet": "cabinet",
+               # tier-2 realism: real ABO meshes (CC-BY, in-project) rescaled to
+               # the category's own Neufert dims
+               "armchair": "sofa", "locker": "cabinet", "waste_bin": "planter",
+               "fridge": "cabinet"}
 
 
 # hand-picked clean default mesh per category (avoids e.g. open wire-frame bookshelves

@@ -246,7 +246,8 @@ TARGET_DIMS = {
 # catalog the room builder uses, so both parts of the app offer them. Wall-
 # mounted decor (clock, picture_frame) stays room-only: the building path has
 # no wall-mounting logic yet and clocks don't belong on floors.
-_ABO_BORROW = ["coffee_table", "side_table", "filing_cabinet", "planter", "mirror"]
+_ABO_BORROW = ["coffee_table", "side_table", "filing_cabinet", "planter", "mirror",
+               "armchair", "locker", "waste_bin", "fridge"]
 
 
 def _rescale_to_real(mesh, cat):
@@ -637,20 +638,20 @@ def load_assets():
     out.setdefault("whiteboard",
                    {"mesh": _box_item([1.80, 0.10, 1.20], [0.95, 0.95, 0.96, 1.0]), "ifc": "IfcFurniture"})
     out.setdefault("projector", {"mesh": _projector_mesh_zup(), "ifc": "IfcAudioVisualAppliance"})
-    out.setdefault("armchair", {"mesh": _armchair_mesh_zup(), "ifc": "IfcFurniture"})
+
     out.setdefault("water_dispenser", {"mesh": _water_dispenser_mesh_zup(), "ifc": "IfcElectricAppliance"})
     out.setdefault("coffee_machine",
                    {"mesh": _box_item([0.30, 0.40, 0.45], [0.18, 0.18, 0.20, 1.0]), "ifc": "IfcElectricAppliance"})
-    out.setdefault("locker", {"mesh": _box_item([0.40, 0.50, 1.80], [0.52, 0.56, 0.62, 1.0]), "ifc": "IfcFurniture"})
+
     # tier-2 office realism — ASR approach zones come from the archetypes
     out.setdefault("printer", {"mesh": _printer_mesh_zup(), "ifc": "IfcElectricAppliance"})
     out.setdefault("partition", {"mesh": _box_item([1.50, 0.06, 1.60], [0.62, 0.66, 0.72, 1.0]), "ifc": "IfcFurniture"})
     out.setdefault("phone_booth", {"mesh": _box_item([1.05, 1.05, 2.20], [0.30, 0.34, 0.40, 1.0]), "ifc": "IfcFurniture"})
-    out.setdefault("fridge", {"mesh": _box_item([0.60, 0.65, 1.75], [0.88, 0.89, 0.91, 1.0]), "ifc": "IfcElectricAppliance"})
+
     out.setdefault("microwave", {"mesh": _box_item([0.50, 0.38, 0.30], [0.75, 0.76, 0.78, 1.0]), "ifc": "IfcElectricAppliance"})
     out.setdefault("coat_rack", {"mesh": _coat_rack_mesh_zup(), "ifc": "IfcFurniture"})
     out.setdefault("flipchart", {"mesh": _flipchart_mesh_zup(), "ifc": "IfcFurniture"})
-    out.setdefault("waste_bin", {"mesh": _box_item([0.35, 0.35, 0.70], [0.35, 0.38, 0.42, 1.0]), "ifc": "IfcFurniture"})
+
     out.setdefault("fire_extinguisher", {"mesh": _fire_extinguisher_mesh_zup(), "ifc": "IfcFireSuppressionTerminal"})
     out.setdefault("first_aid_cabinet", {"mesh": _box_item([0.35, 0.15, 0.45], [0.95, 0.95, 0.97, 1.0]), "ifc": "IfcFurniture"})
     out.setdefault("server_rack", {"mesh": _box_item([0.60, 0.80, 2.00], [0.15, 0.16, 0.18, 1.0]), "ifc": "IfcElectricDistributionBoard"})
@@ -679,6 +680,11 @@ def load_assets():
                 pass
     except Exception:
         pass
+    # procedural fallbacks if the ABO library isn't built yet (fresh clone)
+    out.setdefault("armchair", {"mesh": _armchair_mesh_zup(), "ifc": "IfcFurniture"})
+    out.setdefault("locker", {"mesh": _box_item([0.40, 0.50, 1.80], [0.52, 0.56, 0.62, 1.0]), "ifc": "IfcFurniture"})
+    out.setdefault("fridge", {"mesh": _box_item([0.60, 0.65, 1.75], [0.88, 0.89, 0.91, 1.0]), "ifc": "IfcElectricAppliance"})
+    out.setdefault("waste_bin", {"mesh": _box_item([0.35, 0.35, 0.70], [0.35, 0.38, 0.42, 1.0]), "ifc": "IfcFurniture"})
     return out
 
 
