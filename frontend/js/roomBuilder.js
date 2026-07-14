@@ -41,12 +41,45 @@
     try {
       const cats = await (await fetch('/api/room/catalog')).json();
       el.innerHTML = '';
+      // "+ new category": declare a name, then upload one or many furniture
+      // IFC files into it — they become numbered <name>-USER-NNN catalog items
+      const addRow = document.createElement('div');
+      addRow.className = 'catrow';
+      addRow.innerHTML = `<span class="cat-name"><b>＋ New category…</b> <small>· upload your own furniture IFCs</small></span>` +
+        `<span class="stepper"><button class="btn btn-tiny" id="rbNewCat">create</button></span>` +
+        `<input type="file" id="rbNewCatFiles" accept=".ifc" multiple hidden>`;
+      el.appendChild(addRow);
+      const newBtn = addRow.querySelector('#rbNewCat');
+      const fileIn = addRow.querySelector('#rbNewCatFiles');
+      newBtn.onclick = () => {
+        const name = prompt('Name of the new category (e.g. "ergo stool"):', '');
+        if (!name || !name.trim()) return;
+        fileIn.dataset.cat = name.trim();
+        fileIn.click();
+      };
+      fileIn.onchange = async () => {
+        if (!fileIn.files.length) return;
+        const fd = new FormData();
+        fd.append('category', fileIn.dataset.cat);
+        [...fileIn.files].forEach((fl) => fd.append('files', fl));
+        banner(`Uploading ${fileIn.files.length} IFC file(s) into "${fileIn.dataset.cat}"…`);
+        try {
+          const d = await (await fetch('/api/room/catalog/custom', { method: 'POST', body: fd })).json();
+          const okN = (d.results || []).filter((r) => r.ok).length;
+          const bad = (d.results || []).filter((r) => !r.ok);
+          toast(`＋ ${okN} item(s) added to "${d.category || fileIn.dataset.cat}"` +
+            (bad.length ? ` · ${bad.length} failed: ${bad.map((b) => b.error || b.file).join('; ')}` : ''),
+            bad.length ? 'bad' : 'ok');
+          await loadCatalog();
+        } catch (e) { banner('Custom upload failed: ' + e, true); }
+        fileIn.value = '';
+      };
       cats.forEach((c) => {
         if (!(c.category in counts)) counts[c.category] = 0;
         const row = document.createElement('div');
         row.className = 'catrow';
         row.innerHTML =
-          `<span class="cat-name">${c.label} <small>${c.abo ? '· ABO' : '· prim'}</small></span>` +
+          `<span class="cat-name">${c.label} <small>${c.custom ? '· yours' : (c.abo ? '· ABO' : '· prim')}</small></span>` +
           `<span class="stepper" id="rbStep-${c.category}">${browseBtnHTML(c)}` +
           `<button class="btn btn-tiny btn-step" data-c="${c.category}" data-d="-1">−</button>` +
           `<b id="rbN-${c.category}">${counts[c.category]}</b>` +

@@ -163,6 +163,29 @@ router.post('/room/upload', upload.single('file'), async (req, res, next) => {
 });
 
 // ---------------------------------------------------------------------------
+// upload one or MANY furniture IFC files into a user-declared category —
+// each becomes a colored GLB catalog item numbered <category>-USER-NNN
+router.post('/room/catalog/custom', upload.array('files', 20), async (req, res, next) => {
+  try {
+    const category = String((req.body && req.body.category) || '').trim();
+    if (!category) return res.status(400).json({ ok: false, error: 'category name required' });
+    if (!req.files || !req.files.length) {
+      return res.status(400).json({ ok: false, error: 'at least one .ifc file required' });
+    }
+    const results = [];
+    for (const file of req.files) {
+      // roomApi.call returns the command's JSON directly (same as every route here)
+      const r = await roomApi.call('register_ifc_item',
+        { path: file.path, category }, { timeout: 300000 });
+      results.push({ file: file.originalname, ok: !!r.ok,
+                     item: r.item || null, error: r.error || null });
+      try { fs.unlinkSync(file.path); } catch (e) {}
+    }
+    roomApi.invalidateCatalog();
+    res.json({ ok: results.some((r) => r.ok), category, results });
+  } catch (err) { next(err); }
+});
+
 // delete a user-generated (OURS) item — files + manifest entry
 // ---------------------------------------------------------------------------
 router.delete('/room/generated/:gid', async (req, res, next) => {

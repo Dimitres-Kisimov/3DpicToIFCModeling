@@ -109,6 +109,15 @@ def list_catalog():
                     "abo": src is not None, "abo_count": counts.get(src or c, 0),
                     "generated_count": gen_counts.get(c, 0),
                     "dims_hwd": dims})
+    # USER-DECLARED categories (uploaded furniture IFCs) overlay additively:
+    # they exist purely in the generated manifest and place via the
+    # geometry-inferred archetype fallback
+    for c in sorted(gen_counts):
+        if c not in CATALOG_META:
+            out.append({"category": c, "label": c.replace("_", " ").title(),
+                        "ifc_class": "IfcFurniture", "abo": False, "abo_count": 0,
+                        "generated_count": gen_counts[c], "dims_hwd": None,
+                        "custom": True})
     return out
 
 

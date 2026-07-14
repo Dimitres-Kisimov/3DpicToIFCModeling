@@ -918,6 +918,81 @@ def cmd_renumber_catalog(args):
     return {"ok": True, **renumber_generated_catalog()}
 
 
+def cmd_register_ifc_item(args):
+    """Register a locally-uploaded furniture IFC under a USER-DECLARED category.
+    The IFC's products are meshed with their authored colours (same helper the
+    building shell uses), merged to one GLB, measured, and added to the
+    generated manifest — the professional numbering assigns <category>-USER-NNN.
+    Unknown categories place via the geometry-inferred archetype fallback, so
+    ANY sensible furniture IFC is usable immediately."""
+    import ifcopenshell
+    import ifcopenshell.geom
+    import trimesh
+    import hashlib
+    import populate_building as pb
+
+    src = Path(args.get("path") or "")
+    category = (args.get("category") or "").strip().lower().replace(" ", "_")
+    if not src.exists():
+        return {"ok": False, "error": "file not found", "status": 400}
+    if not category or not category.replace("_", "").isalnum():
+        return {"ok": False, "error": "invalid category name", "status": 400}
+
+    try:
+        fi = ifcopenshell.open(str(src))
+    except Exception as e:
+        return {"ok": False, "error": f"unreadable IFC: {e}", "status": 400}
+    s = ifcopenshell.geom.settings()
+    s.set(s.USE_WORLD_COORDS, True)
+    parts = []
+    for prod in fi.by_type("IfcProduct"):
+        if prod.is_a() in ("IfcSpace", "IfcOpeningElement") or not getattr(prod, "Representation", None):
+            continue
+        try:
+            sh = ifcopenshell.geom.create_shape(s, prod)
+            parts += pb._colored_product_meshes(sh, prod)   # authored colours kept
+        except Exception:
+            pass
+    if not parts:
+        return {"ok": False, "error": "no usable geometry in the IFC", "status": 400}
+    combined = trimesh.util.concatenate([p.copy() for p in parts]) if len(parts) > 1 else parts[0].copy()
+    b = combined.bounds
+    dims = [round(float(b[1][i] - b[0][i]), 3) for i in range(3)]
+    # ground + centre like every generated object
+    for p in parts:
+        p.apply_translation([-(b[0][0] + b[1][0]) / 2, -(b[0][1] + b[1][1]) / 2, -b[0][2]])
+    # Z-up (IFC) -> Y-up (GLB viewers)
+    rot = trimesh.transformations.rotation_matrix(-3.14159265 / 2, [1, 0, 0])
+    sc = trimesh.Scene()
+    for k, p in enumerate(parts):
+        p.apply_transform(rot)
+        sc.add_geometry(p, node_name=f"p{k}")
+
+    uid = "gen_" + hashlib.md5((src.name + str(src.stat().st_size) + category).encode()).hexdigest()[:12]
+    GEN_DIR.mkdir(parents=True, exist_ok=True)
+    fn = uid + ".glb"
+    sc.export(str(GEN_DIR / fn))
+    thumb_fn = uid + ".thumb.png"
+    try:
+        if not _render_thumb(GEN_DIR / fn, GEN_DIR / thumb_fn):
+            thumb_fn = None
+    except Exception:
+        thumb_fn = None
+
+    man = _read_gen_manifest()
+    if any(e.get("id") == uid for e in man.get("items", [])):
+        return {"ok": False, "error": "this file is already registered in that category", "status": 409}
+    man.setdefault("items", []).append({
+        "id": uid, "category": category, "glb": fn, "thumb": thumb_fn,
+        "dims_m": [dims[0], dims[1], dims[2]], "generated": True,
+        "source_file": src.name, "engine": "USER"})
+    GEN_MANIFEST.write_text(json.dumps(man, indent=1), encoding="utf-8")
+    renumber_generated_catalog()
+    entry = next(e for e in _read_gen_manifest()["items"] if e["id"] == uid)
+    return {"ok": True, "item": {"id": uid, "category": category,
+                                 "code": entry.get("code"), "dims_m": dims}}
+
+
 def cmd_delete_generated(args):
     """Remove a user-generated (OURS) item: manifest entry + its files."""
     gid = (args.get("id") or "").strip()
@@ -984,6 +1059,7 @@ _COMMANDS = {
     "register_upload": cmd_register_upload,
     "delete_generated": cmd_delete_generated,
     "renumber_catalog": cmd_renumber_catalog,
+    "register_ifc_item": cmd_register_ifc_item,
     "demo_run": cmd_demo_run,
 }
 
