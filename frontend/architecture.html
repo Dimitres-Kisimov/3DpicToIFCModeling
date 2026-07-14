@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How this program is built — the structure tree</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌳</text></svg>">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0;
+          --brand:#2f6bff; --amber:#e0812b; --green:#1a7f4b; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:var(--panel); border-bottom:1px solid var(--line); padding:18px 28px;
+           display:flex; align-items:baseline; gap:14px; position:sticky; top:0; z-index:5; }
+  header h1 { font-size:20px; } header p { color:var(--mut); font-size:13px; }
+  header a { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
+  main { max-width:980px; margin:0 auto; padding:26px 28px 80px; }
+  .intro { background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--brand);
+           border-radius:12px; padding:16px 20px; font-size:14px; line-height:1.65; margin-bottom:22px; }
+  .tree { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 22px; }
+  details { margin:2px 0 2px 18px; }
+  details.root { margin-left:0; }
+  summary { cursor:pointer; padding:5px 8px; border-radius:8px; font-size:14px; list-style:none; }
+  summary::-webkit-details-marker { display:none; }
+  summary::before { content:'▸ '; color:var(--brand); font-weight:700; }
+  details[open] > summary::before { content:'▾ '; }
+  summary:hover { background:#eef4ff; }
+  .leaf { margin:2px 0 2px 36px; padding:4px 8px; font-size:13.5px; border-radius:8px; }
+  .leaf:hover { background:#f6f8fc; }
+  code { background:#eef2f9; border-radius:5px; padding:1px 6px; font-size:12.5px; color:#1c2f7c; }
+  small { color:var(--mut); }
+  .tag { font-size:10.5px; font-weight:700; border-radius:5px; padding:1px 7px; margin-left:6px; color:#fff; }
+  .t-node { background:var(--green); } .t-py { background:#3572A5; } .t-js { background:var(--amber); }
+  .t-data { background:#6b7688; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🌳 Program Structure</h1>
+  <p>how the code is organised — click any branch to open it</p>
+  <a href="/hub.html">← Research hub</a>
+</header>
+<main>
+  <div class="intro">
+    <b>The idea in one sentence:</b> a Node server is the front door, Python workers do all
+    heavy computation as isolated subprocesses, and every placement decision comes from one
+    ergonomics rulebook — so each part can be tested, replaced or extended on its own.
+    The full engineering map with extension recipes lives in the
+    <a href="https://github.com/Dimitres-Kisimov/3DpicToIFCModeling/blob/part2-ergonomics-one-app/docs/DEVELOPER_MANUAL.md">Developer Manual</a>.
+  </div>
+  <div class="tree">
+
+    <details class="root" open>
+      <summary><code>backend/</code> <span class="tag t-node">SERVER</span> <small>— the application layer</small></summary>
+      <div class="leaf"><code>server.js</code> — Express entry point: serves the app, the research hub, and mounts every API route</div>
+      <details>
+        <summary><code>routes/</code> <small>— one file per API area</small></summary>
+        <div class="leaf"><code>apiRoutes.js</code> — <b>/api/generate</b>: photo upload → engine → repaired mesh → auto-catalog</div>
+        <div class="leaf"><code>roomRoutes.js</code> — catalog, items, custom-category upload, room layout, deletes</div>
+        <div class="leaf"><code>buildingRoutes.js</code> — building registry, IFC upload/probing, rooms/floors, populate, save</div>
+      </details>
+      <details>
+        <summary><code>services/</code> <small>— the plumbing</small></summary>
+        <div class="leaf"><code>pythonBridge.js</code> — spawns Python scripts, passes JSON in/out, enforces timeouts</div>
+        <div class="leaf"><code>roomApi.js</code> — cached gateway to <code>room_api.py</code> commands</div>
+        <div class="leaf">GPU / CPU queues — heavy jobs are serialized so bursts can't overload the machine</div>
+      </details>
+      <details open>
+        <summary><code>python-scripts/</code> <span class="tag t-py">COMPUTE</span> <small>— where the intelligence lives</small></summary>
+        <div class="leaf"><code>run_triposr.py</code> — the photo→3D pipeline: segmentation (rembg), TripoSR, post-processing</div>
+        <div class="leaf"><code>graft_chair_base.py</code> — chair base repair: 6 parametric base styles + broken-bottom auto-detection</div>
+        <div class="leaf"><code>rule_packs.py</code> — THE ergonomics rulebook: Neufert / Panero / ADA / <b>ASR (German workplace law)</b>, archetypes, clearance zones</div>
+        <div class="leaf"><code>spatial_layout.py</code> — the CP-SAT constraint solver: places furniture with no overlaps, clear zones, circulation</div>
+        <div class="leaf"><code>populate_building.py</code> — whole-building population: room classification (6 languages), density tiers, walking-path protection, rotated-building handling, the presentation-hall row engine</div>
+        <div class="leaf"><code>room_api.py</code> — the command hub the server calls: rooms, registration, numbering, deletes</div>
+        <div class="leaf"><code>catalog.py</code> — the 38-category furniture catalog (ABO + engine-generated + your custom uploads)</div>
+        <div class="leaf"><code>saveIFC.py</code> — IFC4 export + the validation gate every object must pass</div>
+        <div class="leaf"><code>make_tower_ifc.py</code> — synthesize tall buildings from any floor plate</div>
+        <div class="leaf"><code>test_e2e_smoke.py</code> · <code>test_floor_dissection.py</code> — the two permanent test gates</div>
+      </details>
+    </details>
+
+    <details class="root" open>
+      <summary><code>frontend/</code> <span class="tag t-js">BROWSER</span> <small>— what you're looking at</small></summary>
+      <div class="leaf"><code>index.html</code> + <code>js/index.js</code> — the three workspaces: Generate · Build a room · Building</div>
+      <div class="leaf"><code>js/roomBuilder.js</code> — catalog picker, custom categories, capacity guard</div>
+      <div class="leaf"><code>js/buildingMode.js</code> — room cards per floor, density tiers, clash engine, floor isolation</div>
+      <div class="leaf"><code>js/buildingPlan.js</code> — the 2D floor plan editor (drag with live legality checks)</div>
+      <div class="leaf"><code>hub.html</code> · <code>research_roadmap.html</code> · <code>building_explorer.html</code> — the research hub, the dated roadmap, the 15-building 3D explorer</div>
+      <div class="leaf"><code>xeokit viewer</code> — WebGL 3D, loaded locally (no CDN)</div>
+    </details>
+
+    <details class="root">
+      <summary><code>data/</code> <span class="tag t-data">DATA</span> <small>— everything the app knows</small></summary>
+      <div class="leaf"><code>generated_assets/</code> — the numbered catalog items (<code>desk-TSG-042</code> style) + manifest (single source of truth)</div>
+      <div class="leaf"><code>buildings/</code> — the 14-building fleet + registry + per-building geometry cache</div>
+      <div class="leaf"><code>mesh_library_abo/</code> — 515 real furniture meshes + the DINOv2/FAISS retrieval index</div>
+    </details>
+
+    <details class="root">
+      <summary><code>benchmark/</code> <span class="tag t-data">EVIDENCE</span> <small>— the science behind the choices</small></summary>
+      <div class="leaf">187 photos × 5 engines, A/B lists 01–11, the 998-variant visualizer, per-AI IFC folders</div>
+    </details>
+
+    <details class="root">
+      <summary><code>docs/</code> + <code>deliverable/</code> <small>— manuals, compliance, provenance, engine guides</small></summary>
+      <div class="leaf"><code>docs/DEVELOPER_MANUAL.md</code> — where every functionality lives + how to extend</div>
+      <div class="leaf"><code>docs/ASR_COMPLIANCE.md</code> · <code>docs/BUILDINGS_PROVENANCE.md</code> · <code>docs/USER_GUIDE.md</code></div>
+      <div class="leaf"><code>deliverable/manuals/</code> — 13 AI-engine installation manuals with lessons learned</div>
+      <div class="leaf"><code>docs/archive/</code> — the project's historical reports, kept but out of the way</div>
+    </details>
+
+    <details class="root">
+      <summary><small>the flow of one click</small></summary>
+      <div class="leaf">📷 photo → <code>apiRoutes</code> → <code>pythonBridge</code> → <code>run_triposr</code> → repair → <code>saveIFC</code> gate → catalog (numbered) → pick it in a room → <code>spatial_layout</code> places it by the rulebook → export IFC4 → open in Revit</div>
+    </details>
+
+  </div>
+</main>
+</body>
+</html>

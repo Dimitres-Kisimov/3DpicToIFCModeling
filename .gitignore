@@ -111,3 +111,10 @@ benchmark/results/list01/filing_cabinet/triposg.glb
 deliverable/research_export/
 deliverable/research_export.zip
 deliverable/app_full_transfer.zip
+deliverable/local_only/
+*.bundle
+~$*.docx
+deliverable/*.pptx
+deliverable/~$*.pptx
+deliverable/DEVELOPER_MANUAL.pdf
+benchmark/_ingest_work/

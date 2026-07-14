@@ -191,6 +191,7 @@ Kleine Wohnung 10 rooms / 30 pieces, COPROPIETE 16 pieces — **0 real clashes e
 
 | Document | Content |
 |----------|---------|
+| [`docs/DEVELOPER_MANUAL.md`](docs/DEVELOPER_MANUAL.md) | the complete map: where every functionality lives, invariants, extension recipes, troubleshooting |
 | [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md) | every tab, badge and button, with screenshots |
 | [`docs/APP_FUNCTIONALITY_DEEP_DIVE.md`](docs/APP_FUNCTIONALITY_DEEP_DIVE.md) | every component, roadblock and fix, incl. photo-taking guidance |
 | [`docs/ENGINEERING_RECORD.md`](docs/ENGINEERING_RECORD.md) | TripoSR limitations, why training your own model is hard, 12-engine training-environment comparison, room-logic strengths/weaknesses |
@@ -198,6 +199,9 @@ Kleine Wohnung 10 rooms / 30 pieces, COPROPIETE 16 pieces — **0 real clashes e
 | [`docs/SECURITY_COMPLIANCE.md`](docs/SECURITY_COMPLIANCE.md) | licence audit method, EU territory exclusions, data handling |
 | [`docs/CAMPAIGN_LOG_2026-07-11.md`](docs/CAMPAIGN_LOG_2026-07-11.md) | the full A100 benchmark campaign log |
 | [`deliverable/manuals/`](deliverable/manuals/) | 13 engine manuals + ops playbook |
+| [`docs/BUILDINGS_PROVENANCE.md`](docs/BUILDINGS_PROVENANCE.md) | licence verification for every building in the fleet |
+| [`docs/ASR_COMPLIANCE.md`](docs/ASR_COMPLIANCE.md) | Arbeitsstättenrichtlinie implementation with legal citations |
+| [`docs/archive/`](docs/archive/) | historical session reports, handoffs and early papers |
 
 ---
 

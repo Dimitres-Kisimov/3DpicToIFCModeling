@@ -159,7 +159,7 @@
    "id": "b_edfc9229a0",
    "name": "210 King \u2014 Autodesk Toronto office (6 levels, CC0)",
    "file": "b_edfc9229a0__210-King-Office-Toronto.ifc",
-   "status": "preparing",
+   "status": "ready",
    "profile": {
     "schema": "IFC2X3",
     "name": "Autodesk Toronto",
@@ -169,6 +169,74 @@
     "size_mb": 148,
     "unit_scale": 0.3048,
     "est_populate_min": 45,
+    "warnings": []
+   }
+  },
+  {
+   "id": "b_d6a75d49bb",
+   "name": "SCS Office Tower \u2014 8F (Institute plate, synthetic)",
+   "file": "b_d6a75d49bb__SCS-Office-Tower-8F.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC4",
+    "name": "Buerogebaeude",
+    "spaces": 170,
+    "storeys": 9,
+    "products": 1996,
+    "size_mb": 15.7,
+    "unit_scale": 1,
+    "est_populate_min": 7,
+    "warnings": []
+   }
+  },
+  {
+   "id": "b_579aff2bf2",
+   "name": "Smiley Tower \u2014 8F residential (synthetic)",
+   "file": "b_579aff2bf2__Smiley-Tower-8F.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC4",
+    "name": "Geb\u00e4ude",
+    "spaces": 300,
+    "storeys": 9,
+    "products": 2372,
+    "size_mb": 30.5,
+    "unit_scale": 1,
+    "est_populate_min": 8,
+    "warnings": []
+   }
+  },
+  {
+   "id": "b_cbbd9965e6",
+   "name": "Duplex Tower \u2014 7F (synthetic)",
+   "file": "b_cbbd9965e6__Duplex-Tower-7F.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC2X3",
+    "name": "Duplex Apartment",
+    "spaces": 71,
+    "storeys": 9,
+    "products": 652,
+    "size_mb": 11.6,
+    "unit_scale": 1,
+    "est_populate_min": 2,
+    "warnings": []
+   }
+  },
+  {
+   "id": "b_4c19b15830",
+   "name": "NBU Office Building \u2014 US corporate (CC0)",
+   "file": "b_4c19b15830__NBU-Office-Building.ifc",
+   "status": "ready",
+   "profile": {
+    "schema": "IFC2X3",
+    "name": "Project Number",
+    "spaces": 99,
+    "storeys": 3,
+    "products": 1083,
+    "size_mb": 3.9,
+    "unit_scale": 1,
+    "est_populate_min": 4,
     "warnings": []
    }
   }
