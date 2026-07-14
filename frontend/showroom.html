@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Showroom — every catalog item in one ASR room</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛋️</text></svg>">
+<script type="module" src="/assets/model-viewer.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0; --brand:#2f6bff; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:var(--panel); border-bottom:1px solid var(--line); padding:16px 28px;
+           display:flex; align-items:baseline; gap:14px; position:sticky; top:0; z-index:5; }
+  header h1 { font-size:19px; } header p { color:var(--mut); font-size:13px; }
+  header a { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
+  main { max-width:1280px; margin:0 auto; padding:20px 28px 60px; }
+  .grid { display:grid; grid-template-columns:3fr 2fr; gap:14px; }
+  .pane { background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  .pane b { display:block; padding:10px 14px 2px; font-size:13.5px; }
+  .pane small { display:block; padding:0 14px 8px; color:var(--mut); font-size:12px; }
+  model-viewer { width:100%; height:560px; background:#e9edf5; }
+  .pane img { width:100%; display:block; }
+  .legend { background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--brand);
+            border-radius:12px; padding:14px 18px; font-size:13.5px; line-height:1.7; margin:14px 0 0; }
+  @media (max-width:980px) { .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🛋️ The Showroom</h1>
+  <p>a 16 × 12 m office holding ONE of every catalog item (41 pieces, patterns included) — ergonomics on display</p>
+  <a href="/hub.html">← Research hub</a>
+</header>
+<main>
+  <div class="grid">
+    <div class="pane"><b>3D — orbit it</b><small>drag to orbit · scroll to zoom · right-drag to pan</small>
+      <model-viewer src="/out/showroom.glb" camera-controls shadow-intensity="0.5"
+        camera-orbit="30deg 60deg 24m" exposure="1.1" interaction-prompt="none"></model-viewer></div>
+    <div class="pane"><b>2D solver plan</b><small>green dashes = protected people-space; numbers match the object list</small>
+      <img src="/out/showroom_plan.png" alt="showroom floor plan"></div>
+  </div>
+  <div class="legend">
+    <b>What to check while orbiting</b> — all 38 categories were requested, all placed, nothing refused:
+    the <b>desk cluster</b> (office chair tucked in, monitor + laptop on the surface facing the sitter,
+    waste bin hugging the desk's side at 10 cm); the <b>table ringed by 4 regular chairs + 2 stools</b>
+    at chord-safe spacing, kept social in the open floor; the <b>projector on the ceiling at 2.2 m,
+    aimed at the presentation screen</b> at throw distance; the <b>planter in a corner</b>, never mid-room;
+    <b>wall-mounted gear at human heights</b> — whiteboard 0.90 m, screen 0.80 m, first-aid 1.35 m,
+    extinguisher 1.00 m, mirror/pictures/clock at eye lines; heavy <b>storage flush to walls</b>
+    (cabinets, lockers, server rack, fridge); and ASR clearances everywhere — ≥1.00 m routes,
+    1.5 m² movement area at the workstation, 0.90 m door keep-clear.
+  </div>
+</main>
+</body>
+</html>

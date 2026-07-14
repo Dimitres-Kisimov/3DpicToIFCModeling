@@ -611,6 +611,36 @@ def _resolve_layout(room: dict, objects: list):
             else:
                 pos[o["id"]] = {"id": o["id"], "position": [zoff, 0.0, c0],
                                 "rotation": [0, 90, 0], "elevation": elev, "placed": True}
+
+    # projector — ANY room type (user rule, 'never forget'): never on the floor.
+    # With a display in the room (screen, else whiteboard) it hangs from the
+    # ceiling at throw distance aimed at it; otherwise ceiling mid-room.
+    # Presentation halls were already handled by the row pre-pass (elev 2.2).
+    for o in objects:
+        if o.get("category") != "projector":
+            continue
+        p = pos.get(o["id"])
+        if p is None or float(p.get("elevation") or 0) > 1.0:
+            continue
+        disp = next((x for x in objects if x.get("category") == "presentation_screen"
+                     and x["id"] in pos), None) \
+            or next((x for x in objects if x.get("category") == "whiteboard"
+                     and x["id"] in pos), None)
+        if disp is not None:
+            dp = pos[disp["id"]]
+            hx, hz = dp["position"][0], dp["position"][2]
+            drot = math.radians((dp.get("rotation") or [0, 0, 0])[1])
+            nx, nz = math.sin(drot), math.cos(drot)      # wall normal, into the room
+            throw = min(3.5, max(1.5, 1.2 * float(disp["dimensions"]["width"])))
+            px = min(max(hx + nx * throw, 0.4), cw - 0.4)
+            pz = min(max(hz + nz * throw, 0.4), ch - 0.4)
+            yaw = math.degrees(math.atan2(hx - px, hz - pz))
+            o["anchor"] = o.get("anchor") or {"to": disp["id"], "relation": "throws_onto"}
+        else:
+            px, pz, yaw = cx, cz, 0.0
+            o["anchor"] = o.get("anchor") or {"to": "ceiling", "relation": "ceiling_mount"}
+        pos[o["id"]] = {"id": o["id"], "position": [px, 0.0, pz],
+                        "rotation": [0, yaw, 0], "elevation": 2.2, "placed": True}
     return pos, solver, extras
 
 
