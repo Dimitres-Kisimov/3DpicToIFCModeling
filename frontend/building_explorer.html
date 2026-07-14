@@ -51,6 +51,10 @@
     <option value="smiley">Smiley West — 140 rooms, 5 floors — 2026-07-13</option>
     <option value="hhs">HHS Office — institute, labs & workshops — 2026-07-14</option>
     <option value="210king">210 King — Autodesk Toronto office, 261 rooms — 2026-07-14</option>
+    <option value="office_tower">SCS Office Tower — 8F, 170 rooms (synthetic) — 2026-07-14</option>
+    <option value="smiley_tower">Smiley Tower — 8F residential, 300 rooms (synthetic) — 2026-07-14</option>
+    <option value="duplex_tower">Duplex Tower — 7F (synthetic) — 2026-07-14</option>
+    <option value="nbu">NBU Office Building — US corporate (CC0) — 2026-07-14</option>
   </select>
   <a href="/building_showcase.html" style="margin-left:10px;color:#2f6bff;text-decoration:none">← showcase</a>
   <div id="bstatus" style="color:#5b6b7c;font-size:11.5px;margin-top:3px">drag = orbit · furnished by the ergonomics engine · clash-audited</div>
@@ -140,6 +144,10 @@ const INFO = {
   smiley:         ['Smiley West — KIT terraced housing (open data)', '5 floors · 140 rooms · the biggest room count in the fleet'],
   hhs:            ['HHS Office — institute (open data, CC BY-ND)', '3 levels + roof · labs, workshops, meeting rooms · ASR-staffed: 20 workstations'],
   '210king':      ['210 King — Autodesk Toronto office (DURAARK, CC0)', '6 office levels + basement + annex · 261 rooms · a real 13,638-product Revit building'],
+  office_tower:   ['SCS Office Tower — 8 floors (Institute plate, synthetic)', '123 rooms furnished · 764 pieces · ASR-staffed workstations · 0 clashes'],
+  smiley_tower:   ['Smiley Tower — 8F residential (synthetic)', '130 rooms furnished · 400 pieces · 0 clashes'],
+  duplex_tower:   ['Duplex Tower — 7F (synthetic)', '26 rooms furnished · 94 pieces · 0 clashes'],
+  nbu:            ['NBU Office Building — US corporate (open data, CC0)', '3 storeys · open offices + team rooms · 418 pieces incl. tier-2 realism · 0 clashes'],
 };
 const bkey = new URLSearchParams(location.search).get('b') || 'duplex';
 document.getElementById('bpick').value = bkey;
