@@ -41,6 +41,15 @@ CATALOG_META = {
     "mirror":         ("IfcFurniture",             (1.20, 0.60, 0.05),[0.80, 0.85, 0.90]),
     "clock":          ("IfcFurniture",             (0.30, 0.30, 0.05),[0.90, 0.90, 0.90]),
     "picture_frame":  ("IfcFurniture",             (0.50, 0.40, 0.04),[0.45, 0.32, 0.20]),
+    # extended spaces pack (procedural — no ABO source)
+    "lectern":             ("IfcFurniture",            (1.15, 0.60, 0.50), [0.45, 0.33, 0.23]),
+    "presentation_screen": ("IfcAudioVisualAppliance", (1.50, 2.40, 0.12), [0.92, 0.92, 0.94]),
+    "whiteboard":          ("IfcFurniture",            (1.20, 1.80, 0.10), [0.95, 0.95, 0.96]),
+    "projector":           ("IfcAudioVisualAppliance", (0.15, 0.40, 0.30), [0.25, 0.26, 0.28]),
+    "armchair":            ("IfcFurniture",            (0.95, 0.80, 0.80), [0.38, 0.42, 0.50]),
+    "water_dispenser":     ("IfcElectricAppliance",    (1.10, 0.35, 0.35), [0.70, 0.78, 0.85]),
+    "coffee_machine":      ("IfcElectricAppliance",    (0.45, 0.30, 0.40), [0.18, 0.18, 0.20]),
+    "locker":              ("IfcFurniture",            (1.80, 0.40, 0.50), [0.52, 0.56, 0.62]),
 }
 # categories with real ABO meshes; the rest fall back to procedural primitives
 ABO_CATEGORIES = {"desk", "office_chair", "cabinet", "bookshelf", "sofa", "table", "stool", "lamp",

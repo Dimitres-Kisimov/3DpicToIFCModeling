@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Roadmap — read it in this order</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗺️</text></svg>">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0;
+          --brand:#2f6bff; --amber:#e0812b; --green:#1a7f4b; --red:#d03b3b; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:var(--panel); border-bottom:1px solid var(--line); padding:18px 28px;
+           display:flex; align-items:baseline; gap:14px; position:sticky; top:0; z-index:5; }
+  header h1 { font-size:20px; }
+  header p  { color:var(--mut); font-size:13px; }
+  header a  { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
+  main { max-width:900px; margin:0 auto; padding:30px 28px 80px; }
+  .intro { background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--brand);
+           border-radius:12px; padding:16px 20px; font-size:14px; line-height:1.6; margin-bottom:28px; }
+  .tl { position:relative; padding-left:34px; }
+  .tl::before { content:''; position:absolute; left:11px; top:6px; bottom:6px; width:2px; background:var(--line); }
+  .step { position:relative; margin-bottom:26px; background:var(--panel); border:1px solid var(--line);
+          border-radius:12px; padding:16px 20px; box-shadow:0 2px 10px rgba(20,40,80,.05); }
+  .step::before { content:attr(data-n); position:absolute; left:-34px; top:14px; width:24px; height:24px;
+                  border-radius:50%; background:var(--brand); color:#fff; font-size:12px; font-weight:700;
+                  display:flex; align-items:center; justify-content:center; }
+  .step.test::before { background:var(--green); }
+  .date { display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.04em; color:#fff;
+          background:var(--brand); border-radius:5px; padding:2px 9px; margin-bottom:7px; }
+  .step.test .date { background:var(--green); }
+  .step h2 { font-size:16px; margin-bottom:5px; }
+  .step p  { font-size:13.5px; color:#3a4453; line-height:1.6; }
+  .view { margin-top:9px; font-size:13px; }
+  .view a { color:var(--brand); text-decoration:none; font-weight:600; margin-right:14px; }
+  .view a:hover { text-decoration:underline; }
+  .view b { color:var(--mut); font-weight:600; margin-right:6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🗺️ Research Roadmap</h1>
+  <p>every milestone, dated — and the order to view the evidence in</p>
+  <a href="/hub.html">← Research hub</a>
+</header>
+<main>
+  <div class="intro">
+    <b>How to read this project:</b> follow the numbered steps top to bottom — each links the pages
+    that show that stage's evidence. Blue steps are engineering milestones; <b style="color:var(--green)">green
+    steps are the testing/validation passes</b> that verified them. Dates are when the work was completed
+    and committed.
+  </div>
+  <div class="tl">
+
+    <div class="step" data-n="1">
+      <span class="date">2026-04-21 → 04-28</span>
+      <h2>Phase 1 — photo → 3D → IFC works end to end</h2>
+      <p>TripoSR integrated on local GPU, first full pipeline: photo → mesh → real dimensions → IFC export.
+         The first office chair exposes the engine's thin-structure weakness.</p>
+      <div class="view"><b>view:</b> <a href="/four_way.html">Four-way (original)</a>
+        <a href="/chair_compare.html">Chair pipeline stages</a></div>
+    </div>
+
+    <div class="step" data-n="2">
+      <span class="date">2026-04-30 → 05-05</span>
+      <h2>Quality sprints — segmentation, depth, classification</h2>
+      <p>rembg/SAM2 segmentation experiments, Depth-Anything metric dimensions, CLIP classification,
+         real IFC4 export. The base-graft answer to the broken swivel base is born.</p>
+      <div class="view"><b>view:</b> <a href="/graft_compare.html">Raw vs grafted chair</a>
+        <a href="/legs_compare.html">Leg sizing</a> <a href="/smooth_compare.html">Smoothing ×16/×40</a></div>
+    </div>
+
+    <div class="step" data-n="3">
+      <span class="date">2026-06-10 → 06-30</span>
+      <h2>Repair packs + the H200 cloud study</h2>
+      <p>7-archetype, 9-stage repair packs (faces 9.2× lighter, 91% watertight). First 5-model
+         benchmark on identical inputs: TripoSG · SAM 3D · TRELLIS · InstantMesh · TripoSR.</p>
+      <div class="view"><b>view:</b> <a href="/gallery/index.html">5-model gallery</a>
+        <a href="/manuals.html">Engine manuals</a></div>
+    </div>
+
+    <div class="step" data-n="4">
+      <span class="date">2026-07-01 → 07-07</span>
+      <h2>Part 2 — rooms and whole buildings</h2>
+      <p>People-aware CP-SAT solver (Neufert/Panero/ADA), the 2D floor-plan editor, building
+         population of real IFCs, per-floor navigation, IFC export optimizer.</p>
+      <div class="view"><b>view:</b> <a href="/fleet.html">Building fleet comparison</a>
+        <a href="/ifc_compare.html">IFC optimizer before/after</a></div>
+    </div>
+
+    <div class="step test" data-n="5">
+      <span class="date">2026-07-09</span>
+      <h2>TEST PASS — six live campaigns</h2>
+      <p>Ingestion sweep, concurrency, BIM round-trip, malformed-IFC fuzzing, soak, standards
+         validation — including the two bugs testing found and fixed. Clash governance ships:
+         before/after clash resolution, density studies, the capacity guard.</p>
+      <div class="view"><b>view:</b> <a href="/testing.html">System test report</a>
+        <a href="/building_showcase.html">Before/after clashes showcase</a></div>
+    </div>
+
+    <div class="step" data-n="6">
+      <span class="date">2026-07-11 → 07-12</span>
+      <h2>The A100 campaign — 187 photos × every engine</h2>
+      <p>Full benchmark sweep on a rented A100: TripoSG 0.390 F-score leads; scores reproduce the
+         H200 within 0.003 (cross-hardware validation). 605 engine-badged items pass the IFC4 gate
+         into the catalog; 11 A/B list pages + the 998-variant visualizer.</p>
+      <div class="view"><b>view:</b> <a href="/benchmark/index.html">A/B lists 01–11</a>
+        <a href="/benchmark/visualizer.html">Multi-AI visualizer</a></div>
+    </div>
+
+    <div class="step" data-n="7">
+      <span class="date">2026-07-12</span>
+      <h2>One app — and this research hub</h2>
+      <p>Everything merges into a single application; the research hub becomes the front door to the
+         evidence. User guide, security &amp; compliance, engineering record, model eliminations.</p>
+      <div class="view"><b>view:</b> <a href="/hub.html">Research hub</a>
+        <a href="/manuals.html">Manuals</a></div>
+    </div>
+
+    <div class="step test" data-n="8">
+      <span class="date">2026-07-13</span>
+      <h2>TEST PASS — collision hardening on hostile geometry</h2>
+      <p>The rotated French building (every wall at 60.4°) breaks the axis-aligned assumptions:
+         de-rotated solve frame, true footprint polygons for L-shaped rooms, storey-filtered
+         obstacles. Verified by exact polygon intersection — 0 real clashes across the fleet.
+         Walking-path protection: doors, doorless openings, wall gaps.</p>
+      <div class="view"><b>view:</b> <a href="/building_explorer.html?b=house">COPROPIETE in 3D</a>
+        <a href="/building_showcase.html">Showcase</a></div>
+    </div>
+
+    <div class="step" data-n="9">
+      <span class="date">2026-07-13</span>
+      <h2>Density tiers + Arbeitsstättenrichtlinie</h2>
+      <p>Light/Medium/Dense population per room type; German workplace law (ASR A1.2/A1.8) becomes
+         the DEFAULT office standard — legal 8+6 m² staffing caps, 1.5 m² movement areas at every
+         desk, route widths — verified against the published rule texts.</p>
+      <div class="view"><b>view:</b> <a href="/building_explorer.html">3D explorer</a></div>
+    </div>
+
+    <div class="step" data-n="10">
+      <span class="date">2026-07-13 → 07-14</span>
+      <h2>The tall fleet + professional catalog numbering</h2>
+      <p>Real tall buildings sourced with license verification (KIT unrestricted-use, DURAARK CC0 —
+         incl. Autodesk's 210 King Toronto office, 261 rooms) plus synthetic towers stacked from
+         open plates. Catalog items renamed to item–AI–number codes that compact on deletion.</p>
+      <div class="view"><b>view:</b> <a href="/building_explorer.html?b=210king">210 King in 3D</a>
+        <a href="/building_explorer.html?b=tower">SCS Tower</a></div>
+    </div>
+
+    <div class="step test" data-n="11">
+      <span class="date">2026-07-14</span>
+      <h2>TEST PASS — fleet-wide floor dissection</h2>
+      <p>Cross-validation of every building against its IFC ground truth: every floor with rooms
+         present, no orphan rooms, elevation-ordered storeys, room-count conservation. Runs as a
+         gate (test_floor_dissection.py) so future changes can't silently drop a floor.</p>
+      <div class="view"><b>view:</b> <a href="/building_explorer.html">All buildings in 3D</a></div>
+    </div>
+
+  </div>
+</main>
+</body>
+</html>

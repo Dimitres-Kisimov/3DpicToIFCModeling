@@ -223,6 +223,9 @@
     cabinet: [0.72, 1.8], bookshelf: [0.32, 1.8], filing_cabinet: [0.27, 1.8],
     coffee_table: [0.66, 1.5], side_table: [0.30, 1.3], lamp: [0.16, 1.2],
     planter: [0.16, 1.2], mirror: [0.09, 1.5], monitor: [0, 0], laptop: [0, 0],
+    lectern: [0.30, 2.0], presentation_screen: [0.29, 1.2], whiteboard: [0.18, 1.2],
+    projector: [0, 0], armchair: [0.64, 1.8], water_dispenser: [0.12, 1.5],
+    coffee_machine: [0, 0], locker: [0.20, 1.8],
   };
   const catOf = (pick) => pick.startsWith('gen:') ? genCat(pick.slice(4)) : pick;
   const spaceNeed = (picksArr) => picksArr.reduce((sum, p) => {

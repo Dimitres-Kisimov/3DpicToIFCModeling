@@ -120,6 +120,44 @@ ROOM_TYPES = {
             ("stool", "table", "beside"),
         ],
     },
+    # ---- extended spaces pack (additive room types) --------------------------
+    "presentation": {   # lecture hall / Hoersaal: front zone + audience rows
+        **_BASE,
+        "area_per_person": 1.4,     # seated audience (lecture seating density)
+        "min_aisle": 1.00,          # row aisles are enforced by the row layout itself
+        "perimeter": {"presentation_screen", "whiteboard", "locker", "cabinet"},
+        "groups": [],               # audience placement is the dedicated row engine
+    },
+    "quiet": {          # Ruheraum / focus room: sparse, generous clearances
+        **_BASE,
+        "area_per_person": 8.0,
+        "min_aisle": 0.90,
+        "gap": {"in_front": 0.50, "beside": 0.20},
+        "perimeter": {"armchair", "sofa", "bookshelf", "locker", "planter"},
+        "groups": [("side_table", "armchair", "beside")],
+    },
+    "break": {          # Pausenraum (ASR A4.2 requires one for >10 employees)
+        **_BASE,
+        "area_per_person": 3.5,
+        "min_aisle": 0.90,
+        "perimeter": {"cabinet", "locker", "water_dispenser", "planter", "sofa"},
+        "groups": [
+            ("chair", "table", "beside"),
+            ("stool", "table", "beside"),
+            ("coffee_machine", "table", "on_top"),
+        ],
+    },
+    "reception": {      # Empfang / front desk + waiting seats
+        **_BASE,
+        "area_per_person": 5.0,
+        "min_aisle": 1.20,          # public circulation
+        "perimeter": {"desk", "cabinet", "planter", "armchair", "sofa"},
+        "groups": [
+            ("office_chair", "desk", "in_front"),
+            ("monitor", "desk", "on_top"),
+            ("side_table", "armchair", "beside"),
+        ],
+    },
 }
 
 
@@ -202,6 +240,10 @@ _CATEGORY_ARCHETYPE = {
     "book": "on_surface", "vase": "on_surface", "cup": "on_surface",
     "mirror": "wall_mounted", "picture_frame": "wall_mounted", "tv": "wall_mounted", "clock": "wall_mounted",
     "lamp": "free_accent", "floor_lamp": "free_accent", "planter": "free_accent", "plant": "free_accent",
+    # extended spaces pack (additive): presentation + wellbeing categories
+    "lectern": "worksurface", "presentation_screen": "wall_mounted",
+    "whiteboard": "wall_mounted", "projector": "free_accent",
+    "water_dispenser": "appliance", "coffee_machine": "on_surface", "locker": "storage",
 }
 
 # archetype -> {zone direction: anthro key}, facing rule, wall side.

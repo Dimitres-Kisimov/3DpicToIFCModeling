@@ -52,7 +52,18 @@ TYPE_KEYWORDS = {"living": "living", "lounge": "lounge", "bed": "bed", "kitchen"
                  "séjour": "living", "sejour": "living", "salon": "living",
                  "chambre": "bed", "dortoir": "bed", "cuisine": "kitchen",
                  "réunion": "meeting", "reunion": "meeting",
-                 "room": "living", "zimmer": "living", "kamer": "living"}
+                 "room": "living", "zimmer": "living", "kamer": "living",
+                 # extended spaces pack (additive; appended so existing keys win)
+                 "hörsaal": "presentation", "hoersaal": "presentation", "aula": "presentation",
+                 "auditorium": "presentation", "lecture": "presentation", "vortrag": "presentation",
+                 "präsentation": "presentation", "praesentation": "presentation",
+                 "presentation": "presentation", "seminar": "presentation",
+                 "schulung": "presentation", "training": "presentation",
+                 "ruhe": "quiet", "quiet": "quiet", "fokus": "quiet", "focus": "quiet",
+                 "rückzug": "quiet", "rueckzug": "quiet",
+                 "pause": "break", "break": "break", "sozialraum": "break",
+                 "kantine": "break", "cafeteria": "break", "mensa": "break", "bistro": "break",
+                 "empfang": "reception", "reception": "reception", "rezeption": "reception"}
 # structural element types that cut up a room and must be avoided
 OBSTACLE_TYPES = ["IfcColumn", "IfcWall", "IfcWallStandardCase", "IfcBeam", "IfcMember",
                   "IfcStair", "IfcStairFlight", "IfcRailing"]
@@ -152,6 +163,24 @@ def smart_furnish(rt, W, D, assets, density="medium"):
         items += ["table"] + ["chair"] * min(8, max(2, int(area / 3)))
     elif rt == "meeting":
         items += ["table"] + ["office_chair"] * min(10, max(2, int(area / 2.5)))
+    elif rt == "presentation":    # lecture hall: front kit + audience rows
+        items += ["presentation_screen", "lectern", "projector", "whiteboard"]
+        items += ["chair"] * min(48, max(4, int(area / 1.4)))   # ~1.4 m2/seat
+    elif rt == "quiet":           # Ruheraum: sparse and calm
+        items += ["armchair"]
+        if area > 8:  items += ["armchair", "side_table"]
+        if area > 10: items += ["lamp", "planter"]
+        if area > 16: items += ["sofa", "bookshelf"]
+    elif rt == "break":           # Pausenraum (ASR A4.2)
+        items += ["table", "coffee_machine"] + ["chair"] * min(8, max(2, int(area / 4)))
+        if area > 12: items += ["water_dispenser", "planter"]
+        if area > 16: items += ["sofa", "side_table"]
+        if area > 24: items += ["table"] + ["chair"] * 4 + ["locker"]
+    elif rt == "reception":       # Empfang: front desk + waiting
+        items += ["desk", "office_chair", "monitor"]
+        items += ["armchair"] * min(4, max(1, int(area / 7)))
+        if area > 10: items += ["side_table", "planter"]
+        if area > 18: items += ["water_dispenser", "sofa"]
     if density == "dense" and rt in DENSE_EXTRAS:
         min_area, extras = DENSE_EXTRAS[rt]
         if W * D >= min_area:
@@ -180,6 +209,15 @@ TARGET_DIMS = {
     "filing_cabinet": (0.45, 0.60, 1.32),
     "planter":        (0.40, 0.40, 0.90),
     "mirror":         (0.60, 0.15, 1.70),  # floor mirror
+    # extended spaces pack
+    "lectern":             (0.60, 0.50, 1.15),
+    "presentation_screen": (2.40, 0.12, 1.50),
+    "whiteboard":          (1.80, 0.10, 1.20),
+    "projector":           (0.40, 0.30, 0.15),
+    "armchair":            (0.80, 0.80, 0.95),
+    "water_dispenser":     (0.35, 0.35, 1.10),
+    "coffee_machine":      (0.30, 0.40, 0.45),
+    "locker":              (0.40, 0.50, 1.80),
 }
 
 # floor-standing categories the AI library lacks — borrowed from the SAME ABO
@@ -225,6 +263,14 @@ _FURN_FALLBACK = {
     "lamp":          [0.82, 0.78, 0.70, 1.0],
     "mirror":        [0.72, 0.76, 0.80, 1.0],
     "planter":       [0.35, 0.48, 0.30, 1.0],
+    "lectern":             [0.45, 0.33, 0.23, 1.0],
+    "presentation_screen": [0.92, 0.92, 0.94, 1.0],
+    "whiteboard":          [0.95, 0.95, 0.96, 1.0],
+    "projector":           [0.25, 0.26, 0.28, 1.0],
+    "armchair":            [0.38, 0.42, 0.50, 1.0],
+    "water_dispenser":     [0.70, 0.78, 0.85, 1.0],
+    "coffee_machine":      [0.18, 0.18, 0.20, 1.0],
+    "locker":              [0.52, 0.56, 0.62, 1.0],
 }
 
 
@@ -420,6 +466,49 @@ def _stool_mesh_zup(h=0.50, w=0.42, d=0.42):
     return _tinted(trimesh.util.concatenate(parts), [0.48, 0.36, 0.27, 1.0])
 
 
+def _box_item(exts, rgba, lift=0.0):
+    m = trimesh.creation.box(extents=list(exts))
+    m.apply_translation([0, 0, exts[2] / 2 + lift])
+    return _tinted(m, rgba)
+
+
+def _lectern_mesh_zup():
+    parts = [trimesh.creation.box(extents=[0.5, 0.4, 1.0])]
+    parts[0].apply_translation([0, 0, 0.5])
+    top = trimesh.creation.box(extents=[0.6, 0.5, 0.06])
+    top.apply_transform(trimesh.transformations.rotation_matrix(0.20, [1, 0, 0]))
+    top.apply_translation([0, 0.02, 1.08]); parts.append(top)
+    return _tinted(trimesh.util.concatenate(parts), [0.45, 0.33, 0.23, 1.0])
+
+
+def _armchair_mesh_zup():
+    parts = []
+    seat = trimesh.creation.box(extents=[0.72, 0.68, 0.22]); seat.apply_translation([0, 0, 0.32]); parts.append(seat)
+    back = trimesh.creation.box(extents=[0.72, 0.16, 0.55]); back.apply_translation([0, -0.26, 0.68]); parts.append(back)
+    for sx in (-1, 1):
+        arm = trimesh.creation.box(extents=[0.12, 0.62, 0.30])
+        arm.apply_translation([sx * 0.34, 0.0, 0.48]); parts.append(arm)
+    base = trimesh.creation.box(extents=[0.70, 0.66, 0.20]); base.apply_translation([0, 0, 0.11]); parts.append(base)
+    return _tinted(trimesh.util.concatenate(parts), [0.38, 0.42, 0.50, 1.0])
+
+
+def _water_dispenser_mesh_zup():
+    parts = [trimesh.creation.box(extents=[0.34, 0.34, 0.95])]
+    parts[0].apply_translation([0, 0, 0.475])
+    bottle = trimesh.creation.cylinder(radius=0.13, height=0.30)
+    bottle.apply_translation([0, 0, 1.10]); parts.append(bottle)
+    return _tinted(trimesh.util.concatenate(parts), [0.70, 0.78, 0.85, 1.0])
+
+
+def _projector_mesh_zup():
+    m = trimesh.creation.box(extents=[0.40, 0.30, 0.13])
+    m.apply_translation([0, 0, 0.065])
+    lens = trimesh.creation.cylinder(radius=0.045, height=0.05)
+    lens.apply_transform(trimesh.transformations.rotation_matrix(3.14159 / 2, [1, 0, 0]))
+    lens.apply_translation([0.1, 0.17, 0.065])
+    return _tinted(trimesh.util.concatenate([m, lens]), [0.25, 0.26, 0.28, 1.0])
+
+
 _GEN_DIR = REPO / "data" / "generated_assets"
 
 
@@ -459,6 +548,18 @@ def load_assets():
     out.setdefault("monitor", {"mesh": _monitor_mesh_zup(), "ifc": "IfcAudioVisualAppliance"})
     out.setdefault("laptop", {"mesh": _laptop_mesh_zup(), "ifc": "IfcAudioVisualAppliance"})
     out["stool"] = {"mesh": _stool_mesh_zup(), "ifc": "IfcFurniture"}   # level, chair-class
+    # extended spaces pack — procedural (no AI/ABO source has these)
+    out.setdefault("lectern", {"mesh": _lectern_mesh_zup(), "ifc": "IfcFurniture"})
+    out.setdefault("presentation_screen",
+                   {"mesh": _box_item([2.40, 0.12, 1.50], [0.92, 0.92, 0.94, 1.0]), "ifc": "IfcAudioVisualAppliance"})
+    out.setdefault("whiteboard",
+                   {"mesh": _box_item([1.80, 0.10, 1.20], [0.95, 0.95, 0.96, 1.0]), "ifc": "IfcFurniture"})
+    out.setdefault("projector", {"mesh": _projector_mesh_zup(), "ifc": "IfcAudioVisualAppliance"})
+    out.setdefault("armchair", {"mesh": _armchair_mesh_zup(), "ifc": "IfcFurniture"})
+    out.setdefault("water_dispenser", {"mesh": _water_dispenser_mesh_zup(), "ifc": "IfcElectricAppliance"})
+    out.setdefault("coffee_machine",
+                   {"mesh": _box_item([0.30, 0.40, 0.45], [0.18, 0.18, 0.20, 1.0]), "ifc": "IfcElectricAppliance"})
+    out.setdefault("locker", {"mesh": _box_item([0.40, 0.50, 1.80], [0.52, 0.56, 0.62, 1.0]), "ifc": "IfcFurniture"})
 
     # borrow the room builder's ABO meshes for the remaining categories, so the
     # building picker offers (almost) the same catalog as "Build a room"
@@ -992,6 +1093,92 @@ def main():
             except Exception:
                 pass
 
+        # 3c) PRESENTATION ROOMS (extended pack): dedicated row engine — screen +
+        # whiteboard on the front wall, lectern facing the audience, projector
+        # overhead, chairs in rows with ASR-width aisles. Deterministic; placed
+        # BEFORE the solver, which then only handles the remaining picks.
+        pres_items = []
+        if rt == "presentation":
+            import math as _math
+            consumed = set()
+
+            def _blocked(cx, cz, w, d):
+                for kk in keepouts:
+                    if (min(cx + w / 2, kk["x"] + kk["width"]) - max(cx - w / 2, kk["x"]) > 0.02 and
+                            min(cz + d / 2, kk["z"] + kk["depth"]) - max(cz - d / 2, kk["z"]) > 0.02):
+                        return True
+                return False
+
+            def _take(cat_name):
+                for i, c in enumerate(cats):
+                    if c == cat_name and i not in consumed:
+                        consumed.add(i)
+                        return i
+                return None
+
+            def _add(i, cx_, cz_, yaw_, elev_=0.0):
+                pres_items.append({"oid": f"{cats[i]}-{i}", "cat": cats[i],
+                                   "cx": cx_, "cz": cz_, "yaw": yaw_,
+                                   "mesh": mesh_of(i), "parts": parts_of(i),
+                                   "zones": None, "elev": elev_})
+
+            si = _take("presentation_screen")
+            if si is not None:
+                e = mesh_of(si).extents
+                _add(si, W / 2, float(e[1]) / 2 + 0.03, 0, 0.8)      # front wall, eye height
+            wi = _take("whiteboard")
+            if wi is not None:
+                e = mesh_of(wi).extents
+                _add(wi, W * 0.15 + float(e[0]) / 2, float(e[1]) / 2 + 0.03, 0, 0.9)
+            li = _take("lectern")
+            if li is not None and not _blocked(W * 0.22, 1.0, 0.7, 0.6):
+                _add(li, W * 0.22, 1.0, 180, 0.0)                    # faces the audience
+            pi = _take("projector")
+            if pi is not None:
+                _add(pi, W / 2, D * 0.45, 0, 2.2)                    # overhead, mid-room
+
+            chair_is = [i for i, c in enumerate(cats)
+                        if c in ("chair", "office_chair", "armchair", "stool") and i not in consumed]
+            if chair_is:
+                ce = mesh_of(chair_is[0]).extents
+                sw, sd = float(ce[0]), float(ce[1])
+                fwd = _chair_forward_xy(mesh_of(chair_is[0]))
+                # face the front wall (-Z): rotate native forward onto (0, -1)
+                base_yaw = _math.degrees(_math.atan2(-1, 0) - _math.atan2(fwd[1], fwd[0]))
+                pitch_x = sw + 0.10
+                pitch_z = max(0.90, sd + 0.50)                       # ASR A1.8 row aisle
+                z = 2.3
+                n = 0
+                while z < D - 0.6 and n < len(chair_is):
+                    x = 0.65 + sw / 2
+                    while x < W - 0.65 and n < len(chair_is):
+                        if not _blocked(x, z, sw, sd):
+                            _add(chair_is[n], x, z, base_yaw, 0.0)
+                            consumed.add(chair_is[n])
+                            n += 1
+                        x += pitch_x
+                    z += pitch_z
+                for left in chair_is[n:]:
+                    consumed.add(left)
+                    dropped.append(cats[left])
+            # footprints of pre-placed items become keep-outs for the solver
+            for it_ in pres_items:
+                if it_.get("elev", 0) > 0.5:
+                    continue
+                e = it_["mesh"].extents
+                keepouts.append({"x": it_["cx"] - float(e[0]) / 2 - 0.05,
+                                 "z": it_["cz"] - float(e[1]) / 2 - 0.05,
+                                 "width": float(e[0]) + 0.10, "depth": float(e[1]) + 0.10,
+                                 "kind": "fixed"})
+            remaining = [c for i, c in enumerate(cats) if i not in consumed]
+            remap_mesh, remap_parts = {}, {}
+            for new_i, old_i in enumerate([i for i in range(len(cats)) if i not in consumed]):
+                if old_i in custom_mesh:
+                    remap_mesh[new_i] = custom_mesh[old_i]
+                    remap_parts[new_i] = custom_parts.get(old_i)
+            cats, custom_mesh = remaining, remap_mesh
+            custom_parts = {k: v for k, v in remap_parts.items() if v}
+
         # 4) solver objects — with the room-builder's HUMAN layer: small seating
         # pairs with a worksurface (its pull-out space is reserved in the solve;
         # afterwards the chair is placed in front of it, rotated to FACE it)
@@ -1027,7 +1214,7 @@ def main():
         _TOP_SLOTS = [[0.0, -0.05], [-0.35, -0.02], [0.35, -0.02]]
         tops_of = {}                        # surface index -> [electronics indices]
         unhosted_tops = []                  # electronics with no desk/table in the room
-        for ti in [i for i, c in enumerate(cats) if c in ("monitor", "laptop")]:
+        for ti in [i for i, c in enumerate(cats) if c in ("monitor", "laptop", "coffee_machine")]:
             hosts = sorted(surf_idx, key=lambda j: len(tops_of.get(j, [])))
             if not hosts:
                 unhosted_tops.append(cats[ti])
@@ -1079,13 +1266,17 @@ def main():
             expand[oid] = {"extra_d": extra_d, "child": child_i,
                            "d_par": float(e[1]), "tops": tops_of.get(i, []),
                            "stools": stools_of.get(i, [])}
-        if not objs:
+        if not objs and not (rt == "presentation" and pres_items):
             continue
 
         # fit-as-many-as-possible is native now: the solver's optional placement keeps
         # the maximum ergonomic subset and reports the rest as placed=False.
-        res = spatial_layout.layout_room({"width": float(W), "depth": float(D), "height": 3.0},
-                                         objs, obstacles=keepouts)
+        # (a presentation room whose row engine consumed EVERY pick skips the solve)
+        if objs:
+            res = spatial_layout.layout_room({"width": float(W), "depth": float(D), "height": 3.0},
+                                             objs, obstacles=keepouts)
+        else:
+            res = {"placements": [], "zones": {}, "unplaced": [], "circulation": {}}
         placed_ps = [p for p in res["placements"] if p.get("placed") and p.get("position")]
         skipped_items += len(res["placements"]) - len(placed_ps)
         # solver-dropped items (and their paired chairs/electronics) join the report
@@ -1104,7 +1295,7 @@ def main():
                 skipped_items += 1
         circ = res.get("circulation") or {}
         unreachable = [oid.rsplit("-", 1)[0] for oid in (circ.get("unreachable") or [])]
-        if not placed_ps:
+        if not placed_ps and not (rt == "presentation" and pres_items):
             schedule.append({"room": name, "type": rt or "picked", "area_m2": round(W * D, 1),
                              "placed": 0, "items": [], "dropped": dropped,
                              "unreachable": unreachable})
@@ -1112,7 +1303,7 @@ def main():
 
         # resolve final per-item placements (parents pulled back to their true
         # centre; paired chairs in front of the surface, facing it)
-        room_items = []
+        room_items = list(pres_items) if rt == "presentation" else []
         zones_room = dict(res.get("zones") or {})
         for p in placed_ps:
             oid = p["id"]
