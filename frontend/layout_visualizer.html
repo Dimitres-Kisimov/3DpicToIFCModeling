@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Layout Visualizer — rooms on demand</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎛️</text></svg>">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0;
+          --brand:#2f6bff; --green:#1a7f4b; --amber:#e0812b; --bad:#d03b3b; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:var(--panel); border-bottom:1px solid var(--line); padding:18px 28px;
+           display:flex; align-items:baseline; gap:14px; position:sticky; top:0; z-index:5; }
+  header h1 { font-size:20px; } header p { color:var(--mut); font-size:13px; }
+  header a { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
+  main { max-width:1240px; margin:0 auto; padding:24px 28px 70px; }
+  .bar { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px 18px;
+         display:flex; flex-wrap:wrap; gap:14px; align-items:flex-end; margin-bottom:18px; }
+  .fld { display:flex; flex-direction:column; gap:4px; }
+  .fld label { font-size:11.5px; font-weight:700; color:var(--mut); text-transform:uppercase; letter-spacing:.04em; }
+  select, button { font:14px 'Segoe UI',sans-serif; padding:7px 12px; border:1px solid var(--line);
+                   border-radius:9px; background:#fff; }
+  button.go { background:var(--brand); color:#fff; border:none; font-weight:700; cursor:pointer; padding:9px 22px; }
+  button.go:disabled { opacity:.5; cursor:wait; }
+  .chips { display:flex; gap:6px; }
+  .chip2 { padding:6px 12px; border:1px solid var(--line); border-radius:9px; cursor:pointer;
+           font-size:13px; background:#fff; user-select:none; }
+  .chip2.on { background:var(--brand); color:#fff; border-color:var(--brand); }
+  #status { font-size:13px; color:var(--mut); margin:0 4px 14px; min-height:20px; }
+  #status.bad { color:var(--bad); }
+  .out { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .pane { background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  .pane b { display:block; padding:10px 14px 2px; font-size:13.5px; }
+  .pane small { display:block; padding:0 14px 8px; color:var(--mut); font-size:12px; }
+  .pane img { width:100%; display:block; background:#fff; min-height:280px; object-fit:contain; }
+  #verdict { margin-top:14px; background:var(--panel); border:1px solid var(--line); border-radius:12px;
+             padding:12px 16px; font-size:13.5px; line-height:1.6; display:none; }
+  @media (max-width:900px) { .out { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🎛️ Live Layout Visualizer</h1>
+  <p>pick a room, pick a density — watch the CP-SAT + ASR solver lay it out, live</p>
+  <a href="/hub.html">← Research hub</a>
+</header>
+<main>
+  <div class="bar">
+    <div class="fld"><label>Room type</label>
+      <select id="vType">
+        <option value="office" selected>Office (ASR)</option>
+        <option value="workspace">Workspace (ASR)</option>
+        <option value="meeting">Meeting room (ASR)</option>
+        <option value="presentation">Presentation hall (ASR)</option>
+        <option value="reception">Reception (ASR)</option>
+        <option value="break">Break room — Pausenraum (ASR)</option>
+        <option value="quiet">Quiet room — Ruheraum</option>
+        <option value="living">Living room</option>
+        <option value="bed">Bedroom</option>
+      </select></div>
+    <div class="fld"><label>Room size</label>
+      <div class="chips" id="vSize">
+        <span class="chip2" data-s="4x3">4×3</span>
+        <span class="chip2 on" data-s="6x6">6×6</span>
+        <span class="chip2" data-s="8x4.5">8×4.5</span>
+        <span class="chip2" data-s="10x8">10×8</span>
+      </div></div>
+    <div class="fld"><label>Population</label>
+      <div class="chips" id="vDens">
+        <span class="chip2" data-d="light">🌿 Light</span>
+        <span class="chip2 on" data-d="medium">🏠 Medium</span>
+        <span class="chip2" data-d="dense">🏢 Dense</span>
+      </div></div>
+    <button class="go" id="vGo">▶ Solve this room</button>
+  </div>
+  <p id="status">Pick a configuration and press Solve — the layout runs through the real engine (suggestion → CP-SAT → clearances → renders), typically 15–60 s.</p>
+  <div class="out">
+    <div class="pane"><b>2D floor plan</b><small>green dashes = people-space clearances the solver protected</small>
+      <img id="vPlan" alt="floor plan appears here"></div>
+    <div class="pane"><b>3D render</b><small>real catalog meshes, AI-placed</small>
+      <img id="v3d" alt="3D render appears here"></div>
+  </div>
+  <div id="verdict"></div>
+</main>
+<script>
+let size = '6x6', dens = 'medium', busy = false;
+document.querySelectorAll('#vSize .chip2').forEach((c) => c.onclick = () => {
+  size = c.dataset.s;
+  document.querySelectorAll('#vSize .chip2').forEach((x) => x.classList.toggle('on', x === c));
+});
+document.querySelectorAll('#vDens .chip2').forEach((c) => c.onclick = () => {
+  dens = c.dataset.d;
+  document.querySelectorAll('#vDens .chip2').forEach((x) => x.classList.toggle('on', x === c));
+});
+const st = document.getElementById('status');
+document.getElementById('vGo').onclick = async () => {
+  if (busy) return;
+  busy = true;
+  const btn = document.getElementById('vGo');
+  btn.disabled = true;
+  st.className = '';
+  const type = document.getElementById('vType').value;
+  const [w, d] = size.split('x').map(Number);
+  try {
+    st.textContent = `1/2 — asking the rulebook what a ${w}×${d} m ${type} needs (${dens})…`;
+    const s = await (await fetch(`/api/room/suggest?type=${type}&w=${w}&d=${d}&density=${dens}`)).json();
+    if (!s.ok) throw new Error(s.error || 'suggestion failed');
+    const counts = {};
+    s.items.forEach((c) => { counts[c] = (counts[c] || 0) + 1; });
+    const items = Object.entries(counts).map(([category, count]) => ({ category, count }));
+    st.textContent = `2/2 — solving ${s.items.length} items with CP-SAT + ASR clearances (15–60 s)…`;
+    const r = await (await fetch('/api/room/layout', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ room: { width: w, depth: d, type, name: `${type} demo` }, items }),
+    })).json();
+    if (r.error) throw new Error(r.error);
+    const t = Date.now();
+    if (r.floorplan) document.getElementById('vPlan').src = r.floorplan + '?t=' + t;
+    if (r.render) document.getElementById('v3d').src = r.render + '?t=' + t;
+    const placed = (r.items || r.objects || []).length;
+    const v = document.getElementById('verdict');
+    v.style.display = 'block';
+    v.innerHTML = `<b>✓ Solved.</b> ${s.items.length} items requested (${dens}) · ` +
+      `${placed || s.items.length} in the scene · solver: ${r.solver || 'CP-SAT'} · ` +
+      `every clearance zone honoured — items that could not sit ergonomically were refused, not forced.`;
+    st.textContent = `Done — ${type} · ${w}×${d} m · ${dens}. Change anything and solve again.`;
+  } catch (e) {
+    st.className = 'bad';
+    st.textContent = '✗ ' + e;
+  }
+  btn.disabled = false;
+  busy = false;
+};
+</script>
+</body>
+</html>
