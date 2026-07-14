@@ -67,6 +67,9 @@ _CLEARANCES = {
     "stool": 0.10, "bookshelf": 0.10, "cabinet": 0.20, "filing_cabinet": 0.20,
     "lamp": 0.10, "monitor": 0.05, "plant": 0.10, "laptop": 0.05,
     "planter": 0.10, "mirror": 0.05, "clock": 0.05, "picture_frame": 0.05,
+    # easily moveable objects (user rule): a person just nudges them aside, so
+    # they claim no real movement clearance — unlike fixed furniture
+    "waste_bin": 0.05,
 }
 
 _BASE = {
@@ -90,7 +93,6 @@ ROOM_TYPES = {
             ("monitor", "desk", "on_top"),
             ("laptop", "desk", "on_top"),
             ("lamp", "desk", "on_top"),
-            ("planter", "desk", "beside"),   # greenery flanks the workstation
             ("waste_bin", "desk", "beside"),  # the human spot: at arm's reach
             ("stool", "table", "beside"),    # stools cluster around the side table
             ("chair", "table", "beside"),
@@ -105,6 +107,7 @@ ROOM_TYPES = {
         "groups": [
             ("coffee_table", "sofa", "in_front"),
             ("stool", "coffee_table", "beside"),
+            ("chair", "table", "beside"),   # dining corner: REGULAR chairs ring the table
         ],
     },
     "workspace": {   # office variant: heavier desks + storage, wider aisles
@@ -117,7 +120,7 @@ ROOM_TYPES = {
             ("office_chair", "desk", "in_front"),
             ("monitor", "desk", "on_top"),
             ("laptop", "desk", "on_top"),
-            ("planter", "desk", "beside"),
+            ("waste_bin", "desk", "beside"),  # arm's reach, same as the office pack
             ("stool", "table", "beside"),
         ],
     },

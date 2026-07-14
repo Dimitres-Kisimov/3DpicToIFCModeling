@@ -72,6 +72,11 @@
       const r = await fetch(`/api/room/suggest?type=${type}&w=${w}&d=${d}&density=${rbDensity}`);
       const s = await r.json();
       if (!s.ok) { banner('Suggestion failed: ' + (s.error || '?'), true); return; }
+      if (!s.items || !s.items.length) {
+        banner(`No suggestion for a ${w}×${d} m ${type} — below the legal minimum ` +
+          'for this room type. Try a larger size.', true);
+        return;                     // keep the user's current selection intact
+      }
       Object.keys(counts).forEach((c) => { counts[c] = 0; });
       Object.keys(chosen).forEach((c) => { delete chosen[c]; });   // chosen is const
       (s.items || []).forEach((c) => { counts[c] = (counts[c] || 0) + 1; });

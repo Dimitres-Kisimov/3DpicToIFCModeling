@@ -336,6 +336,21 @@ def _solve_layout_ortools(room, objects, obstacles=None):
             model.AddAbsEquality(dcz, mz)
             gap_terms.append(dcx)
             gap_terms.append(dcz)
+        elif p["obj"].get("prefer") == "corner":
+            # corner accents (planters): BOTH nearest-wall gaps go to zero, so the
+            # piece settles into a corner / along the glazing — never mid-room
+            x, z, ex, ez = p["x"], p["z"], p["ex"], p["ez"]
+            oid = p["obj"]["id"]
+            drx = model.NewIntVar(0, room_w, f"crx_{oid}")
+            model.Add(drx == room_w - ex)
+            dxm = model.NewIntVar(0, room_w, f"cxm_{oid}")
+            model.AddMinEquality(dxm, [x, drx])
+            drz = model.NewIntVar(0, room_d, f"crz_{oid}")
+            model.Add(drz == room_d - ez)
+            dzm = model.NewIntVar(0, room_d, f"czm_{oid}")
+            model.AddMinEquality(dzm, [z, drz])
+            gap_terms.append(2 * dxm)
+            gap_terms.append(2 * dzm)
         elif p["wall_gap"] is not None:
             gap_terms.append(p["wall_gap"])
         elif _is_perimeter(p["obj"]):

@@ -208,6 +208,16 @@ def _chair_forward_xz(obj):
 _SCREEN_FLIP = {"monitor": 180.0, "laptop": 180.0}
 
 
+def _petal_radius(pw, pdep, kid_max, n_eff):
+    """Ring radius for 'beside' petals around a pw×pdep parent: clear of the
+    parent on its LONG axis plus breathing room, and wide enough that adjacent
+    petals (chord = 2r·sin(pi/n)) never touch each other."""
+    r = max(pw, pdep) / 2 + kid_max / 2 + 0.12
+    if n_eff > 1:
+        r = max(r, (kid_max + 0.06) / (2 * math.sin(math.pi / n_eff)))
+    return r
+
+
 def _resolve_layout(room: dict, objects: list):
     """Solve free-standing objects with CP-SAT, then place 'anchored' objects
     functionally relative to their anchor — chair in front of desk (facing it),
@@ -245,7 +255,7 @@ def _resolve_layout(room: dict, objects: list):
     solver_objs, meta = [], {}
     for o in free:
         w = float(o["dimensions"]["width"]); d = float(o["dimensions"]["depth"])
-        extra_d = 0.0; extra_w = 0.0; front_w = w; beside_n = 0
+        extra_d = 0.0; extra_w = 0.0; front_w = w; beside_n = 0; beside_max = 0.0
         for c in direct.get(o["id"], []):
             rel = c["anchor"].get("relation", "in_front")
             cwd = float(c["dimensions"]["width"]); cdd = float(c["dimensions"]["depth"])
@@ -254,10 +264,23 @@ def _resolve_layout(room: dict, objects: list):
             elif rel == "beside":
                 extra_w += GAP + cwd
                 beside_n += 1
+                beside_max = max(beside_max, cwd, cdd)
         entry = {"id": o["id"], "width": max(w, front_w) + extra_w,
                  "depth": d + extra_d, "category": o.get("category", "")}
         if beside_n >= 2:
+            # the petal ring is RADIAL — reserve its full circumscribing square,
+            # not a widened strip, or chairs above/below the table escape the
+            # box and collide with the next table's ring (must mirror the petal
+            # pass radius formula, including the chord spread for many kids)
+            n_eff = 2 * (beside_n - 1) if extra_d > 0 and beside_n > 1 else beside_n
+            ring_r = _petal_radius(w, d, beside_max, n_eff)
+            side = 2 * (ring_r + beside_max / 2)
+            entry["width"] = max(max(w, front_w), side)
+            entry["depth"] = max(d + extra_d, side)
             entry["prefer"] = "center"     # a stool-ringed table is social — keep it open
+        elif o.get("category") == "planter":
+            entry["prefer"] = "corner"     # greenery lives in corners / by the glazing,
+                                           # never in the middle of a room (user rule)
         solver_objs.append(entry)
         meta[o["id"]] = {"w": w, "d": d, "extra_d": extra_d}
 
@@ -383,11 +406,24 @@ def _resolve_layout(room: dict, objects: list):
         pd = by_id[parent_id]["dimensions"]
         ax_, az_ = par["position"][0], par["position"][2]
         base = math.radians((par.get("rotation") or [0, 0, 0])[1])   # start at the front
+        # a parent with an in_front child (desk + chair) has a PERSON at its
+        # front — fan the beside kids over the sides/back arc only, or the
+        # first petal lands exactly on the chair. Same when the parent ITSELF
+        # is anchored in_front of something (a coffee table faces its sofa):
+        # its front sector holds the sofa.
+        occupied_front = (any(c.get("anchor", {}).get("relation", "in_front") == "in_front"
+                              for c in direct.get(parent_id, []))
+                          or (by_id[parent_id].get("anchor") or {}).get("relation") == "in_front")
+        kid_max = max(max(float(c["dimensions"]["width"]), float(c["dimensions"]["depth"]))
+                      for c in kids)
+        # a half-arc fan spaces petals like a full circle of 2(n-1) — same chord
+        n_eff = 2 * (len(kids) - 1) if occupied_front and len(kids) > 1 else len(kids)
+        r = _petal_radius(float(pd["width"]), float(pd["depth"]), kid_max, n_eff)
         for k, c in enumerate(kids):
-            cd = c["dimensions"]
-            r = (max(float(pd["width"]), float(pd["depth"])) / 2
-                 + max(float(cd["width"]), float(cd["depth"])) / 2 + 0.12)
-            ang = base + 2 * math.pi * k / len(kids)
+            if occupied_front:
+                ang = base + math.radians(90 + 180 * k / max(1, len(kids) - 1))
+            else:
+                ang = base + 2 * math.pi * k / len(kids)
             px_, pz_ = ax_ + math.sin(ang) * r, az_ + math.cos(ang) * r
             px_, pz_ = _clamp_in_room(px_, pz_, c, 0)
             pos[c["id"]] = {"id": c["id"], "position": [px_, 0.0, pz_],

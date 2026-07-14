@@ -129,10 +129,16 @@ def smart_furnish(rt, W, D, assets, density="medium"):
     area = W * D * DENSITY_FACTOR.get(density, 1.0)
     items = []
     if rt == "living":
-        items += ["sofa"]
-        if area > 12: items += ["table"]           # coffee table
-        if area > 10: items += ["lamp"]
+        items += ["sofa"]                          # the couch core (user-approved)
+        if area > 10: items += ["coffee_table", "lamp"]
+        if area > 18:                              # dining corner: REGULAR chairs, never office chairs
+            items += ["table"] + ["chair"] * min(6, max(2, int(area / 8)))
+        if area > 16: items += ["armchair", "side_table"]
+        if area > 24: items += ["stool", "stool"]  # ring the coffee table
         if area > 22: items += ["bookshelf"]
+        if area > 28: items += ["sofa"]            # second couch in big rooms
+        if area > 14: items += ["planter"]         # corner greenery (never mid-room)
+        if area > 30: items += ["planter"]
     elif rt == "lounge":
         items += ["sofa"] + (["sofa"] if area > 16 else [])
         items += ["stool"] * min(4, max(1, int(area / 8)))
@@ -166,6 +172,25 @@ def smart_furnish(rt, W, D, assets, density="medium"):
         if area > 22: items += ["bookshelf"]
         if area > 20: items += ["printer", "waste_bin"]      # shared MFP + bin (tier-2)
         if area > 40: items += ["fire_extinguisher"]         # ASR A2.2 spirit
+    elif rt == "workspace":
+        # office variant per its rule pack (heavier desks + storage, wider
+        # aisles): fewer workstations per m2 than a Zellenbuero, and the
+        # storage wall (cabinets/filing/lockers) grows with area. Same ASR
+        # sect.5 Abs.3 legal cap as offices — workspace is in ASR_ROOM_TYPES.
+        true_area = W * D
+        if os.environ.get("SCS_ASR", "1") != "0":
+            legal_cap = 1 + max(0, int((true_area - 8.0) / 6.0))
+            n_ws = min(int(area / 12.5), legal_cap)   # 1.20 m aisles -> sparser
+            n_ws = min(10, max(1 if true_area >= 8.0 else 0, n_ws))
+        else:
+            n_ws = min(6, max(1, int(area / 9.0)))
+        for _ in range(n_ws):
+            items += ["desk", "office_chair", "monitor"]
+        items += ["cabinet"] * min(3, max(1, int(area / 14)))
+        if area > 12: items += ["filing_cabinet", "waste_bin"]
+        if area > 18: items += ["bookshelf"]
+        if area > 24: items += ["locker", "printer"]
+        if area > 40: items += ["fire_extinguisher"]
     elif rt == "dining":
         items += ["table"] + ["chair"] * min(8, max(2, int(area / 3)))
     elif rt == "meeting":
@@ -1439,6 +1464,8 @@ def main():
                      "depth": float(d_ + extra_d + 2 * ring), "height": float(e[2])}
             if ring > 0:
                 entry["prefer"] = "center"   # a stool-ringed table is social — keep it open
+            elif cat == "planter":
+                entry["prefer"] = "corner"   # greenery lives in corners, never mid-room
             objs.append(entry)
             meshmap[oid] = mesh_of(i)
             partsmap[oid] = parts_of(i)
