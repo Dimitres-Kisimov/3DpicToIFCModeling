@@ -213,6 +213,73 @@
     });
   }
 
+  // ------------------------------------------------- layout blueprint (user spec)
+  // Copy a POPULATED room's item POSITIONS to every room of the same type:
+  //  * exact-size target (<=5 cm difference): verbatim copy, shifted by the
+  //    chosen anchor (center / left / right / top / bottom)
+  //  * slightly different (each dimension shrinks by <=0.6 m): anchored copy,
+  //    then every piece is legality-checked (walls, keep-outs, other pieces,
+  //    people-space) — pieces that would clash keep their old spot
+  //  * substantially smaller (>0.6 m lost in a dimension): refused with an
+  //    explicit 'too different' message — no silent squeezing
+  // Items are matched by category, so run the PICKS blueprint + populate first.
+  function applyLayoutBlueprint(srcRoom, anchor) {
+    const src = roomsData.find((x) => x.name === srcRoom);
+    if (!src) return;
+    const srcPieces = Object.entries(bPieces)
+      .filter(([, p]) => p.room === srcRoom && (p.elev || 0) <= 0.01);
+    if (!srcPieces.length) {
+      toast('Populate the building first — this room has no placed items yet.', 'bad');
+      return;
+    }
+    const [sx, sy, sW, sD] = src.rect;
+    const rel = srcPieces.map(([pid, p]) => {
+      const [lx, ly] = toLocal(p.pos[0], -p.pos[2]);
+      return { cat: p.category, dx: lx - sx, dy: ly - sy };
+    });
+    const targets = roomsData.filter((x) =>
+      x.furnishable !== false && x.type === src.type && x.name !== srcRoom);
+    if (!targets.length) {
+      toast(`No other ${src.type} rooms in this building.`, 'info');
+      return;
+    }
+    let applied = 0;
+    const errors = [];
+    targets.forEach((t) => {
+      const [tx, ty, tW, tD] = t.rect;
+      const dW = tW - sW, dD = tD - sD;
+      if (dW < -0.6 || dD < -0.6) {
+        errors.push(`"${t.name}" is too different (${Math.max(-dW, -dD).toFixed(1)} m smaller) — not applied`);
+        return;
+      }
+      const exact = Math.abs(dW) <= 0.05 && Math.abs(dD) <= 0.05;
+      const offX = anchor === 'left' ? 0 : anchor === 'right' ? dW : dW / 2;
+      const offY = anchor === 'bottom' ? 0 : anchor === 'top' ? dD : dD / 2;
+      const pool = Object.entries(bPieces)
+        .filter(([, p]) => p.room === t.name && (p.elev || 0) <= 0.01);
+      const used = new Set();
+      let moved = 0, clashed = 0, missing = 0;
+      rel.forEach((b) => {
+        const hit = pool.find(([pid, p]) => !used.has(pid) && p.category === b.cat);
+        if (!hit) { missing++; return; }
+        const [pid, p] = hit;
+        used.add(pid);
+        const old = [...p.pos];
+        const [wx, wy] = toWorld(tx + b.dx + offX, ty + b.dy + offY);
+        p.pos[0] = Math.round(wx * 100) / 100;
+        p.pos[2] = -Math.round(wy * 100) / 100;
+        if (exact || isLegalPiece(pid)) { moved++; refreshPiece(pid); }
+        else { p.pos = old; try { p.model.position = p.pos; } catch (e) {} clashed++; }
+      });
+      if (moved) applied++;
+      if (clashed) errors.push(`"${t.name}": ${clashed} item(s) would clash — they kept their old spot`);
+      if (missing) errors.push(`"${t.name}": ${missing} blueprint item(s) not present there (populate with the same picks first)`);
+    });
+    updateClashUI();
+    banner(`📐 Layout blueprint (${anchor}): applied to ${applied}/${targets.length} ${src.type} room(s)` +
+      (errors.length ? ' · ' + errors.join(' · ') : ''), errors.length > 0);
+  }
+
   // ------------------------------------------------------- capacity guard
   // real footprints (mirrors populate_building.TARGET_DIMS) × a people-space
   // factor — the legroom / pull-out / approach zone the solver will reserve
@@ -245,7 +312,8 @@
     card.className = 'roomcard';
     const times = copies > 1 ? ` ×${copies}` : '';
     card.innerHTML =
-      `<div class="roomhdr" title="right-click = use this room's furniture as the BLUEPRINT for every ${r.type} room"><b>${r.name}${times}</b> <small>${r.type} · ${r.area} m²</small></div>` +
+      `<div class="roomhdr" title="right-click = copy this room's PICKS to every ${r.type} room"><b>${r.name}${times}</b> <small>${r.type} · ${r.area} m²</small>` +
+      ` <button class="btn btn-tiny bp-layout" data-bp="${r.name}" title="after populating: make this room's LAYOUT the blueprint for every ${r.type} room (positions copied; exact-size rooms match 1:1, slightly different rooms are clash-checked, too-small rooms are refused)">📐</button></div>` +
       `<div class="roomchips"></div>` +
       `<select class="roomadd"><option value="">+ add item…</option>` +
       allCategories.map((c) => `<option value="${c}">${c.replace(/_/g, ' ')}</option>`).join('') +
@@ -293,6 +361,19 @@
       }
     };
     render();
+    card.querySelector('.bp-layout').onclick = (ev) => {
+      ev.stopPropagation();
+      const anchor = (prompt(
+        `Blueprint "${r.name}" layout onto every ${r.type} room.
+` +
+        'Anchor the layout: center / left / right / top / bottom', 'center') || '').trim().toLowerCase();
+      if (!anchor) return;
+      if (!['center', 'left', 'right', 'top', 'bottom'].includes(anchor)) {
+        toast('Anchor must be center, left, right, top or bottom.', 'bad');
+        return;
+      }
+      applyLayoutBlueprint(r.name, anchor);
+    };
     // BLUEPRINT: right-click the header -> copy this room's picks to every room
     // of the same TYPE (same-name rooms already share picks by construction).
     // Each target keeps only what fits its own usable area — 'adjustingly'.
