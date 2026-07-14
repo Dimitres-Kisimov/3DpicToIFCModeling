@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human Layouts — room types at three densities</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛋️</text></svg>">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0;
+          --brand:#2f6bff; --green:#1a7f4b; --amber:#e0812b; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:var(--panel); border-bottom:1px solid var(--line); padding:18px 28px;
+           display:flex; align-items:baseline; gap:14px; position:sticky; top:0; z-index:5; }
+  header h1 { font-size:20px; } header p { color:var(--mut); font-size:13px; }
+  header a { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
+  main { max-width:1240px; margin:0 auto; padding:26px 28px 80px; }
+  .intro { background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--brand);
+           border-radius:12px; padding:16px 20px; font-size:14px; line-height:1.65; margin-bottom:26px; }
+  h2 { font-size:15px; text-transform:uppercase; letter-spacing:.05em; color:var(--mut); margin:30px 4px 6px; }
+  .sub { font-size:13px; color:var(--mut); margin:0 4px 14px; }
+  .row { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .panel b { display:block; font-size:13px; padding:9px 13px 2px; }
+  .panel small { display:block; color:var(--mut); font-size:11.5px; padding:0 13px 8px; }
+  .imgs { display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--line); }
+  .imgs img { width:100%; display:block; background:#fff; aspect-ratio:1; object-fit:contain; }
+  .tier { font-size:10.5px; font-weight:700; border-radius:5px; padding:1px 8px; color:#fff;
+          background:var(--green); margin-left:6px; }
+  .tier.d2 { background:var(--amber); } .tier.d3 { background:#d03b3b; }
+  @media (max-width:900px) { .row { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>🛋️ Human Layouts</h1>
+  <p>the same room types at three escalating densities — through the real solver, ASR intact</p>
+  <a href="/hub.html">← Research hub</a>
+</header>
+<main>
+  <div class="intro">
+    <b>What this shows:</b> six room types populated at <b>dense</b>, <span class="tier d2">denser</span>
+    and <span class="tier d3">densest</span> levels with item combinations a human would choose —
+    following activity-based zoning (the modern-workplace standard: focus, collaboration and social
+    micro-environments), the relational rules (chairs face their desks, the projector throws onto its
+    screen, the bin sits at arm's reach, the coat rack flanks the door) and the full German ASR
+    envelope (movement areas, route widths, legal staffing caps). Left = the solver's 2D floor plan
+    with green clearance halos; right = the 3D render. Densities that would violate a clearance are
+    trimmed by the capacity guard — never forced.
+  </div>
+
+  <div id="grid"></div>
+</main>
+<script>
+const SECTIONS = [
+  ['Office — workstations, then infrastructure, then everything', 'ASR A1.2: 8 m² + 6 m² staffing cap, 1.5 m² movement areas at every desk', [
+    ['office_dense', 'dense — 3 workstations + printer + bin', '6×6 m'],
+    ['office_denser', 'denser — 4 workstations + partition + locker', '6×6 m'],
+    ['office_densest', 'densest — 5 workstations + everything + extinguisher', '6×6 m'],
+  ]],
+  ['Office — alternative geometry, same rules', 'a wide 8×4.5 m room produces a different, equally legal layout', [
+    ['office_wide_layout', 'denser set in a wide room', '8×4.5 m'],
+  ]],
+  ['Meeting room — the table core grows presentation gear', 'flipchart at hand, projector throwing onto the screen', [
+    ['meeting_dense', 'dense — table + 6 chairs + whiteboard', '5×4 m'],
+    ['meeting_denser', 'denser — + screen, projector, flipchart', '5×4 m'],
+    ['meeting_densest', 'densest — 10 chairs + water + storage', '6×5 m'],
+  ]],
+  ['Break room (Pausenraum, ASR A4.2)', 'eat, store, recycle — first-aid at eye level', [
+    ['break_dense', 'dense — table, chairs, coffee, bin', '5×4 m'],
+    ['break_denser', 'denser — + fridge, microwave, water, first-aid', '5×4 m'],
+    ['break_densest', 'densest — 2 tables, sofa corner, lockers', '6×5 m'],
+  ]],
+  ['Reception — greet, wait, hang your coat', 'the coat rack flanks the door; the bin never shares its side', [
+    ['reception_dense', 'dense — desk + 2 armchairs + coat rack', '5×3.5 m'],
+    ['reception_denser', 'denser — + side table, planter, bin', '5×3.5 m'],
+    ['reception_densest', 'densest — sofa + 4 armchairs + water', '6×4 m'],
+  ]],
+  ['Quiet room (Ruheraum) — calm by design', 'even "densest" stays sparse: that is the human logic of this room type', [
+    ['quiet_dense', 'dense — one armchair', '3.5×3.5 m'],
+    ['quiet_denser', 'denser — two armchairs + lamp', '3.5×3.5 m'],
+    ['quiet_densest', 'densest — reading corner with sofa', '4.5×4 m'],
+  ]],
+  ['Living room — the residential control group', 'proves the workplace logic never leaks into homes', [
+    ['living_dense', 'dense — sofa, coffee table, lamp', '5×5 m'],
+    ['living_densest', 'densest — full lounge', '5×5 m'],
+  ]],
+];
+const grid = document.getElementById('grid');
+SECTIONS.forEach(([title, sub, rows]) => {
+  grid.insertAdjacentHTML('beforeend', `<h2>${title}</h2><p class="sub">${sub}</p>`);
+  const row = document.createElement('div');
+  row.className = 'row';
+  rows.forEach(([id, label, dims], k) => {
+    row.insertAdjacentHTML('beforeend',
+      `<div class="panel"><b>${label}<span class="tier${k === 1 ? ' d2' : k === 2 ? ' d3' : ''}">` +
+      `${k === 0 ? 'dense' : k === 1 ? 'denser' : 'densest'}</span></b><small>${dims} · CP-SAT + ASR</small>` +
+      `<div class="imgs"><img src="/docs-img/human_layouts/${id}_plan.png" loading="lazy" ` +
+      `onerror="this.style.opacity=.15"><img src="/docs-img/human_layouts/${id}_3d.png" loading="lazy" ` +
+      `onerror="this.style.opacity=.15"></div></div>`);
+  });
+  grid.appendChild(row);
+});
+</script>
+</body>
+</html>

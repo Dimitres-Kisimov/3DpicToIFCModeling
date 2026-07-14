@@ -65,6 +65,7 @@ app.use('/manuals-src', express.static(path.join(__dirname, '../deliverable/manu
 // Benchmark galleries + candidate visualizer (used to live on :8000) — the 11
 // list pages, the multi-AI 3D visualizer, and the photo-angle guide, one origin.
 app.use('/benchmark', express.static(path.join(__dirname, '../benchmark')));
+app.use('/docs-img', express.static(path.join(__dirname, '../docs')));   // showcase renders
 
 // ============================================================================
 // ROUTES

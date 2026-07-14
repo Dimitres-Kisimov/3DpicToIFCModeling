@@ -1,0 +1,146 @@
+[
+ {
+  "name": "office_dense",
+  "type": "office",
+  "room": "6x6 m",
+  "items": 13,
+  "ok": true,
+  "secs": 26
+ },
+ {
+  "name": "office_denser",
+  "type": "office",
+  "room": "6x6 m",
+  "items": 21,
+  "ok": true,
+  "secs": 34
+ },
+ {
+  "name": "office_densest",
+  "type": "office",
+  "room": "6x6 m",
+  "items": 27,
+  "ok": true,
+  "secs": 66
+ },
+ {
+  "name": "office_wide_layout",
+  "type": "office",
+  "room": "8x4.5 m",
+  "items": 18,
+  "ok": true,
+  "secs": 28
+ },
+ {
+  "name": "meeting_dense",
+  "type": "meeting",
+  "room": "5x4 m",
+  "items": 8,
+  "ok": true,
+  "secs": 26
+ },
+ {
+  "name": "meeting_denser",
+  "type": "meeting",
+  "room": "5x4 m",
+  "items": 13,
+  "ok": true,
+  "secs": 32
+ },
+ {
+  "name": "meeting_densest",
+  "type": "meeting",
+  "room": "6x5 m",
+  "items": 18,
+  "ok": true,
+  "secs": 41
+ },
+ {
+  "name": "break_dense",
+  "type": "break",
+  "room": "5x4 m",
+  "items": 7,
+  "ok": true,
+  "secs": 14
+ },
+ {
+  "name": "break_denser",
+  "type": "break",
+  "room": "5x4 m",
+  "items": 11,
+  "ok": true,
+  "secs": 14
+ },
+ {
+  "name": "break_densest",
+  "type": "break",
+  "room": "6x5 m",
+  "items": 22,
+  "ok": true,
+  "secs": 25
+ },
+ {
+  "name": "reception_dense",
+  "type": "reception",
+  "room": "5x3.5 m",
+  "items": 6,
+  "ok": true,
+  "secs": 22
+ },
+ {
+  "name": "reception_denser",
+  "type": "reception",
+  "room": "5x3.5 m",
+  "items": 10,
+  "ok": true,
+  "secs": 30
+ },
+ {
+  "name": "reception_densest",
+  "type": "reception",
+  "room": "6x4 m",
+  "items": 15,
+  "ok": true,
+  "secs": 36
+ },
+ {
+  "name": "quiet_dense",
+  "type": "quiet",
+  "room": "3.5x3.5 m",
+  "items": 3,
+  "ok": true,
+  "secs": 13
+ },
+ {
+  "name": "quiet_denser",
+  "type": "quiet",
+  "room": "3.5x3.5 m",
+  "items": 5,
+  "ok": true,
+  "secs": 20
+ },
+ {
+  "name": "quiet_densest",
+  "type": "quiet",
+  "room": "4.5x4 m",
+  "items": 9,
+  "ok": true,
+  "secs": 30
+ },
+ {
+  "name": "living_dense",
+  "type": "living",
+  "room": "5x5 m",
+  "items": 3,
+  "ok": true,
+  "secs": 14
+ },
+ {
+  "name": "living_densest",
+  "type": "living",
+  "room": "5x5 m",
+  "items": 9,
+  "ok": true,
+  "secs": 28
+ }
+]
