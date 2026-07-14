@@ -132,13 +132,17 @@ def smart_furnish(rt, W, D, assets, density="medium"):
         items += ["sofa"]                          # the couch core (user-approved)
         if area > 10: items += ["coffee_table", "lamp"]
         if area > 18:                              # dining corner: REGULAR chairs, never office chairs
-            items += ["table"] + ["chair"] * min(6, max(2, int(area / 8)))
+            items += ["table"] + ["chair"] * min(8, max(2, int(area / 8)))
         if area > 16: items += ["armchair", "side_table"]
         if area > 24: items += ["stool", "stool"]  # ring the coffee table
         if area > 22: items += ["bookshelf"]
         if area > 28: items += ["sofa"]            # second couch in big rooms
         if area > 14: items += ["planter"]         # corner greenery (never mid-room)
         if area > 30: items += ["planter"]
+        # large living spaces keep growing (user rule: expand with the space)
+        if area > 40: items += ["armchair", "side_table", "lamp"]
+        if area > 55: items += ["bookshelf", "cabinet", "planter"]
+        if area > 70: items += ["sofa", "coffee_table", "stool", "stool", "lamp"]
     elif rt == "lounge":
         items += ["sofa"] + (["sofa"] if area > 16 else [])
         items += ["stool"] * min(4, max(1, int(area / 8)))
@@ -163,15 +167,29 @@ def smart_furnish(rt, W, D, assets, density="medium"):
             per_ws = 12.5 if true_area > 50 else 10.0     # Richtwert target
             legal_cap = 1 + max(0, int((true_area - 8.0) / 6.0))   # 8 + 6n rule
             n_ws = min(int(area / per_ws), legal_cap)
-            n_ws = min(12, max(1 if true_area >= 8.0 else 0, n_ws))
+            if density == "dense":
+                # Dense staffs toward the Abs.3 LEGAL floor (~8 m2/AP effective),
+                # never past it — big rooms fill instead of flatlining
+                n_ws = min(legal_cap, max(n_ws, int(true_area / 8.0)))
+            n_ws = min(24, max(1 if true_area >= 8.0 else 0, n_ws))
         else:
-            n_ws = min(8, max(1, int(area / 6.5)))        # Neufert ~6.5 m2/WS
+            n_ws = min(16, max(1, int(area / 6.5)))       # Neufert ~6.5 m2/WS
         for _ in range(n_ws):
             items += ["desk", "office_chair", "monitor"]
-        if area > 15: items += ["cabinet"]
-        if area > 22: items += ["bookshelf"]
-        if area > 20: items += ["printer", "waste_bin"]      # shared MFP + bin (tier-2)
-        if area > 40: items += ["fire_extinguisher"]         # ASR A2.2 spirit
+        # infrastructure scales with HEADCOUNT + AREA (user rule: more space ->
+        # more items, same logic as the building populate — this IS that logic)
+        items += ["waste_bin"] * max(1 if area > 20 else 0, n_ws // 3)  # bins near workstations
+        items += ["cabinet"] * min(4, max(1 if area > 15 else 0, int(area / 22)))
+        items += ["bookshelf"] * min(3, max(1 if area > 22 else 0, int(area / 32)))
+        if area > 20: items += ["printer"]                   # shared MFP (tier-2)
+        items += ["partition"] * min(4, n_ws // 4)           # screen desk pairs in open plans
+        items += ["planter"] * min(4, max(0, int(area / 26)))       # corner greenery
+        items += ["locker"] * min(4, max(0, int(area / 34)))
+        if area > 40: items += ["fire_extinguisher", "coat_rack"]   # ASR A2.2 spirit
+        if area > 50: items += ["first_aid_cabinet", "water_dispenser"]
+        if area > 55: items += ["armchair", "armchair", "side_table"]   # breakout corner
+        if area > 62: items += ["phone_booth", "whiteboard"]
+        if area > 75: items += ["sofa", "coffee_table", "flipchart", "printer"]
     elif rt == "workspace":
         # office variant per its rule pack (heavier desks + storage, wider
         # aisles): fewer workstations per m2 than a Zellenbuero, and the
@@ -181,36 +199,51 @@ def smart_furnish(rt, W, D, assets, density="medium"):
         if os.environ.get("SCS_ASR", "1") != "0":
             legal_cap = 1 + max(0, int((true_area - 8.0) / 6.0))
             n_ws = min(int(area / 12.5), legal_cap)   # 1.20 m aisles -> sparser
-            n_ws = min(10, max(1 if true_area >= 8.0 else 0, n_ws))
+            if density == "dense":
+                n_ws = min(legal_cap, max(n_ws, int(true_area / 9.0)))
+            n_ws = min(18, max(1 if true_area >= 8.0 else 0, n_ws))
         else:
-            n_ws = min(6, max(1, int(area / 9.0)))
+            n_ws = min(12, max(1, int(area / 9.0)))
         for _ in range(n_ws):
             items += ["desk", "office_chair", "monitor"]
-        items += ["cabinet"] * min(3, max(1, int(area / 14)))
-        if area > 12: items += ["filing_cabinet", "waste_bin"]
-        if area > 18: items += ["bookshelf"]
-        if area > 24: items += ["locker", "printer"]
-        if area > 40: items += ["fire_extinguisher"]
+        # the storage wall keeps growing with the space (workspace = heavy storage)
+        items += ["cabinet"] * min(6, max(1, int(area / 14)))
+        items += ["waste_bin"] * max(1 if area > 12 else 0, n_ws // 3)
+        items += ["filing_cabinet"] * min(4, max(1 if area > 12 else 0, int(area / 24)))
+        items += ["bookshelf"] * min(3, max(1 if area > 18 else 0, int(area / 30)))
+        items += ["locker"] * min(6, max(1 if area > 24 else 0, int(area / 26)))
+        if area > 24: items += ["printer"]
+        items += ["planter"] * min(3, max(0, int(area / 30)))
+        if area > 40: items += ["fire_extinguisher", "coat_rack"]
+        if area > 52: items += ["server_rack", "water_dispenser", "first_aid_cabinet"]
+        if area > 66: items += ["partition", "partition", "whiteboard"]
     elif rt == "dining":
         items += ["table"] + ["chair"] * min(8, max(2, int(area / 3)))
     elif rt == "meeting":
-        items += ["table"] + ["office_chair"] * min(10, max(2, int(area / 2.5)))
+        items += ["table"] + ["office_chair"] * min(18, max(2, int(area / 2.5)))
         if area > 18: items += ["flipchart", "whiteboard"]   # tier-2
+        if area > 26: items += ["presentation_screen", "projector", "cabinet"]
+        if area > 34: items += ["water_dispenser", "planter", "waste_bin"]
+        if area > 46: items += ["table"] + ["office_chair"] * 4 + ["planter"]  # second huddle
     elif rt == "presentation":    # lecture hall: front kit + audience rows
         items += ["presentation_screen", "lectern", "projector", "whiteboard"]
-        items += ["chair"] * min(48, max(4, int(area / 1.4)))   # ~1.4 m2/seat
+        items += ["chair"] * min(90, max(4, int(area / 1.4)))   # ~1.4 m2/seat
         if area > 30: items += ["flipchart", "fire_extinguisher"]
+        if area > 60: items += ["water_dispenser", "waste_bin", "planter", "planter"]
     elif rt == "quiet":           # Ruheraum: sparse and calm
         items += ["armchair"]
         if area > 8:  items += ["armchair", "side_table"]
         if area > 10: items += ["lamp", "planter"]
         if area > 16: items += ["sofa", "bookshelf"]
     elif rt == "break":           # Pausenraum (ASR A4.2)
-        items += ["table", "coffee_machine", "waste_bin"] + ["chair"] * min(8, max(2, int(area / 4)))
+        items += ["table", "coffee_machine", "waste_bin"] + ["chair"] * min(12, max(2, int(area / 4)))
         if area > 12: items += ["water_dispenser", "planter"]
         if area > 14: items += ["fridge", "microwave", "first_aid_cabinet"]   # tier-2
         if area > 16: items += ["sofa", "side_table"]
         if area > 24: items += ["table"] + ["chair"] * 4 + ["locker"]
+        if area > 36: items += ["armchair", "armchair", "coffee_table", "planter"]
+        if area > 48: items += ["table"] + ["chair"] * 4 + ["locker", "locker", "waste_bin"]
+        if area > 62: items += ["sofa", "side_table", "planter", "fridge"]
     elif rt == "reception":       # Empfang: front desk + waiting
         items += ["desk", "office_chair", "monitor", "coat_rack"]
         items += ["armchair"] * min(4, max(1, int(area / 7)))
