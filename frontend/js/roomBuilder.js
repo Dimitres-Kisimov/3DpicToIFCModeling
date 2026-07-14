@@ -29,9 +29,11 @@
 
   // ------------------------------------------------------------------ catalog
   function browseBtnHTML(c) {
+    // EVERY category gets the picker — procedural-only ones open with a hint on
+    // how to add selectable variants (photo-generate with a declared type, or
+    // upload IFCs into the category)
     const gen = c.generated_count || 0;
-    if (!c.abo && !gen) return '';
-    const label = c.abo ? `⋯ pick (${c.abo_count})` : '⋯ pick';
+    const label = c.abo ? `⋯ pick (${c.abo_count})` : gen ? '⋯ pick' : '⋯ variants';
     const genTag = gen ? ` <span class="plus-ours">+${gen} ours</span>` : '';
     return `<button class="btn btn-tiny btn-browse" data-browse="${c.category}">${label}${genTag}</button>`;
   }
@@ -147,10 +149,18 @@
     $('pickerTitle').textContent = 'Choose ' + category.replace(/_/g, ' ') + ' — pick specific items';
     const grid = $('pickerGrid');
     grid.innerHTML = '<p class="empty-state">Loading…</p>';
+    /* empty-state after load is handled below */
     $('picker').hidden = false;
     const items = await (await fetch('/api/room/items/' + category)).json();
     const sel = new Set(chosen[category] || []);
     grid.innerHTML = '';
+    if (!items.length) {
+      grid.innerHTML = '<p class="empty-state">No selectable variants yet — the clean ' +
+        'parametric default is used when you add this item with +.<br><br>Add your own variants: ' +
+        '<b>Generate object</b> → set “Object type” to this category and photograph one, or use ' +
+        '<b>＋ New category…</b> with this category's exact name to upload furniture IFC files. ' +
+        'Every variant gets a number (e.g. projector-TSR-001) and appears here.</p>';
+    }
     items.forEach((it) => {
       const d = it.dims_m || [];
       const dim = (d[0] != null) ? `${d[0]}×${d[1]}×${d[2]} m` : '';
