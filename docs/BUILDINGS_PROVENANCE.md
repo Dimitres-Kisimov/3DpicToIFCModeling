@@ -12,10 +12,8 @@ Rule: nothing enters the fleet without a verified, compatible license.
 | SCS Tower (7F, synthetic) | derived from Kleine Wohnung plate via `make_tower_ifc.py` | inherits source (open) | — | yes |
 | HHS Office institute | [opensourceBIM/IFC-files](https://github.com/opensourceBIM/IFC-files) | **CC BY-ND** | **NO** — never stack/modify-and-redistribute this one; populated outputs are internal demo artefacts | yes |
 | **210 King — Autodesk Toronto office** | [DURAARK research datasets](http://duraark.eu/data-repository/) mirrored at TIB (`tib.eu/data/duraark/BuildingData/03_IFC_E57/Autodesk_210-King_ifc.zip`) | **CC0** — verified via the [re3data registry entry](https://www.re3data.org/repository/r3d100012506) (unrestricted use, no attribution required) | yes | **no — 147 MB exceeds GitHub's 100 MB file limit.** Re-fetch from the TIB URL above; the registry entry (`data/buildings/manifest.json`) is committed. |
-
 | NBU Office Building | DURAARK/TIB (`NBU_OfficeBuilding_ifc.zip`) | **CC0** (same registry verification) | yes | yes |
 | SCS Office Tower 8F / Smiley Tower 8F / Duplex Tower 7F | synthesized via `make_tower_ifc.py` from KIT Institute / KIT Smiley West / duplex plates | inherit sources (KIT: unrestricted; duplex: open sample) | — | yes |
-| HHS Office institute | see above | CC BY-ND | NO | yes |
 
 ## Rejected / skipped candidates (and why)
 
