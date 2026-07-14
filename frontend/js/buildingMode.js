@@ -245,7 +245,7 @@
     card.className = 'roomcard';
     const times = copies > 1 ? ` ×${copies}` : '';
     card.innerHTML =
-      `<div class="roomhdr"><b>${r.name}${times}</b> <small>${r.type} · ${r.area} m²</small></div>` +
+      `<div class="roomhdr" title="right-click = use this room's furniture as the BLUEPRINT for every ${r.type} room"><b>${r.name}${times}</b> <small>${r.type} · ${r.area} m²</small></div>` +
       `<div class="roomchips"></div>` +
       `<select class="roomadd"><option value="">+ add item…</option>` +
       allCategories.map((c) => `<option value="${c}">${c.replace(/_/g, ' ')}</option>`).join('') +
@@ -293,6 +293,30 @@
       }
     };
     render();
+    // BLUEPRINT: right-click the header -> copy this room's picks to every room
+    // of the same TYPE (same-name rooms already share picks by construction).
+    // Each target keeps only what fits its own usable area — 'adjustingly'.
+    card.querySelector('.roomhdr').oncontextmenu = (ev) => {
+      ev.preventDefault();
+      const targets = roomsData.filter((x) =>
+        x.furnishable !== false && x.type === r.type && x.name !== r.name);
+      const names = [...new Set(targets.map((x) => x.name))];
+      if (!names.length) {
+        toast(`No other ${r.type} rooms in this building — nothing to blueprint.`, 'info');
+        return;
+      }
+      if (!confirm(`Use "${r.name}" as the blueprint for ${names.length} other ${r.type} room(s)?
+(${names.join(', ')})
+Each room keeps only what fits its own area.`)) return;
+      names.forEach((n) => {
+        const target = roomsData.find((x) => x.name === n);
+        const picks = [...roomPicks[r.name]];
+        while (picks.length && spaceNeed(picks) > usableArea(target)) picks.pop();
+        roomPicks[n] = picks;
+      });
+      renderRoomCards();
+      toast(`📐 Blueprint applied to ${names.length} ${r.type} room(s) — trimmed to each room's capacity.`, 'ok');
+    };
     card.querySelector('.roomadd').onchange = (e) => {
       const v = e.target.value;
       e.target.value = '';

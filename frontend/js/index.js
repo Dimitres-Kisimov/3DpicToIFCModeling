@@ -198,7 +198,8 @@ if (generateBtn) {
     try {
       const baseStyle = document.getElementById('baseStyleSel')?.value || 'auto';
       const graftBase = !['auto', 'keep'].includes(baseStyle);   // explicit style = force it
-      const result = await generateModel(selectedImage, engine, { graftBase, baseStyle });
+      const forcedCategory = document.getElementById('genCategorySel')?.value || '';
+      const result = await generateModel(selectedImage, engine, { graftBase, baseStyle, forcedCategory });
       console.log('[app] Pipeline result:', result);
       applyPipelineResult(result);
       const glbPath = result.glb;
@@ -466,7 +467,50 @@ document.addEventListener('DOMContentLoaded', () => {
       opt.disabled = !e.available;
       engineSel.appendChild(opt);
     });
+    // one-click LOCAL INSTALL for engines this machine can actually run
+    // (VRAM + OS baseline met, recipe from the battle-tested manuals)
+    const installables = d.engines.filter((e) => e.installable);
+    if (installables.length) {
+      const row = document.createElement('div');
+      row.className = 'hint';
+      row.id = 'engineInstallRow';
+      installables.forEach((e) => {
+        const b = document.createElement('button');
+        b.className = 'btn btn-tiny';
+        b.textContent = `📥 Install ${e.abbr} locally (~${e.disk_gb} GB)`;
+        b.onclick = async () => {
+          b.disabled = true;
+          b.textContent = `Installing ${e.abbr}… (10–40 min)`;
+          await fetch(`/api/engines/${e.id}/install`, { method: 'POST' });
+          const poll = setInterval(async () => {
+            const s = await (await fetch(`/api/engines/${e.id}/install/status`)).json();
+            if (s.state === 'ready') {
+              clearInterval(poll);
+              b.textContent = `✓ ${e.abbr} installed — reload the page`;
+            } else if (s.state === 'failed') {
+              clearInterval(poll);
+              b.disabled = false;
+              b.textContent = `⚠ ${e.abbr} install failed — see engines/${e.id}.install.log`;
+            }
+          }, 15000);
+        };
+        row.appendChild(b);
+      });
+      engineSel.parentElement.appendChild(row);
+    }
   }).catch(() => { /* selector keeps its built-in options */ });
+
+  // object-type override list — every catalog category incl. your custom ones
+  fetch('/api/room/catalog').then((r) => r.json()).then((cats) => {
+    const sel = document.getElementById('genCategorySel');
+    if (!sel || !Array.isArray(cats)) return;
+    cats.forEach((c) => {
+      const o = document.createElement('option');
+      o.value = c.category;
+      o.textContent = c.label + (c.custom ? ' (yours)' : '');
+      sel.appendChild(o);
+    });
+  }).catch(() => {});
 
   updateStatus('Initializing...');
 });

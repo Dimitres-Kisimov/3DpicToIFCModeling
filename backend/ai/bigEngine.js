@@ -23,7 +23,9 @@ const logger = require('../middleware/logger');
 const REGISTRY = require('../config/engines.json');
 
 function enginesDir() {
-  return process.env.SCS_ENGINES_DIR || '';
+  // default to <repo>/engines — the in-app installer manages this directory;
+  // SCS_ENGINES_DIR still overrides (e.g. a restored pod archive elsewhere)
+  return process.env.SCS_ENGINES_DIR || path.join(__dirname, '..', '..', 'engines');
 }
 
 function getEngine(id) {
@@ -47,27 +49,47 @@ function detectVramGb() {
   });
 }
 
-/** Availability + human reason for every registry engine on THIS machine. */
+/** Availability + human reason + INSTALLABILITY for every engine on THIS machine.
+ *  An engine is installable in-app when: it has a recipe, the OS is supported
+ *  (recipes are Linux/WSL-proven — see the manuals), and VRAM meets the baseline.
+ */
 async function listEngines() {
   const vram = await detectVramGb();
   const dir = enginesDir();
+  const osName = process.platform === 'win32' ? 'windows'
+    : process.platform === 'darwin' ? 'mac' : 'linux';
   return (REGISTRY.engines || []).map((e) => {
     let available = true;
     let reason = '';
+    let installed = true;
+    let installable = false;
+    let installState = 'n/a';
     if (!e.builtin) {
-      const venvOk = dir && fs.existsSync(path.join(dir, e.venv || ''));
-      if (vram < e.min_vram_gb) {
+      installed = !!(dir && fs.existsSync(path.join(dir, e.venv || '', '.ready')));
+      const rec = e.install || null;
+      const osOk = rec && (rec.os || []).includes(osName);
+      const vramOk = vram >= e.min_vram_gb;
+      installable = !!(rec && osOk && vramOk && !installed);
+      const logP = path.join(dir, `${e.id}.install.log`);
+      installState = installed ? 'ready'
+        : fs.existsSync(path.join(dir, `${e.id}.installing`)) ? 'installing'
+        : fs.existsSync(logP) ? 'failed' : 'none';
+      if (!vramOk) {
         available = false;
         reason = `Needs a ${e.min_vram_gb} GB graphics card — this machine has ${vram || 'no NVIDIA'} GB`;
-      } else if (!venvOk) {
+      } else if (!installed) {
         available = false;
-        reason = 'Engine pack not installed — see the Manuals page';
+        reason = rec && !osOk
+          ? `Install needs Linux/WSL (compiled CUDA extensions) — see ${e.manual}`
+          : `Not installed yet — one-click install available (~${(rec && rec.disk_gb) || '?'} GB)`;
       }
     }
     return {
       id: e.id, abbr: e.abbr, label: e.label, builtin: !!e.builtin,
       min_vram_gb: e.min_vram_gb, license: e.license, manual: e.manual,
       notes: e.notes, available, reason,
+      installed, installable, install_state: installState,
+      disk_gb: (e.install && e.install.disk_gb) || null,
     };
   });
 }

@@ -152,6 +152,55 @@ const upload = multer({
 // plain-language reason ("Needs a 24 GB graphics card — you have 6 GB").
 // ============================================================================
 
+// POST /api/engines/:id/install — install an engine locally THROUGH the app.
+// Guarded: recipe exists, OS supported, VRAM baseline met, not already
+// installed/installing. The install runs detached (10-40 min: venv + pinned
+// deps + weights); progress via GET /api/engines/:id/install/status.
+router.post('/engines/:id/install', async (req, res) => {
+  try {
+    const engines = await bigEngine.listEngines();
+    const st = engines.find((e) => e.id === req.params.id);
+    if (!st) return res.status(404).json({ ok: false, error: 'unknown engine' });
+    if (st.installed) return res.json({ ok: true, state: 'ready' });
+    if (st.install_state === 'installing') return res.json({ ok: true, state: 'installing' });
+    if (!st.installable) {
+      return res.status(409).json({ ok: false, error: st.reason || 'not installable on this machine' });
+    }
+    const path2 = require('path');
+    const fs2 = require('fs');
+    const { spawn } = require('child_process');
+    const dir = process.env.SCS_ENGINES_DIR || path2.join(__dirname, '..', '..', 'engines');
+    fs2.mkdirSync(dir, { recursive: true });
+    const marker = path2.join(dir, `${req.params.id}.installing`);
+    fs2.writeFileSync(marker, new Date().toISOString());
+    const script = path2.join(__dirname, '..', 'python-scripts', 'install_engine.py');
+    const child = spawn(config.PYTHON_PATH || 'python', [script, req.params.id, '--engines-dir', dir],
+      { detached: true, stdio: 'ignore' });
+    child.on('exit', () => { try { fs2.unlinkSync(marker); } catch (e) {} });
+    child.unref();
+    logger.info('ENGINES', 'install started', { engine: req.params.id });
+    res.json({ ok: true, state: 'installing' });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: String(err) });
+  }
+});
+
+// install progress: state + the last lines of the transcript
+router.get('/engines/:id/install/status', async (req, res) => {
+  const path2 = require('path');
+  const fs2 = require('fs');
+  const dir = process.env.SCS_ENGINES_DIR || path2.join(__dirname, '..', '..', 'engines');
+  const engines = await bigEngine.listEngines();
+  const st = engines.find((e) => e.id === req.params.id);
+  if (!st) return res.status(404).json({ ok: false, error: 'unknown engine' });
+  let tail = '';
+  try {
+    const log = fs2.readFileSync(path2.join(dir, `${req.params.id}.install.log`), 'utf-8');
+    tail = log.split('\n').slice(-12).join('\n');
+  } catch (e) { /* no log yet */ }
+  res.json({ ok: true, state: st.install_state, installed: st.installed, log_tail: tail });
+});
+
 router.get('/engines', async (req, res) => {
   try {
     res.json({ success: true, engines: await bigEngine.listEngines() });
@@ -196,10 +245,12 @@ router.post('/generate', upload.single('image'), async (req, res, next) => {
     if (requested === 'triposr') {
       const forceGraft = /^(1|true|on|yes)$/i.test(String(req.body.graftBase || ''));
       const baseStyle = String(req.body.baseStyle || 'auto');
+      const forcedCategory = String(req.body.category || '').trim().toLowerCase().replace(/ /g, '_');
       logger.info('GENERATE', 'Starting TripoSR generative pipeline', { imagePath, forceGraft });
       // serialize on the GPU queue so concurrent requests can't OOM the 6 GB card
       const t = await gpuQueue.run(
-        () => triposrAdapter.runTripoSR(imagePath, config.OUTPUT_DIR, { forceGraft, baseStyle }), 'triposr');
+        () => triposrAdapter.runTripoSR(imagePath, config.OUTPUT_DIR,
+          { forceGraft, baseStyle, forcedCategory }), 'triposr');
       const md = t.metadata || {};
       logger.info('GENERATE', 'TripoSR pipeline complete', {
         glbUrl: t.glbUrl, label: md.object_label,

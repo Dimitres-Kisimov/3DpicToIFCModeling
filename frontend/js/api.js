@@ -71,6 +71,7 @@ async function generateModel(imageBlob, modelName, opts = {}) {
     formData.append('model', modelName);
     if (opts.graftBase) formData.append('graftBase', '1');   // chair: force the base graft
     if (opts.baseStyle) formData.append('baseStyle', opts.baseStyle);
+    if (opts.forcedCategory) formData.append('category', opts.forcedCategory);   // user-declared type
 
     updateStatus(`Detecting object and generating 3D model...`);
 

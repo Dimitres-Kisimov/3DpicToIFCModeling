@@ -81,6 +81,12 @@ async function runTripoSR(imagePath, outputDir, opts = {}) {
     }
 
     const metadata = result.stdout?.data || {};
+    // user-declared object type beats the classifier: category, label and IFC
+    // numbering all follow it (e.g. a projector photo -> projector-TSR-001)
+    if (opts.forcedCategory) {
+      metadata.ifc_category = opts.forcedCategory;
+      metadata.object_label = opts.forcedCategory.replace(/_/g, ' ');
+    }
     let finalGlbPath = outputGlbPath;
     let graftedBase = false;
 

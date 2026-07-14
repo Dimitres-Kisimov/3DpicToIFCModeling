@@ -1,5 +1,5 @@
 {
-  "comment": "3D-generation engine registry. Built-ins always ship with the app; the big engines light up only when SCS_ENGINES_DIR points at a directory holding their venvs + weights (the pod archive restored onto a >=16 GB GPU machine). VRAM gating keeps under-spec machines from selecting something that would crash them. Stable Fast 3D is deliberately absent: Stability Community License caps commercial use at $1M revenue - benchmark-only, see docs/HUGGINGFACE_MODEL_NARROWING.md.",
+  "comment": "3D-generation engine registry. Built-ins always ship with the app. Big engines light up when their venv exists under SCS_ENGINES_DIR (default <repo>/engines) — installable IN-APP via POST /api/engines/:id/install when this machine meets the baseline (VRAM, OS, disk). Recipes mirror deliverable/manuals/*.md, the battle-tested pod installs. VRAM gating keeps under-spec machines from selecting something that would crash them. Stable Fast 3D and InstantMesh are deliberately NOT installable: Stability Community License caps commercial use (benchmark-only) and InstantMesh depends on Zero123++ CC-BY-NC — see docs/MODEL_REQUIREMENTS_AND_ELIMINATIONS.md.",
   "engines": [
     {
       "id": "triposr",
@@ -31,7 +31,51 @@
       "venv": "envs/triposg",
       "script": "infer_triposg.py",
       "manual": "TripoSG.md",
-      "notes": "Best measured generator in the 5-AI study. Needs a 16 GB GPU and the engines pack installed."
+      "notes": "Best measured generator in the 5-AI study. Installable in-app on a 16 GB GPU (Linux/WSL).",
+      "install": {
+        "os": ["linux"],
+        "disk_gb": 25,
+        "python": "3.10",
+        "steps": [
+          { "type": "clone", "repo": "https://github.com/VAST-AI-Research/TripoSG.git", "dest": "repos/TripoSG" },
+          { "type": "pip", "args": ["torch==2.5.1", "torchvision==0.20.1", "--index-url", "https://download.pytorch.org/whl/cu121"] },
+          { "type": "pip", "args": ["diffusers", "transformers", "einops", "trimesh", "numpy", "scipy", "pillow", "huggingface_hub", "accelerate", "jaxtyping", "typeguard"] },
+          { "type": "pip", "args": ["--no-build-isolation", "diso"], "note": "CUDA compile — needs CUDA_HOME + nvcc (manual issue #1)" }
+        ],
+        "weights": ["VAST-AI/TripoSG"],
+        "smoke": "import torch, diffusers; print(torch.cuda.is_available())"
+      }
+    },
+    {
+      "id": "trellis",
+      "abbr": "TRL",
+      "label": "TRELLIS 1.0 — Microsoft (F-score 0.346)",
+      "builtin": false,
+      "min_vram_gb": 8,
+      "license": "MIT (geometry-only export — the textured path needs a non-commercial rasterizer we exclude)",
+      "venv": "envs/trellis",
+      "script": "infer_trellis.py",
+      "manual": "TRELLIS.md",
+      "notes": "Benchmarked on 187 photos; outright category wins on beds and desks. Installable in-app on an 8 GB GPU (Linux/WSL).",
+      "install": {
+        "os": ["linux"],
+        "disk_gb": 30,
+        "python": "3.10",
+        "steps": [
+          { "type": "clone", "repo": "https://github.com/microsoft/TRELLIS.git", "dest": "repos/TRELLIS" },
+          { "type": "pip", "args": ["torch==2.5.1", "torchvision==0.20.1", "--index-url", "https://download.pytorch.org/whl/cu121"] },
+          { "type": "pip", "args": ["pillow", "imageio", "imageio-ffmpeg", "trimesh", "numpy", "scipy", "easydict", "opencv-python-headless", "rembg", "onnxruntime", "huggingface_hub", "safetensors"] },
+          { "type": "pip", "args": ["--no-deps", "xformers==0.0.32.post2"], "note": "must not pull its own torch (manual issue #1)" },
+          { "type": "pip", "args": ["spconv-cu118"] },
+          { "type": "pip", "args": ["git+https://github.com/EasternJournalist/utils3d.git@9a4eb15e4021b67b12c460c7057d642626897ec8"], "note": "pinned commit — HEAD breaks the API (manual issue #3)" },
+          { "type": "pip", "args": ["--no-build-isolation", "git+https://github.com/NVlabs/nvdiffrast.git"] },
+          { "type": "pip", "args": ["--no-build-isolation", "git+https://github.com/JeffreyXiang/diffoctreerast.git"] },
+          { "type": "kaolin_stub", "note": "only check_tensor is used — stubbed per manual issue #5" }
+        ],
+        "weights": ["microsoft/TRELLIS-image-large"],
+        "env": { "ATTN_BACKEND": "xformers", "SPCONV_ALGO": "native" },
+        "smoke": "import torch, xformers, spconv; print(torch.cuda.is_available())"
+      }
     },
     {
       "id": "trellis2",
@@ -39,11 +83,25 @@
       "label": "TRELLIS.2-4B — Microsoft, newest",
       "builtin": false,
       "min_vram_gb": 24,
-      "license": "MIT",
+      "license": "MIT (weights gated: requires the Meta DINOv3 licence grant)",
       "venv": "envs/trellis2",
       "script": "infer_trellis2.py",
       "manual": "TRELLIS2.md",
-      "notes": "Microsoft's 2026 successor to TRELLIS. Needs a 24 GB GPU and the engines pack installed."
+      "notes": "Microsoft's 2026 successor. Needs a 24 GB GPU, Linux/WSL, and an approved DINOv3 grant on your HF account.",
+      "install": {
+        "os": ["linux"],
+        "disk_gb": 45,
+        "python": "3.10",
+        "steps": [
+          { "type": "clone", "repo": "https://github.com/microsoft/TRELLIS.git", "dest": "repos/TRELLIS2", "note": "TRELLIS.2 branch per manual" },
+          { "type": "pip", "args": ["torch==2.9.1", "torchvision", "--index-url", "https://download.pytorch.org/whl/cu128"], "note": "cu130 wheels cannot compile CuMesh on a CUDA 12.8 toolkit (manual)" },
+          { "type": "pip", "args": ["--no-build-isolation", "--no-cache-dir", "git+https://github.com/microsoft/CuMesh.git"] },
+          { "type": "pip", "args": ["--no-build-isolation", "--no-cache-dir", "git+https://github.com/microsoft/o-voxel.git"] },
+          { "type": "pip", "args": ["pillow", "imageio", "trimesh", "numpy", "scipy", "easydict", "huggingface_hub", "safetensors", "transformers"] }
+        ],
+        "weights": ["microsoft/TRELLIS.2-4B", "facebook/dinov3-vitl16-pretrain-lvd1689m"],
+        "smoke": "import torch; print(torch.cuda.is_available())"
+      }
     },
     {
       "id": "sam3d",
@@ -55,7 +113,23 @@
       "venv": "envs/sam3d",
       "script": "infer_sam3d.py",
       "manual": "SAM3D.md",
-      "notes": "Benchmark runner-up; wins cabinets/boxy shapes. Needs a 24 GB GPU and the engines pack installed."
+      "notes": "Benchmark runner-up; wins cabinets/boxy shapes. Needs a 24 GB GPU and Linux/WSL (pytorch3d source build).",
+      "install": {
+        "os": ["linux"],
+        "disk_gb": 40,
+        "python": "3.12",
+        "steps": [
+          { "type": "clone", "repo": "https://github.com/facebookresearch/sam-3d-objects.git", "dest": "repos/SAM3D" },
+          { "type": "pip", "args": ["torch==2.5.1", "torchvision==0.20.1", "--index-url", "https://download.pytorch.org/whl/cu121"] },
+          { "type": "pip", "args": ["--no-build-isolation", "-r", "{dest}/requirements.p3d.txt"], "note": "pytorch3d GIT-SOURCE build — 10-20 min compile (manual fix #13)" },
+          { "type": "pip", "args": ["-r", "{dest}/requirements.inference.txt"] },
+          { "type": "pip", "args": ["https://github.com/Dao-AILab/flash-attention/releases/download/v2.8.3/flash_attn-2.8.3+cu12torch2.5cxx11abiFALSE-cp312-cp312-linux_x86_64.whl"] },
+          { "type": "pip", "args": ["loguru", "timm==0.9.16", "spconv-cu121==2.3.8", "open3d", "trimesh", "optree==0.14.1", "astor", "rootutils", "hydra-core", "numpy==2.1.*"] },
+          { "type": "pip", "args": ["git+https://github.com/microsoft/MoGe.git@a8c37341bc0325ca99b9d57981cc3bb2bd3e255b"] }
+        ],
+        "weights": ["facebook/sam-3d-objects"],
+        "smoke": "import torch, pytorch3d; print(torch.cuda.is_available())"
+      }
     }
   ]
 }

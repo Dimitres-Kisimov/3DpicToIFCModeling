@@ -55,6 +55,9 @@
                     <option value="triposr" selected>Detailed — new 3D model</option>
                     <option value="detect">Fast — from catalog</option>
                 </select>
+                <label class="check-row" title="Auto lets the AI classify the photo; picking a type forces the catalog category, IFC class and numbering (e.g. projector — TripoSR — #001).">
+                    🏷️ Object type: <select id="genCategorySel"><option value="" selected>Auto — detect from photo</option></select>
+                </label>
                 <label id="graftBaseRow" class="check-row" title="AI cannot rebuild thin chair legs from one photo. Auto grafts a clean base only when the bottom is broken; or pick a style.">
                     🪑 Chair base: <select id="baseStyleSel">
                         <option value="auto" selected>Auto — fix if broken (recommended)</option>
