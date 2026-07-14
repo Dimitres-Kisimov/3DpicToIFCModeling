@@ -20,8 +20,18 @@
            border-radius:12px; padding:16px 20px; font-size:14px; line-height:1.6; margin-bottom:28px; }
   .tl { position:relative; padding-left:34px; }
   .tl::before { content:''; position:absolute; left:11px; top:6px; bottom:6px; width:2px; background:var(--line); }
-  .step { position:relative; margin-bottom:26px; background:var(--panel); border:1px solid var(--line);
+  .step { position:relative; margin-bottom:38px; background:var(--panel); border:1px solid var(--line);
           border-radius:12px; padding:16px 20px; box-shadow:0 2px 10px rgba(20,40,80,.05); }
+  /* flow arrow from each step to the next */
+  .step:not(:last-child)::after { content:''; position:absolute; left:50%; bottom:-30px;
+          width:0; height:0; border-left:11px solid transparent; border-right:11px solid transparent;
+          border-top:14px solid var(--brand); opacity:.55; }
+  .step.test:not(:last-child)::after { border-top-color:var(--green); }
+  .done { position:absolute; right:16px; top:14px; font-size:12px; font-weight:700;
+          color:var(--green); background:#e7f7ee; border-radius:6px; padding:2px 9px; }
+  .step.next { border-style:dashed; border-color:var(--amber); }
+  .step.next::before { background:var(--amber); }
+  .step.next .date { background:var(--amber); }
   .step::before { content:attr(data-n); position:absolute; left:-34px; top:14px; width:24px; height:24px;
                   border-radius:50%; background:var(--brand); color:#fff; font-size:12px; font-weight:700;
                   display:flex; align-items:center; justify-content:center; }
@@ -53,7 +63,7 @@
   <div class="tl">
 
     <div class="step" data-n="1">
-      <span class="date">2026-04-21 → 04-28</span>
+      <span class="done">✓ done</span><span class="date">2026-04-21 → 04-28</span>
       <h2>Phase 1 — photo → 3D → IFC works end to end</h2>
       <p>TripoSR integrated on local GPU, first full pipeline: photo → mesh → real dimensions → IFC export.
          The first office chair exposes the engine's thin-structure weakness.</p>
@@ -62,7 +72,7 @@
     </div>
 
     <div class="step" data-n="2">
-      <span class="date">2026-04-30 → 05-05</span>
+      <span class="done">✓ done</span><span class="date">2026-04-30 → 05-05</span>
       <h2>Quality sprints — segmentation, depth, classification</h2>
       <p>rembg/SAM2 segmentation experiments, Depth-Anything metric dimensions, CLIP classification,
          real IFC4 export. The base-graft answer to the broken swivel base is born.</p>
@@ -71,7 +81,7 @@
     </div>
 
     <div class="step" data-n="3">
-      <span class="date">2026-06-10 → 06-30</span>
+      <span class="done">✓ done</span><span class="date">2026-06-10 → 06-30</span>
       <h2>Repair packs + the H200 cloud study</h2>
       <p>7-archetype, 9-stage repair packs (faces 9.2× lighter, 91% watertight). First 5-model
          benchmark on identical inputs: TripoSG · SAM 3D · TRELLIS · InstantMesh · TripoSR.</p>
@@ -80,7 +90,7 @@
     </div>
 
     <div class="step" data-n="4">
-      <span class="date">2026-07-01 → 07-07</span>
+      <span class="done">✓ done</span><span class="date">2026-07-01 → 07-07</span>
       <h2>Part 2 — rooms and whole buildings</h2>
       <p>People-aware CP-SAT solver (Neufert/Panero/ADA), the 2D floor-plan editor, building
          population of real IFCs, per-floor navigation, IFC export optimizer.</p>
@@ -89,7 +99,7 @@
     </div>
 
     <div class="step test" data-n="5">
-      <span class="date">2026-07-09</span>
+      <span class="done">✓ done</span><span class="date">2026-07-09</span>
       <h2>TEST PASS — six live campaigns</h2>
       <p>Ingestion sweep, concurrency, BIM round-trip, malformed-IFC fuzzing, soak, standards
          validation — including the two bugs testing found and fixed. Clash governance ships:
@@ -99,7 +109,7 @@
     </div>
 
     <div class="step" data-n="6">
-      <span class="date">2026-07-11 → 07-12</span>
+      <span class="done">✓ done</span><span class="date">2026-07-11 → 07-12</span>
       <h2>The A100 campaign — 187 photos × every engine</h2>
       <p>Full benchmark sweep on a rented A100: TripoSG 0.390 F-score leads; scores reproduce the
          H200 within 0.003 (cross-hardware validation). 605 engine-badged items pass the IFC4 gate
@@ -109,7 +119,7 @@
     </div>
 
     <div class="step" data-n="7">
-      <span class="date">2026-07-12</span>
+      <span class="done">✓ done</span><span class="date">2026-07-12</span>
       <h2>One app — and this research hub</h2>
       <p>Everything merges into a single application; the research hub becomes the front door to the
          evidence. User guide, security &amp; compliance, engineering record, model eliminations.</p>
@@ -118,7 +128,7 @@
     </div>
 
     <div class="step test" data-n="8">
-      <span class="date">2026-07-13</span>
+      <span class="done">✓ done</span><span class="date">2026-07-13</span>
       <h2>TEST PASS — collision hardening on hostile geometry</h2>
       <p>The rotated French building (every wall at 60.4°) breaks the axis-aligned assumptions:
          de-rotated solve frame, true footprint polygons for L-shaped rooms, storey-filtered
@@ -129,7 +139,7 @@
     </div>
 
     <div class="step" data-n="9">
-      <span class="date">2026-07-13</span>
+      <span class="done">✓ done</span><span class="date">2026-07-13</span>
       <h2>Density tiers + Arbeitsstättenrichtlinie</h2>
       <p>Light/Medium/Dense population per room type; German workplace law (ASR A1.2/A1.8) becomes
          the DEFAULT office standard — legal 8+6 m² staffing caps, 1.5 m² movement areas at every
@@ -138,7 +148,7 @@
     </div>
 
     <div class="step" data-n="10">
-      <span class="date">2026-07-13 → 07-14</span>
+      <span class="done">✓ done</span><span class="date">2026-07-13 → 07-14</span>
       <h2>The tall fleet + professional catalog numbering</h2>
       <p>Real tall buildings sourced with license verification (KIT unrestricted-use, DURAARK CC0 —
          incl. Autodesk's 210 King Toronto office, 261 rooms) plus synthetic towers stacked from
@@ -147,13 +157,45 @@
         <a href="/building_explorer.html?b=tower">SCS Tower</a></div>
     </div>
 
-    <div class="step test" data-n="11">
-      <span class="date">2026-07-14</span>
-      <h2>TEST PASS — fleet-wide floor dissection</h2>
-      <p>Cross-validation of every building against its IFC ground truth: every floor with rooms
-         present, no orphan rooms, elevation-ordered storeys, room-count conservation. Runs as a
-         gate (test_floor_dissection.py) so future changes can't silently drop a floor.</p>
-      <div class="view"><b>view:</b> <a href="/building_explorer.html">All buildings in 3D</a></div>
+    <div class="step" data-n="11">
+      <span class="done">✓ done</span><span class="date">2026-07-14</span>
+      <h2>Real-world spaces — presentation halls, break rooms & the 36-item catalog</h2>
+      <p>Four new room types (Hörsaal/auditorium, Ruheraum, Pausenraum per ASR A4.2, Empfang) with a
+         dedicated ROW ENGINE for lecture seating (ASR aisle widths), plus 19 new furniture
+         categories — projectors, whiteboards, printers, phone booths, fire extinguishers at
+         mounting height. Custom categories: declare a name, upload your own furniture IFCs,
+         numbered automatically.</p>
+      <div class="view"><b>view:</b> <a href="/building_explorer.html?b=hhs">HHS Auditorium in 3D</a>
+        <a href="/">Build a room → ＋ New category</a></div>
+    </div>
+
+    <div class="step" data-n="12">
+      <span class="done">✓ done</span><span class="date">2026-07-14</span>
+      <h2>The tall fleet — 15 buildings, licence-verified</h2>
+      <p>210 King (Autodesk Toronto, CC0 — 42 rooms, 1,135 pieces), NBU office (CC0), three
+         synthetic towers stacked from open plates (Office Tower 8F: 123 rooms, 764 pieces).
+         Every source documented in the provenance table; unverifiable candidates rejected.</p>
+      <div class="view"><b>view:</b> <a href="/building_explorer.html?b=210king">210 King in 3D</a>
+        <a href="/building_explorer.html?b=office_tower">Office Tower 8F</a></div>
+    </div>
+
+    <div class="step test" data-n="13">
+      <span class="done">✓ done</span><span class="date">2026-07-14</span>
+      <h2>TEST PASS — floor dissection + end-user runnability</h2>
+      <p>Two permanent gates: floor dissection cross-validates all 15 buildings against IFC ground
+         truth (15/15 pass); the end-user smoke suite walks the entire journey — pages, catalog,
+         custom-category lifecycle, a REAL photo→3D generation, populate, exports — 8/8 pass.</p>
+      <div class="view"><b>view:</b> <a href="/building_explorer.html">All buildings in 3D</a>
+        <a href="/testing.html">Test report</a></div>
+    </div>
+
+    <div class="step next" data-n="14">
+      <span class="date">NEXT</span>
+      <h2>What's next — TRELLIS 2.0 and the drone path</h2>
+      <p>TRELLIS 2.0's first-ever benchmark waits only on Meta's DINOv3 licence grant (automated
+         retry armed). Beyond it: drone photo sweeps → whole-building capture on the multi-image
+         pipeline, indoor navigation on our digital twins, logistics/RGV applications.</p>
+      <div class="view"><b>view:</b> <a href="/manuals.html">Engine manuals</a></div>
     </div>
 
   </div>
