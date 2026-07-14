@@ -158,7 +158,7 @@
       grid.innerHTML = '<p class="empty-state">No selectable variants yet — the clean ' +
         'parametric default is used when you add this item with +.<br><br>Add your own variants: ' +
         '<b>Generate object</b> → set “Object type” to this category and photograph one, or use ' +
-        '<b>＋ New category…</b> with this category's exact name to upload furniture IFC files. ' +
+        '<b>＋ New category…</b> with the same category name to upload furniture IFC files. ' +
         'Every variant gets a number (e.g. projector-TSR-001) and appears here.</p>';
     }
     items.forEach((it) => {
