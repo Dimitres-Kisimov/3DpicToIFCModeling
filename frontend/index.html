@@ -127,10 +127,38 @@
                 </div>
                 <label class="field-label">Type</label>
                 <select id="rbType" class="select">
-                    <option value="office">Office</option>
-                    <option value="living">Living room</option>
-                    <option value="workspace">Workspace</option>
+                    <optgroup label="Workplace (ASR A1.2 / A1.8 enforced)">
+                        <option value="office" selected>Office — Zellenbüro / open plan</option>
+                        <option value="workspace">Workspace — heavy storage, wider aisles</option>
+                        <option value="meeting">Meeting room — Besprechungsraum</option>
+                        <option value="presentation">Presentation hall — Hörsaal / Seminar</option>
+                        <option value="reception">Reception — Empfang</option>
+                        <option value="break">Break room — Pausenraum (ASR A4.2)</option>
+                        <option value="quiet">Quiet room — Ruheraum</option>
+                    </optgroup>
+                    <optgroup label="Residential">
+                        <option value="living">Living room</option>
+                        <option value="lounge">Lounge</option>
+                        <option value="bed">Bedroom</option>
+                        <option value="dining">Dining room</option>
+                        <option value="kitchen">Kitchen</option>
+                    </optgroup>
                 </select>
+                <label class="field-label">Size preset</label>
+                <div id="rbSizePresets" class="floor-chips">
+                    <button class="floor-chip" data-size="4x3">small · 4×3</button>
+                    <button class="floor-chip active" data-size="6x6">standard · 6×6</button>
+                    <button class="floor-chip" data-size="8x4.5">wide · 8×4.5</button>
+                    <button class="floor-chip" data-size="10x8">large · 10×8</button>
+                </div>
+                <label class="field-label">Population</label>
+                <div id="rbDensity" class="floor-chips">
+                    <button class="floor-chip" data-dens="light">🌿 Light</button>
+                    <button class="floor-chip active" data-dens="medium">🏠 Medium</button>
+                    <button class="floor-chip" data-dens="dense">🏢 Dense</button>
+                </div>
+                <button id="rbSuggest" class="btn btn-block" style="margin-top:6px">
+                    ✨ Suggest furniture for this room</button>
                 <label class="check-row"><input id="rbAda" type="checkbox"> ADA accessible (wider aisles)</label>
             </div>
 

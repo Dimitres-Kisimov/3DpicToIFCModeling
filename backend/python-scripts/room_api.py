@@ -271,6 +271,25 @@ def cmd_items(args):
     return {"ok": True, "items": catalog.list_items(category)}
 
 
+def cmd_suggest(args):
+    """Space-aware furniture suggestion for a single room — the SAME
+    smart_furnish the building populate uses (room type + true area + density
+    tier), so a room built here matches what a whole building would get."""
+    import populate_building as pop
+    rt = (args.get("type") or "office").strip()
+    try:
+        w = float(args.get("w") or 6)
+        d = float(args.get("d") or 6)
+    except ValueError:
+        return {"ok": False, "error": "bad dimensions", "status": 400}
+    density = (args.get("density") or "medium").strip()
+    if density not in ("light", "medium", "dense"):
+        density = "medium"
+    assets = {k: 1 for k in catalog.CATALOG_META}
+    items = pop.smart_furnish(rt, w, d, assets, density)
+    return {"ok": True, "type": rt, "density": density, "items": items}
+
+
 def cmd_layout(args):
     """Full single-room layout — ported 1:1 from Flask api_generate()."""
     import build_room_scene
@@ -1059,6 +1078,7 @@ _COMMANDS = {
     "prepare_building": cmd_prepare_building,
     "register_upload": cmd_register_upload,
     "delete_generated": cmd_delete_generated,
+    "suggest": cmd_suggest,
     "renumber_catalog": cmd_renumber_catalog,
     "register_ifc_item": cmd_register_ifc_item,
     "demo_run": cmd_demo_run,

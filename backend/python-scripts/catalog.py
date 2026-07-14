@@ -26,6 +26,7 @@ _MANIFEST = None
 CATALOG_META = {
     "desk":           ("IfcTable",                 (0.74, 1.4, 0.7),  [0.55, 0.38, 0.25]),
     "office_chair":   ("IfcChair",                 (1.10, 0.6, 0.6),  [0.15, 0.15, 0.18]),
+    "chair":          ("IfcChair",                 (0.90, 0.45, 0.52),[0.45, 0.33, 0.23]),   # plain seat (dining/audience)
     "cabinet":        ("IfcFurniture",             (1.20, 1.0, 0.45), [0.72, 0.72, 0.74]),
     "filing_cabinet": ("IfcFurniture",             (1.32, 0.45, 0.6), [0.60, 0.60, 0.62]),
     "bookshelf":      ("IfcFurniture",             (1.50, 0.9, 0.4),  [0.60, 0.45, 0.30]),
@@ -71,6 +72,7 @@ ABO_CATEGORIES = {"desk", "office_chair", "cabinet", "bookshelf", "sofa", "table
 # (monitor + laptop stay clean procedural meshes — ABO has no electronics: its 3D subset
 #  is furniture/home-goods, so there are 0 monitor/laptop/keyboard meshes to fetch.)
 MESH_BORROW = {"coffee_table": "table", "side_table": "table", "filing_cabinet": "cabinet",
+               "chair": "office_chair",
                # tier-2 realism: real ABO meshes (CC-BY, in-project) rescaled to
                # the category's own Neufert dims
                "armchair": "sofa", "locker": "cabinet", "waste_bin": "planter",

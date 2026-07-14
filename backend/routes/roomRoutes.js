@@ -65,6 +65,16 @@ router.get('/room/items/:category', async (req, res, next) => {
 });
 
 // ---------------------------------------------------------------------------
+// space-aware suggestion for ONE room — same engine the building populate uses
+router.get('/room/suggest', async (req, res, next) => {
+  try {
+    const r = await roomApi.call('suggest', {
+      type: req.query.type, w: req.query.w, d: req.query.d, density: req.query.density,
+    }, { timeout: 60000 });
+    send(res, r);
+  } catch (err) { next(err); }
+});
+
 // room layout — the core "select what you want, we place it or say it doesn't fit"
 // ---------------------------------------------------------------------------
 router.post('/room/layout', async (req, res, next) => {

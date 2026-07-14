@@ -38,6 +38,52 @@
     return `<button class="btn btn-tiny btn-browse" data-browse="${c.category}">${label}${genTag}</button>`;
   }
 
+  // ---- office-first room presets (user directive: offices are the focus) ----
+  let rbDensity = 'medium';
+
+  function wireRoomControls() {
+    document.querySelectorAll('#rbSizePresets [data-size]').forEach((b) => {
+      b.onclick = () => {
+        const [w, d] = b.dataset.size.split('x');
+        $('rbWidth').value = w;
+        $('rbDepth').value = d;
+        document.querySelectorAll('#rbSizePresets [data-size]').forEach((x) =>
+          x.classList.toggle('active', x === b));
+        updateTotal();
+      };
+    });
+    document.querySelectorAll('#rbDensity [data-dens]').forEach((b) => {
+      b.onclick = () => {
+        rbDensity = b.dataset.dens;
+        document.querySelectorAll('#rbDensity [data-dens]').forEach((x) =>
+          x.classList.toggle('active', x === b));
+      };
+    });
+    const sug = $('rbSuggest');
+    if (sug) sug.onclick = suggestForRoom;
+  }
+
+  // ask the server for the SAME space-aware set the building populate uses
+  // (smart_furnish: room type + true area + density tier), then load it
+  async function suggestForRoom() {
+    const w = +$('rbWidth').value || 6, d = +$('rbDepth').value || 6;
+    const type = $('rbType').value;
+    try {
+      const r = await fetch(`/api/room/suggest?type=${type}&w=${w}&d=${d}&density=${rbDensity}`);
+      const s = await r.json();
+      if (!s.ok) { banner('Suggestion failed: ' + (s.error || '?'), true); return; }
+      Object.keys(counts).forEach((c) => { counts[c] = 0; });
+      Object.keys(chosen).forEach((c) => { delete chosen[c]; });   // chosen is const
+      (s.items || []).forEach((c) => { counts[c] = (counts[c] || 0) + 1; });
+      Object.entries(counts).forEach(([c, n]) => {
+        const el = $('rbN-' + c);
+        if (el) el.textContent = n;
+      });
+      updateTotal();
+      toast(`✨ ${s.items.length} items suggested for a ${w}×${d} m ${type} (${rbDensity}) — edit freely.`, 'ok');
+    } catch (e) { banner('Suggestion failed: ' + e, true); }
+  }
+
   async function loadCatalog() {
     const el = $('rbCatalog');
     try {
@@ -411,6 +457,7 @@
     if (initialized) return;
     initialized = true;
     loadCatalog();
+    wireRoomControls();
 
     $('rbCatalog').addEventListener('click', (e) => {
       const br = e.target.closest('button[data-browse]');
