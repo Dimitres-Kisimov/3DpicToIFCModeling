@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>X-Ray Building — furniture through the walls</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩻</text></svg>">
-<script type="module" src="/assets/model-viewer.min.js"></script>
+<script type="module" src="/assets/model-viewer.min.js?v=2"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0; --brand:#2f6bff; }
@@ -26,10 +26,26 @@
   <p>Bürogebäude — the shell at 22% opacity, all 380 solver-placed pieces visible through the walls</p>
   <a href="/hub.html">← Research hub</a>
 </header>
-<div class="hint">Drag to orbit · scroll to zoom · right-drag to pan. Every desk cluster (chair tucked,
+<div class="hint" id="mvDiag">Drag to orbit · scroll to zoom · right-drag to pan. Every desk cluster (chair tucked,
 monitor on top, bin at the side), corner planter and door-side coat rack in this building is real solver
 output — nothing is staged. Offices line the facades; labs sit in the deep plan.</div>
-<model-viewer src="/out/xray_building.glb" camera-controls shadow-intensity="0.4"
+<model-viewer id="mv" src="/out/xray_building.glb?v=2" camera-controls shadow-intensity="0.4"
   camera-orbit="35deg 65deg 60m" exposure="1.1" interaction-prompt="none"></model-viewer>
+<script>
+(function () {
+  const diag = document.getElementById('mvDiag');
+  const say = (t) => { diag.textContent = t; diag.style.color = '#d03b3b'; };
+  const c = document.createElement('canvas');
+  if (!(c.getContext('webgl2') || c.getContext('webgl'))) {
+    say('✗ WebGL is disabled in this browser — enable "Use graphics acceleration" in chrome://settings/system and relaunch.');
+    return;
+  }
+  setTimeout(() => {
+    if (!customElements.get('model-viewer')) say('✗ The 3D viewer script did not load — press Ctrl+F5.');
+  }, 4000);
+  document.getElementById('mv').addEventListener('error', (e) =>
+    say('✗ 3D failed to start (' + ((e.detail && e.detail.type) || 'load error') + ') — press Ctrl+F5.'));
+})();
+</script>
 </body>
 </html>

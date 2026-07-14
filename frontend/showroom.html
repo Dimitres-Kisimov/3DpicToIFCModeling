@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Showroom — every catalog item in one ASR room</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛋️</text></svg>">
-<script type="module" src="/assets/model-viewer.min.js"></script>
+<script type="module" src="/assets/model-viewer.min.js?v=2"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0; --brand:#2f6bff; }
@@ -34,9 +34,10 @@
 </header>
 <main>
   <div class="grid">
-    <div class="pane"><b>3D — orbit it</b><small>drag to orbit · scroll to zoom · right-drag to pan</small>
-      <model-viewer src="/out/showroom.glb" camera-controls shadow-intensity="0.5"
-        camera-orbit="30deg 60deg 24m" exposure="1.1" interaction-prompt="none"></model-viewer></div>
+    <div class="pane"><b>3D — orbit it</b><small id="mvDiag">drag to orbit · scroll to zoom · right-drag to pan</small>
+      <model-viewer id="mv" src="/out/showroom.glb?v=2" poster="/out/showroom_3d.png"
+        camera-controls shadow-intensity="0.5" camera-orbit="30deg 60deg 24m"
+        exposure="1.1" interaction-prompt="none"></model-viewer></div>
     <div class="pane"><b>2D solver plan</b><small>green dashes = protected people-space; numbers match the object list</small>
       <img src="/out/showroom_plan.png" alt="showroom floor plan"></div>
   </div>
@@ -52,5 +53,24 @@
     1.5 m² movement area at the workstation, 0.90 m door keep-clear.
   </div>
 </main>
+<script>
+(function () {
+  const diag = document.getElementById('mvDiag');
+  const say = (t) => { diag.textContent = t; diag.style.color = '#d03b3b'; };
+  const canvas = document.createElement('canvas');
+  if (!(canvas.getContext('webgl2') || canvas.getContext('webgl'))) {
+    say('✗ WebGL is disabled in this browser — turn ON "Use graphics acceleration" in chrome://settings/system, relaunch Chrome, and reload. Showing the static render meanwhile.');
+    return;
+  }
+  setTimeout(() => {
+    if (!customElements.get('model-viewer')) {
+      say('✗ The 3D viewer script did not load — hard-refresh with Ctrl+F5.');
+    }
+  }, 4000);
+  document.getElementById('mv').addEventListener('error', (e) => {
+    say('✗ 3D failed to start (' + ((e.detail && e.detail.type) || 'load error') + ') — static render shown instead. Try Ctrl+F5.');
+  });
+})();
+</script>
 </body>
 </html>
