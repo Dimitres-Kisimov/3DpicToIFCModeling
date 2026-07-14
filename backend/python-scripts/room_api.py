@@ -466,8 +466,10 @@ def cmd_building_rooms(args):
             r["storey"] = min(below)[1] if below else min((abs(z - e), nm) for nm, e in elev_of.items())[1]
         del r["_zmin"]
 
-    used = {r["storey"] for r in rooms if r["furnishable"]}
-    rooms = [r for r in rooms if r["furnishable"] or r["storey"] in used]
+    # ALL floors that hold at least one room are included (user directive) —
+    # a roof terrace or service level still shows as a floor chip with its
+    # context spaces; only storeys with zero rooms stay out of the picker
+    used = {r["storey"] for r in rooms}
     storeys = [{"name": n, "elevation": round(elev_of[n], 3), "top": round(tops[n], 3)}
                for n in sorted(used, key=lambda n: elev_of.get(n, 0.0)) if n]
     return {"ok": True, "rooms": rooms, "categories": sorted(assets.keys()),
