@@ -15,7 +15,11 @@
   header h1 { font-size:19px; } header p { color:var(--mut); font-size:13px; }
   header a { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
   main { max-width:1280px; margin:0 auto; padding:20px 28px 60px; }
-  .grid { display:grid; grid-template-columns:3fr 2fr; gap:14px; }
+  .grid { display:grid; grid-template-columns:1fr; gap:14px; }
+  #zoomWrap { cursor:zoom-in; }
+  #overlay { display:none; position:fixed; inset:0; background:rgba(15,20,30,.92); z-index:50;
+             overflow:auto; cursor:zoom-out; }
+  #overlay img { display:block; margin:20px auto; width:min(96vw, 1900px); }
   .pane { background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
   .pane b { display:block; padding:10px 14px 2px; font-size:13.5px; }
   .pane small { display:block; padding:0 14px 8px; color:var(--mut); font-size:12px; }
@@ -38,9 +42,10 @@
       <model-viewer id="mv" src="/out/showroom.glb?v=2" poster="/out/showroom_3d.png"
         camera-controls shadow-intensity="0.5" camera-orbit="30deg 60deg 24m"
         exposure="1.1" interaction-prompt="none"></model-viewer></div>
-    <div class="pane"><b>2D solver plan</b><small>green dashes = protected people-space; numbers match the object list</small>
-      <img src="/out/showroom_plan.png" alt="showroom floor plan"></div>
+    <div class="pane"><b>2D solver plan</b><small>green dashes = protected people-space; numbers match the object list — click the plan to zoom (same window)</small>
+      <div id="zoomWrap"><img src="/out/showroom_plan.png" alt="showroom floor plan"></div></div>
   </div>
+  <div id="overlay"><img src="/out/showroom_plan.png" alt="showroom floor plan, full size"></div>
   <div class="legend">
     <b>What to check while orbiting</b> — all 38 categories were requested, all placed, nothing refused:
     the <b>desk cluster</b> (office chair tucked in, monitor + laptop on the surface facing the sitter,
@@ -71,6 +76,11 @@
     say('✗ 3D failed to start (' + ((e.detail && e.detail.type) || 'load error') + ') — static render shown instead. Try Ctrl+F5.');
   });
 })();
+// same-window zoom for the 2D plan
+const ov = document.getElementById('overlay');
+document.getElementById('zoomWrap').onclick = () => { ov.style.display = 'block'; };
+ov.onclick = () => { ov.style.display = 'none'; };
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') ov.style.display = 'none'; });
 </script>
 </body>
 </html>
