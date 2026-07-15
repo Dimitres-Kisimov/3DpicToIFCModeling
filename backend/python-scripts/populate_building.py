@@ -30,13 +30,22 @@ import spatial_layout
 REPO = Path(__file__).resolve().parents[2]
 LIB = REPO / "deliverable" / "asset_library"
 
-SKIP_KEYWORDS = ["bath", "foyer", "hall", "stair", "utility", "roof", "closet", "wc", "corridor",
-                 # German (SCS buildings will be German)
-                 "bad", "flur", "diele", "treppe", "abstell", "technik", "garderobe",
-                 # Dutch (Schependomlaan-style housing exports)
-                 "entree", "gang", "berging", "instal", "toilet", "trap", "mk",
-                 # French (19-rue-Marc-Antoine-style exports)
-                 "sanitaire", "san.", "douche", "vestiaire", "circulation", "dgt", "palier"]
+# DIN 277: TF (technical) + VF (circulation) + sanitary stay UNFURNISHED by law/
+# design; everything else gets a furnishing type below. Garderobe/Abstellraum/
+# Foyer/Berging/Vestiaire moved OUT of skip — they have permissible furniture.
+SKIP_KEYWORDS = ["bath", "hall", "stair", "utility", "roof", "closet", "wc", "corridor",
+                 "shaft", "elevator", "lift", "emergency exit", "washroom", "shower",
+                 "lavatory", "vestibul-x",
+                 # German
+                 "bad", "flur", "diele", "treppe", "technik", "aufzug", "notausgang",
+                 "dusche", "schacht",
+                 # Dutch
+                 "entree", "gang", "instal", "toilet", "trap", "mk", "overloop",
+                 # French
+                 "sanitaire", "san.", "douche", "circulation", "dgt", "palier",
+                 "prelevt",
+                 # US plan shorthand + technical rooms (DIN 277 TF)
+                 "rr", "restroom", "mech", "elec rm", "janitor", "asc.", "onben"]
 # room-name keyword -> canonical room type (multi-language so ANY new building maps)
 TYPE_KEYWORDS = {"living": "living", "lounge": "lounge", "bed": "bed", "kitchen": "kitchen",
                  "dining": "dining", "meeting": "meeting", "conference": "meeting",
@@ -63,7 +72,36 @@ TYPE_KEYWORDS = {"living": "living", "lounge": "lounge", "bed": "bed", "kitchen"
                  "rückzug": "quiet", "rueckzug": "quiet",
                  "pause": "break", "break": "break", "sozialraum": "break",
                  "kantine": "break", "cafeteria": "break", "mensa": "break", "bistro": "break",
-                 "empfang": "reception", "reception": "reception", "rezeption": "reception"}
+                 "empfang": "reception", "reception": "reception", "rezeption": "reception",
+                 # DIN 277 NUF 2 (office work) — tenant/team spaces
+                 "tenant": "office", "cubicle": "office", "workstation": "office",
+                 "team": "meeting", "huddle": "meeting",
+                 # DIN 277 NUF 4 (storage/distribution) — DE/EN/NL
+                 "archiv": "storage", "lager": "storage", "keller": "storage",
+                 "dachboden": "storage", "abstell": "storage", "storage": "storage",
+                 "depot": "storage", "magazin": "storage", "attic": "storage",
+                 "basement": "storage", "facility": "storage", "berging": "storage",
+                 "cleaning": "storage", "putzraum": "storage", "reinigung": "storage",
+                 # wardrobe / cloakroom — coat racks + lockers ARE its furniture
+                 "garderobe": "wardrobe", "vestiaire": "wardrobe", "wardrobe": "wardrobe",
+                 "cloakroom": "wardrobe", "umkleide": "wardrobe",
+                 # entry zones — coat rack, mirror, greenery, waiting seats
+                 "vestibule": "entry", "entrance": "entry", "eingang": "entry",
+                 "foyer": "entry", "lobby": "entry", "entry": "entry",
+                 # outdoor rooms — planters + light outdoor seating
+                 "balkon": "balcony", "balcony": "balcony", "loggia": "balcony",
+                 "terras": "balcony", "terrasse": "balcony", "patio": "balcony",
+                 # print / copy rooms
+                 "photocopier": "print", "kopier": "print", "drucker": "print",
+                 "copy": "print", "repro": "print",
+                 # IT / server rooms (racks + extinguisher, no desks)
+                 "server": "it", "edv": "it", "rechenzentrum": "it",
+                 # waiting areas
+                 "warte": "lounge", "wait": "lounge",
+                 # IT/comms shorthand + labs (DIN 277 NUF 3) + odd singles
+                 "tele": "it", "comm": "it", "sipr": "it", "edp": "it",
+                 "stock": "storage", "chimie": "workspace", "bacterio": "workspace",
+                 "gardien": "office", "council": "meeting"}
 # structural element types that cut up a room and must be avoided
 OBSTACLE_TYPES = ["IfcColumn", "IfcWall", "IfcWallStandardCase", "IfcBeam", "IfcMember",
                   "IfcStair", "IfcStairFlight", "IfcRailing"]
@@ -86,6 +124,9 @@ def classify_room(name):
     e.g. 'Zimmer 1.02' / 'Raum 5' / '101'). Unknown ≠ unusable: the UI lets the
     user furnish unknown rooms with explicit picks; keywords only drive defaults."""
     n = (name or "").lower()
+    # exact short names first (NBU-style plans label AR/VR tech rooms literally)
+    if n.strip() in ("ar", "vr"):
+        return "workspace"
     for k in SKIP_KEYWORDS:
         if _kw_hit(n, k):
             return "skip"
@@ -256,6 +297,27 @@ def smart_furnish(rt, W, D, assets, density="medium"):
         items += ["armchair"] * min(4, max(1, int(area / 7)))
         if area > 10: items += ["side_table", "planter", "waste_bin"]
         if area > 18: items += ["water_dispenser", "sofa"]
+    elif rt == "storage":         # DIN 277 NUF 4: shelving walls, nothing blocking
+        items += ["bookshelf"] * min(6, max(1, int(area / 8)))
+        items += ["cabinet"] * min(4, max(1, int(area / 10)))
+        items += ["locker"] * min(4, max(0, int(area / 14)))
+    elif rt == "wardrobe":        # Garderobe: THIS room's furniture IS coat storage
+        items += ["coat_rack"] * min(4, max(1, int(area / 6)))
+        items += ["locker"] * min(6, max(1, int(area / 5)))
+        items += ["mirror", "stool"]
+    elif rt == "entry":           # vestibule/foyer/lobby: greet, hang, wait
+        items += ["coat_rack", "planter"]
+        if area > 8: items += ["mirror", "planter"]
+        if area > 14: items += ["armchair", "armchair", "side_table"]
+    elif rt == "balcony":         # outdoor: greenery + light seating only
+        items += ["planter"] * min(3, max(1, int(area / 5)))
+        if area > 5: items += ["stool", "stool", "side_table"]
+    elif rt == "print":           # copy room: the shared MFP's home
+        items += ["printer", "cabinet", "waste_bin"]
+        if area > 10: items += ["printer", "bookshelf"]
+    elif rt == "it":              # server room: racks + extinguisher, no desks
+        items += ["server_rack"] * min(6, max(1, int(area / 6)))
+        items += ["cabinet", "fire_extinguisher"]
     if density == "dense" and rt in DENSE_EXTRAS:
         min_area, extras = DENSE_EXTRAS[rt]
         if W * D >= min_area:

@@ -939,6 +939,21 @@ Each room keeps only what fits its own area.`)) return;
   document.addEventListener('DOMContentLoaded', () => {
     const rb = document.getElementById('bRotateBtn');
     if (rb) rb.addEventListener('click', rotateSelected);
+    // Ctrl + RIGHT-CLICK a piece in 3D: rotate it 90° toward the next wall
+    // (user request) — picks whatever is under the cursor, no pre-select needed
+    document.addEventListener('contextmenu', (e) => {
+      if (!e.ctrlKey || rb.hidden) return;
+      const v = viewer();
+      if (!v || !e.target || e.target.tagName !== 'CANVAS') return;
+      const rect = e.target.getBoundingClientRect();
+      const pr = v.scene.pick({ canvasPos: [e.clientX - rect.left, e.clientY - rect.top] });
+      const pid = pieceIdFromPick(pr);
+      if (pid) {
+        e.preventDefault();
+        bSelected = pid;
+        rotateSelected(pid);
+      }
+    }, true);
     const db = document.getElementById('bDeleteBtn');
     if (db) db.addEventListener('click', deleteSelected);
     document.addEventListener('keydown', (e) => {

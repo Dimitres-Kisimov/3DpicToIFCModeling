@@ -187,6 +187,36 @@ ROOM_TYPES = {
             ("coffee_machine", "table", "on_top"),
         ],
     },
+    "storage": {        # DIN 277 NUF 4 — shelving hugs the walls
+        **_BASE, "area_per_person": 10.0, "min_aisle": 0.90,
+        "perimeter": {"bookshelf", "cabinet", "locker", "filing_cabinet"},
+        "groups": [],
+    },
+    "wardrobe": {       # Garderobe — racks/lockers line the walls
+        **_BASE, "area_per_person": 4.0, "min_aisle": 0.90,
+        "perimeter": {"coat_rack", "locker", "mirror", "cabinet"},
+        "groups": [],
+    },
+    "entry": {          # vestibule/foyer — nothing blocks the way through
+        **_BASE, "area_per_person": 6.0, "min_aisle": 1.20,
+        "perimeter": {"coat_rack", "planter", "mirror", "armchair", "side_table"},
+        "groups": [],
+    },
+    "balcony": {        # outdoor room — light pieces at the edges
+        **_BASE, "area_per_person": 4.0, "min_aisle": 0.90,
+        "perimeter": {"planter", "stool", "side_table"},
+        "groups": [],
+    },
+    "print": {          # copy room
+        **_BASE, "area_per_person": 8.0, "min_aisle": 1.00,
+        "perimeter": {"printer", "cabinet", "bookshelf"},
+        "groups": [],
+    },
+    "it": {             # server room — racks at walls, clear service aisle
+        **_BASE, "area_per_person": 12.0, "min_aisle": 1.00,
+        "perimeter": {"server_rack", "cabinet"},
+        "groups": [],
+    },
     "reception": {      # Empfang / front desk + waiting seats
         **_BASE,
         "area_per_person": 5.0,
