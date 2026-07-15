@@ -17,7 +17,7 @@ REPO = Path(__file__).resolve().parents[1]
 import sys
 LITE = "--lite" in sys.argv
 OUT = REPO / "deliverable" / "local_only" / (
-    "SCS_Studio_App_v1.0_lite.zip" if LITE else "SCS_Studio_App_v1.0.zip")
+    "SCS_Studio_App_v2.0_lite.zip" if LITE else "SCS_Studio_App_v2.0.zip")
 
 ABO = "data/mesh_library_abo"
 INCLUDE = [
