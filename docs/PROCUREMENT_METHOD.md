@@ -79,6 +79,66 @@ report is honest about which rows produced candidates.
   downloads → 1–3 minutes, one scan at a time, everything cached — no risk to
   the machine.
 
+## Limitations — acknowledged, not hidden
+
+1. **Coverage is partial.** Of the 8 registered companies, 3 currently yield
+   candidates without keys (IKEA, OTTO, POCO); home24 bot-walls automated
+   browsers, Möbel Boss loads prices after our render window, Kaiserkraft
+   gates B2B prices. The true market minimum may sit in an unscanned shop —
+   which is exactly why the report never claims more than the scanned set.
+2. **Visual similarity ≠ build quality.** CLIP judges *photos*. Load rating,
+   materials, durability, certifications (GS mark; EN 1335 for office chairs)
+   are invisible to it. Shop ratings gate quality only where exposed (IKEA,
+   Google Shopping). A human must open the product page before ordering.
+3. **Our renders inherit mesh artifacts.** The bed's similarities (0.56–0.66)
+   run lower than the stool's (0.71) because the TRELLIS bed mesh carries
+   texture noise — the AI-mesh quality directly bounds match confidence.
+4. **The category gate is borderline-tolerant by design.** Zero-shot
+   classification admitted an armchair (POÄNG) for "chair" and a storage
+   stool titled *Beistelltisch* for "stool" — near-category, arguably useful,
+   but a strict buyer should read titles.
+5. **Dimensions are not yet enforced.** A visually identical stool could be
+   10 cm shorter. We *know* our item's real dimensions — filtering candidates
+   by ±15 % from product detail pages is the top planned improvement.
+6. **Prices move.** Reports are timestamped; the 24 h fetch cache can serve a
+   day-old price; the product link is always the authority.
+7. **Shipping is modelled, not quoted** (except eBay's API): published
+   standard rates, a ~3-units/package parcel amortization heuristic, one
+   Spedition fee per order. Mixed carts and promotions aren't modelled.
+   Assembly cost, delivery time, warranty and CO₂ are out of scope (TCO gap).
+8. **ToS reality.** Polite, cached, low-volume rendered-page reading is fine
+   for a single-user research tool; a commercial deployment should switch the
+   scraping rows to official APIs / affiliate feeds.
+
+## Practical evaluation — the three-item study, honestly graded
+
+| item (engine) | verdict | evidence |
+|---|---|---|
+| stool (TripoSG) | **very good** | 0.71 top similarity; three distinct sensible tiers (MARIUS 11.99 € landed → RUDSTORP 35.98 €); 21/23 candidates above floor |
+| bed (TRELLIS) | **good, after the category gate** | first pass leaked a fly screen + wallpaper (fixed by the gate); final tiers are all real bed frames (NEIDEN 109 € → GLAMBERGET 338 € landed incl. 39 € Spedition); similarities capped ~0.66 by mesh texture noise |
+| chair (TRELLIS) | **good with a caveat** | budget/standard are true dining chairs (55.85 € / 75.94 € landed); premium admitted POÄNG (armchair) via zero-shot — near-category |
+
+Runtime in practice: 1–3 min first scan (Chrome renders + ~30 image
+downloads + CLIP), seconds when cached; one scan at a time; no measurable
+strain on the machine. **Verdict: a reliable shortlist-and-costing tool for a
+human buyer — not an autonomous purchasing agent.**
+
+## How it improves (priority order)
+
+1. **Two free keys** — eBay developer key (every eBay.de seller, *exact*
+   shipping to 74076) and SerpAPI (Google Shopping = hundreds of shops per
+   query). Ten minutes of setup each; biggest coverage jump available.
+2. **Dimension filter** — fetch matched products' detail pages, parse the
+   size table, reject outside ±15 % of our item's known real dimensions.
+3. **Multi-view CLIP** — render 4 yaw views of the GLB (not just thumb +
+   preview) for more stable similarity, especially on noisy meshes.
+4. **Rating floor** — require ★≥4.0 where ratings exist; weight by review count.
+5. **More adapters** — each new shop is ~20 registry lines; candidates:
+   XXXLutz group, Wayfair.de, Amazon PA-API (associate key).
+6. **Re-scan before purchase** — a scheduled second scan diffing prices since
+   the report date (prices move; the diff proves it).
+7. **TCO columns** — assembly minutes, delivery time, warranty years.
+
 ## Scaling the company list
 
 Two switches multiply coverage without new code: a free **eBay developer key**

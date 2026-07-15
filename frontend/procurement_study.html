@@ -74,8 +74,26 @@ async function main() {
       <div class="note"><b>Companies scanned:</b> ${j.companies_scanned.join(' · ')}
         ${j.companies_skipped.length ? `<br><b>More companies with an API key:</b> ${j.companies_skipped.join(' · ')}` : ''}
         <br>${j.vat_note}. ${j.claim}.</div>
+      <p style="margin-top:10px"><a href="/docs-img/procurement_study/${id}.xlsx" download>
+        📥 Finance pack for ${id} (Excel: offers · all matches · assumptions)</a></p>
     </div>`);
   }
+  root.insertAdjacentHTML('beforeend', `<div class="panel">
+    <h2>⚠️ Limitations & practical verdict (read before buying)</h2>
+    <p style="font-size:13px;margin-top:8px">
+    <b>Graded honestly:</b> stool <b>very good</b> (0.71 similarity, three sensible tiers);
+    bed <b>good after the category gate</b> — the first pass leaked a fly screen and wallpaper,
+    the gate fixed it, and mesh texture noise caps its similarity near 0.66; chair <b>good with
+    a caveat</b> — the premium pick admitted an armchair (POÄNG) via zero-shot classification.</p>
+    <p style="font-size:13px;margin-top:8px"><b>Standing limits:</b> coverage is 3 keyless companies
+    today (the report only ever claims "cheapest among the companies scanned"); CLIP judges photos,
+    not build quality or certifications; product dimensions are not yet enforced; shipping is
+    modelled from published rates, not quoted; prices move — the link is the authority.
+    <b>Verdict: a reliable shortlist-and-costing tool for a human buyer, not an autonomous
+    purchasing agent.</b> Improvement roadmap (free eBay/SerpAPI keys, ±15% dimension filter,
+    multi-view CLIP, rating floors): see the
+    <a href="/docs-img/PROCUREMENT_METHOD.html">methodology</a>.</p>
+  </div>`);
 }
 main();
 </script>

@@ -46,8 +46,13 @@ router.post('/procure', (req, res) => {
     return res.status(429).json({ ok: false, error: 'a procurement scan is already running — try again in a minute' });
   }
   const jsonOut = path.join(OUT_DIR, `${item}_q${qty.join('-')}.json`);
+  const xlsxOut = jsonOut.replace(/\.json$/, '.xlsx');
+  const withUrls = (obj) => {
+    if (fs.existsSync(xlsxOut)) obj.xlsx_url = '/out/procurement/' + path.basename(xlsxOut);
+    return obj;
+  };
   if (fs.existsSync(jsonOut) && Date.now() - fs.statSync(jsonOut).mtimeMs < 24 * 3600e3) {
-    return res.json(JSON.parse(fs.readFileSync(jsonOut, 'utf8'))); // session cache
+    return res.json(withUrls(JSON.parse(fs.readFileSync(jsonOut, 'utf8')))); // session cache
   }
   running = true;
   const py = spawn('python', [
@@ -59,7 +64,7 @@ router.post('/procure', (req, res) => {
   py.on('close', (code) => {
     running = false;
     if (code === 0 && fs.existsSync(jsonOut)) {
-      res.json(JSON.parse(fs.readFileSync(jsonOut, 'utf8')));
+      res.json(withUrls(JSON.parse(fs.readFileSync(jsonOut, 'utf8'))));
     } else {
       logger.error(`procurement failed (${code}): ${err.slice(-800)}`);
       res.status(500).json({ ok: false, error: 'procurement scan failed', detail: err.slice(-400) });

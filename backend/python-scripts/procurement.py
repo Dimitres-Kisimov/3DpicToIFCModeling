@@ -511,6 +511,72 @@ def run(item_id, qtys, limit=12):
             "generated_utc": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime())}
 
 
+def write_xlsx(r, path):
+    """The finance pack: one workbook the financial department can act on."""
+    from openpyxl import Workbook
+    from openpyxl.styles import Font, PatternFill
+    wb = Workbook()
+    hdr = Font(bold=True, color="FFFFFF")
+    fill = PatternFill("solid", fgColor="2F6BFF")
+
+    ws = wb.active
+    ws.title = "Offers"
+    ws.append([f"Procurement report — {r['item']} → real product"])
+    ws["A1"].font = Font(bold=True, size=13)
+    ws.append([f"query \"{r['query']}\" · {r['generated_utc']} · destination {r['destination']}"])
+    ws.append([])
+    ws.append(["tier", "company", "product", "visual similarity", "rating",
+               "qty", "unit €", "shipping €", "shipping basis", "LANDED €",
+               "€/unit", "product link"])
+    for c in ws[4]:
+        c.font, c.fill = hdr, fill
+    for tier, t in r["tiers"].items():
+        for cost in t["costs"]:
+            ws.append([tier.upper(), t["shop_name"], t["title"],
+                       t["similarity"], t.get("rating") or "—",
+                       cost["qty"], cost["unit_price"], cost["shipping"],
+                       cost["shipping_basis"], cost["landed_total"],
+                       cost["landed_per_unit"], t["url"]])
+        pk = t["costs"][0].get("pickup_alternative")
+        if pk:
+            ws.append(["", "", f"↳ pickup alternative: {pk['store']}", "", "",
+                       "", "", pk["cost"], pk["note"], "", "", ""])
+    for col, w in zip("ABCDEFGHIJKL", (10, 22, 44, 15, 8, 6, 10, 11, 30, 12, 10, 50)):
+        ws.column_dimensions[col].width = w
+
+    ws2 = wb.create_sheet("All matches")
+    ws2.append(["company", "product", "visual similarity", "price €",
+                "category check", "link"])
+    for c in ws2[1]:
+        c.font, c.fill = hdr, fill
+    for m in r["all_matches"]:
+        ws2.append([m["shop_name"], m["title"], m.get("similarity"),
+                    m["price"], m.get("category_check", ""), m["url"]])
+    for col, w in zip("ABCDEF", (22, 46, 15, 10, 16, 50)):
+        ws2.column_dimensions[col].width = w
+
+    ws3 = wb.create_sheet("Method & assumptions")
+    for line in [
+        f"Companies scanned: {'; '.join(r['companies_scanned'])}",
+        f"More companies with an API key: {'; '.join(r['companies_skipped']) or '—'}",
+        r["vat_note"],
+        f"Visual similarity floor: {r['similarity_floor']} (CLIP ViT-B/32, "
+        "max cosine over the item's rendered views)",
+        "Category gate: candidate title must name the category, else its photo "
+        "must zero-shot-classify as the category",
+        "Shipping: per-company published rates — parcel (amortized ~3 units/package "
+        "on bulk) vs one Spedition fee per order for bulky categories; eBay API "
+        "returns the seller's exact rate; estimates are flagged in the basis column",
+        f"Pickup alternative where offered: round-trip km × {KM_RATE:.2f} €/km",
+        f"Claim on this report: {r['claim']}",
+        "At qty ≥ 10 request a written quote — retail bulk discounts are not public data",
+        "Full method: docs/PROCUREMENT_METHOD.md",
+    ]:
+        ws3.append([line])
+    ws3.column_dimensions["A"].width = 110
+    wb.save(path)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--item", required=True)
@@ -522,6 +588,12 @@ def main():
         Path(a.json).parent.mkdir(parents=True, exist_ok=True)
         Path(a.json).write_text(json.dumps(r, indent=1, ensure_ascii=False),
                                 encoding="utf-8")
+        try:
+            xp = Path(a.json).with_suffix(".xlsx")
+            write_xlsx(r, xp)
+            print(f"finance pack: {xp.name}")
+        except Exception as e:
+            print(f"xlsx skipped: {e}")
     for name, t in r["tiers"].items():
         c1 = t["costs"][0]
         print(f"{name:9s} {t['shop_name']:24s} sim={t['similarity']:.2f} "
