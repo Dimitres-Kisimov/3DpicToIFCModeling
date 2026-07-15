@@ -290,6 +290,11 @@
         e.preventDefault();
         if (bm().rotateSelected(selected)) draw();
       }
+      if (open && selected && e.key === 'Delete'
+          && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '')) {
+        e.preventDefault();
+        if (bm().deleteSelected(selected)) { selected = null; draw(); }
+      }
     });
     canvas.addEventListener('dblclick', (e) => {
       const [mx, my] = toPlan(e);

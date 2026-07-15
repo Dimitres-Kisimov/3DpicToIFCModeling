@@ -608,6 +608,7 @@ Each room keeps only what fits its own area.`)) return;
     Object.values(bPieces).forEach((p) => { try { p.model.destroy(); } catch (e) {} });
     for (const k in bPieces) delete bPieces[k];
     bSelected = null;
+    bDeleted.clear();
     clearSections();
   }
 
@@ -644,6 +645,22 @@ Each room keeps only what fits its own area.`)) return;
       const [lcx, lcy] = toLocal(px + dx + w / 2, py + dy + d / 2);
       return [lcx - w / 2, lcy - d / 2, w, d];
     });
+  }
+
+  const bDeleted = new Set();   // pieces removed by the user — exports skip them
+
+  // delete the SELECTED piece everywhere: 3D model, 2D plan, save/export
+  function deleteSelected(pid) {
+    const target = (typeof pid === 'string' && bPieces[pid]) ? pid : bSelected;
+    if (!target || !bPieces[target]) { banner('Click a piece first, then delete.', true); return false; }
+    const p = bPieces[target];
+    try { p.model.destroy(); } catch (e) {}
+    delete bPieces[target];
+    bDeleted.add(target);
+    if (bSelected === target) bSelected = null;
+    banner('🗑 ' + p.category.replace(/_/g, ' ') + ' removed everywhere. 💾 Save layout / IFC export respect it; Populate again to restore.');
+    if (window.buildingPlan && window.buildingPlan.redraw) window.buildingPlan.redraw();
+    return true;
   }
 
   // rotate the SELECTED piece 90° about the vertical axis (2D + 3D stay in
@@ -822,6 +839,7 @@ Each room keeps only what fits its own area.`)) return;
   async function saveBuilding() {
     const positions = {};
     Object.entries(bPieces).forEach(([id, p]) => { positions[id] = { pos: p.pos, rot: p.rot || 0 }; });
+    bDeleted.forEach((id) => { positions[id] = { deleted: true }; });
     banner('Saving layout & building the export GLB…');
     try {
       const r = await fetch(`/api/building/${currentBuilding}/save`, {
@@ -844,6 +862,7 @@ Each room keeps only what fits its own area.`)) return;
   async function exportIfc() {
     const positions = {};
     Object.entries(bPieces).forEach(([id, p]) => { positions[id] = { pos: p.pos, rot: p.rot || 0 }; });
+    bDeleted.forEach((id) => { positions[id] = { deleted: true }; });
     const btn = $('bIfc');
     btn.disabled = true;
     btn.textContent = '⏳ Writing BIM file…';
@@ -920,6 +939,15 @@ Each room keeps only what fits its own area.`)) return;
   document.addEventListener('DOMContentLoaded', () => {
     const rb = document.getElementById('bRotateBtn');
     if (rb) rb.addEventListener('click', rotateSelected);
+    const db = document.getElementById('bDeleteBtn');
+    if (db) db.addEventListener('click', deleteSelected);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Delete' && db && !db.hidden
+          && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '')) {
+        e.preventDefault();
+        deleteSelected();
+      }
+    });
     document.addEventListener('keydown', (e) => {
       if ((e.key === 'r' || e.key === 'R') && !rb.hidden
           && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '')) {
@@ -933,6 +961,6 @@ Each room keeps only what fits its own area.`)) return;
                           selectFloor, currentFloor: () => currentFloor,
                           refreshPiece, onTabLeave, onTabEnter, pieceZonesWorld,
                           isLegalPiece, findClashes, resolveClashes, enterRoom,
-                          rotateSelected, selectedPiece: () => bSelected,
+                          rotateSelected, deleteSelected, selectedPiece: () => bSelected,
                           pieceRot: (id) => (bPieces[id] && bPieces[id].rot) || 0 };
 })();

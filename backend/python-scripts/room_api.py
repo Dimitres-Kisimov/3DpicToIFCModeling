@@ -618,7 +618,13 @@ def cmd_building_save(args):
             return (v.get("pos") or p["pos"]), float(v.get("rot") or 0.0)
         return (v or p["pos"]), 0.0
 
+    def _is_deleted(p):
+        v = positions.get(p["id"])
+        return isinstance(v, dict) and v.get("deleted")
+
     for p in man.get("pieces", []):
+        if _is_deleted(p):                            # user removed it in the app
+            continue
         g = trimesh.load(str(mov / p["glb"]), force="mesh")
         pv, rot = _pos_rot(p)
         if rot:                                       # user 90-degree yaw (vertical axis)
@@ -673,8 +679,10 @@ def cmd_building_export_ifc(args):
     added, skipped = 0, 0
     for p in man.get("pieces", []):
         try:
-            m = trimesh.load(str(mov / p["glb"]), force="mesh")
             _v = positions.get(p["id"])
+            if isinstance(_v, dict) and _v.get("deleted"):
+                continue                              # user removed it in the app
+            m = trimesh.load(str(mov / p["glb"]), force="mesh")
             if isinstance(_v, dict):                  # {pos, rot} — rotated piece
                 pos = _v.get("pos") or p["pos"]
                 _rot = float(_v.get("rot") or 0.0)

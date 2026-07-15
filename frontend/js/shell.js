@@ -98,6 +98,7 @@
     $('lockBtn').hidden = tab !== 'building' || !hasBuilding;
     $('xrayBtn').hidden = tab !== 'building' || !hasBuilding;
     $('bRotateBtn').hidden = tab !== 'building' || !hasBuilding;
+    $('bDeleteBtn').hidden = tab !== 'building' || !hasBuilding;
     if (tab !== 'room') {
       $('vfallback').hidden = true;
       if (window.planEditor && window.planEditor.isOpen()) window.planEditor.toggle(false);
