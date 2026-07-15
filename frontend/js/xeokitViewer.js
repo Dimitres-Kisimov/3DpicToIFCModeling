@@ -48,6 +48,15 @@ function initViewer(containerId) {
     canvas.width = container.clientWidth || 800;
     canvas.height = container.clientHeight || 600;
 
+    // WebGL gate BEFORE xeokit touches the canvas — with graphics acceleration
+    // off, xeokit dies deep inside with "can't access property 'activeTexture'".
+    // Fail with instructions the user can actually act on instead.
+    const probe = document.createElement('canvas');
+    if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) {
+      throw new Error('WebGL is disabled in this browser. Open chrome://settings/system, '
+        + 'turn ON "Use graphics acceleration when available", relaunch Chrome, and reload.');
+    }
+
     // Initialize viewer using xeokit.Viewer.
     // colorTextureEnabled keeps GLB base-color textures (ABO catalog meshes carry
     // their colour in PNG textures — without this everything renders ghost-white);

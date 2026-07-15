@@ -153,10 +153,23 @@ ROOM_TYPES = {
         **_BASE,
         "area_per_person": 3.5,
         "min_aisle": 0.90,
-        "perimeter": {"cabinet", "locker", "water_dispenser", "planter", "sofa"},
+        "perimeter": {"cabinet", "locker", "water_dispenser", "planter", "sofa", "fridge"},
         "groups": [
             ("chair", "table", "beside"),
             ("stool", "table", "beside"),
+            ("coffee_machine", "table", "on_top"),
+            ("microwave", "table", "on_top"),   # appliances never on the floor (user rule)
+        ],
+    },
+    "kitchen": {        # cabinets + cold corner + eat-in table
+        **_BASE,
+        "area_per_person": 4.0,
+        "min_aisle": 1.00,          # work aisle between counters (Neufert kitchen)
+        "perimeter": {"cabinet", "fridge", "locker", "water_dispenser", "planter"},
+        "groups": [
+            ("chair", "table", "beside"),
+            ("stool", "table", "beside"),
+            ("microwave", "table", "on_top"),   # big appliances live ON a unit (user rule)
             ("coffee_machine", "table", "on_top"),
         ],
     },

@@ -153,8 +153,15 @@ def smart_furnish(rt, W, D, assets, density="medium"):
         if area > 12: items += ["lamp"]
         if area > 17: items += ["desk", "office_chair"]   # study nook in large bedrooms
     elif rt == "kitchen":
-        items += ["cabinet"] * min(3, max(1, int(area / 6)))
-        if area > 10: items += ["table"]
+        # kitchen logic (user rule): fridge + microwave BELONG here; the
+        # microwave rides ON a furniture unit (table), never the floor
+        items += ["cabinet"] * min(5, max(1, int(area / 6)))
+        items += ["fridge", "waste_bin"]
+        if area > 10:
+            items += ["table"] + ["chair"] * min(6, max(2, int(area / 5)))
+            items += ["microwave", "coffee_machine"]     # on the table/counter
+        if area > 16: items += ["planter"]
+        if area > 22: items += ["locker", "water_dispenser"]
     elif rt == "office":
         # ASR A1.2 (Arbeitsstaettenrichtlinie), verified against the legal text:
         #  sect.5 Abs.3 LEGAL MINIMUM: 8 m2 for the first workstation + 6 m2 for
