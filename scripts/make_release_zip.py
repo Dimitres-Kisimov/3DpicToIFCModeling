@@ -14,11 +14,15 @@ import zipfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-OUT = REPO / "deliverable" / "local_only" / "SCS_Studio_App_v1.0.zip"
+import sys
+LITE = "--lite" in sys.argv
+OUT = REPO / "deliverable" / "local_only" / (
+    "SCS_Studio_App_v1.0_lite.zip" if LITE else "SCS_Studio_App_v1.0.zip")
 
+ABO = "data/mesh_library_abo"
 INCLUDE = [
     "backend", "frontend", "scripts", "docs", "legacy",
-    "data/generated_assets", "data/buildings", "data/mesh_library_abo",
+    "data/generated_assets", "data/buildings",
     "data/mesh_library_polyhaven", "data/mesh_library", "data/furniture_library",
     "data/demo_photos", "sample_buildings", "demo",
     "deliverable/cloud_gallery", "deliverable/manuals",
@@ -46,6 +50,12 @@ FIRST-RUN NOTES
   - A building's first populate performs a one-time geometry scan
     (minutes for big IFCs; instant afterwards).
   - demo/app_out and outputs/ are created automatically at runtime.
+
+ABO FURNITURE LIBRARY (lite bundle only)
+  The lite bundle ships without the 4.7 GB ABO mesh library (a public
+  Amazon dataset, CC-BY-4.0). Rebuild it once before first use:
+      python backend/python-scripts/download_abo_subset.py
+  (internet required once; ~30-60 min depending on connection)
 
 NOT INCLUDED (size)
   - benchmark result meshes (7.5 GB) — the research-hub benchmark pages
@@ -75,7 +85,7 @@ def main():
         z.writestr("SCS_Studio/README_FIRST.txt", BUNDLE_README)
         z.writestr("SCS_Studio/demo/app_out/.keep", "")
         z.writestr("SCS_Studio/outputs/.keep", "")
-        for inc in INCLUDE:
+        for inc in (INCLUDE if LITE else INCLUDE + [ABO]):
             p = REPO / inc
             if p.is_file():
                 z.write(p, f"SCS_Studio/{inc}")
