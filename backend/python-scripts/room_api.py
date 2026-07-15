@@ -818,6 +818,14 @@ def cmd_update_positions(args):
     positions = args.get("positions") or {}
 
     zones = sched.get("zones") or {}
+    # deletions first: {id: {deleted: true}} removes the item from the room
+    # entirely — schedule, zones, and (on rebuild) the 3D scene + IFC
+    _dead = {iid for iid, u in positions.items()
+             if isinstance(u, dict) and u.get("deleted")}
+    if _dead:
+        sched["items"] = [it for it in sched["items"] if it["id"] not in _dead]
+        for iid in _dead:
+            zones.pop(iid, None)
     for it in sched["items"]:
         upd = positions.get(it["id"])
         if not upd:

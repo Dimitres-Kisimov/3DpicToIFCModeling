@@ -318,7 +318,7 @@
       const [mx, mz] = toRoom(e);
       selected = pick(mx, mz);
       if (selected) {
-        dragging = true;
+        dragging = !planLocked;
         dragOff = [mx - selected.x, mz - selected.z];
         canvas.setPointerCapture(e.pointerId);
       }
@@ -351,10 +351,33 @@
     document.addEventListener('keydown', (e) => {
       if (!open || !selected) return;
       if (e.key === 'r' || e.key === 'R') { e.preventDefault(); rotateSelected(); }
+      if (e.key === 'Delete' && selected) {
+        e.preventDefault();
+        const gone = selected;
+        items = items.filter((it) => it.id !== gone.id);
+        delete zones[gone.id];
+        selected = null;
+        const positions = { [gone.id]: { deleted: true } };
+        fetch('/api/room/positions', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ positions, rebuild: true }),
+        }).then((r) => r.json()).then((d) => {
+          if (d.ok && window.roomBuilder) window.roomBuilder.reloadScene();
+          banner('🗑 ' + gone.id + ' removed from the room — 3D, IFC and exports updated.');
+        }).catch((err) => banner('Delete failed: ' + err, true));
+        draw();
+      }
     });
 
     $('piApply').addEventListener('click', applyInspector);
     $('piRotate').addEventListener('click', rotateSelected);
+    const lk = $('piLock');
+    if (lk) lk.addEventListener('click', () => {
+      planLocked = !planLocked;
+      lk.textContent = planLocked ? '🔒 Locked' : '🔓 Unlocked';
+      banner(planLocked ? '🔒 Plan locked — items select but cannot be dragged.'
+                        : '🔓 Plan unlocked — drag to rearrange.');
+    });
     $('piSnap').addEventListener('change', (e) => { snap = e.target.checked; });
   });
 

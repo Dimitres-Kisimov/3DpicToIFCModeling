@@ -5,7 +5,7 @@
   "room": "4.5x3.5 m",
   "items": 10,
   "ok": true,
-  "secs": 16
+  "secs": 14
  },
  {
   "name": "office_team",
@@ -13,7 +13,7 @@
   "room": "6x6 m",
   "items": 21,
   "ok": true,
-  "secs": 27
+  "secs": 17
  },
  {
   "name": "office_exec",
@@ -21,7 +21,7 @@
   "room": "5x4.5 m",
   "items": 10,
   "ok": true,
-  "secs": 28
+  "secs": 16
  },
  {
   "name": "office_open",
@@ -29,7 +29,7 @@
   "room": "10x8 m",
   "items": 43,
   "ok": true,
-  "secs": 36
+  "secs": 32
  },
  {
   "name": "meeting_hub",
@@ -37,7 +37,7 @@
   "room": "5x4 m",
   "items": 12,
   "ok": true,
-  "secs": 16
+  "secs": 15
  },
  {
   "name": "presentation_hall",
@@ -45,7 +45,7 @@
   "room": "8x7 m",
   "items": 30,
   "ok": true,
-  "secs": 67
+  "secs": 69
  },
  {
   "name": "break_social",
@@ -53,11 +53,15 @@
   "room": "5x4 m",
   "items": 12,
   "ok": true,
-  "secs": 20
+  "secs": 14
  },
  {
   "name": "kitchen_eatin",
-  "ok": false
+  "type": "kitchen",
+  "room": "5x4 m",
+  "items": 13,
+  "ok": true,
+  "secs": 21
  },
  {
   "name": "reception_welcome",
@@ -65,7 +69,7 @@
   "room": "5x4 m",
   "items": 11,
   "ok": true,
-  "secs": 13
+  "secs": 10
  },
  {
   "name": "quiet_focus",
