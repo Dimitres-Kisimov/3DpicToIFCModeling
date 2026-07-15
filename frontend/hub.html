@@ -3,141 +3,261 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SCS Studio — Research &amp; Comparisons Hub</title>
+<title>SCS Studio — Research Hub, the pipeline in 7 steps</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔬</text></svg>">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * { margin:0; padding:0; box-sizing:border-box; }
   :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0;
-          --brand:#2f6bff; --brand-dark:#1f52d6; --shadow:0 2px 10px rgba(20,40,80,.06); }
+          --brand:#2f6bff; --brand2:#7a4dff; --ok:#1a7f4b; --shadow:0 2px 10px rgba(20,40,80,.06); }
+  html { scroll-behavior:smooth; }
   body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); }
-  header { background:var(--panel); border-bottom:1px solid var(--line); padding:18px 28px;
-           display:flex; align-items:baseline; gap:14px; position:sticky; top:0; z-index:5; }
+  header { background:var(--panel); border-bottom:1px solid var(--line); padding:16px 28px;
+           display:flex; align-items:baseline; gap:14px; position:sticky; top:0; z-index:20; }
   header h1 { font-size:20px; }
   header p { color:var(--mut); font-size:13px; }
   header a { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
-  main { max-width:1240px; margin:0 auto; padding:26px 28px 70px; }
-  h2 { font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--mut);
-       margin:26px 4px 12px; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:14px; }
-  a.card { display:block; background:var(--panel); border:1px solid var(--line); border-radius:14px;
-           padding:16px 18px; text-decoration:none; color:var(--ink); box-shadow:var(--shadow);
-           transition:transform .12s, border-color .12s; }
-  a.card:hover { transform:translateY(-2px); border-color:var(--brand); }
-  a.card b { display:flex; align-items:center; gap:8px; font-size:14.5px; margin-bottom:5px; }
+
+  /* ---- the sticky stepper: 7 numbered stops joined by arrows ---- */
+  nav#stepper { position:sticky; top:57px; z-index:15; background:var(--panel);
+                border-bottom:1px solid var(--line); padding:10px 28px;
+                display:flex; align-items:center; gap:4px; overflow-x:auto; }
+  .stop { display:flex; align-items:center; gap:7px; padding:6px 12px; border-radius:10px;
+          cursor:pointer; white-space:nowrap; font-size:12.5px; color:var(--mut);
+          border:1px solid transparent; user-select:none; }
+  .stop .n { width:22px; height:22px; border-radius:50%; background:#eef2fa; color:var(--mut);
+             display:flex; align-items:center; justify-content:center; font-weight:700; font-size:11.5px; }
+  .stop.active { background:#eef3ff; color:var(--ink); border-color:var(--brand); }
+  .stop.active .n { background:var(--brand); color:#fff; }
+  .arrow { color:#b9c3d6; font-size:15px; flex:none; }
+
+  main { max-width:1240px; margin:0 auto; padding:30px 28px 80px; }
+  .intro { background:linear-gradient(135deg,#2f6bff,#7a4dff); color:#fff; border-radius:16px;
+           padding:22px 26px; font-size:14.5px; line-height:1.7; margin-bottom:8px; }
+  .intro b { font-size:17px; display:block; margin-bottom:6px; }
+
+  /* ---- steps: numbered blocks joined by big vertical arrows ---- */
+  section.step { position:relative; background:var(--panel); border:1px solid var(--line);
+                 border-radius:16px; padding:22px 26px; margin-top:34px; box-shadow:var(--shadow);
+                 scroll-margin-top:130px; }
+  section.step::before { content:"⬇"; position:absolute; top:-31px; left:50%;
+                         transform:translateX(-50%); font-size:22px; color:#b9c3d6; }
+  section.step:first-of-type::before { content:""; }
+  .stephead { display:flex; align-items:center; gap:14px; margin-bottom:6px; }
+  .stephead .big { width:40px; height:40px; flex:none; border-radius:50%;
+                   background:linear-gradient(135deg,var(--brand),var(--brand2)); color:#fff;
+                   display:flex; align-items:center; justify-content:center;
+                   font-size:18px; font-weight:800; }
+  .stephead h2 { font-size:18px; }
+  .apptab { display:inline-block; font-size:11.5px; font-weight:700; color:var(--ok);
+            background:#e8f5ee; border-radius:7px; padding:2px 10px; margin-left:10px;
+            vertical-align:middle; }
+  .expl { color:var(--mut); font-size:13.5px; line-height:1.65; margin:6px 2px 16px 54px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:12px; }
+  a.card { display:block; background:#fafbfe; border:1px solid var(--line); border-radius:12px;
+           padding:14px 16px; text-decoration:none; color:var(--ink);
+           transition:transform .12s, border-color .12s, box-shadow .12s; }
+  a.card:hover { transform:translateY(-2px); border-color:var(--brand); box-shadow:var(--shadow); }
+  a.card b { display:flex; align-items:center; gap:8px; font-size:14px; margin-bottom:4px; }
   a.card span { font-size:12.5px; color:var(--mut); line-height:1.5; }
   a.card.hero { background:linear-gradient(135deg,#2f6bff,#7a4dff); border:none; color:#fff; }
   a.card.hero b { color:#fff; } a.card.hero span { color:#dfe7ff; }
+  .fin { text-align:center; color:var(--mut); font-size:13px; margin-top:36px; }
 </style>
 </head>
 <body>
 <header>
-  <h1>🔬 Research &amp; Comparisons Hub</h1>
-  <p>every experiment, benchmark and before/after from the SCS Photo-to-BIM project — all on this one localhost</p>
+  <h1>🔬 Research Hub</h1>
+  <p>the whole project as a guided pipeline — follow the arrows, every page explained</p>
   <a href="/">← back to SCS Studio</a>
 </header>
+
+<nav id="stepper">
+  <span class="stop" data-t="s1"><span class="n">1</span>📸 Photo → 3D</span><span class="arrow">→</span>
+  <span class="stop" data-t="s2"><span class="n">2</span>🏆 Benchmarks</span><span class="arrow">→</span>
+  <span class="stop" data-t="s3"><span class="n">3</span>🪑 Repair &amp; refine</span><span class="arrow">→</span>
+  <span class="stop" data-t="s4"><span class="n">4</span>🗂️ Catalog</span><span class="arrow">→</span>
+  <span class="stop" data-t="s5"><span class="n">5</span>🛋️ Rooms</span><span class="arrow">→</span>
+  <span class="stop" data-t="s6"><span class="n">6</span>🏢 Buildings</span><span class="arrow">→</span>
+  <span class="stop" data-t="s7"><span class="n">7</span>✅ Proof &amp; docs</span>
+</nav>
+
 <main>
+  <div class="intro"><b>One photo in → a furnished, standards-compliant BIM building out.</b>
+    That is the whole project, and this page walks it in the order it actually happens.
+    Each step below names the app tab it lives in (green chip), explains what happens there,
+    and holds the evidence pages for that step. Click a step above to jump; follow the ⬇ arrows to read
+    it like a story. Everything runs on this localhost — nothing is mocked.</div>
 
-  <h2>Start here</h2>
-  <div class="grid">
-    <a class="card" href="/architecture.html"><b>🌳 Program Structure — how this is built</b>
-      <span>The codebase as a clickable tree: server, compute workers, the ergonomics rulebook,
-      data, evidence — and the flow of one click from photo to Revit. For anyone extending the
-      program (paired with the Developer Manual).</span></a>
-    <a class="card hero" href="/research_roadmap.html"><b>🗺️ Research Roadmap — read it in this order</b>
-      <span>Every milestone dated 2026-04-21 → today, with the pages to view at each step and the
-      three test passes (system campaigns, collision hardening, floor dissection) marked in green.
-      The guided sequence through all the evidence below.</span></a>
-  </div>
+  <section class="step" id="s1">
+    <div class="stephead"><span class="big">1</span><h2>Photo → 3D — five AI engines make the mesh
+      <span class="apptab">app tab: ⚙️ Generate object</span></h2></div>
+    <p class="expl">Drop a single furniture photo in the <b>Generate object</b> tab: the image is segmented
+      (rembg), a 3D engine reconstructs the mesh (TripoSR runs locally on this laptop; TripoSG, TRELLIS,
+      SAM 3D and InstantMesh ran on cloud GPUs), the result is cleaned, real-dimensioned and named with a
+      professional code like <b>desk-SAM3D-001</b>. You can force the object type, pick chair-base styles,
+      and install stronger engines from inside the app if the machine can hold them.</p>
+    <div class="grid">
+      <a class="card" href="/manuals.html"><b>📖 Engine Manuals &amp; Requirements</b>
+        <span>Battle-tested install recipes for TripoSG / TRELLIS.2 / SAM 3D / InstantMesh — VRAM needs, licences, fix tables, and which shapes each engine wins.</span></a>
+      <a class="card" href="/gallery3d.html"><b>🧊 3D Results Gallery</b>
+        <span>Interactive gallery of generated meshes — the raw output of this step.</span></a>
+      <a class="card" href="/four_way_all.html"><b>🔄 Four-Way Generator Comparison</b>
+        <span>Four AI generators side-by-side under even multi-directional lighting, so orientation can't fake a better/worse look.</span></a>
+      <a class="card" href="/four_way.html"><b>🔃 Four-Way (original)</b>
+        <span>The first four-way comparison round — kept as the historical baseline.</span></a>
+    </div>
+  </section>
 
-  <h2>Human layouts — judge the logic yourself</h2>
-  <div class="grid">
-    <a class="card hero" href="/xray_building.html"><b>🩻 X-Ray Fleet — see through every building's walls</b>
-      <span>All 15 buildings, shells at 22% opacity with every solver-placed piece visible inside —
-      pick a building, orbit it, inspect every room's furniture at once.</span></a>
-    <a class="card hero" href="/showroom.html"><b>🛋️ The Showroom — every item in one room</b>
-      <span>A 16×12 m office holding one of each of the 38 catalog categories (41 pieces, with the
-      dining ring and desk cluster patterns) — orbit the 3D scene next to the solver's 2D clearance plan.</span></a>
-    <a class="card hero" href="/fleet_report.html"><b>📊 Fleet Generation Report — every item, every connection</b>
-      <span>All buildings populated by the same engine, aggregated: pieces by category and the
-      machine-checked human connections (chair→desk, projector→screen, bin beside desk,
-      audience rows, door flanks) per building and fleet-wide.</span></a>
-    <a class="card hero" href="/layout_visualizer.html"><b>🎛️ Live Layout Visualizer — solve a room right now</b>
-      <span>Pick a room type (office-first), a size and a population level — the real CP-SAT + ASR
-      engine lays it out in front of you: 2D clearance plan + 3D render, honest refusals included.</span></a>
-    <a class="card hero" href="/human_layouts.html"><b>🛋️ Human Layouts — dense · denser · densest</b>
-      <span>Six room types populated at three escalating densities through the real solver:
-      activity-based zoning, relational placement (projector → screen, bin → desk, coat rack → door)
-      and the full ASR envelope. 2D clearance plans + 3D renders side by side, 18 scenarios.</span></a>
-  </div>
+  <section class="step" id="s2">
+    <div class="stephead"><span class="big">2</span><h2>Benchmarks — which AI wins, measured not guessed
+      <span class="apptab">evidence for: ⚙️ Generate object</span></h2></div>
+    <p class="expl">Same inputs, same ground truth, same metric for every engine. 187 internet photos,
+      up to 9 variants each, F-scores against ABO reference meshes. This is why the app defaults the way
+      it does — and every comparison item also exists as an <b>IFC file</b> (benchmark/ifc/: SAM 3D 10,
+      InstantMesh 10, SF3D 192, TRELLIS 197, TripoSG 196), so the winners go straight to BIM.</p>
+    <div class="grid">
+      <a class="card hero" href="/benchmark/visualizer.html"><b>🎛 Multi-AI Candidate Visualizer</b>
+        <span>187 items × up to 9 AI variants in spinning 3D — TripoSR, repair packs, TripoSG, TRELLIS 1.0,
+        SF3D + the 8-way TSG upgrade menu. Comparison groups, engine emblems, winner voting
+        (A100 study, 2026-07-12; scores reproduce the H200 within 0.003).</span></a>
+      <a class="card hero" href="/gallery/index.html"><b>🏆 5-Model AI Benchmark Gallery</b>
+        <span>TripoSG · SAM 3D · TRELLIS · InstantMesh · TripoSR — identical inputs, spinning 3D
+        side-by-side with measured F-scores (TripoSG 0.393 best). The H200 cloud study.</span></a>
+      <a class="card" href="/benchmark/index.html"><b>🧾 A/B Lists 01–11 — 187 internet photos</b>
+        <span>Per-item rows: photo → TripoSR today → our repair packs → each cloud AI, with
+        faces/watertight/IoU stats and deep links into the 3D visualizer. List 11 is the all-AI grand comparison.</span></a>
+    </div>
+  </section>
 
-  <h2>Buildings — explore them in 3D</h2>
-  <div class="grid">
-    <a class="card hero" href="/building_explorer.html"><b>🌐 Interactive 3D Building Explorer — all 14 buildings</b>
-      <span>The whole fleet in live 3D: homes, the 4-storey Schependomlaan, university institutes
-      (KIT, HHS with its row-seated Auditorium), corporate offices (210 King Toronto — 1,135 pieces,
-      NBU), and four synthetic towers up to 8 storeys — colored, real-dimensioned, ASR-compliant
-      furniture, 0 clashes fleet-wide. Face-view buttons + NavCube.</span></a>
-    <a class="card hero" href="/fleet.html"><b>🏢 Building Fleet Comparison</b>
-      <span>Four real IFCs (0.2 MB → 47 MB) populated by the ergonomics engine — every floor in 3D + 2D with visible people-space.</span></a>
-    <a class="card hero" href="/testing.html"><b>🧪 System Test Report — 2026-07-09</b>
-      <span>Six live test campaigns: ingestion sweep, concurrency, BIM round-trip, malformed-IFC fuzzing, soak, standards validation — incl. the two bugs testing found and fixed.</span></a>
-    <a class="card" href="/populated_building_viewer.html"><b>🛋️ Populated Building Viewer</b>
-      <span>The furnished Duplex, classic viewer.</span></a>
-    <a class="card" href="/building_showcase.html"><b>🏙️ Populated Buildings Showcase</b>
-      <span>All four IFC shells furnished by the app — duplex (incl. X-ray with an OURS item), German office, house, and the 4-storey Schependomlaan — per-floor 2D/3D captures with dates (2026-07-07 · density study 2026-07-09), plus the capacity guard refusing an overload.</span></a>
-    <a class="card" href="/building_viewer.html"><b>🏘️ Building Viewer</b>
-      <span>General building GLB viewer.</span></a>
-  </div>
+  <section class="step" id="s3">
+    <div class="stephead"><span class="big">3</span><h2>Repair &amp; refine — broken meshes become products
+      <span class="apptab">runs inside: ⚙️ Generate object</span></h2></div>
+    <p class="expl">Raw AI output is rarely usable: swivel chairs come out with ~500-fragment broken bases,
+      surfaces are noisy, exports are bloated. This step grafts parametric bases, smooths, decimates and
+      optimizes the IFC — the difference between a demo and a deliverable.</p>
+    <div class="grid">
+      <a class="card" href="/graft_compare.html"><b>🪑 Raw vs Grafted Chair</b>
+        <span>TripoSR's ~500-fragment broken swivel base vs the clean parametric 5-star graft — the before/after.</span></a>
+      <a class="card" href="/legs_compare.html"><b>📐 Leg-Size Comparison</b>
+        <span>Base radius 0.55 (too wide) vs <b>0.42 (shipped)</b> vs 0.34 — how the default was chosen.</span></a>
+      <a class="card" href="/smooth_compare.html"><b>〰️ Surface Smoothing ×16 vs ×40 (3D)</b>
+        <span>Interactive smoothing-strength comparison on the grafted chair.</span></a>
+      <a class="card" href="/smooth_static.html"><b>🖼️ Smoothing (static renders)</b>
+        <span>The same comparison as still images — loads instantly.</span></a>
+      <a class="card" href="/chair_compare.html"><b>🔍 Chair Pipeline Stages</b>
+        <span>Step-by-step chair reconstruction comparison.</span></a>
+      <a class="card" href="/chair_final.html"><b>✅ Final Chair</b>
+        <span>The shipped result, IFC-verified.</span></a>
+      <a class="card" href="/ifc_compare.html"><b>🏗️ IFC Before/After Optimization</b>
+        <span>Geometry instancing + per-component repair + precision rounding — the export optimizer's effect.</span></a>
+      <a class="card" href="/optimize_visual.html"><b>👁️ Mesh Optimizer Visuals</b>
+        <span>Visual walkthrough of the mesh cleanup/decimation stages.</span></a>
+      <a class="card" href="/optimize_test.html"><b>🧪 Optimizer Test Page</b>
+        <span>Raw optimizer test harness.</span></a>
+    </div>
+  </section>
 
-  <h2>AI model research</h2>
-  <div class="grid">
-    <a class="card hero" href="/benchmark/visualizer.html"><b>🎛 Multi-AI Candidate Visualizer</b>
-      <span>187 items × up to 9 AI variants in spinning 3D — TripoSR, repair packs, TripoSG, TRELLIS 1.0,
-      SF3D + the 8-way TSG upgrade menu. Comparison groups, engine emblems, 90° rotate, winner voting
-      (A100 study, 2026-07-12; scores reproduce the H200 within 0.003).</span></a>
-    <a class="card" href="/benchmark/index.html"><b>🧾 A/B Lists 01–11 — 187 internet photos</b>
-      <span>Per-item rows: photo → TripoSR today → our repair packs → each cloud AI, with
-      faces/watertight/IoU stats and deep links into the 3D visualizer. List 11 is the all-AI grand
-      comparison list.</span></a>
-    <a class="card hero" href="/gallery/index.html"><b>🏆 5-Model AI Benchmark Gallery</b>
-      <span>TripoSG · SAM 3D · TRELLIS · InstantMesh · TripoSR — identical inputs, spinning 3D side-by-side with measured F-scores (TripoSG 0.393 best). The H200 cloud study.</span></a>
-    <a class="card" href="/manuals.html"><b>📖 Engine Manuals &amp; Requirements</b>
-      <span>Battle-tested install recipes for TripoSG / TRELLIS.2 / SAM 3D / InstantMesh — VRAM needs, licences, fix tables, and which shapes each engine wins.</span></a>
-    <a class="card" href="/four_way_all.html"><b>🔄 Four-Way Generator Comparison</b>
-      <span>Four AI generators side-by-side with even multi-directional lighting, so orientation can't fake a better/worse look.</span></a>
-    <a class="card" href="/four_way.html"><b>🔃 Four-Way (original)</b>
-      <span>The first four-way comparison round.</span></a>
-    <a class="card" href="/gallery3d.html"><b>🧊 3D Results Gallery</b>
-      <span>Interactive gallery of generated meshes.</span></a>
-  </div>
+  <section class="step" id="s4">
+    <div class="stephead"><span class="big">4</span><h2>The Catalog — 626 generated items + ABO + your own
+      <span class="apptab">app tabs: ⚙️ Generate · 🛏️ Build a room</span></h2></div>
+    <p class="expl">Everything that survives steps 1–3 lands in the catalog with a professional code —
+      <b>item&nbsp;·&nbsp;engine&nbsp;·&nbsp;number</b> (desk-SAM3D-001, sofa-TRL-014…), renumbered
+      automatically when you delete. Today: TRELLIS 197 · TripoSG 194 · SF3D 192 · TripoSR 20 ·
+      InstantMesh 10 · SAM 3D 10 · CC0 3, plus the 38-category ABO pool with real Neufert dimensions.
+      You can also declare a <b>custom category</b> and upload your own IFC items — they join the same
+      numbering and become placeable everywhere.</p>
+    <div class="grid">
+      <a class="card" href="/architecture.html"><b>🌳 Program Structure — where the catalog lives</b>
+        <span>The codebase as a clickable tree: server, compute workers, the ergonomics rulebook, data,
+        evidence — and the flow of one click from photo to Revit.</span></a>
+    </div>
+  </section>
 
-  <h2>Office-chair base graft (Part 1)</h2>
-  <div class="grid">
-    <a class="card" href="/graft_compare.html"><b>🪑 Raw vs Grafted Chair</b>
-      <span>TripoSR's ~500-fragment broken swivel base vs the clean parametric 5-star graft — the before/after.</span></a>
-    <a class="card" href="/legs_compare.html"><b>📐 Leg-Size Comparison</b>
-      <span>Base radius 0.55 (too wide) vs <b>0.42 (shipped)</b> vs 0.34 — how the default was chosen.</span></a>
-    <a class="card" href="/smooth_compare.html"><b>〰️ Surface Smoothing ×16 vs ×40 (3D)</b>
-      <span>Interactive smoothing-strength comparison on the grafted chair.</span></a>
-    <a class="card" href="/smooth_static.html"><b>🖼️ Smoothing (static renders)</b>
-      <span>The same comparison as still images — loads instantly.</span></a>
-    <a class="card" href="/chair_compare.html"><b>🔍 Chair Pipeline Stages</b>
-      <span>Step-by-step chair reconstruction comparison.</span></a>
-    <a class="card" href="/chair_final.html"><b>✅ Final Chair</b>
-      <span>The shipped result, IFC-verified.</span></a>
-  </div>
+  <section class="step" id="s5">
+    <div class="stephead"><span class="big">5</span><h2>Rooms — human logic + German law place the furniture
+      <span class="apptab">app tab: 🛏️ Build a room</span></h2></div>
+    <p class="expl">A CP-SAT solver places every item under the <b>ASR</b> (Arbeitsstättenrichtlinie) envelope —
+      legal staffing caps, movement areas, route widths — and the human relational rules: chair tucked at its
+      desk, monitor facing the sitter, bin at arm's reach, stools ringing tables, projector on the ceiling
+      aimed at the screen, coat rack flanking the door, planters in corners. Item counts scale with room size;
+      anything that can't sit legally is <b>refused, never forced</b>.</p>
+    <div class="grid">
+      <a class="card hero" href="/layout_visualizer.html"><b>🎛️ Live Layout Visualizer — solve a room right now</b>
+        <span>Pick a room type (office-first), a size and a population level — the real CP-SAT + ASR
+        engine lays it out in front of you: 2D clearance plan + 3D render, honest refusals included.</span></a>
+      <a class="card hero" href="/showroom.html"><b>🛋️ The Showroom — every item in one room</b>
+        <span>A 16×12 m office holding one of each of the 38 catalog categories (41 pieces, dining ring +
+        desk cluster patterns) — orbit the 3D scene next to the solver's numbered 2D clearance plan.</span></a>
+      <a class="card hero" href="/human_layouts.html"><b>🛋️ Human Layouts — dense · denser · densest</b>
+        <span>Six room types at three escalating densities through the real solver: activity-based zoning,
+        relational placement and the full ASR envelope. 18 scenarios, 2D + 3D side by side.</span></a>
+    </div>
+  </section>
 
-  <h2>IFC &amp; mesh optimization</h2>
-  <div class="grid">
-    <a class="card" href="/ifc_compare.html"><b>🏗️ IFC Before/After Optimization</b>
-      <span>Geometry instancing + per-component repair + precision rounding — the export optimizer's effect.</span></a>
-    <a class="card" href="/optimize_visual.html"><b>👁️ Mesh Optimizer Visuals</b>
-      <span>Visual walkthrough of the mesh cleanup/decimation stages.</span></a>
-    <a class="card" href="/optimize_test.html"><b>🧪 Optimizer Test Page</b>
-      <span>Raw optimizer test harness.</span></a>
-  </div>
+  <section class="step" id="s6">
+    <div class="stephead"><span class="big">6</span><h2>Buildings — whole IFC buildings, furnished floor by floor
+      <span class="apptab">app tab: 🏢 Building</span></h2></div>
+    <p class="expl">Drop <b>any</b> IFC on the Building tab (a fresh 7-storey tower was drop-tested: 9/9
+      space-bearing floors documented, 81/81 rooms exact): floors are dissected, every room gets the same
+      room logic as step 5 — de-rotated solve frames, walking-path protection, door keep-clears, per-room
+      blueprints, Light/Medium/Dense — then export the furnished building back to IFC/GLB for Revit.</p>
+    <div class="grid">
+      <a class="card hero" href="/xray_building.html"><b>🩻 X-Ray Fleet — see through every building's walls</b>
+        <span>All 15 buildings, shells at 22% opacity with every solver-placed piece visible inside —
+        pick a building, orbit it, inspect every room's furniture at once.</span></a>
+      <a class="card hero" href="/fleet_report.html"><b>📊 Fleet Generation Report — every item, every connection</b>
+        <span>All buildings populated by the same engine, aggregated: pieces by category and the machine-checked
+        human connections (chair→desk, projector→screen, bin beside desk…) per building and fleet-wide.</span></a>
+      <a class="card hero" href="/building_explorer.html"><b>🌐 Interactive 3D Building Explorer</b>
+        <span>The whole fleet in live 3D: homes, the 4-storey Schependomlaan, university institutes, corporate
+        offices (210 King Toronto, NBU) and synthetic towers to 8 storeys — face-view buttons + NavCube.</span></a>
+      <a class="card hero" href="/fleet.html"><b>🏢 Building Fleet Comparison</b>
+        <span>Four real IFCs (0.2 MB → 47 MB) populated by the ergonomics engine — every floor in 3D + 2D
+        with visible people-space.</span></a>
+      <a class="card" href="/building_showcase.html"><b>🏙️ Populated Buildings Showcase</b>
+        <span>Four IFC shells furnished by the app — per-floor 2D/3D captures with dates, plus the capacity
+        guard refusing an overload.</span></a>
+      <a class="card" href="/populated_building_viewer.html"><b>🛋️ Populated Building Viewer</b>
+        <span>The furnished Duplex, classic viewer.</span></a>
+      <a class="card" href="/building_viewer.html"><b>🏘️ Building Viewer</b>
+        <span>General building GLB viewer.</span></a>
+    </div>
+  </section>
 
+  <section class="step" id="s7">
+    <div class="stephead"><span class="big">7</span><h2>Proof &amp; documentation — tested, dated, explained
+      <span class="apptab">this tab: 🔬 Research</span></h2></div>
+    <p class="expl">Nothing above is taken on faith: system test campaigns, the exact-geometry clash meter
+      (fleet-wide: 4,891 pieces, one 0.045 m² sliver), floor-dissection cross-validation, and the dated
+      roadmap that orders all of this evidence. The Developer Manual (in the repo + PDF) and the clickable
+      architecture tree explain every module for whoever comes next.</p>
+    <div class="grid">
+      <a class="card hero" href="/research_roadmap.html"><b>🗺️ Research Roadmap — read it in this order</b>
+        <span>Every milestone dated 2026-04-21 → today, with the pages to view at each step and the three
+        test passes marked in green. The guided sequence through all the evidence.</span></a>
+      <a class="card hero" href="/testing.html"><b>🧪 System Test Report — 2026-07-09</b>
+        <span>Six live test campaigns: ingestion sweep, concurrency, BIM round-trip, malformed-IFC fuzzing,
+        soak, standards validation — incl. the two bugs testing found and fixed.</span></a>
+      <a class="card" href="/architecture.html"><b>🌳 Program Structure — how this is built</b>
+        <span>The codebase as a clickable tree — for anyone extending the program (paired with the
+        Developer Manual in the repo).</span></a>
+    </div>
+  </section>
 
+  <p class="fin">📸 → 🧊 → 🪑 → 🗂️ → 🛋️ → 🏢 → ✅ &nbsp;·&nbsp; one photo to a compliant building — every arrow above is a working piece of this app.</p>
 </main>
+
+<script>
+const stops = [...document.querySelectorAll('.stop')];
+stops.forEach((s) => { s.onclick = () => document.getElementById(s.dataset.t).scrollIntoView(); });
+const obs = new IntersectionObserver((es) => {
+  es.forEach((e) => {
+    if (e.isIntersecting) {
+      stops.forEach((s) => s.classList.toggle('active', s.dataset.t === e.target.id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+document.querySelectorAll('section.step').forEach((s) => obs.observe(s));
+</script>
 </body>
 </html>
