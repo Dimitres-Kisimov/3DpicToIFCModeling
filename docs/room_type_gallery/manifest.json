@@ -1,0 +1,182 @@
+[
+ {
+  "type": "office",
+  "label": "Office \u2014 Zellenb\u00fcro",
+  "room": "5.0\u00d74.0 m",
+  "suggested": 7,
+  "placed": 7,
+  "refused": 0,
+  "xray": true,
+  "secs": 20
+ },
+ {
+  "type": "workspace",
+  "label": "Workspace \u2014 heavy storage",
+  "room": "5.0\u00d74.0 m",
+  "suggested": 7,
+  "placed": 7,
+  "refused": 0,
+  "xray": true,
+  "secs": 19
+ },
+ {
+  "type": "meeting",
+  "label": "Meeting \u2014 Besprechungsraum",
+  "room": "5.0\u00d74.0 m",
+  "suggested": 11,
+  "placed": 11,
+  "refused": 0,
+  "xray": true,
+  "secs": 26
+ },
+ {
+  "type": "presentation",
+  "label": "Presentation hall \u2014 Seminarraum",
+  "room": "8.0\u00d77.0 m",
+  "suggested": 46,
+  "placed": 46,
+  "refused": 0,
+  "xray": true,
+  "secs": 75
+ },
+ {
+  "type": "reception",
+  "label": "Reception \u2014 Empfang",
+  "room": "5.0\u00d74.0 m",
+  "suggested": 11,
+  "placed": 7,
+  "refused": 0,
+  "xray": true,
+  "secs": 18
+ },
+ {
+  "type": "break",
+  "label": "Break room \u2014 Pausenraum",
+  "room": "5.0\u00d74.0 m",
+  "suggested": 15,
+  "placed": 7,
+  "refused": 8,
+  "xray": true,
+  "secs": 17
+ },
+ {
+  "type": "quiet",
+  "label": "Quiet room \u2014 Ruheraum",
+  "room": "3.5\u00d73.5 m",
+  "suggested": 5,
+  "placed": 1,
+  "refused": 0,
+  "xray": true,
+  "secs": 15
+ },
+ {
+  "type": "living",
+  "label": "Living room \u2014 Wohnzimmer",
+  "room": "5.0\u00d75.0 m",
+  "suggested": 13,
+  "placed": 9,
+  "refused": 4,
+  "xray": true,
+  "secs": 21
+ },
+ {
+  "type": "lounge",
+  "label": "Lounge",
+  "room": "4.5\u00d74.0 m",
+  "suggested": 5,
+  "placed": 5,
+  "refused": 0,
+  "xray": true,
+  "secs": 19
+ },
+ {
+  "type": "bed",
+  "label": "Bedroom \u2014 Schlafzimmer",
+  "room": "4.0\u00d73.5 m",
+  "suggested": 2,
+  "placed": 2,
+  "refused": 0,
+  "xray": true,
+  "secs": 13
+ },
+ {
+  "type": "dining",
+  "label": "Dining \u2014 Esszimmer",
+  "room": "4.5\u00d74.0 m",
+  "suggested": 7,
+  "placed": 7,
+  "refused": 0,
+  "xray": true,
+  "secs": 20
+ },
+ {
+  "type": "kitchen",
+  "label": "Kitchen \u2014 K\u00fcche",
+  "room": "5.0\u00d74.0 m",
+  "suggested": 13,
+  "placed": 13,
+  "refused": 0,
+  "xray": true,
+  "secs": 26
+ },
+ {
+  "type": "storage",
+  "label": "Storage \u2014 Lager/Keller",
+  "room": "4.0\u00d73.0 m",
+  "suggested": 2,
+  "placed": 2,
+  "refused": 0,
+  "xray": true,
+  "secs": 14
+ },
+ {
+  "type": "wardrobe",
+  "label": "Wardrobe \u2014 Garderobe",
+  "room": "4.0\u00d73.0 m",
+  "suggested": 6,
+  "placed": 6,
+  "refused": 0,
+  "xray": true,
+  "secs": 16
+ },
+ {
+  "type": "entry",
+  "label": "Entry \u2014 Foyer/Eingang",
+  "room": "5.0\u00d73.0 m",
+  "suggested": 7,
+  "placed": 7,
+  "refused": 0,
+  "xray": true,
+  "secs": 21
+ },
+ {
+  "type": "balcony",
+  "label": "Balcony \u2014 Balkon",
+  "room": "4.0\u00d72.5 m",
+  "suggested": 5,
+  "placed": 5,
+  "refused": 0,
+  "xray": true,
+  "secs": 16
+ },
+ {
+  "type": "print",
+  "label": "Print room \u2014 Kopierraum",
+  "room": "3.5\u00d73.0 m",
+  "suggested": 5,
+  "placed": 5,
+  "refused": 0,
+  "xray": true,
+  "secs": 17
+ },
+ {
+  "type": "it",
+  "label": "IT/server \u2014 EDV-Raum",
+  "room": "4.0\u00d73.5 m",
+  "suggested": 4,
+  "placed": 4,
+  "refused": 0,
+  "xray": true,
+  "secs": 15
+ }
+]
