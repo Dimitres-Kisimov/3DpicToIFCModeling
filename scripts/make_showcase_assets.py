@@ -47,8 +47,10 @@ def showroom():
     print(f"showroom: {len(placed)} placed, unplaced={r.get('unplaced')}")
 
 
-def xray():
-    d = OUT / f"bldg_{XRAY_BUILDING}"
+def xray_one(bid, out_name):
+    d = OUT / f"bldg_{bid}"
+    if not (d / "shell.glb").exists() or not (d / "furniture.json").exists():
+        return None
     scene = trimesh.load(str(d / "shell.glb"))
     if not isinstance(scene, trimesh.Scene):
         scene = trimesh.Scene(scene)
@@ -72,10 +74,39 @@ def xray():
         subs = piece.dump() if isinstance(piece, trimesh.Scene) else [piece]
         for k, sub in enumerate(subs):
             scene.add_geometry(sub, node_name=f"{p['id']}_p{k}", transform=T)
-    scene.export(str(OUT / "xray_building.glb"))
-    print(f"xray: shell + {len(man['pieces'])} pieces -> xray_building.glb")
+    scene.export(str(OUT / out_name))
+    return len(man["pieces"])
+
+
+def xray_all():
+    """X-ray GLB for EVERY populated building + an index the gallery page reads."""
+    results_p = OUT / "fleet_populate_results.json"
+    runs = json.load(open(results_p, encoding="utf-8")) if results_p.exists() else []
+    names = {r["id"]: r.get("name") or r["id"] for r in runs}
+    index = []
+    for mdir in sorted(OUT.glob("bldg_*")):
+        bid = mdir.name[5:]
+        out_name = f"xray_{bid}.glb"
+        try:
+            n = xray_one(bid, out_name)
+        except Exception as e:
+            print(f"xray FAIL {bid}: {e}")
+            continue
+        if n is None:
+            continue
+        kb = (OUT / out_name).stat().st_size // 1024
+        index.append({"id": bid, "name": names.get(bid, bid), "glb": f"/out/{out_name}",
+                      "pieces": n, "kb": kb})
+        print(f"xray {bid} ({names.get(bid, bid)}): {n} pieces, {kb} KB")
+    index.sort(key=lambda b: -b["pieces"])
+    (OUT / "xray_index.json").write_text(json.dumps(index, indent=1), encoding="utf-8")
+    # keep the original single-building path alive for old links
+    if (OUT / f"xray_{XRAY_BUILDING}.glb").exists():
+        import shutil as _sh
+        _sh.copy(OUT / f"xray_{XRAY_BUILDING}.glb", OUT / "xray_building.glb")
+    print(f"xray index: {len(index)} buildings")
 
 
 if __name__ == "__main__":
     showroom()
-    xray()
+    xray_all()

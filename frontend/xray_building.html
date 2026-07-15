@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>X-Ray Building — furniture through the walls</title>
+<title>X-Ray Fleet — every building, furniture through the walls</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🩻</text></svg>">
 <script type="module" src="/assets/model-viewer.min.js?v=2"></script>
 <style>
@@ -11,41 +11,61 @@
   :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0; --brand:#2f6bff; }
   body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink);
          display:flex; flex-direction:column; height:100vh; }
-  header { background:var(--panel); border-bottom:1px solid var(--line); padding:16px 28px;
+  header { background:var(--panel); border-bottom:1px solid var(--line); padding:14px 28px;
            display:flex; align-items:baseline; gap:14px; }
   header h1 { font-size:19px; } header p { color:var(--mut); font-size:13px; }
   header a { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
-  .hint { background:var(--panel); border-bottom:1px solid var(--line); padding:9px 28px;
-          font-size:13px; color:var(--mut); }
+  #picker { background:var(--panel); border-bottom:1px solid var(--line); padding:8px 28px;
+            display:flex; flex-wrap:wrap; gap:6px; }
+  .bchip { font-size:12px; border:1px solid var(--line); border-radius:8px; padding:4px 10px;
+           background:#fff; cursor:pointer; user-select:none; }
+  .bchip.on { background:var(--brand); color:#fff; border-color:var(--brand); }
+  #hint { background:var(--panel); border-bottom:1px solid var(--line); padding:7px 28px;
+          font-size:12.5px; color:var(--mut); }
   model-viewer { flex:1; width:100%; background:#e9edf5; }
 </style>
 </head>
 <body>
 <header>
-  <h1>🩻 X-Ray Building</h1>
-  <p>Bürogebäude — the shell at 22% opacity, all 380 solver-placed pieces visible through the walls</p>
+  <h1>🩻 X-Ray Fleet</h1>
+  <p>every populated building, shell at 22% opacity — the solver's furniture visible through the walls</p>
   <a href="/hub.html">← Research hub</a>
 </header>
-<div class="hint" id="mvDiag">Drag to orbit · scroll to zoom · right-drag to pan. Every desk cluster (chair tucked,
-monitor on top, bin at the side), corner planter and door-side coat rack in this building is real solver
-output — nothing is staged. Offices line the facades; labs sit in the deep plan.</div>
-<model-viewer id="mv" src="/out/xray_building.glb?v=2" camera-controls shadow-intensity="0.4"
+<div id="picker">loading buildings…</div>
+<div id="hint">Drag to orbit · scroll to zoom · right-drag to pan. Everything inside is real solver output — nothing staged.</div>
+<model-viewer id="mv" camera-controls shadow-intensity="0.4"
   camera-orbit="35deg 65deg 60m" exposure="1.1" interaction-prompt="none"></model-viewer>
 <script>
-(function () {
-  const diag = document.getElementById('mvDiag');
-  const say = (t) => { diag.textContent = t; diag.style.color = '#d03b3b'; };
-  const c = document.createElement('canvas');
-  if (!(c.getContext('webgl2') || c.getContext('webgl'))) {
-    say('✗ WebGL is disabled in this browser — enable "Use graphics acceleration" in chrome://settings/system and relaunch.');
-    return;
+const mv = document.getElementById('mv');
+const hint = document.getElementById('hint');
+const say = (t, bad) => { hint.textContent = t; hint.style.color = bad ? '#d03b3b' : ''; };
+const c = document.createElement('canvas');
+if (!(c.getContext('webgl2') || c.getContext('webgl'))) {
+  say('✗ WebGL is disabled — enable "Use graphics acceleration" in chrome://settings/system and relaunch.', true);
+}
+mv.addEventListener('error', () => say('✗ 3D failed to load for this building — try another or Ctrl+F5.', true));
+fetch('/out/xray_index.json?t=' + Date.now()).then((r) => r.json()).then((idx) => {
+  const pick = document.getElementById('picker');
+  pick.innerHTML = '';
+  idx.forEach((b, i) => {
+    const el = document.createElement('span');
+    el.className = 'bchip' + (i === 0 ? ' on' : '');
+    el.textContent = `${b.name} · ${b.pieces}`;
+    el.onclick = () => {
+      document.querySelectorAll('.bchip').forEach((x) => x.classList.toggle('on', x === el));
+      const mb = (b.kb / 1024).toFixed(1);
+      say(`Loading ${b.name} (${b.pieces} pieces, ${mb} MB)… drag to orbit once it appears.`);
+      mv.src = b.glb + '?t=' + b.kb;
+    };
+    pick.appendChild(el);
+  });
+  if (idx.length) {
+    mv.src = idx[0].glb + '?t=' + idx[0].kb;
+    say(`${idx[0].name} — ${idx[0].pieces} pieces. Drag to orbit; pick any building above.`);
+  } else {
+    say('No X-ray models yet — run scripts/make_showcase_assets.py after a fleet populate.', true);
   }
-  setTimeout(() => {
-    if (!customElements.get('model-viewer')) say('✗ The 3D viewer script did not load — press Ctrl+F5.');
-  }, 4000);
-  document.getElementById('mv').addEventListener('error', (e) =>
-    say('✗ 3D failed to start (' + ((e.detail && e.detail.type) || 'load error') + ') — press Ctrl+F5.'));
-})();
+}).catch(() => say('✗ xray_index.json missing — run scripts/make_showcase_assets.py.', true));
 </script>
 </body>
 </html>
