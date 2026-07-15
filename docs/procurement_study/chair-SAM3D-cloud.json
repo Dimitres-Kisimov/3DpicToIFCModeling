@@ -1,0 +1,389 @@
+{
+ "item": "chair-SAM3D-cloud",
+ "category": "chair",
+ "query": "stuhl metall schwarz",
+ "destination": "Bildungscampus, 74076 Heilbronn (DE)",
+ "vat_note": "listed prices include 19% German VAT",
+ "similarity_floor": 0.55,
+ "companies_scanned": [
+  "IKEA Deutschland (12 candidates)",
+  "OTTO (12 candidates)",
+  "POCO Einrichtungsmärkte (12 candidates)",
+  "home24 (0 candidates)",
+  "Möbel Boss (0 candidates)",
+  "Kaiserkraft (B2B) (0 candidates)"
+ ],
+ "companies_skipped": [
+  "eBay.de (API) (no API key)",
+  "Google Shopping via SerpAPI (100s of shops) (no API key)"
+ ],
+ "candidates_total": 36,
+ "candidates_scored": 26,
+ "above_floor": 26,
+ "tiers": {
+  "budget": {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "SANDSBERG Stuhl",
+   "price": 12.0,
+   "url": "https://www.ikea.com/de/de/p/sandsberg-stuhl-schwarz-30605423/",
+   "image": "https://www.ikea.com/de/de/images/products/sandsberg-stuhl-schwarz__1390732_pe965553_s5.jpg",
+   "rating": 4.5,
+   "rating_n": 258,
+   "similarity": 0.8161,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 12.0,
+     "shipping": 5.99,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 17.99,
+     "landed_per_unit": 17.99,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    },
+    {
+     "qty": 10,
+     "unit_price": 12.0,
+     "shipping": 23.96,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 143.96,
+     "landed_per_unit": 14.4,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    }
+   ]
+  },
+  "standard": {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "SANDSBERG Stuhl",
+   "price": 15.0,
+   "url": "https://www.ikea.com/de/de/p/sandsberg-stuhl-anthrazit-remmarn-anthrazit-40605253/",
+   "image": "https://www.ikea.com/de/de/images/products/sandsberg-stuhl-anthrazit-remmarn-anthrazit__1479093_pe999921_s5.jpg",
+   "rating": 4.5,
+   "rating_n": 108,
+   "similarity": 0.8106,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 15.0,
+     "shipping": 5.99,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 20.99,
+     "landed_per_unit": 20.99,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    },
+    {
+     "qty": 10,
+     "unit_price": 15.0,
+     "shipping": 23.96,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 173.96,
+     "landed_per_unit": 17.4,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    }
+   ]
+  },
+  "premium": {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "SKÅLSTA Stuhl",
+   "price": 44.99,
+   "url": "https://www.ikea.com/de/de/p/skalsta-stuhl-kunststoff-rot-roehrenfoermiges-metall-schwarzgrau-s29608465/",
+   "image": "https://www.ikea.com/de/de/images/products/skalsta-stuhl-kunststoff-rot-roehrenfoermiges-metall-schwarzgrau__1486597_pe1002454_s5.jpg",
+   "rating": 5.0,
+   "rating_n": 4,
+   "similarity": 0.8236,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 44.99,
+     "shipping": 5.99,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 50.98,
+     "landed_per_unit": 50.98,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    },
+    {
+     "qty": 10,
+     "unit_price": 44.99,
+     "shipping": 23.96,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 473.86,
+     "landed_per_unit": 47.39,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    }
+   ]
+  }
+ },
+ "all_matches": [
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "SKÅLSTA Stuhl",
+   "price": 44.99,
+   "url": "https://www.ikea.com/de/de/p/skalsta-stuhl-kunststoff-schwarz-profiliertes-metall-schwarzgrau-s29608470/",
+   "image": "https://www.ikea.com/de/de/images/products/skalsta-stuhl-kunststoff-schwarz-profiliertes-metall-schwarzgrau__1486591_pe1002449_s5.jpg",
+   "rating": 4.3,
+   "rating_n": 4,
+   "similarity": 0.8508,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "SKÅLSTA Stuhl",
+   "price": 69.99,
+   "url": "https://www.ikea.com/de/de/p/skalsta-stuhl-knaebaeck-graugruen-profiliertes-metall-schwarzgrau-s69608741/",
+   "image": "https://www.ikea.com/de/de/images/products/skalsta-stuhl-knaebaeck-graugruen-profiliertes-metall-schwarzgrau__1486577_pe1002440_s5.jpg",
+   "rating": 4.3,
+   "rating_n": 9,
+   "similarity": 0.8374,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "loft24 esszimmerstuhl caden set 2 st stuhl metallstuhl im retro design mit sitzhoehe 45 cm",
+   "price": 229.99,
+   "url": "https://www.otto.de/p/loft24-esszimmerstuhl-caden-set-2-st-stuhl-metallstuhl-im-retro-design-mit-sitzhoehe-45-cm-S0R6G0ST/",
+   "image": "https://i.otto.de/i/otto/6cd029ff-5bb1-4895-8fd7-54b5c5bce9fb?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8305,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "MILLBERGET Drehstuhl",
+   "price": 99.99,
+   "url": "https://www.ikea.com/de/de/p/millberget-drehstuhl-murum-schwarz-70489394/",
+   "image": "https://www.ikea.com/de/de/images/products/millberget-drehstuhl-murum-schwarz__1020142_pe831799_s5.jpg",
+   "rating": 4.3,
+   "rating_n": 1758,
+   "similarity": 0.8274,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "SKÅLSTA Stuhl",
+   "price": 44.99,
+   "url": "https://www.ikea.com/de/de/p/skalsta-stuhl-kunststoff-rot-roehrenfoermiges-metall-schwarzgrau-s29608465/",
+   "image": "https://www.ikea.com/de/de/images/products/skalsta-stuhl-kunststoff-rot-roehrenfoermiges-metall-schwarzgrau__1486597_pe1002454_s5.jpg",
+   "rating": 5.0,
+   "rating_n": 4,
+   "similarity": 0.8236,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "TOSSBERG Stuhl",
+   "price": 79.99,
+   "url": "https://www.ikea.com/de/de/p/tossberg-stuhl-metall-schwarz-gunnared-dunkelgrau-10582644/",
+   "image": "https://www.ikea.com/de/de/images/products/tossberg-stuhl-metall-schwarz-gunnared-dunkelgrau__1360003_pe954328_s5.jpg",
+   "rating": 4.6,
+   "rating_n": 267,
+   "similarity": 0.8213,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "prima online stuhl metall stuhlgestell schwarz matt stabil basis modern loft 70x21cm S08D5",
+   "price": 115.59,
+   "url": "https://www.otto.de/p/prima-online-stuhl-metall-stuhlgestell-schwarz-matt-stabil-basis-modern-loft-70x21cm-S08D5008/",
+   "image": "https://i.otto.de/i/otto/63f90b3f-477d-439e-9942-a401baa3b3fb?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8175,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "SANDSBERG Stuhl",
+   "price": 12.0,
+   "url": "https://www.ikea.com/de/de/p/sandsberg-stuhl-schwarz-30605423/",
+   "image": "https://www.ikea.com/de/de/images/products/sandsberg-stuhl-schwarz__1390732_pe965553_s5.jpg",
+   "rating": 4.5,
+   "rating_n": 258,
+   "similarity": 0.8161,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "kobolo 4 fussstuhl gartenstuhl retro black schwarz metallgestell aus taslan 1 st S0P4704M",
+   "price": 49.95,
+   "url": "https://www.otto.de/p/kobolo-4-fussstuhl-gartenstuhl-retro-black-schwarz-metallgestell-aus-taslan-1-st-S0P4704M/",
+   "image": "https://i.otto.de/i/otto/1b853e80-a362-5126-a434-da4189af6834?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8133,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "SANDSBERG Stuhl",
+   "price": 15.0,
+   "url": "https://www.ikea.com/de/de/p/sandsberg-stuhl-anthrazit-remmarn-anthrazit-40605253/",
+   "image": "https://www.ikea.com/de/de/images/products/sandsberg-stuhl-anthrazit-remmarn-anthrazit__1479093_pe999921_s5.jpg",
+   "rating": 4.5,
+   "rating_n": 108,
+   "similarity": 0.8106,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "NORDMANSSKÄR Stuhl",
+   "price": 39.99,
+   "url": "https://www.ikea.com/de/de/p/nordmansskaer-stuhl-schwarz-tonerud-grau-s99618215/",
+   "image": "https://www.ikea.com/de/de/images/products/nordmansskaer-stuhl-schwarz-tonerud-grau__1481058_pe1000414_s5.jpg",
+   "rating": 3.9,
+   "rating_n": 10,
+   "similarity": 0.8091,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "lookway polsterstuhl tokio gesteppte stuhl S0VCY0C0",
+   "price": 109.0,
+   "url": "https://www.otto.de/p/lookway-polsterstuhl-tokio-gesteppte-stuhl-S0VCY0C0/",
+   "image": "https://i.otto.de/i/otto/477917c1-4cfd-4810-9a8b-008c01e4cf0a?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8079,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "loft24 esszimmerstuhl astrid 1 st metallstuhl modern stuhl aus metall sitzhoehe 45 cm S0LC",
+   "price": 79.99,
+   "url": "https://www.otto.de/p/loft24-esszimmerstuhl-astrid-1-st-metallstuhl-modern-stuhl-aus-metall-sitzhoehe-45-cm-S0LCG054/",
+   "image": "https://i.otto.de/i/otto/470b955b-53c6-494c-ad8c-790d19132269?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8048,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "riess ambiente stuhl aire schwarz einzelartikel 1 st esszimmer kunststoff metall outdoor b",
+   "price": 49.95,
+   "url": "https://www.otto.de/p/riess-ambiente-stuhl-aire-schwarz-einzelartikel-1-st-esszimmer-kunststoff-metall-outdoor-balkon-S0L5G0GC/",
+   "image": "https://i.otto.de/i/otto/cb049a1b-5454-5a37-ad85-837fb0e12305?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8037,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "radius esszimmerstuhl designer stuhl muse S0CEM0UT",
+   "price": 79.9,
+   "url": "https://www.otto.de/p/radius-esszimmerstuhl-designer-stuhl-muse-S0CEM0UT/",
+   "image": "https://i.otto.de/i/otto/7e1ac625-ed00-5df7-b864-bb2b0ed5eb0c?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.7958,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "GUNDE Klappstuhl",
+   "price": 12.99,
+   "url": "https://www.ikea.com/de/de/p/gunde-klappstuhl-schwarz-00217797/",
+   "image": "https://www.ikea.com/de/de/images/products/gunde-klappstuhl-schwarz__0728313_pe736184_s5.jpg",
+   "rating": 4.4,
+   "rating_n": 1228,
+   "similarity": 0.7927,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "SKÅLSTA Stuhluntergestell",
+   "price": 20.0,
+   "url": "https://www.ikea.com/de/de/p/skalsta-stuhluntergestell-roehrenfoermig-metall-schwarzgrau-50611814/",
+   "image": "https://www.ikea.com/de/de/images/products/skalsta-stuhluntergestell-roehrenfoermig-metall-schwarzgrau__1411065_pe973064_s5.jpg",
+   "rating": 4.1,
+   "rating_n": 24,
+   "similarity": 0.7873,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "SMÄLLEN Drehstuhl",
+   "price": 25.0,
+   "url": "https://www.ikea.com/de/de/p/smaellen-drehstuhl-schwarz-00503435/",
+   "image": "https://www.ikea.com/de/de/images/products/smaellen-drehstuhl-schwarz__1096271_pe864278_s5.jpg",
+   "rating": 4.1,
+   "rating_n": 227,
+   "similarity": 0.7812,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "hjh office esszimmerstuhl vantaggio comfort stuhl metall ohne armlehnen 1 1 st kuechenstuh",
+   "price": 74.9,
+   "url": "https://www.otto.de/p/hjh-office-esszimmerstuhl-vantaggio-comfort-stuhl-metall-ohne-armlehnen-1-1-st-kuechenstuhl-stuhl-esszimmer-stapelstuhl-metallgestell-S0F0L0W3/",
+   "image": "https://i.otto.de/i/otto/dd83f082-26cf-5c9a-8816-47925ab7dc31?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.7793,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "hti line gartenstuhl gartenstuhl curly stueck 1 st metallstuhl mit armlehnen nostalgisch S",
+   "price": 39.99,
+   "url": "https://www.otto.de/p/hti-line-gartenstuhl-gartenstuhl-curly-stueck-1-st-metallstuhl-mit-armlehnen-nostalgisch-S0Z000AD/",
+   "image": "https://i.otto.de/i/otto/be038088-760c-5f2a-993d-4af1f76506a3?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.7776,
+   "category_check": "title"
+  }
+ ],
+ "claim": "cheapest among the companies scanned above — not the whole internet",
+ "generated_utc": "2026-07-15 22:21 UTC"
+}

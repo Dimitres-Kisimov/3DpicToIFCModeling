@@ -1,0 +1,389 @@
+{
+ "item": "stool-TSG-cloud",
+ "category": "stool",
+ "query": "hocker metall schwarz",
+ "destination": "Bildungscampus, 74076 Heilbronn (DE)",
+ "vat_note": "listed prices include 19% German VAT",
+ "similarity_floor": 0.55,
+ "companies_scanned": [
+  "IKEA Deutschland (12 candidates)",
+  "OTTO (12 candidates)",
+  "POCO Einrichtungsmärkte (12 candidates)",
+  "home24 (0 candidates)",
+  "Möbel Boss (0 candidates)",
+  "Kaiserkraft (B2B) (0 candidates)"
+ ],
+ "companies_skipped": [
+  "eBay.de (API) (no API key)",
+  "Google Shopping via SerpAPI (100s of shops) (no API key)"
+ ],
+ "candidates_total": 36,
+ "candidates_scored": 23,
+ "above_floor": 23,
+ "tiers": {
+  "budget": {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "MARIUS Hocker",
+   "price": 6.0,
+   "url": "https://www.ikea.com/de/de/p/marius-hocker-schwarz-10135659/",
+   "image": "https://www.ikea.com/de/de/images/products/marius-hocker-schwarz__0727386_pe735638_s5.jpg",
+   "rating": 4.5,
+   "rating_n": 3346,
+   "similarity": 0.8516,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 6.0,
+     "shipping": 5.99,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 11.99,
+     "landed_per_unit": 11.99,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    },
+    {
+     "qty": 10,
+     "unit_price": 6.0,
+     "shipping": 23.96,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 83.96,
+     "landed_per_unit": 8.4,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    }
+   ]
+  },
+  "standard": {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "STIG Barhocker",
+   "price": 16.0,
+   "url": "https://www.ikea.com/de/de/p/stig-barhocker-arbeitsplattenhoehe-schwarz-schwarz-30498418/",
+   "image": "https://www.ikea.com/de/de/images/products/stig-barhocker-arbeitsplattenhoehe-schwarz-schwarz__0948110_pe798867_s5.jpg",
+   "rating": 4.1,
+   "rating_n": 952,
+   "similarity": 0.9228,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 16.0,
+     "shipping": 5.99,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 21.99,
+     "landed_per_unit": 21.99,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    },
+    {
+     "qty": 10,
+     "unit_price": 16.0,
+     "shipping": 23.96,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 183.96,
+     "landed_per_unit": 18.4,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    }
+   ]
+  },
+  "premium": {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "GUNDE Klapphocker",
+   "price": 12.99,
+   "url": "https://www.ikea.com/de/de/p/gunde-klapphocker-schwarz-40570404/",
+   "image": "https://www.ikea.com/de/de/images/products/gunde-klapphocker-schwarz__1321494_pe941625_s5.jpg",
+   "rating": 4.7,
+   "rating_n": 225,
+   "similarity": 0.9069,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 12.99,
+     "shipping": 5.99,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 18.98,
+     "landed_per_unit": 18.98,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    },
+    {
+     "qty": 10,
+     "unit_price": 12.99,
+     "shipping": 23.96,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 153.86,
+     "landed_per_unit": 15.39,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    }
+   ]
+  }
+ },
+ "all_matches": [
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "STIG Barhocker",
+   "price": 16.0,
+   "url": "https://www.ikea.com/de/de/p/stig-barhocker-arbeitsplattenhoehe-schwarz-schwarz-30498418/",
+   "image": "https://www.ikea.com/de/de/images/products/stig-barhocker-arbeitsplattenhoehe-schwarz-schwarz__0948110_pe798867_s5.jpg",
+   "rating": 4.1,
+   "rating_n": 952,
+   "similarity": 0.9228,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "home deluxe hocker stapelhocker nivo 10 st esszimmerhocker fusshocker rund S0BFF0NA",
+   "price": 29.0,
+   "url": "https://www.otto.de/p/home-deluxe-hocker-stapelhocker-nivo-10-st-esszimmerhocker-fusshocker-rund-S0BFF0NA/",
+   "image": "https://i.otto.de/i/otto/1e5b3121-c110-46c8-8905-281747d65c7f?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.9112,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "GUNDE Klapphocker",
+   "price": 12.99,
+   "url": "https://www.ikea.com/de/de/p/gunde-klapphocker-schwarz-40570404/",
+   "image": "https://www.ikea.com/de/de/images/products/gunde-klapphocker-schwarz__1321494_pe941625_s5.jpg",
+   "rating": 4.7,
+   "rating_n": 225,
+   "similarity": 0.9069,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "clp barhocker joshua metall 1er stapelbarer barstuhl aus metall mit fussablagen S0K030T3",
+   "price": 57.9,
+   "url": "https://www.otto.de/p/clp-barhocker-joshua-metall-1er-stapelbarer-barstuhl-aus-metall-mit-fussablagen-S0K030T3/",
+   "image": "https://i.otto.de/i/otto/b8c3699e-1edc-5caa-bcf1-bfbb9b921701?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8885,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "DALFRED Barhocker",
+   "price": 49.99,
+   "url": "https://www.ikea.com/de/de/p/dalfred-barhocker-schwarz-60155602/",
+   "image": "https://www.ikea.com/de/de/images/products/dalfred-barhocker-schwarz__0727486_pe735711_s5.jpg",
+   "rating": 4.3,
+   "rating_n": 538,
+   "similarity": 0.8875,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "GUNDE / GUNDE Tisch + 2 Hocker",
+   "price": 60.97,
+   "url": "https://www.ikea.com/de/de/p/gunde-gunde-tisch-2-hocker-klappbar-schwarz-klappbar-schwarz-s19564749/",
+   "image": "https://www.ikea.com/de/de/images/products/gunde-gunde-tisch-2-hocker-klappbar-schwarz-klappbar-schwarz__1312625_pe940053_s5.jpg",
+   "rating": 4.6,
+   "rating_n": 29,
+   "similarity": 0.8831,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "KULLABERG Hocker",
+   "price": 59.99,
+   "url": "https://www.ikea.com/de/de/p/kullaberg-hocker-kiefer-schwarz-10363651/",
+   "image": "https://www.ikea.com/de/de/images/products/kullaberg-hocker-kiefer-schwarz__0727388_pe735640_s5.jpg",
+   "rating": 4.3,
+   "rating_n": 134,
+   "similarity": 0.8796,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "RUDSTORP Hocker",
+   "price": 29.99,
+   "url": "https://www.ikea.com/de/de/p/rudstorp-hocker-schwarz-60610102/",
+   "image": "https://www.ikea.com/de/de/images/products/rudstorp-hocker-schwarz__1403934_pe969896_s5.jpg",
+   "rating": 4.5,
+   "rating_n": 29,
+   "similarity": 0.8791,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "stuhlmann sitzhocker roma p1004 1 st schminktischhocker sitzhocker aus kunstleder mit holz",
+   "price": 29.99,
+   "url": "https://www.otto.de/p/stuhlmann-sitzhocker-roma-p1004-1-st-schminktischhocker-sitzhocker-aus-kunstleder-mit-holzbeinen-runder-hocker-S0PCS0KH/",
+   "image": "https://i.otto.de/i/otto/969cf1ef-8dfc-4b83-b758-f56f3d945a40?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8777,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "DOMSTEN Hocker",
+   "price": 29.99,
+   "url": "https://www.ikea.com/de/de/p/domsten-hocker-orange-kiefer-30555159/",
+   "image": "https://www.ikea.com/de/de/images/products/domsten-hocker-orange-kiefer__1176290_pe894990_s5.jpg",
+   "rating": 4.7,
+   "rating_n": 190,
+   "similarity": 0.8633,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "haku beistelltisch sofatisch wohnzimmertisch 1 st quadratisch aus metall anthrazit b t h 3",
+   "price": 79.99,
+   "url": "https://www.otto.de/p/haku-beistelltisch-sofatisch-wohnzimmertisch-1-st-quadratisch-aus-metall-anthrazit-b-t-h-39-39-55-cm-2095861850/",
+   "image": "https://i.otto.de/i/otto/8a17fc5b-1c98-5fef-8498-abc96fecce94?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8619,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "homsee hocker rollhocker mit schublade schwarz mdf metall 40 40 35 cm 1 st S03G60QJ",
+   "price": 71.0,
+   "url": "https://www.otto.de/p/homsee-hocker-rollhocker-mit-schublade-schwarz-mdf-metall-40-40-35-cm-1-st-S03G60QJ/",
+   "image": "https://i.otto.de/i/otto/68889838-cdf7-48f5-9529-02f496ad38ad?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8596,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "MARIUS Hocker",
+   "price": 6.0,
+   "url": "https://www.ikea.com/de/de/p/marius-hocker-schwarz-10135659/",
+   "image": "https://www.ikea.com/de/de/images/products/marius-hocker-schwarz__0727386_pe735638_s5.jpg",
+   "rating": 4.5,
+   "rating_n": 3346,
+   "similarity": 0.8516,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "baario sitzhocker hocker selce industrial style hoehenverstellbar eisen schwarz vintage S0",
+   "price": 149.0,
+   "url": "https://www.otto.de/p/baario-sitzhocker-hocker-selce-industrial-style-hoehenverstellbar-eisen-schwarz-vintage-S0Z2A0HE/",
+   "image": "https://i.otto.de/i/otto/4789bbfc-1276-5865-848f-e051bc374fa7?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8507,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "BLYKOBB Hocker mit Rollen",
+   "price": 99.99,
+   "url": "https://www.ikea.com/de/de/p/blykobb-hocker-mit-rollen-glose-schwarz-00489378/",
+   "image": "https://www.ikea.com/de/de/images/products/blykobb-hocker-mit-rollen-glose-schwarz__0933487_pe792040_s5.jpg",
+   "rating": 4.6,
+   "rating_n": 56,
+   "similarity": 0.8435,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "clp sitzbank barci mit schwarzem metallgestell sitzflaeche gepolstert S06E00VD",
+   "price": 74.9,
+   "url": "https://www.otto.de/p/clp-sitzbank-barci-mit-schwarzem-metallgestell-sitzflaeche-gepolstert-S06E00VD/",
+   "image": "https://i.otto.de/i/otto/63afc04d-2729-53dd-8b7e-407efd683381?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8356,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "eugad beistelltisch 1 st rund balkontisch gartentisch aus metall 48xh45cm S0VB506S",
+   "price": 20.99,
+   "url": "https://www.otto.de/p/eugad-beistelltisch-1-st-rund-balkontisch-gartentisch-aus-metall-48xh45cm-S0VB506S/",
+   "image": "https://i.otto.de/i/otto/16e76a4d-4734-4ee0-9f4a-0b1afdcd9ee5?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8215,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "woltu beistelltisch 1 st mit stauraum 2 abnehmbare tabletts rund aus metall S0GAG03V",
+   "price": 22.09,
+   "url": "https://www.otto.de/p/woltu-beistelltisch-1-st-mit-stauraum-2-abnehmbare-tabletts-rund-aus-metall-S0GAG03V/",
+   "image": "https://i.otto.de/i/otto/7f678245-0691-4976-949f-1ec26d9fc392?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.8187,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "LANDSKRONA Hocker",
+   "price": 299.0,
+   "url": "https://www.ikea.com/de/de/p/landskrona-hocker-grann-bomstad-schwarz-metall-s89031809/",
+   "image": "https://www.ikea.com/de/de/images/products/landskrona-hocker-grann-bomstad-schwarz-metall__0728703_pe736412_s5.jpg",
+   "rating": 4.8,
+   "rating_n": 43,
+   "similarity": 0.8169,
+   "category_check": "title"
+  },
+  {
+   "shop": "poco",
+   "shop_name": "POCO Einrichtungsmärkte",
+   "title": "kommode kerry 01b eiche artisan nachbildung kaschmir b h t ca 60x85x35 cm 511355300",
+   "price": 55.0,
+   "url": "https://www.poco.de/p/kommode-kerry-01b-eiche-artisan-nachbildung-kaschmir-b-h-t-ca-60x85x35-cm-511355300",
+   "image": "https://static.poco.de/static/media/f3/0b/5b/1781638628/4963495-.jpeg?ts=1781638628",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.7708,
+   "category_check": "clip-zero-shot"
+  }
+ ],
+ "claim": "cheapest among the companies scanned above — not the whole internet",
+ "generated_utc": "2026-07-15 22:21 UTC"
+}

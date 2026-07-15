@@ -133,6 +133,15 @@ CAT_PROMPTS = {  # CLIP zero-shot category classifier (fallback gate)
 _OTHER_PROMPTS = ["a product photo of a curtain", "a product photo of wallpaper",
                   "a product photo of a rug", "a product photo of a fly screen",
                   "a product photo of a lamp", "a product photo of a picture frame"]
+# hard negatives: accessories whose titles CONTAIN the category word ("SpannBETTtuch")
+NEG_WORDS = {
+    "bed": ["spannbett", "bettwäsche", "bettdecke", "betttuch", "bettlaken",
+            "tagesdecke", "bettbezug", "matratzenschoner", "bettkasten nachrüst"],
+    "table": ["tischdecke", "tischläufer", "tischtennis"],
+    "chair": ["stuhlkissen", "stuhlhusse", "stuhlbezug"],
+    "sofa": ["sofabezug", "sofakissen", "sofadecke"],
+    "mirror": ["spiegelschrank nachrüst"],
+}
 
 _clip = None
 
@@ -402,10 +411,14 @@ def score_candidates(view_embs, cands, category):
                                  f"a product photo of a {category.replace('_', ' ')}")
     text_embs = _embed_texts([cat_prompt] + _OTHER_PROMPTS)
     scored = []
+    negs = NEG_WORDS.get(category, [])
     for c in cands:
         if not c.get("image"):
             continue
-        title_ok = any(w in (c.get("title") or "").lower() for w in words)
+        title_l = (c.get("title") or "").lower()
+        if any(n in title_l for n in negs):
+            continue                    # accessory, not the thing itself
+        title_ok = any(w in title_l for w in words)
         raw = fetch_url(c["image"], timeout=15)
         if not raw:
             continue
@@ -480,9 +493,13 @@ def tiers(scored, category, qtys):
     return out, pool
 
 
-def run(item_id, qtys, limit=12):
-    category = re.match(r"([a-z_]+)-", item_id).group(1)
-    views = item_views(item_id)
+def run(item_id, qtys, limit=12, category=None, view_paths=None):
+    category = category or re.match(r"([a-z_]+)-", item_id).group(1)
+    if view_paths:                     # explicit views (e.g. benchmark gallery:
+        from PIL import Image         # the ORIGINAL input photo + engine render)
+        views = [Image.open(p).convert("RGB") for p in view_paths]
+    else:
+        views = item_views(item_id)
     view_embs = _embed_images(views)
     modifier = pick_attribute(view_embs)
     query = f"{CAT_DE.get(category, category)} {modifier}"
@@ -582,8 +599,14 @@ def main():
     ap.add_argument("--item", required=True)
     ap.add_argument("--qty", nargs="*", type=int, default=[1, 10])
     ap.add_argument("--json", default=None)
+    ap.add_argument("--category", default=None,
+                    help="override category (for non-catalog items)")
+    ap.add_argument("--views", default=None,
+                    help="comma-separated image paths to match against "
+                         "(e.g. the benchmark input photo + engine render)")
     a = ap.parse_args()
-    r = run(a.item, a.qty)
+    r = run(a.item, a.qty, category=a.category,
+            view_paths=a.views.split(",") if a.views else None)
     if a.json:
         Path(a.json).parent.mkdir(parents=True, exist_ok=True)
         Path(a.json).write_text(json.dumps(r, indent=1, ensure_ascii=False),

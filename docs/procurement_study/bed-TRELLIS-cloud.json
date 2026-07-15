@@ -1,0 +1,359 @@
+{
+ "item": "bed-TRELLIS-cloud",
+ "category": "bed",
+ "query": "bett metall schwarz",
+ "destination": "Bildungscampus, 74076 Heilbronn (DE)",
+ "vat_note": "listed prices include 19% German VAT",
+ "similarity_floor": 0.55,
+ "companies_scanned": [
+  "IKEA Deutschland (12 candidates)",
+  "OTTO (10 candidates)",
+  "POCO Einrichtungsmärkte (12 candidates)",
+  "home24 (0 candidates)",
+  "Möbel Boss (0 candidates)",
+  "Kaiserkraft (B2B) (0 candidates)"
+ ],
+ "companies_skipped": [
+  "eBay.de (API) (no API key)",
+  "Google Shopping via SerpAPI (100s of shops) (no API key)"
+ ],
+ "candidates_total": 34,
+ "candidates_scored": 22,
+ "above_floor": 22,
+ "tiers": {
+  "budget": {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "yaheetech bettgestell metallbett einzelbettgestell doppelbettgestell in 4 groessen verfueg",
+   "price": 49.99,
+   "url": "https://www.otto.de/p/yaheetech-bettgestell-metallbett-einzelbettgestell-doppelbettgestell-in-4-groessen-verfuegbar-S0Z4Q0U8/",
+   "image": "https://i.otto.de/i/otto/b635f06f-8bad-4095-9c7f-8805fa7b526c?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5762,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 49.99,
+     "shipping": 29.95,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 79.94,
+     "landed_per_unit": 79.94
+    },
+    {
+     "qty": 10,
+     "unit_price": 49.99,
+     "shipping": 29.95,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 529.85,
+     "landed_per_unit": 52.98
+    }
+   ]
+  },
+  "standard": {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "yaheetech metallbett bettgestell 90x190 90x200 140x200cm minimalistischer bettrahmen mit k",
+   "price": 54.99,
+   "url": "https://www.otto.de/p/yaheetech-metallbett-bettgestell-90x190-90x200-140x200cm-minimalistischer-bettrahmen-mit-kopfteil-gaestebett-mit-lattenrost-S0B8M0UK/",
+   "image": "https://i.otto.de/i/otto/9b3c5ded-7b56-4aad-84a9-62c12c61dba9?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.6446,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 54.99,
+     "shipping": 29.95,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 84.94,
+     "landed_per_unit": 84.94
+    },
+    {
+     "qty": 10,
+     "unit_price": 54.99,
+     "shipping": 29.95,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 579.85,
+     "landed_per_unit": 57.98
+    }
+   ]
+  },
+  "premium": {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "home affaire metallbett 394453466",
+   "price": 189.97,
+   "url": "https://www.otto.de/p/home-affaire-metallbett-394453466/",
+   "image": "https://i.otto.de/i/otto/84b03e93-2a6c-5bc3-85ed-1728df3a740d?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.7711,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 189.97,
+     "shipping": 29.95,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 219.92,
+     "landed_per_unit": 219.92
+    },
+    {
+     "qty": 10,
+     "unit_price": 189.97,
+     "shipping": 29.95,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 1929.65,
+     "landed_per_unit": 192.97
+    }
+   ]
+  }
+ },
+ "all_matches": [
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "home affaire metallbett 394453466",
+   "price": 189.97,
+   "url": "https://www.otto.de/p/home-affaire-metallbett-394453466/",
+   "image": "https://i.otto.de/i/otto/84b03e93-2a6c-5bc3-85ed-1728df3a740d?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.7711,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "moebel akut metallbett verena metallbett gestell schwarz 140x200 cm massive qualitaet S0JC",
+   "price": 199.0,
+   "url": "https://www.otto.de/p/moebel-akut-metallbett-verena-metallbett-gestell-schwarz-140x200-cm-massive-qualitaet-S0JCY05Z/",
+   "image": "https://i.otto.de/i/otto/5c84894b-4519-5fa7-8cc3-d3b2e7d662a8?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.6634,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "STJÄRNÖ Bettgestell",
+   "price": 229.0,
+   "url": "https://www.ikea.com/de/de/p/stjaernoe-bettgestell-anthrazit-90570190/",
+   "image": "https://www.ikea.com/de/de/images/products/stjaernoe-bettgestell-anthrazit__1298094_pe936067_s5.jpg",
+   "rating": 4.7,
+   "rating_n": 173,
+   "similarity": 0.6479,
+   "category_check": "title"
+  },
+  {
+   "shop": "poco",
+   "shop_name": "POCO Einrichtungsmärkte",
+   "title": "progarden tisch trio weiss polypropylen h l ca 72x216 cm 601720600",
+   "price": 79.0,
+   "url": "https://www.poco.de/p/progarden-tisch-trio-weiss-polypropylen-h-l-ca-72x216-cm-601720600",
+   "image": "https://static.poco.de/static/media/9d/20/93/1775183506/4878746-.jpeg?ts=1775183506",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.6447,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "yaheetech metallbett bettgestell 90x190 90x200 140x200cm minimalistischer bettrahmen mit k",
+   "price": 54.99,
+   "url": "https://www.otto.de/p/yaheetech-metallbett-bettgestell-90x190-90x200-140x200cm-minimalistischer-bettrahmen-mit-kopfteil-gaestebett-mit-lattenrost-S0B8M0UK/",
+   "image": "https://i.otto.de/i/otto/9b3c5ded-7b56-4aad-84a9-62c12c61dba9?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.6446,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "TUFJORD Bettgestell, gepolstert",
+   "price": 499.0,
+   "url": "https://www.ikea.com/de/de/p/tufjord-bettgestell-gepolstert-tallmyra-weiss-schwarz-60573251/",
+   "image": "https://www.ikea.com/de/de/images/products/tufjord-bettgestell-gepolstert-tallmyra-weiss-schwarz__1259500_pe926690_s5.jpg",
+   "rating": 3.8,
+   "rating_n": 120,
+   "similarity": 0.6372,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "RÅDMANSÖ Bettgestell",
+   "price": 179.0,
+   "url": "https://www.ikea.com/de/de/p/radmansoe-bettgestell-braun-nussbaumnachbildung-60599166/",
+   "image": "https://www.ikea.com/de/de/images/products/radmansoe-bettgestell-braun-nussbaumnachbildung__1397227_pe967509_s5.jpg",
+   "rating": 4.0,
+   "rating_n": 31,
+   "similarity": 0.6342,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "RAMNEFJÄLL Bettgestell, gepolstert",
+   "price": 199.0,
+   "url": "https://www.ikea.com/de/de/p/ramnefjaell-bettgestell-gepolstert-kilanda-dunkelblau-luroey-s89607482/",
+   "image": "https://www.ikea.com/de/de/images/products/ramnefjaell-bettgestell-gepolstert-kilanda-dunkelblau-luroey__1480721_pe1000244_s5.jpg",
+   "rating": 4.3,
+   "rating_n": 208,
+   "similarity": 0.629,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "NORRUDDEN Gästebett",
+   "price": 129.0,
+   "url": "https://www.ikea.com/de/de/p/norrudden-gaestebett-schwarz-90531354/",
+   "image": "https://www.ikea.com/de/de/images/products/norrudden-gaestebett-schwarz__1397228_pe967511_s5.jpg",
+   "rating": 4.0,
+   "rating_n": 74,
+   "similarity": 0.6278,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "TÄRNKULLEN Bettgestell, gepolstert",
+   "price": 319.0,
+   "url": "https://www.ikea.com/de/de/p/taernkullen-bettgestell-gepolstert-kelinge-beige-luroey-s09608131/",
+   "image": "https://www.ikea.com/de/de/images/products/taernkullen-bettgestell-gepolstert-kelinge-beige-luroey__1478421_pe999540_s5.jpg",
+   "rating": 3.5,
+   "rating_n": 80,
+   "similarity": 0.6259,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "VITARNA Himmelbettgestell",
+   "price": 251.1,
+   "url": "https://www.ikea.com/de/de/p/vitarna-himmelbettgestell-weiss-luroey-skadis-holz-s59556337/",
+   "image": "https://www.ikea.com/de/de/images/products/vitarna-himmelbettgestell-weiss-luroey-skadis-holz__1339964_pe948475_s5.jpg",
+   "rating": 4.5,
+   "rating_n": 8,
+   "similarity": 0.6243,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "VEVELSTAD Bettgestell",
+   "price": 149.0,
+   "url": "https://www.ikea.com/de/de/p/vevelstad-bettgestell-weiss-00505528/",
+   "image": "https://www.ikea.com/de/de/images/products/vevelstad-bettgestell-weiss__1035358_pe840534_s5.jpg",
+   "rating": 4.4,
+   "rating_n": 273,
+   "similarity": 0.6196,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "VEVELSTAD Bettgestell mit 2 Kopfteilen",
+   "price": 269.0,
+   "url": "https://www.ikea.com/de/de/p/vevelstad-bettgestell-mit-2-kopfteilen-weiss-tolkning-rattan-s39441738/",
+   "image": "https://www.ikea.com/de/de/images/products/vevelstad-bettgestell-mit-2-kopfteilen-weiss-tolkning-rattan__1115624_pe872166_s5.jpg",
+   "rating": 3.3,
+   "rating_n": 9,
+   "similarity": 0.609,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "TÄLLÅSEN Bettgestell, gepolstert",
+   "price": 199.0,
+   "url": "https://www.ikea.com/de/de/p/taellasen-bettgestell-gepolstert-kulsta-hellbeige-50564775/",
+   "image": "https://www.ikea.com/de/de/images/products/taellasen-bettgestell-gepolstert-kulsta-hellbeige__1198827_pe904234_s5.jpg",
+   "rating": 4.3,
+   "rating_n": 134,
+   "similarity": 0.6023,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "yaheetech metallbett 90 160cm b bettrahmen vintage bettgestell mit kronenfoermigem kopftei",
+   "price": 69.99,
+   "url": "https://www.otto.de/p/yaheetech-metallbett-90-160cm-b-bettrahmen-vintage-bettgestell-mit-kronenfoermigem-kopfteil-S0L9Z0HJ/",
+   "image": "https://i.otto.de/i/otto/8534836a-79f6-49c8-8d9c-2f30eb4ebe35?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5918,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "zinus bettgestell mateo modernes bett mit lattenrost gaestebett schwarz 1 tlg metallbett s",
+   "price": 74.99,
+   "url": "https://www.otto.de/p/zinus-bettgestell-mateo-modernes-bett-mit-lattenrost-gaestebett-schwarz-1-tlg-metallbett-schwarz-140x200-cm-kinderleichter-aufbau-S0KCA0VB/",
+   "image": "https://i.otto.de/i/otto/7b4714cc-9651-4238-a628-e94b6edbfe51?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5861,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "yaheetech bettgestell metallbett einzelbettgestell doppelbettgestell in 4 groessen verfueg",
+   "price": 49.99,
+   "url": "https://www.otto.de/p/yaheetech-bettgestell-metallbett-einzelbettgestell-doppelbettgestell-in-4-groessen-verfuegbar-S0Z4Q0U8/",
+   "image": "https://i.otto.de/i/otto/b635f06f-8bad-4095-9c7f-8805fa7b526c?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5762,
+   "category_check": "title"
+  },
+  {
+   "shop": "poco",
+   "shop_name": "POCO Einrichtungsmärkte",
+   "title": "boxspringbett wien grau liegeflaeche b l ca 180x200 cm 510606200",
+   "price": 666.0,
+   "url": "https://www.poco.de/p/boxspringbett-wien-grau-liegeflaeche-b-l-ca-180x200-cm-510606200",
+   "image": "https://static.poco.de/static/media/e9/8c/07/1781185669/4977783-.jpeg?ts=1781185669",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5739,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "skolm bettgestell bragi inkl lattenrost 25 cm hoch metallbett 140x200 cm auch verfuegbar i",
+   "price": 139.99,
+   "url": "https://www.otto.de/p/skolm-bettgestell-bragi-inkl-lattenrost-25-cm-hoch-metallbett-140x200-cm-auch-verfuegbar-in-180x200-S0EEI0RS/",
+   "image": "https://i.otto.de/i/otto/9a402c7e-c766-428e-8f68-9d64b82579aa?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.571,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "msmask metallbett bettgestell mit led beleuchtung und steckdose usb anschluesse ohne matra",
+   "price": 129.99,
+   "url": "https://www.otto.de/p/msmask-metallbett-bettgestell-mit-led-beleuchtung-und-steckdose-usb-anschluesse-ohne-matratze-kinderbett-jugendbett-einzelbett-120-x-200cm-S04ET006/",
+   "image": "https://i.otto.de/i/otto/57305279-83e9-43c6-9eeb-4372e0cb1d76?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5609,
+   "category_check": "title"
+  }
+ ],
+ "claim": "cheapest among the companies scanned above — not the whole internet",
+ "generated_utc": "2026-07-15 22:24 UTC"
+}

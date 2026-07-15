@@ -48,9 +48,16 @@ COPIES = [
     (REPO / "docs/room_type_gallery/Room_Type_Gallery_A4.pdf", "02_Room_Type_Gallery_A4.pdf"),
     (REPO / "deliverable/local_only/SCS_Studio_Presentation_v3.pptx", "12_Slide_Deck_35_slides.pptx"),
     (REPO / "docs/roi/roi_analysis.xlsx", "cost_ROI_analysis.xlsx"),
-    (REPO / "docs/procurement_study/stool-TSG-001.xlsx", "cost_procurement_stool_TripoSG.xlsx"),
-    (REPO / "docs/procurement_study/bed-TRL-001.xlsx", "cost_procurement_bed_TRELLIS.xlsx"),
-    (REPO / "docs/procurement_study/chair-TRL-001.xlsx", "cost_procurement_chair_TRELLIS.xlsx"),
+    (REPO / "docs/procurement_study/stool-TSG-cloud.xlsx", "cost_procurement_stool_TripoSG.xlsx"),
+    (REPO / "docs/procurement_study/bed-TRELLIS-cloud.xlsx", "cost_procurement_bed_TRELLIS.xlsx"),
+    (REPO / "docs/procurement_study/chair-SAM3D-cloud.xlsx", "cost_procurement_chair_SAM3D.xlsx"),
+    # the benchmark-gallery images the study items come from (the user's source)
+    (REPO / "deliverable/cloud_gallery/assets/bed_input.png", "img_bed_input_photo.png"),
+    (REPO / "deliverable/cloud_gallery/assets/bed_trellis.png", "img_bed_TRELLIS_F0.67.png"),
+    (REPO / "deliverable/cloud_gallery/assets/chair_input.png", "img_chair_input_photo.png"),
+    (REPO / "deliverable/cloud_gallery/assets/stool_input.png", "img_stool_input_photo.png"),
+    (REPO / "deliverable/cloud_gallery/assets/stool_triposg.png", "img_stool_TripoSG_F0.99.png"),
+    (REPO / "deliverable/cloud_gallery/assets/stool_abo_gt.png", "img_stool_ground_truth.png"),
 ]
 
 
@@ -85,12 +92,15 @@ def main():
         if ok:
             made.append(name + ".pdf")
     for src, dst in COPIES:
-        if src.exists():
+        if not src.exists():
+            print("SKIP", dst, "(source missing)")
+            continue
+        try:
             shutil.copy(src, PACK / dst)
             made.append(dst)
             print("COPY", dst, flush=True)
-        else:
-            print("SKIP", dst, "(source missing)")
+        except PermissionError:
+            print("SKIP", dst, "(open in another program — close it and rerun)")
     (PACK / "00_README.txt").write_text(
         "SCS STUDIO - PRESENTATION PACK (Dimitres Kisimov)\n"
         "=================================================\n\n"
