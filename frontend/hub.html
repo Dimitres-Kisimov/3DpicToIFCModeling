@@ -201,10 +201,13 @@
   <section class="step" id="s6">
     <div class="stephead"><span class="big">6</span><h2>Buildings — whole IFC buildings, furnished floor by floor
       <span class="apptab">app tab: 🏢 Building</span></h2></div>
-    <p class="expl">Drop <b>any</b> IFC on the Building tab (a fresh 7-storey tower was drop-tested: 9/9
-      space-bearing floors documented, 81/81 rooms exact): floors are dissected, every room gets the same
-      room logic as step 5 — de-rotated solve frames, walking-path protection, door keep-clears, per-room
-      blueprints, Light/Medium/Dense — then export the furnished building back to IFC/GLB for Revit.</p>
+    <p class="expl">Drop <b>any</b> IFC on the Building tab — drop-tested twice on 2026-07-15 with a fresh
+      7-storey tower: <b>9/9 space-bearing floors, 81/81 rooms exact</b>, smart suggestions attached, and
+      the full catalog (including your own generated items, picked as gen:&lt;id&gt;) usable per room
+      (reproducible: <code>scripts/drop_test_7f.py</code>, report in docs/DROP_TEST_REPORT.md). Floors are
+      dissected, every room gets the same room logic as step 5 — de-rotated solve frames, walking-path
+      protection, door keep-clears, per-room blueprints, Light/Medium/Dense — then export the furnished
+      building back to IFC/GLB for Revit.</p>
     <div class="grid">
       <a class="card hero" href="/xray_building.html"><b>🩻 X-Ray Fleet — see through every building's walls</b>
         <span>All 15 buildings, shells at 22% opacity with every solver-placed piece visible inside —
