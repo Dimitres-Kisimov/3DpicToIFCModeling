@@ -1,0 +1,140 @@
+<!doctype html><html><head><meta charset='utf-8'><title>Look-alike retrieval findings — SCS Studio</title><style>body{font:15px/1.65 "Segoe UI",system-ui,sans-serif;color:#1f2733;background:#f6f8fb;max-width:860px;margin:32px auto;padding:0 20px}
+h1{font-size:24px}h2{font-size:18px;margin-top:26px;color:#2f6bff}
+table{border-collapse:collapse;width:100%;font-size:13.5px}th,td{border:1px solid #dfe6ee;padding:7px 10px;text-align:left}th{background:#2f6bff;color:#fff}
+code{background:#eef2f7;padding:1px 5px;border-radius:4px}blockquote{border-left:4px solid #2f6bff;margin:12px 0;padding:4px 14px;background:#eef3ff}a{color:#2f6bff}</style></head><body><h1>Look-alike product retrieval — findings across three versions</h1>
+<p><em>(v4.2 · Dimitres Kisimov · status: </em><em>working, and open for further development</em><em> —
+this document records what was tried, what each version got wrong, and what the
+next developer should do.)</em></p>
+<h2>The problem, stated honestly</h2>
+<p>Given a 3D object our AI engines generated from one photo, find a <strong>visually
+similar real product</strong> to buy. This sounds like a search query; it is actually
+a hard open research problem — general-purpose image embeddings (CLIP) measure
+<em>"looks like the same kind of photo"</em>, not <em>"is the same kind of object"</em> —
+and three iterations were needed to get trustworthy results. Each fix below
+came from <strong>looking at the output</strong>, not from theory.</p>
+<h2>Version 1 — category word + catalog thumbnails</h2>
+<p><strong>Approach.</strong> Query = the item's category translated to German retail vocabulary
+("stuhl", "bett", "hocker") + a CLIP-detected material modifier; match the
+candidates' shop photos against the item's catalog thumbnail; similarity floor
+0.55.</p>
+<p><strong>What happened.</strong></p>
+<table>
+<thead>
+<tr>
+<th>item</th>
+<th>outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stool</td>
+<td>acceptable: IKEA MARIUS at 0.71</td>
+</tr>
+<tr>
+<td>bed</td>
+<td><strong>failed</strong>: tiers included a fly screen, wallpaper and a floor lamp — sidebar products leaked through the shops' search pages</td>
+</tr>
+<tr>
+<td>chair</td>
+<td>lucky borderline: matched an armchair (POÄNG) without knowing why</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Learning.</strong> A price+image extractor over rendered shop pages has high recall
+and no discipline — a <strong>category gate</strong> is mandatory (title must name the
+category, else the photo must zero-shot-classify as it).</p>
+<h2>Version 2 — original input photos + category/accessory gates</h2>
+<p><strong>Approach.</strong> Match against the item's <strong>original input photograph</strong> (a real
+product photo from the 5-AI benchmark) instead of AI-mesh thumbnails; add the
+category gate and accessory negatives (a fitted sheet is titled
+"Spann<strong>bett</strong>tuch" — substring matching betrays you).</p>
+<p><strong>What happened.</strong> Similarity jumped <strong>+10–20 points</strong> across all items
+(stool 0.85–0.92, chair 0.81–0.82, bed → 0.77). But the chair exposed the
+deeper flaw: the item is a <strong>baroque upholstered armchair</strong>, and v2 confidently
+returned slim wooden dining chairs at 0.82 cosine. High score, wrong object
+character.</p>
+<p><strong>Learning.</strong> CLIP image-image cosine on white-background product shots is
+dominated by category and photo layout; it under-weights exactly what a human
+sees first — upholstery, ornament, proportions. <strong>The category label is not
+the object.</strong></p>
+<h2>Version 3 — sub-type awareness (photo + mesh geometry) + similarity-band tiers</h2>
+<p><strong>Approach.</strong> Detect the item's <em>sub-type</em> two ways that must corroborate:
+CLIP against sub-type prompts, and the <strong>mesh's own proportions</strong> — an armchair
+is nearly as wide as tall (w/h≈0.85 vs ≈0.45 for a dining chair); a four-poster
+bed is nearly as tall as wide (w/h≈1.3 vs ≥2 for a flat frame). The German
+sub-type term becomes the query ("sessel barock", "bett antik", "barhocker
+metall"); candidates from another sub-type family are rejected; lighting/
+textiles are blacklisted (a floor lamp silhouettes like a bar stool); and tiers
+are drawn <strong>only from the top-similarity band</strong> (within 0.12 of the best
+match) — visual similarity is the primary criterion, price differentiates
+within it.</p>
+<p><strong>What happened (final study numbers).</strong></p>
+<table>
+<thead>
+<tr>
+<th>item (engine, benchmark F)</th>
+<th>detected sub-type</th>
+<th>result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stool (TripoSG, F=0.99)</td>
+<td>tall industrial metal stool</td>
+<td><strong>0.90–0.92</strong> — all true bar stools, incl. a powder-coated Tolix-style clone at 38.85 € landed</td>
+</tr>
+<tr>
+<td>chair (SAM 3D)</td>
+<td>ornate baroque armchair (mesh w/h=0.85)</td>
+<td><strong>0.79–0.83</strong> — all true armchairs (SKÅLBODA 75.98 €, ISMANTORP 105.98 €)</td>
+</tr>
+<tr>
+<td>bed (TRELLIS, F=0.67)</td>
+<td>ornate antique carved bed (w/h=1.27)</td>
+<td><strong>≤0.77</strong> — ornate tall-headboard metal beds; no closer retail analog exists at the scanned shops</td>
+</tr>
+</tbody>
+</table>
+<h2>Where it stands — and why this is marked "further development"</h2>
+<p>The pipeline is <strong>reliable for common furniture forms</strong> (stools, chairs,
+standard beds, desks) and <strong>honest about its limits</strong>: for one-off ornate or
+antique pieces (the Gothic bed), the closest purchasable product simply is not
+very close, and the report says so with numbers instead of pretending.</p>
+<p>Finding look-alikes at human quality remains <strong>extensively hard</strong>. The open
+items, in priority order:</p>
+<ol>
+<li><strong>Coverage</strong>: free eBay + SerpAPI keys multiply the scanned market at zero
+   code cost.</li>
+<li><strong>Dimension enforcement</strong>: parse product detail pages, reject outside ±15 %
+   of the item's known real dimensions.</li>
+<li><strong>Better embeddings</strong>: DINOv2 (already powering the app's catalog
+   retrieval) and embedding ensembles capture shape character better than
+   CLIP alone; a small learned re-ranker over (CLIP, DINOv2, geometry) is the
+   natural next step.</li>
+<li><strong>Sub-type coverage</strong>: more categories, finer prompts, learned sub-type
+   classification instead of hand-written prompt lists.</li>
+<li><strong>Human-in-the-loop</strong>: the tool is a shortlist generator; the buyer's click
+   on the product page is—and should remain—the final gate.</li>
+</ol>
+<h2>Models used by the app (for the research paper)</h2>
+<ul>
+<li><strong>Photo → 3D (the 5-AI comparison)</strong>: TripoSR (runs locally, product
+  default), and on cloud H200 GPUs: <strong>TripoSG, TRELLIS, SAM 3D, InstantMesh</strong> —
+  187 internet photos, identical inputs, F-score@0.02 vs ABO ground-truth
+  meshes. Mean F: <strong>TripoSG 0.393</strong> (best) · SAM 3D 0.368 · TRELLIS 0.347 ·
+  InstantMesh 0.327 · TripoSR·rembg 0.295 · TripoSR·SAM2 0.278. Per-item
+  winners vary — stool: TripoSG <strong>0.99</strong>; bed: TRELLIS 0.67; cabinet: SAM 3D
+  0.73 — which is why this procurement study sources each item from its best
+  engine. Full interactive gallery: <code>/gallery/index.html</code>; scores:
+  <code>deliverable/cloud_gallery/cloud_scores.csv</code>.</li>
+<li><strong>Visual product matching</strong>: OpenAI <strong>CLIP ViT-B/32</strong> (local, transformers).</li>
+<li><strong>Catalog retrieval</strong>: <strong>DINOv2</strong> embeddings + FAISS index over the ABO
+  library.</li>
+<li><strong>Photo preprocessing</strong>: rembg / SAM2 segmentation, Ultralytics YOLO
+  classification.</li>
+<li><strong>Placement</strong>: Google <strong>OR-Tools CP-SAT</strong> under German ASR workplace rules.</li>
+<li><strong>BIM</strong>: ifcopenshell (IFC4 read/write), xeokit (3D viewport).</li>
+</ul>
+<p><em>Everything in this document is reproducible: the three versions are tagged
+v4.0.0 → v4.1.0 → v4.2.0, and each study JSON/XLSX is committed under
+<code>docs/procurement_study/</code>.</em></p></body></html>

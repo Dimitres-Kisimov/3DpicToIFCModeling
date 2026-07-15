@@ -116,6 +116,7 @@ def main():
         "10  v2 feature patch notes (rotation, delete, safety, capacity)\n"
         "11  ROI interactive table (printed from the live app)\n"
         "12  The 35-slide deck (PowerPoint)\n"
+        "13  Look-alike matching v1/v2/v3 - findings, honest grading, further-development roadmap\n"
         "cost_*.xlsx  - the finance packs: ROI + 3 procurement studies\n\n"
         "Screenshots: ..\\presentation_shots\\ (57+ JPEGs, INDEX.txt)\n"
         "Catalog for TransferXL: ..\\ABO_furniture_catalog.zip (4.85 GB)\n",

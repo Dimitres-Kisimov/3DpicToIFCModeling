@@ -48,8 +48,29 @@ double-click `SCS_Studio.bat` — it self-installs on first run.
   the whole fleet 95.9% ([`docs/roi/`](docs/roi/)).
 - **Proof**: e2e 8/8 · floor dissection 15/15 · ergonomics 40/40 ×2 · exact-geometry meter
   over ~6,000 pieces · boot-verified release bundles.
+- **Open research, documented**: look-alike product retrieval proved genuinely hard — three
+  iterations are honestly graded in [`docs/PROCUREMENT_FINDINGS.md`](docs/PROCUREMENT_FINDINGS.md)
+  with a further-development roadmap. Negative results are results.
 
 </details>
+
+## About this project
+
+Built end-to-end by **Dimitres Kisimov** as a complete engineering effort — from research
+question to shipped, versioned releases. What it demonstrates in practice:
+
+- **Full-stack engineering**: Node/Express backend, vanilla-JS 3D frontend (xeokit,
+  model-viewer), Python compute layer — one app, one origin, no framework bloat.
+- **Applied ML with honest evaluation**: five image-to-3D engines benchmarked on 187 photos
+  against ground-truth meshes (F-score), CLIP/DINOv2 embeddings in production use, and a
+  written record of what did *not* work.
+- **Operations research**: CP-SAT constraint solving for furniture placement under real
+  legal constraints (German ASR workplace law, cited from the legal text).
+- **BIM/AEC domain depth**: IFC4 round-trips that survive Revit, DIN 277 room
+  classification in four languages, 15-building validation fleet.
+- **Engineering discipline**: every release test-gated (e2e, geometry meters, ergonomics
+  checks), reproducible artifact scripts, honest limitation docs, clean licensing
+  (ABO CC-BY-4.0, PolyHaven CC0, EU-compliant model selection).
 
 | Workspace | What it does |
 |-----------|--------------|
