@@ -269,6 +269,7 @@ router.post('/building/:bid/populate', async (req, res, next) => {
     const pieces = (man.pieces || []).map((p) => ({
       id: p.id, category: p.category, glb: `${base}/${p.glb}`, pos: p.pos,
       room: p.room, dims: p.dims || null, elev: p.elev || 0,
+      rel: p.rel || null,   // the human connection (chair->desk, bin beside...)
     }));
     res.json({
       ok: true,

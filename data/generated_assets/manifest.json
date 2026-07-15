@@ -10658,6 +10658,771 @@
    "num": 8,
    "code": "table-TSR-008",
    "display_name": "table \u2014 TripoSR \u2014 #008"
+  },
+  {
+   "id": "gen_04cee56fc422",
+   "category": "table",
+   "glb": "table-TSR-009.glb",
+   "dims_m": [
+    1.5,
+    0.798,
+    0.842
+   ],
+   "thumb": "table-TSR-009.thumb.png",
+   "generated": true,
+   "source_file": "Lighting.glb",
+   "engine": "TSR",
+   "num": 9,
+   "code": "table-TSR-009",
+   "display_name": "table \u2014 TripoSR \u2014 #009"
+  },
+  {
+   "id": "gen_4240a9928305",
+   "category": "fire_extinguisher",
+   "glb": "fire_extinguisher-CC0-001.glb",
+   "dims_m": [
+    0.28,
+    0.659,
+    0.367
+   ],
+   "thumb": "fire_extinguisher-CC0-001.thumb.png",
+   "generated": true,
+   "source_file": "korean_fire_extinguisher_01.glb",
+   "engine": "CC0",
+   "num": 1,
+   "code": "fire_extinguisher-CC0-001",
+   "display_name": "fire extinguisher \u2014 PolyHaven CC0 \u2014 #001"
+  },
+  {
+   "id": "gen_d3c397de2f62",
+   "category": "first_aid_cabinet",
+   "glb": "first_aid_cabinet-CC0-001.glb",
+   "dims_m": [
+    0.525,
+    0.098,
+    0.35
+   ],
+   "thumb": "first_aid_cabinet-CC0-001.thumb.png",
+   "generated": true,
+   "source_file": "medical_box.glb",
+   "engine": "CC0",
+   "num": 1,
+   "code": "first_aid_cabinet-CC0-001",
+   "display_name": "first aid cabinet \u2014 PolyHaven CC0 \u2014 #001"
+  },
+  {
+   "id": "gen_2cc3205cc634",
+   "category": "projector",
+   "glb": "projector-CC0-001.glb",
+   "dims_m": [
+    0.254,
+    0.345,
+    0.603
+   ],
+   "thumb": "projector-CC0-001.thumb.png",
+   "generated": true,
+   "source_file": "filmstrip_projector_8mm.glb",
+   "engine": "CC0",
+   "num": 1,
+   "code": "projector-CC0-001",
+   "display_name": "projector \u2014 PolyHaven CC0 \u2014 #001"
+  },
+  {
+   "id": "gen_1acc7584022e",
+   "category": "partition",
+   "glb": "partition-CC0-001.glb",
+   "dims_m": [
+    1.294,
+    1.603,
+    0.377
+   ],
+   "thumb": "partition-CC0-001.thumb.png",
+   "generated": true,
+   "source_file": "chinese_screen_panels.glb",
+   "engine": "CC0",
+   "num": 1,
+   "code": "partition-CC0-001",
+   "display_name": "partition \u2014 PolyHaven CC0 \u2014 #001"
+  },
+  {
+   "id": "gen_54d78c960e23",
+   "category": "presentation_screen",
+   "glb": "presentation_screen-CC0-001.glb",
+   "dims_m": [
+    1.094,
+    1.799,
+    0.916
+   ],
+   "thumb": "presentation_screen-CC0-001.thumb.png",
+   "generated": true,
+   "source_file": "projector_screen.glb",
+   "engine": "CC0",
+   "num": 1,
+   "code": "presentation_screen-CC0-001",
+   "display_name": "presentation screen \u2014 PolyHaven CC0 \u2014 #001"
+  },
+  {
+   "id": "gen_ad835a9c21da",
+   "category": "microwave",
+   "glb": "microwave-CC0-001.glb",
+   "dims_m": [
+    1.074,
+    0.526,
+    0.746
+   ],
+   "thumb": "microwave-CC0-001.thumb.png",
+   "generated": true,
+   "source_file": "vintage_microwave.glb",
+   "engine": "CC0",
+   "num": 1,
+   "code": "microwave-CC0-001",
+   "display_name": "microwave \u2014 PolyHaven CC0 \u2014 #001"
+  },
+  {
+   "id": "gen_4743dc86cb74",
+   "category": "coat_rack",
+   "glb": "coat_rack-PRIM-001.glb",
+   "dims_m": [
+    0.5,
+    1.705,
+    0.5
+   ],
+   "thumb": "coat_rack-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "coat_rack \u00e2\u0080\u0094 classic pole.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "coat_rack-PRIM-001",
+   "display_name": "coat rack \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_9773b160c5e2",
+   "category": "coat_rack",
+   "glb": "coat_rack-PRIM-002.glb",
+   "dims_m": [
+    0.5,
+    1.7,
+    0.3
+   ],
+   "thumb": "coat_rack-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "coat_rack \u00e2\u0080\u0094 twin post.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "coat_rack-PRIM-002",
+   "display_name": "coat rack \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_76f7c4b006de",
+   "category": "coat_rack",
+   "glb": "coat_rack-PRIM-003.glb",
+   "dims_m": [
+    0.5,
+    1.6,
+    0.45
+   ],
+   "thumb": "coat_rack-PRIM-003.thumb.png",
+   "generated": true,
+   "source_file": "coat_rack \u00e2\u0080\u0094 panel pegs.glb",
+   "engine": "PRIM",
+   "num": 3,
+   "code": "coat_rack-PRIM-003",
+   "display_name": "coat rack \u2014 PRIM \u2014 #003"
+  },
+  {
+   "id": "gen_17c71f158151",
+   "category": "coffee_machine",
+   "glb": "coffee_machine-PRIM-001.glb",
+   "dims_m": [
+    0.28,
+    0.36,
+    0.36
+   ],
+   "thumb": "coffee_machine-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "coffee_machine \u00e2\u0080\u0094 espresso.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "coffee_machine-PRIM-001",
+   "display_name": "coffee machine \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_c116dbaa0536",
+   "category": "coffee_machine",
+   "glb": "coffee_machine-PRIM-002.glb",
+   "dims_m": [
+    0.26,
+    0.42,
+    0.34
+   ],
+   "thumb": "coffee_machine-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "coffee_machine \u00e2\u0080\u0094 drip carafe.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "coffee_machine-PRIM-002",
+   "display_name": "coffee machine \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_c693188a8a5d",
+   "category": "coffee_machine",
+   "glb": "coffee_machine-PRIM-003.glb",
+   "dims_m": [
+    0.22,
+    0.34,
+    0.31
+   ],
+   "thumb": "coffee_machine-PRIM-003.thumb.png",
+   "generated": true,
+   "source_file": "coffee_machine \u00e2\u0080\u0094 pod machine.glb",
+   "engine": "PRIM",
+   "num": 3,
+   "code": "coffee_machine-PRIM-003",
+   "display_name": "coffee machine \u2014 PRIM \u2014 #003"
+  },
+  {
+   "id": "gen_fe7f2e027ce5",
+   "category": "fire_extinguisher",
+   "glb": "fire_extinguisher-PRIM-001.glb",
+   "dims_m": [
+    0.167,
+    0.51,
+    0.15
+   ],
+   "thumb": "fire_extinguisher-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "fire_extinguisher \u00e2\u0080\u0094 classic 6kg.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "fire_extinguisher-PRIM-001",
+   "display_name": "fire extinguisher \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_bcef2b95bb24",
+   "category": "fire_extinguisher",
+   "glb": "fire_extinguisher-PRIM-002.glb",
+   "dims_m": [
+    0.11,
+    0.565,
+    0.11
+   ],
+   "thumb": "fire_extinguisher-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "fire_extinguisher \u00e2\u0080\u0094 slim 2kg.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "fire_extinguisher-PRIM-002",
+   "display_name": "fire extinguisher \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_2fa21ff03c7a",
+   "category": "first_aid_cabinet",
+   "glb": "first_aid_cabinet-PRIM-001.glb",
+   "dims_m": [
+    0.34,
+    0.44,
+    0.153
+   ],
+   "thumb": "first_aid_cabinet-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "first_aid_cabinet \u00e2\u0080\u0094 DIN green.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "first_aid_cabinet-PRIM-001",
+   "display_name": "first aid cabinet \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_6d78913f372d",
+   "category": "first_aid_cabinet",
+   "glb": "first_aid_cabinet-PRIM-002.glb",
+   "dims_m": [
+    0.345,
+    0.44,
+    0.155
+   ],
+   "thumb": "first_aid_cabinet-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "first_aid_cabinet \u00e2\u0080\u0094 white steel.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "first_aid_cabinet-PRIM-002",
+   "display_name": "first aid cabinet \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_baca5790b5fb",
+   "category": "flipchart",
+   "glb": "flipchart-PRIM-001.glb",
+   "dims_m": [
+    0.7,
+    1.85,
+    0.516
+   ],
+   "thumb": "flipchart-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "flipchart \u00e2\u0080\u0094 tripod.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "flipchart-PRIM-001",
+   "display_name": "flipchart \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_022cfa65eb70",
+   "category": "flipchart",
+   "glb": "flipchart-PRIM-002.glb",
+   "dims_m": [
+    0.68,
+    1.8,
+    0.3
+   ],
+   "thumb": "flipchart-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "flipchart \u00e2\u0080\u0094 frame stand.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "flipchart-PRIM-002",
+   "display_name": "flipchart \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_70f000ade03d",
+   "category": "flipchart",
+   "glb": "flipchart-PRIM-003.glb",
+   "dims_m": [
+    0.68,
+    1.75,
+    0.4
+   ],
+   "thumb": "flipchart-PRIM-003.thumb.png",
+   "generated": true,
+   "source_file": "flipchart \u00e2\u0080\u0094 mobile.glb",
+   "engine": "PRIM",
+   "num": 3,
+   "code": "flipchart-PRIM-003",
+   "display_name": "flipchart \u2014 PRIM \u2014 #003"
+  },
+  {
+   "id": "gen_a243b3d68a8d",
+   "category": "lectern",
+   "glb": "lectern-PRIM-001.glb",
+   "dims_m": [
+    0.6,
+    1.18,
+    0.51
+   ],
+   "thumb": "lectern-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "lectern \u00e2\u0080\u0094 panel.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "lectern-PRIM-001",
+   "display_name": "lectern \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_e849f13686d0",
+   "category": "lectern",
+   "glb": "lectern-PRIM-002.glb",
+   "dims_m": [
+    0.58,
+    1.05,
+    0.46
+   ],
+   "thumb": "lectern-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "lectern \u00e2\u0080\u0094 column.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "lectern-PRIM-002",
+   "display_name": "lectern \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_f488c5a2a642",
+   "category": "lectern",
+   "glb": "lectern-PRIM-003.glb",
+   "dims_m": [
+    0.58,
+    1.1,
+    0.46
+   ],
+   "thumb": "lectern-PRIM-003.thumb.png",
+   "generated": true,
+   "source_file": "lectern \u00e2\u0080\u0094 open frame.glb",
+   "engine": "PRIM",
+   "num": 3,
+   "code": "lectern-PRIM-003",
+   "display_name": "lectern \u2014 PRIM \u2014 #003"
+  },
+  {
+   "id": "gen_e87b9bbe8339",
+   "category": "microwave",
+   "glb": "microwave-PRIM-001.glb",
+   "dims_m": [
+    0.48,
+    0.28,
+    0.375
+   ],
+   "thumb": "microwave-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "microwave \u00e2\u0080\u0094 stainless.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "microwave-PRIM-001",
+   "display_name": "microwave \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_043035978930",
+   "category": "microwave",
+   "glb": "microwave-PRIM-002.glb",
+   "dims_m": [
+    0.48,
+    0.28,
+    0.373
+   ],
+   "thumb": "microwave-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "microwave \u00e2\u0080\u0094 black glass.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "microwave-PRIM-002",
+   "display_name": "microwave \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_8bb473436af3",
+   "category": "partition",
+   "glb": "partition-PRIM-001.glb",
+   "dims_m": [
+    1.5,
+    1.62,
+    0.3
+   ],
+   "thumb": "partition-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "partition \u00e2\u0080\u0094 fabric.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "partition-PRIM-001",
+   "display_name": "partition \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_d8ab12259851",
+   "category": "partition",
+   "glb": "partition-PRIM-002.glb",
+   "dims_m": [
+    1.5,
+    1.62,
+    0.3
+   ],
+   "thumb": "partition-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "partition \u00e2\u0080\u0094 frosted.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "partition-PRIM-002",
+   "display_name": "partition \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_1754254ba3de",
+   "category": "phone_booth",
+   "glb": "phone_booth-PRIM-001.glb",
+   "dims_m": [
+    1.02,
+    2.21,
+    1.035
+   ],
+   "thumb": "phone_booth-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "phone_booth \u00e2\u0080\u0094 dark cube.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "phone_booth-PRIM-001",
+   "display_name": "phone booth \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_5f6fd803d76c",
+   "category": "phone_booth",
+   "glb": "phone_booth-PRIM-002.glb",
+   "dims_m": [
+    1.02,
+    2.12,
+    1.035
+   ],
+   "thumb": "phone_booth-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "phone_booth \u00e2\u0080\u0094 light pod.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "phone_booth-PRIM-002",
+   "display_name": "phone booth \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_ae09b1ec7092",
+   "category": "phone_booth",
+   "glb": "phone_booth-PRIM-003.glb",
+   "dims_m": [
+    1.06,
+    2.15,
+    1.06
+   ],
+   "thumb": "phone_booth-PRIM-003.thumb.png",
+   "generated": true,
+   "source_file": "phone_booth \u00e2\u0080\u0094 acoustic.glb",
+   "engine": "PRIM",
+   "num": 3,
+   "code": "phone_booth-PRIM-003",
+   "display_name": "phone booth \u2014 PRIM \u2014 #003"
+  },
+  {
+   "id": "gen_b6f50862e134",
+   "category": "presentation_screen",
+   "glb": "presentation_screen-PRIM-001.glb",
+   "dims_m": [
+    2.4,
+    1.52,
+    0.09
+   ],
+   "thumb": "presentation_screen-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "presentation_screen \u00e2\u0080\u0094 wall matte.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "presentation_screen-PRIM-001",
+   "display_name": "presentation screen \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_cb0059a8becc",
+   "category": "presentation_screen",
+   "glb": "presentation_screen-PRIM-002.glb",
+   "dims_m": [
+    2.4,
+    1.49,
+    0.07
+   ],
+   "thumb": "presentation_screen-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "presentation_screen \u00e2\u0080\u0094 slim bezel.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "presentation_screen-PRIM-002",
+   "display_name": "presentation screen \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_87f1179a431d",
+   "category": "printer",
+   "glb": "printer-PRIM-001.glb",
+   "dims_m": [
+    0.56,
+    0.95,
+    0.6
+   ],
+   "thumb": "printer-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "printer \u00e2\u0080\u0094 floor MFP.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "printer-PRIM-001",
+   "display_name": "printer \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_d84e3da19988",
+   "category": "printer",
+   "glb": "printer-PRIM-002.glb",
+   "dims_m": [
+    0.5,
+    0.89,
+    0.5
+   ],
+   "thumb": "printer-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "printer \u00e2\u0080\u0094 desk on stand.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "printer-PRIM-002",
+   "display_name": "printer \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_448dda49702c",
+   "category": "printer",
+   "glb": "printer-PRIM-003.glb",
+   "dims_m": [
+    0.77,
+    1.05,
+    0.59
+   ],
+   "thumb": "printer-PRIM-003.thumb.png",
+   "generated": true,
+   "source_file": "printer \u00e2\u0080\u0094 copier tower.glb",
+   "engine": "PRIM",
+   "num": 3,
+   "code": "printer-PRIM-003",
+   "display_name": "printer \u2014 PRIM \u2014 #003"
+  },
+  {
+   "id": "gen_d32d1c8c4d66",
+   "category": "projector",
+   "glb": "projector-PRIM-001.glb",
+   "dims_m": [
+    0.36,
+    0.14,
+    0.3
+   ],
+   "thumb": "projector-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "projector \u00e2\u0080\u0094 office white.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "projector-PRIM-001",
+   "display_name": "projector \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_77b9f33a616d",
+   "category": "projector",
+   "glb": "projector-PRIM-002.glb",
+   "dims_m": [
+    0.3,
+    0.105,
+    0.255
+   ],
+   "thumb": "projector-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "projector \u00e2\u0080\u0094 compact dark.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "projector-PRIM-002",
+   "display_name": "projector \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_a9c780fe2b02",
+   "category": "server_rack",
+   "glb": "server_rack-PRIM-001.glb",
+   "dims_m": [
+    0.58,
+    1.95,
+    0.79
+   ],
+   "thumb": "server_rack-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "server_rack \u00e2\u0080\u0094 closed 42U.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "server_rack-PRIM-001",
+   "display_name": "server rack \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_64baaea52623",
+   "category": "server_rack",
+   "glb": "server_rack-PRIM-002.glb",
+   "dims_m": [
+    0.57,
+    1.9,
+    0.77
+   ],
+   "thumb": "server_rack-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "server_rack \u00e2\u0080\u0094 open frame.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "server_rack-PRIM-002",
+   "display_name": "server rack \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_c6e103a37314",
+   "category": "water_dispenser",
+   "glb": "water_dispenser-PRIM-001.glb",
+   "dims_m": [
+    0.33,
+    1.07,
+    0.355
+   ],
+   "thumb": "water_dispenser-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "water_dispenser \u00e2\u0080\u0094 bottle cooler.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "water_dispenser-PRIM-001",
+   "display_name": "water dispenser \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_2b4ab0abe22f",
+   "category": "water_dispenser",
+   "glb": "water_dispenser-PRIM-002.glb",
+   "dims_m": [
+    0.3,
+    1.05,
+    0.37
+   ],
+   "thumb": "water_dispenser-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "water_dispenser \u00e2\u0080\u0094 slim POU.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "water_dispenser-PRIM-002",
+   "display_name": "water dispenser \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_9eef3791b33d",
+   "category": "water_dispenser",
+   "glb": "water_dispenser-PRIM-003.glb",
+   "dims_m": [
+    0.32,
+    1.02,
+    0.35
+   ],
+   "thumb": "water_dispenser-PRIM-003.thumb.png",
+   "generated": true,
+   "source_file": "water_dispenser \u00e2\u0080\u0094 column.glb",
+   "engine": "PRIM",
+   "num": 3,
+   "code": "water_dispenser-PRIM-003",
+   "display_name": "water dispenser \u2014 PRIM \u2014 #003"
+  },
+  {
+   "id": "gen_4c6e7553f9e6",
+   "category": "whiteboard",
+   "glb": "whiteboard-PRIM-001.glb",
+   "dims_m": [
+    1.8,
+    1.2,
+    0.14
+   ],
+   "thumb": "whiteboard-PRIM-001.thumb.png",
+   "generated": true,
+   "source_file": "whiteboard \u00e2\u0080\u0094 classic tray.glb",
+   "engine": "PRIM",
+   "num": 1,
+   "code": "whiteboard-PRIM-001",
+   "display_name": "whiteboard \u2014 PRIM \u2014 #001"
+  },
+  {
+   "id": "gen_707ee48ba77e",
+   "category": "whiteboard",
+   "glb": "whiteboard-PRIM-002.glb",
+   "dims_m": [
+    1.76,
+    1.18,
+    0.05
+   ],
+   "thumb": "whiteboard-PRIM-002.thumb.png",
+   "generated": true,
+   "source_file": "whiteboard \u00e2\u0080\u0094 glass.glb",
+   "engine": "PRIM",
+   "num": 2,
+   "code": "whiteboard-PRIM-002",
+   "display_name": "whiteboard \u2014 PRIM \u2014 #002"
+  },
+  {
+   "id": "gen_2471a2ed79b0",
+   "category": "whiteboard",
+   "glb": "whiteboard-PRIM-003.glb",
+   "dims_m": [
+    2.1,
+    1.7,
+    0.4
+   ],
+   "thumb": "whiteboard-PRIM-003.thumb.png",
+   "generated": true,
+   "source_file": "whiteboard \u00e2\u0080\u0094 mobile.glb",
+   "engine": "PRIM",
+   "num": 3,
+   "code": "whiteboard-PRIM-003",
+   "display_name": "whiteboard \u2014 PRIM \u2014 #003"
   }
  ]
 }
