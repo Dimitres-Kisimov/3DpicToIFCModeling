@@ -11423,6 +11423,23 @@
    "num": 3,
    "code": "whiteboard-PRIM-003",
    "display_name": "whiteboard \u2014 PRIM \u2014 #003"
+  },
+  {
+   "id": "gen_778131bfef8d",
+   "category": "table",
+   "glb": "table-TSR-010.glb",
+   "dims_m": [
+    1.5,
+    0.798,
+    0.842
+   ],
+   "thumb": "table-TSR-010.thumb.png",
+   "generated": true,
+   "source_file": "Lighting.glb",
+   "engine": "TSR",
+   "num": 10,
+   "code": "table-TSR-010",
+   "display_name": "table \u2014 TripoSR \u2014 #010"
   }
  ]
 }
