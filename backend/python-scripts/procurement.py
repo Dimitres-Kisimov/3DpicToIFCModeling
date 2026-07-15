@@ -133,6 +133,88 @@ CAT_PROMPTS = {  # CLIP zero-shot category classifier (fallback gate)
 _OTHER_PROMPTS = ["a product photo of a curtain", "a product photo of wallpaper",
                   "a product photo of a rug", "a product photo of a fly screen",
                   "a product photo of a lamp", "a product photo of a picture frame"]
+# ---------------------------------------------------------------------------
+# SUB-TYPES (v4.2): "chair" is not enough — a baroque armchair must search
+# "Sessel", a four-poster bed "Himmelbett". Detected from the item's views by
+# CLIP AND corroborated by mesh geometry (an armchair is nearly as wide as it
+# is tall; a four-poster bed is nearly as tall as it is wide).
+# Each row: (CLIP prompt, German query term, title words, family)
+SUBTYPES = {
+    "chair": [
+        ("a slim wooden dining chair", "stuhl holz", ["stuhl"], "dining"),
+        ("a padded upholstered dining chair", "polsterstuhl", ["stuhl"], "dining"),
+        ("a metal or plastic stacking chair", "stapelstuhl", ["stuhl"], "dining"),
+        ("a thick upholstered armchair with armrests", "sessel polster", ["sessel"], "armchair"),
+        ("an ornate baroque armchair with carved curved legs", "sessel barock", ["sessel"], "armchair"),
+    ],
+    "bed": [
+        ("a minimalist metal bed frame", "metallbett", ["bett"], "frame"),
+        ("a simple wooden bed frame", "holzbett", ["bett"], "frame"),
+        ("an upholstered bed with a padded headboard", "polsterbett", ["bett"], "frame"),
+        ("a four-poster canopy bed with tall corner posts", "himmelbett", ["himmelbett", "bett"], "poster"),
+        ("an ornate antique carved bed with a tall headboard", "bett antik", ["bett"], "poster"),
+    ],
+    "stool": [
+        ("a simple low wooden stool", "hocker holz", ["hocker"], "low"),
+        ("a tall bar stool or counter stool with a footrest ring", "barhocker",
+         ["barhocker", "hocker"], "bar"),
+        ("a tall industrial metal stool with tapered legs", "barhocker metall",
+         ["barhocker", "hocker"], "bar"),
+        ("an upholstered pouf seat", "sitzhocker pouf", ["hocker", "pouf"], "low"),
+        ("a folding step stool with steps", "tritthocker", ["hocker"], "low"),
+    ],
+    "sofa": [
+        ("a two-seat fabric sofa", "sofa 2-sitzer", ["sofa", "couch"], "sofa"),
+        ("a large corner sofa", "ecksofa", ["sofa", "couch"], "sofa"),
+        ("a leather chesterfield sofa", "sofa chesterfield leder", ["sofa", "couch"], "sofa"),
+    ],
+}
+
+
+def geo_compatible(category, family, ratios):
+    """Does the mesh's proportion vote for this sub-type family? ratios=(w/h, d/h)."""
+    if not ratios:
+        return None
+    wh = ratios[0]
+    if category == "chair":
+        return (wh > 0.62) if family == "armchair" else (wh < 0.75)
+    if category == "bed":
+        return (wh < 1.9) if family == "poster" else (wh > 1.55)
+    if category == "stool":
+        # counter/bar stools run w/h ≈ 0.55–0.8 — overlap band votes neither way
+        return (wh < 0.8) if family == "bar" else (wh > 0.55)
+    return None
+
+
+def detect_subtype(category, view_embs, ratios):
+    """CLIP votes from the photos, geometry corroborates. Returns row or None."""
+    subs = SUBTYPES.get(category)
+    if not subs:
+        return None
+    t = _embed_texts([s[0] for s in subs])
+    sims = (view_embs @ t.T).mean(dim=0)
+    scored = []
+    for i, s in enumerate(subs):
+        bonus = 0.0
+        ok = geo_compatible(category, s[3], ratios)
+        if ok is True:
+            bonus = 0.06
+        elif ok is False:
+            bonus = -0.06
+        scored.append((float(sims[i]) + bonus, i))
+    return subs[max(scored)[1]]
+
+
+def mesh_ratios(mesh_path):
+    try:
+        import trimesh
+        m = trimesh.load(mesh_path, force="mesh")
+        w, h, d = (float(x) for x in m.bounding_box.extents)
+        return (round(w / h, 3), round(d / h, 3))
+    except Exception:
+        return None
+
+
 # hard negatives: accessories whose titles CONTAIN the category word ("SpannBETTtuch")
 NEG_WORDS = {
     "bed": ["spannbett", "bettwäsche", "bettdecke", "betttuch", "bettlaken",
@@ -142,6 +224,12 @@ NEG_WORDS = {
     "sofa": ["sofabezug", "sofakissen", "sofadecke"],
     "mirror": ["spiegelschrank nachrüst"],
 }
+# a tall thin floor lamp silhouettes like a bar stool — lighting and textiles
+# are never a furniture match, whatever CLIP thinks of the shape
+NEG_ALL = ["stehlampe", "lampe", "leuchte", "tapete", "gardine", "vorhang",
+           "teppich", "kissen", "plaid", "bilderrahmen"]
+NEG_EXEMPT = {"lamp": {"stehlampe", "lampe", "leuchte"},
+              "picture_frame": {"bilderrahmen"}}
 
 _clip = None
 
@@ -403,15 +491,19 @@ def pick_attribute(view_embs):
     return ATTRS[int(sims.argmax())][1]
 
 
-def score_candidates(view_embs, cands, category):
+def score_candidates(view_embs, cands, category, sub=None):
     from PIL import Image
     import io
-    words = TITLE_WORDS.get(category, [category.replace("_", " ")])
+    words = (sub[2] if sub else None) or \
+        TITLE_WORDS.get(category, [category.replace("_", " ")])
     cat_prompt = CAT_PROMPTS.get(category,
                                  f"a product photo of a {category.replace('_', ' ')}")
     text_embs = _embed_texts([cat_prompt] + _OTHER_PROMPTS)
+    subs = SUBTYPES.get(category) if sub else None
+    sub_embs = _embed_texts([s[0] for s in subs]) if subs else None
     scored = []
-    negs = NEG_WORDS.get(category, [])
+    exempt = NEG_EXEMPT.get(category, set())
+    negs = NEG_WORDS.get(category, []) + [n for n in NEG_ALL if n not in exempt]
     for c in cands:
         if not c.get("image"):
             continue
@@ -433,6 +525,14 @@ def score_candidates(view_embs, cands, category):
             tsims = (e @ text_embs.T)[0]
             if int(tsims.argmax()) != 0:
                 continue
+        if sub_embs is not None:
+            # SUB-TYPE family gate (v4.2): an armchair item must not match
+            # slim dining chairs — the candidate photo's best sub-type must
+            # share OUR item's family (title word match also proves it)
+            if not title_ok or not any(w in title_l for w in sub[2]):
+                ssims = (e @ sub_embs.T)[0]
+                if subs[int(ssims.argmax())][3] != sub[3]:
+                    continue
         c["similarity"] = round(float((view_embs @ e.T).max()), 4)
         c["category_check"] = "title" if title_ok else "clip-zero-shot"
         scored.append(c)
@@ -478,6 +578,13 @@ def tiers(scored, category, qtys):
     pool = ok if ok else sorted(scored, key=lambda c: -c.get("similarity", 0))[:5]
     if not pool:
         return {}, pool
+    # VISUAL SIMILARITY IS THE PRIMARY CRITERION (user directive): tiers are
+    # drawn only from the top-similarity band — price differentiates WITHIN
+    # the band, it never buys down the likeness.
+    smax = max(c["similarity"] for c in pool)
+    band = [c for c in pool if c["similarity"] >= smax - 0.12]
+    if len(band) >= 3:
+        pool = band
     def q(c):                                   # quality proxy
         r = c.get("rating") or 3.5
         return float(r) / 5.0
@@ -493,7 +600,7 @@ def tiers(scored, category, qtys):
     return out, pool
 
 
-def run(item_id, qtys, limit=12, category=None, view_paths=None):
+def run(item_id, qtys, limit=12, category=None, view_paths=None, mesh_path=None):
     category = category or re.match(r"([a-z_]+)-", item_id).group(1)
     if view_paths:                     # explicit views (e.g. benchmark gallery:
         from PIL import Image         # the ORIGINAL input photo + engine render)
@@ -502,7 +609,14 @@ def run(item_id, qtys, limit=12, category=None, view_paths=None):
         views = item_views(item_id)
     view_embs = _embed_images(views)
     modifier = pick_attribute(view_embs)
-    query = f"{CAT_DE.get(category, category)} {modifier}"
+    ratios = mesh_ratios(mesh_path) if mesh_path else None
+    sub = detect_subtype(category, view_embs, ratios)
+    base = sub[1] if sub else CAT_DE.get(category, category)
+    query = f"{base} {modifier}"
+    if sub:
+        print(f"  sub-type: {sub[0]!r} -> query base {sub[1]!r}"
+              + (f" (mesh w/h={ratios[0]}, d/h={ratios[1]})" if ratios else ""),
+              flush=True)
     scanned, skipped, cands = [], [], []
     for shop in SHOPS:
         if shop.get("env") and not os.environ.get(shop["env"], ""):
@@ -512,10 +626,13 @@ def run(item_id, qtys, limit=12, category=None, view_paths=None):
         scanned.append(f"{shop['name']} ({len(got)} candidates)")
         cands += got
         print(f"  {shop['name']:38s} {len(got)} candidates", flush=True)
-    scored = score_candidates(view_embs, cands, category)
+    scored = score_candidates(view_embs, cands, category, sub)
     scored.sort(key=lambda c: -c["similarity"])
     tier, pool = tiers(scored, category, qtys)
     return {"item": item_id, "category": category, "query": query,
+            "subtype": (sub[0] if sub else None),
+            "subtype_family": (sub[3] if sub else None),
+            "mesh_ratios": ratios,
             "destination": DEST, "vat_note": "listed prices include 19% German VAT",
             "similarity_floor": SIM_FLOOR,
             "companies_scanned": scanned, "companies_skipped": skipped,
@@ -604,9 +721,12 @@ def main():
     ap.add_argument("--views", default=None,
                     help="comma-separated image paths to match against "
                          "(e.g. the benchmark input photo + engine render)")
+    ap.add_argument("--mesh", default=None,
+                    help="GLB/mesh path — its proportions corroborate the sub-type")
     a = ap.parse_args()
     r = run(a.item, a.qty, category=a.category,
-            view_paths=a.views.split(",") if a.views else None)
+            view_paths=a.views.split(",") if a.views else None,
+            mesh_path=a.mesh)
     if a.json:
         Path(a.json).parent.mkdir(parents=True, exist_ok=True)
         Path(a.json).write_text(json.dumps(r, indent=1, ensure_ascii=False),

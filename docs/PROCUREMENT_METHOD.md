@@ -47,6 +47,17 @@ report is honest about which rows produced candidates.
    nearest product link and image — recall over precision, because stage 4
    filters visually. Fetches are cached 24 h and rate-limited (1.5 s gap);
    headless Chrome renders JavaScript shops exactly as a customer sees them.
+3b. **Sub-type awareness (v4.2)** — "chair" is not enough: a baroque
+   upholstered armchair must search **"Sessel"**, a four-poster bed
+   **"Himmelbett"**, not the generic word. The sub-type is detected two ways
+   and they must agree: CLIP classifies the item's views against sub-type
+   prompts, and the **mesh geometry corroborates** — an armchair is nearly as
+   wide as it is tall (w/h ≈ 0.85 vs ≈ 0.45 for a dining chair), a four-poster
+   bed nearly as tall as it is wide (w/h ≈ 1.3 vs ≥ 2 for a flat frame).
+   The German sub-type term becomes the query base, and candidates whose
+   photos classify to a different sub-type family are dropped. This came out
+   of live evaluation: the benchmark chair (a baroque armchair) was matching
+   slim dining chairs on the category word alone.
 4. **Visual match + quality gate** — every candidate's product photo is
    CLIP-scored (cosine) against our views; candidates under the **0.55
    similarity floor** are dropped as lookalikes. Ratings gate quality where the
@@ -61,9 +72,12 @@ report is honest about which rows produced candidates.
    **pickup alternative**: IKEA Ludwigsburg, ~90 km round trip at 0.30 €/km ≈
    27 €. Estimates are flagged; the product link always shows the exact
    checkout figure.
-6. **Business tiers** — from the above-floor pool, preferring distinct
-   products: **Budget** = lowest landed price · **Standard** = best
-   similarity-per-euro · **Premium** = highest similarity × quality. Each tier
+6. **Business tiers** — **visual similarity is the primary criterion**: tiers
+   are drawn only from the top-similarity band (within 0.12 of the best
+   match); price differentiates within the band and never buys down the
+   likeness. Preferring distinct products: **Budget** = lowest landed price
+   in the band · **Standard** = best similarity-per-euro · **Premium** =
+   highest similarity × quality. Each tier
    is costed for a single unit and a bulk quantity (default 10). At N ≥ 10 the
    report recommends requesting a written quote — retail bulk discounts are
    not public data and are never invented.
