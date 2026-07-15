@@ -73,18 +73,18 @@ SHOTS = [
 
 # curated existing renders to convert: (src, dest name, descriptor)
 COPIES = [
-    ("docs/human_layouts/office_dense_plan.png", "31_2d_office_dense_plan",
-     "2D solver floor plan - office at DENSE with green people-space clearances."),
-    ("docs/human_layouts/office_dense_3d.png", "32_3d_office_dense_render",
-     "3D render of the same dense office - real catalog meshes, AI-placed."),
-    ("docs/human_layouts/office_densest_plan.png", "33_2d_office_densest_plan",
-     "2D plan - office at DENSEST: 5 workstations + everything, still legal."),
-    ("docs/human_layouts/office_densest_3d.png", "34_3d_office_densest_render",
-     "3D render - the densest office; capacity guard trims what cannot fit."),
-    ("docs/human_layouts/meeting_densest_3d.png", "35_3d_meeting_densest",
-     "3D render - meeting room at densest: table core + presentation gear."),
-    ("docs/human_layouts/break_densest_3d.png", "36_3d_break_densest",
-     "3D render - Pausenraum at densest: eat, store, recycle per ASR A4.2."),
+    ("docs/human_layouts/office_team_plan.png", "31_2d_office_team_plan",
+     "2D solver plan - TEAM office: 4 workstations, partitions, shared printer."),
+    ("docs/human_layouts/office_team_3d.png", "32_3d_office_team_render",
+     "3D render of the team office - real catalog meshes, AI-placed."),
+    ("docs/human_layouts/office_open_plan.png", "33_2d_office_open_plan",
+     "2D plan - OPEN-PLAN office: 8 workstations, breakout corner, phone booth."),
+    ("docs/human_layouts/office_open_3d.png", "34_3d_office_open_render",
+     "3D render - the open plan; every clearance honoured."),
+    ("docs/human_layouts/meeting_hub_3d.png", "35_3d_meeting_hub",
+     "3D render - meeting room: 6 chairs RINGING the table facing it, projector aimed at the screen."),
+    ("docs/human_layouts/break_social_3d.png", "36_3d_break_social",
+     "3D render - Pausenraum: appliances ON the table, fridge at the wall (ASR A4.2)."),
     ("demo/app_out/showroom_plan.png", "37_2d_showroom_all_items_plan",
      "2D plan of the Showroom - all 38 categories numbered, clearances visible."),
     ("demo/app_out/showroom_3d.png", "38_3d_showroom_all_items_render",
@@ -111,6 +111,7 @@ def to_jpg(png, name):
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     index = ["SCS STUDIO - PRESENTATION SHOT PACK",
+             "Author: Dimitres Kisimov",
              "how we started -> where we got  (all JPEG, numbered in story order)",
              "=" * 66, ""]
     for name, url, size, desc in SHOTS:

@@ -608,11 +608,23 @@ def cmd_building_save(args):
     positions = args.get("positions", {}) or {}       # {piece_id: [x,y,z]}
     if not (mov / "shell.glb").exists():
         return {"ok": False, "error": "populate first", "status": 400}
+    import math as _math
     scene = trimesh.load(str(mov / "shell.glb"), force="scene")
     man = json.loads((mov / "furniture.json").read_text(encoding="utf-8"))
+
+    def _pos_rot(p):
+        v = positions.get(p["id"])
+        if isinstance(v, dict):                       # {pos:[x,y,z], rot:deg}
+            return (v.get("pos") or p["pos"]), float(v.get("rot") or 0.0)
+        return (v or p["pos"]), 0.0
+
     for p in man.get("pieces", []):
         g = trimesh.load(str(mov / p["glb"]), force="mesh")
-        g.apply_translation(positions.get(p["id"], p["pos"]))
+        pv, rot = _pos_rot(p)
+        if rot:                                       # user 90-degree yaw (vertical axis)
+            g.apply_transform(trimesh.transformations.rotation_matrix(
+                _math.radians(rot), [0, 1, 0]))
+        g.apply_translation(pv)
         scene.add_geometry(g, node_name=p["id"])
     scene.export(str(mov / "building_final.glb"))
     return {"ok": True, "glb_name": "building_final.glb"}
@@ -662,7 +674,15 @@ def cmd_building_export_ifc(args):
     for p in man.get("pieces", []):
         try:
             m = trimesh.load(str(mov / p["glb"]), force="mesh")
-            pos = positions.get(p["id"], p["pos"])    # Y-up world (same frame as save)
+            _v = positions.get(p["id"])
+            if isinstance(_v, dict):                  # {pos, rot} — rotated piece
+                pos = _v.get("pos") or p["pos"]
+                _rot = float(_v.get("rot") or 0.0)
+            else:
+                pos, _rot = (_v or p["pos"]), 0.0
+            if _rot:                                  # user yaw about the vertical axis
+                m.apply_transform(trimesh.transformations.rotation_matrix(
+                    np.radians(_rot), [0, 1, 0]))
             m.apply_translation(pos)
             m.apply_transform(yup_to_zup)             # -> IFC Z-up world, metres
             if len(m.faces) > 800:                    # keep the BIM light: furniture

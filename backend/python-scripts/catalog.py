@@ -258,13 +258,19 @@ def build_scene_spec(room: dict, picks: list) -> dict:
     # auto-assign functional anchors from the room-type rule pack
     by_id = {o["id"]: o for o in objs}
     on_top_count = {}   # anchor_id -> how many things already on top (to spread them)
-    for child_cat, anchor_cat, rel in pack.get("groups", []):
+    for grp in pack.get("groups", []):
+        child_cat, anchor_cat, rel = grp[0], grp[1], grp[2]
+        cap = grp[3] if len(grp) > 3 else None   # optional: anchor at most N children
         anchors = inst.get(anchor_cat, [])
         if not anchors:
             continue
+        assigned = 0
         for i, cid in enumerate(inst.get(child_cat, [])):
             if by_id[cid].get("anchor"):
                 continue
+            if cap is not None and assigned >= cap:
+                break
+            assigned += 1
             aid = anchors[i % len(anchors)]
             anchor = {"to": aid, "relation": rel}
             if rel == "on_top":

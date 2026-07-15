@@ -142,8 +142,11 @@ SECTIONS = [
          "0.46 m in front of the sofa (the '18-inch rule' — shin clearance)",
          "Within reach of a seated person"),
         ("Armchair",
-         "Perimeter-leaning; gets a side-table companion",
-         "Solo seating — reading corners, breakout zones, reception waiting"),
+         "IN A ROW (user rule): two side by side facing the same way; four as "
+         "two opposed pairs facing each other; side table with the cluster's "
+         "plant rides along; placed wherever a legal gap exists, walkways kept "
+         "clear by the solver",
+         "Human seating groups — breakout zones, reception waiting"),
         ("Side table",
          "Directly beside its armchair",
          "A cup/book within arm's reach of whoever sits"),
@@ -199,10 +202,13 @@ SECTIONS = [
     ("6 · Entry & safety — the door's neighbourhood and the law's items", [
         ("Coat rack", "Wall immediately left or right of the door",
          "Where a human hangs a coat on entry (user rule)"),
-        ("Fire extinguisher", "Wall-mounted 1.00 m; offices >40 m²",
-         "ASR A2.2 spirit — grabbing height, visible"),
-        ("First-aid cabinet", "Wall-mounted 1.35 m; rooms >50 m² / break rooms",
-         "Eye-level emergency access"),
+        ("Fire extinguisher",
+         "Wall-mounted 1.00 m + a HARD 0.90 m access strip in front that no "
+         "furniture may enter, at any density",
+         "ASR A2.2 — freely accessible at all times"),
+        ("First-aid cabinet",
+         "Wall-mounted 1.35 m + the same protected 0.90 m access strip",
+         "Eye-level emergency access, never blocked (ASR A4.3)"),
         ("Phone booth", "Free-standing box; offices >62 m²",
          "Call privacy in open plans (modern workplace standard)"),
     ]),

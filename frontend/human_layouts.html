@@ -34,13 +34,14 @@
 <body>
 <header>
   <h1>🛋️ Human Layouts</h1>
-  <p>the same room types at three escalating densities — through the real solver, ASR intact</p>
+  <p>human-like item selections per room type — every scene through the real solver, ASR intact</p>
   <a href="/hub.html">← Research hub</a>
 </header>
 <main>
   <div class="intro">
-    <b>What this shows:</b> six room types populated at <b>dense</b>, <span class="tier d2">denser</span>
-    and <span class="tier d3">densest</span> levels with item combinations a human would choose —
+    <b>What this shows:</b> eleven rooms — four REAL OFFICE TYPES plus meeting, presentation,
+    break, kitchen, reception, quiet and a residential control — each with the item assortment
+    a human would choose for that room type —
     following activity-based zoning (the modern-workplace standard: focus, collaboration and social
     micro-environments), the relational rules (chairs face their desks, the projector throws onto its
     screen, the bin sits at arm's reach, the coat rack flanks the door) and the full German ASR
@@ -53,37 +54,26 @@
 </main>
 <script>
 const SECTIONS = [
-  ['Office — workstations, then infrastructure, then everything', 'ASR A1.2: 8 m² + 6 m² staffing cap, 1.5 m² movement areas at every desk', [
-    ['office_dense', 'dense — 3 workstations + printer + bin', '6×6 m'],
-    ['office_denser', 'denser — 4 workstations + partition + locker', '6×6 m'],
-    ['office_densest', 'densest — 5 workstations + everything + extinguisher', '6×6 m'],
+  ['Offices — four real types, four different item assortments', 'the room TYPE is the selection criterion: each gets the set a human would put there, under full ASR', [
+    ['office_duo', 'Zellenbüro for two — desks, storage, coat rack at the door', '4.5×3.5 m'],
+    ['office_team', 'Team office — 4 workstations, partitions between pairs, shared printer', '6×6 m'],
+    ['office_exec', 'Executive office — one desk + a visitor corner (armchairs, side table)', '5×4.5 m'],
+    ['office_open', 'Open plan — 8 workstations, breakout corner, phone booth, safety kit', '10×8 m'],
   ]],
-  ['Office — alternative geometry, same rules', 'a wide 8×4.5 m room produces a different, equally legal layout', [
-    ['office_wide_layout', 'denser set in a wide room', '8×4.5 m'],
+  ['Meet & present', 'seats FACE the table; the projector hangs from the ceiling aimed at its screen; rows centre on the display', [
+    ['meeting_hub', 'Meeting room — 6 chairs ringing the table, full presentation kit', '5×4 m'],
+    ['presentation_hall', 'Presentation hall — centred audience rows at viewing distance', '8×7 m'],
   ]],
-  ['Meeting room — the table core grows presentation gear', 'flipchart at hand, projector throwing onto the screen', [
-    ['meeting_dense', 'dense — table + 6 chairs + whiteboard', '5×4 m'],
-    ['meeting_denser', 'denser — + screen, projector, flipchart', '5×4 m'],
-    ['meeting_densest', 'densest — 10 chairs + water + storage', '6×5 m'],
+  ['Eat & pause', 'appliances live ON the counter/table, never the floor; fridge at the wall', [
+    ['break_social', 'Pausenraum (ASR A4.2) — eat, store, recycle, first-aid at eye level', '5×4 m'],
+    ['kitchen_eatin', 'Eat-in kitchen — cabinet wall, cold corner, table for four', '5×4 m'],
   ]],
-  ['Break room (Pausenraum, ASR A4.2)', 'eat, store, recycle — first-aid at eye level', [
-    ['break_dense', 'dense — table, chairs, coffee, bin', '5×4 m'],
-    ['break_denser', 'denser — + fridge, microwave, water, first-aid', '5×4 m'],
-    ['break_densest', 'densest — 2 tables, sofa corner, lockers', '6×5 m'],
+  ['Welcome & focus', 'the coat rack flanks the entry; quiet rooms stay deliberately sparse', [
+    ['reception_welcome', 'Reception — front desk + waiting corner', '5×4 m'],
+    ['quiet_focus', 'Ruheraum — two armchairs, a lamp, a bookshelf. Calm by design', '3.5×3.5 m'],
   ]],
-  ['Reception — greet, wait, hang your coat', 'the coat rack flanks the door; the bin never shares its side', [
-    ['reception_dense', 'dense — desk + 2 armchairs + coat rack', '5×3.5 m'],
-    ['reception_denser', 'denser — + side table, planter, bin', '5×3.5 m'],
-    ['reception_densest', 'densest — sofa + 4 armchairs + water', '6×4 m'],
-  ]],
-  ['Quiet room (Ruheraum) — calm by design', 'even "densest" stays sparse: that is the human logic of this room type', [
-    ['quiet_dense', 'dense — one armchair', '3.5×3.5 m'],
-    ['quiet_denser', 'denser — two armchairs + lamp', '3.5×3.5 m'],
-    ['quiet_densest', 'densest — reading corner with sofa', '4.5×4 m'],
-  ]],
-  ['Living room — the residential control group', 'proves the workplace logic never leaks into homes', [
-    ['living_dense', 'dense — sofa, coffee table, lamp', '5×5 m'],
-    ['living_densest', 'densest — full lounge', '5×5 m'],
+  ['Residential control', 'proves the workplace logic never leaks into homes', [
+    ['living_home', 'Living room — couch core + dining corner with REGULAR chairs', '5×5 m'],
   ]],
 ];
 const grid = document.getElementById('grid');
@@ -93,8 +83,7 @@ SECTIONS.forEach(([title, sub, rows]) => {
   row.className = 'row';
   rows.forEach(([id, label, dims], k) => {
     row.insertAdjacentHTML('beforeend',
-      `<div class="panel"><b>${label}<span class="tier${k === 1 ? ' d2' : k === 2 ? ' d3' : ''}">` +
-      `${k === 0 ? 'dense' : k === 1 ? 'denser' : 'densest'}</span></b><small>${dims} · CP-SAT + ASR</small>` +
+      `<div class="panel"><b>${label}</b><small>${dims} · CP-SAT + ASR · room type = the selection criterion</small>` +
       `<div class="imgs"><img src="/docs-img/human_layouts/${id}_plan.png" loading="lazy" ` +
       `onerror="this.style.opacity=.15"><img src="/docs-img/human_layouts/${id}_3d.png" loading="lazy" ` +
       `onerror="this.style.opacity=.15"></div></div>`);

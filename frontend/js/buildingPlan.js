@@ -46,8 +46,9 @@
   }
   function pieceRect(p) {
     const [x, y] = planPos(p);
-    const w = (p.dims && p.dims[0]) || 0.6;
-    const d = (p.dims && p.dims[1]) || 0.6;
+    let w = (p.dims && p.dims[0]) || 0.6;
+    let d = (p.dims && p.dims[1]) || 0.6;
+    if (Math.round((p.rot || 0) / 90) % 2) { const t = w; w = d; d = t; }   // 90° swap
     return [x - w / 2, y - d / 2, w, d];
   }
   function clipRect(r, b) {
@@ -282,6 +283,14 @@
       }
       draw();
     });
+    // R rotates the piece selected in the 2D plan — same state as the 3D view
+    document.addEventListener('keydown', (e) => {
+      if (open && selected && (e.key === 'r' || e.key === 'R')
+          && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '')) {
+        e.preventDefault();
+        if (bm().rotateSelected(selected)) draw();
+      }
+    });
     canvas.addEventListener('dblclick', (e) => {
       const [mx, my] = toPlan(e);
       if (pickPiece(mx, my)) return;
@@ -312,5 +321,5 @@
     canvas.addEventListener('pointercancel', drop);
   });
 
-  window.buildingPlan = { toggle, isOpen: () => open, floorChanged };
+  window.buildingPlan = { toggle, isOpen: () => open, floorChanged, redraw: () => { if (open) draw(); } };
 })();

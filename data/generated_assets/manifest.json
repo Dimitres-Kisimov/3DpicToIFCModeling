@@ -7464,23 +7464,6 @@
    "display_name": "office chair \u2014 TripoSG \u2014 #004"
   },
   {
-   "id": "pod_triposg_list04_picture_frame",
-   "category": "picture_frame",
-   "glb": "picture_frame-TSG-004.glb",
-   "dims_m": [
-    0.833,
-    1.1436,
-    0.0146
-   ],
-   "thumb": "picture_frame-TSG-004.thumb.png",
-   "generated": true,
-   "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list04_picture_frame.glb",
-   "engine": "TSG",
-   "num": 4,
-   "code": "picture_frame-TSG-004",
-   "display_name": "picture frame \u2014 TripoSG \u2014 #004"
-  },
-  {
    "id": "pod_triposg_list04_planter",
    "category": "planter",
    "glb": "planter-TSG-004.glb",
@@ -7755,19 +7738,19 @@
   {
    "id": "pod_triposg_list05_picture_frame",
    "category": "picture_frame",
-   "glb": "picture_frame-TSG-005.glb",
+   "glb": "picture_frame-TSG-004.glb",
    "dims_m": [
     1.5022,
     1.8791,
     0.1799
    ],
-   "thumb": "picture_frame-TSG-005.thumb.png",
+   "thumb": "picture_frame-TSG-004.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list05_picture_frame.glb",
    "engine": "TSG",
-   "num": 5,
-   "code": "picture_frame-TSG-005",
-   "display_name": "picture frame \u2014 TripoSG \u2014 #005"
+   "num": 4,
+   "code": "picture_frame-TSG-004",
+   "display_name": "picture frame \u2014 TripoSG \u2014 #004"
   },
   {
    "id": "pod_triposg_list05_planter",
@@ -8044,19 +8027,19 @@
   {
    "id": "pod_triposg_list06_picture_frame",
    "category": "picture_frame",
-   "glb": "picture_frame-TSG-006.glb",
+   "glb": "picture_frame-TSG-005.glb",
    "dims_m": [
     1.7818,
     1.8566,
     0.1313
    ],
-   "thumb": "picture_frame-TSG-006.thumb.png",
+   "thumb": "picture_frame-TSG-005.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list06_picture_frame.glb",
    "engine": "TSG",
-   "num": 6,
-   "code": "picture_frame-TSG-006",
-   "display_name": "picture frame \u2014 TripoSG \u2014 #006"
+   "num": 5,
+   "code": "picture_frame-TSG-005",
+   "display_name": "picture frame \u2014 TripoSG \u2014 #005"
   },
   {
    "id": "pod_triposg_list06_planter",
@@ -8333,19 +8316,19 @@
   {
    "id": "pod_triposg_list07_picture_frame",
    "category": "picture_frame",
-   "glb": "picture_frame-TSG-007.glb",
+   "glb": "picture_frame-TSG-006.glb",
    "dims_m": [
     1.874,
     1.5549,
     0.2248
    ],
-   "thumb": "picture_frame-TSG-007.thumb.png",
+   "thumb": "picture_frame-TSG-006.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list07_picture_frame.glb",
    "engine": "TSG",
-   "num": 7,
-   "code": "picture_frame-TSG-007",
-   "display_name": "picture frame \u2014 TripoSG \u2014 #007"
+   "num": 6,
+   "code": "picture_frame-TSG-006",
+   "display_name": "picture frame \u2014 TripoSG \u2014 #006"
   },
   {
    "id": "pod_triposg_list07_planter",
@@ -8605,19 +8588,19 @@
   {
    "id": "pod_triposg_list08_picture_frame",
    "category": "picture_frame",
-   "glb": "picture_frame-TSG-008.glb",
+   "glb": "picture_frame-TSG-007.glb",
    "dims_m": [
     1.3519,
     1.7734,
     0.1346
    ],
-   "thumb": "picture_frame-TSG-008.thumb.png",
+   "thumb": "picture_frame-TSG-007.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list08_picture_frame.glb",
    "engine": "TSG",
-   "num": 8,
-   "code": "picture_frame-TSG-008",
-   "display_name": "picture frame \u2014 TripoSG \u2014 #008"
+   "num": 7,
+   "code": "picture_frame-TSG-007",
+   "display_name": "picture frame \u2014 TripoSG \u2014 #007"
   },
   {
    "id": "pod_triposg_list08_planter",
@@ -8894,19 +8877,19 @@
   {
    "id": "pod_triposg_list09_picture_frame",
    "category": "picture_frame",
-   "glb": "picture_frame-TSG-009.glb",
+   "glb": "picture_frame-TSG-008.glb",
    "dims_m": [
     1.8483,
     1.8733,
     0.0736
    ],
-   "thumb": "picture_frame-TSG-009.thumb.png",
+   "thumb": "picture_frame-TSG-008.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list09_picture_frame.glb",
    "engine": "TSG",
-   "num": 9,
-   "code": "picture_frame-TSG-009",
-   "display_name": "picture frame \u2014 TripoSG \u2014 #009"
+   "num": 8,
+   "code": "picture_frame-TSG-008",
+   "display_name": "picture frame \u2014 TripoSG \u2014 #008"
   },
   {
    "id": "pod_triposg_list09_planter",
@@ -9183,19 +9166,19 @@
   {
    "id": "pod_triposg_list10_picture_frame",
    "category": "picture_frame",
-   "glb": "picture_frame-TSG-010.glb",
+   "glb": "picture_frame-TSG-009.glb",
    "dims_m": [
     1.8768,
     1.3237,
     0.1974
    ],
-   "thumb": "picture_frame-TSG-010.thumb.png",
+   "thumb": "picture_frame-TSG-009.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list10_picture_frame.glb",
    "engine": "TSG",
-   "num": 10,
-   "code": "picture_frame-TSG-010",
-   "display_name": "picture frame \u2014 TripoSG \u2014 #010"
+   "num": 9,
+   "code": "picture_frame-TSG-009",
+   "display_name": "picture frame \u2014 TripoSG \u2014 #009"
   },
   {
    "id": "pod_triposg_list10_planter",
@@ -9455,19 +9438,19 @@
   {
    "id": "pod_triposg_list11_picture_frame",
    "category": "picture_frame",
-   "glb": "picture_frame-TSG-011.glb",
+   "glb": "picture_frame-TSG-010.glb",
    "dims_m": [
     1.8744,
     0.2249,
     1.7849
    ],
-   "thumb": "picture_frame-TSG-011.thumb.png",
+   "thumb": "picture_frame-TSG-010.thumb.png",
    "generated": true,
    "source_file": "C:\\Users\\dimik\\AppData\\Local\\Temp\\claude\\c--Users-dimik-3DpicToIFCModeling\\2b80f43b-f6ca-4840-aa85-98e6b4dcef06\\scratchpad\\pod_partial\\out170\\triposg\\list11_picture_frame.glb",
    "engine": "TSG",
-   "num": 11,
-   "code": "picture_frame-TSG-011",
-   "display_name": "picture frame \u2014 TripoSG \u2014 #011"
+   "num": 10,
+   "code": "picture_frame-TSG-010",
+   "display_name": "picture frame \u2014 TripoSG \u2014 #010"
   },
   {
    "id": "pod_triposg_list11_planter",

@@ -25,7 +25,7 @@ How distribution works: the room type + area suggest the item list (counts grow 
 | **Stool** | Rings the coffee table or table, same petal maths | Casual perching; fills the ring where chairs would crowd | PRACTICE |
 | **Sofa** | Back flush to a wall (perimeter set) | The lounge core; couches stay FIRST in every living list (user-approved) | PRACTICE |
 | **Coffee table** | 0.46 m in front of the sofa (the '18-inch rule' — shin clearance) | Within reach of a seated person | PRACTICE (Panero 0.46 m) |
-| **Armchair** | Perimeter-leaning; gets a side-table companion | Solo seating — reading corners, breakout zones, reception waiting | PRACTICE |
+| **Armchair** | IN A ROW (user rule): two side by side facing the same way; four as two opposed pairs facing each other; side table with the cluster's plant rides along; placed wherever a legal gap exists, walkways kept clear by the solver | Human seating groups — breakout zones, reception waiting | PRACTICE |
 | **Side table** | Directly beside its armchair | A cup/book within arm's reach of whoever sits | PRACTICE |
 
 ## 3 · Storage — the walls' occupants
@@ -64,8 +64,8 @@ How distribution works: the room type + area suggest the item list (counts grow 
 | Item | Distribution logic | Purpose / meaning | Standard basis |
 |---|---|---|---|
 | **Coat rack** | Wall immediately left or right of the door | Where a human hangs a coat on entry (user rule) | PRACTICE |
-| **Fire extinguisher** | Wall-mounted 1.00 m; offices >40 m² | ASR A2.2 spirit — grabbing height, visible | ASR A2.2; grip 1.00 m inside the 0.80-1.20 m band |
-| **First-aid cabinet** | Wall-mounted 1.35 m; rooms >50 m² / break rooms | Eye-level emergency access | presence per ASR A4.3; height PRACTICE (eye level) |
+| **Fire extinguisher** | Wall-mounted 1.00 m + a HARD 0.90 m access strip in front that no furniture may enter, at any density | ASR A2.2 — freely accessible at all times | ASR A2.2; grip 1.00 m inside the 0.80-1.20 m band |
+| **First-aid cabinet** | Wall-mounted 1.35 m + the same protected 0.90 m access strip | Eye-level emergency access, never blocked (ASR A4.3) | presence per ASR A4.3; height PRACTICE (eye level) |
 | **Phone booth** | Free-standing box; offices >62 m² | Call privacy in open plans (modern workplace standard) | PRACTICE |
 
 ## 7 · Ambience & residential

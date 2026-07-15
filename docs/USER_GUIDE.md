@@ -180,7 +180,27 @@ engine is offered).
 
 ---
 
-## 8. Troubleshooting
+## 8. What's new in v2.0.0
+
+Full notes: [PATCH_V2.md](PATCH_V2.md). The headlines:
+
+* **⟳ Rotate 90°** — select a piece in the Building workspace (3D or 2D plan)
+  and press **R** or the ⟳ button. Yaw-only: pieces face the four walls, never
+  the ceiling/floor; legality re-checked per turn; baked into GLB + IFC
+  exports. (Build a room rotates via its 2D plan editor, as before.)
+* **Safety access** — extinguisher (1.00 m) and first-aid (1.35 m) keep a hard
+  0.90 m clear strip in front at any density (ASR).
+* **Armchair rows** — 2 side-by-side same direction / 4 as opposed pairs, side
+  table + plant with them, never blocking walkways.
+* **Meeting rooms** — every seat rings the table facing it; kitchens put the
+  microwave ON the counter; rooms without work surfaces no longer collect
+  bins/partitions.
+* **Catalog** — all 38 categories now have selectable variants (44 screened
+  additions, CC0/PRIM badges).
+
+---
+
+## 9. Troubleshooting
 
 | Symptom | Cause / fix |
 |---|---|

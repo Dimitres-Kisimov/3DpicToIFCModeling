@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>shot viewer</title>
+<script type="module" src="/assets/model-viewer.min.js?v=2"></script>
+<style>
+* { margin:0; padding:0; }
+body { background:#eef1f7; }
+model-viewer { width:100vw; height:100vh; }
+#label { position:fixed; top:14px; left:18px; font:600 20px 'Segoe UI',sans-serif;
+         color:#1f2733; background:rgba(255,255,255,.88); padding:8px 16px;
+         border-radius:10px; border:1px solid #dfe5ee; }
+</style>
+</head>
+<body>
+<model-viewer id="mv" camera-controls shadow-intensity="0.4"
+  camera-orbit="35deg 62deg auto" exposure="1.1" interaction-prompt="none"></model-viewer>
+<div id="label"></div>
+<script>
+const q = new URLSearchParams(location.search);
+document.getElementById('mv').src = q.get('src') || '';
+document.getElementById('label').textContent = q.get('label') || '';
+</script>
+</body>
+</html>

@@ -492,8 +492,9 @@ Each room keeps only what fits its own area.`)) return;
   // One legality checker shared by the 2D plan AND the 3D drag: a piece must sit
   // fully inside a room, off the fixed elements, and clear of every other piece.
   function pieceRect(p) {
-    const w = (p.dims && p.dims[0]) || 0.6;
-    const d = (p.dims && p.dims[1]) || 0.6;
+    let w = (p.dims && p.dims[0]) || 0.6;
+    let d = (p.dims && p.dims[1]) || 0.6;
+    if (Math.round((p.rot || 0) / 90) % 2) { const t = w; w = d; d = t; }   // 90° swap
     const [cx, cy] = toLocal(p.pos[0], -p.pos[2]);
     return [cx - w / 2, cy - d / 2, w, d];
   }
@@ -631,7 +632,7 @@ Each room keeps only what fits its own area.`)) return;
           [zx - px, zy - py, zw, zd]);
         bPieces[pc.id] = { model, pos: pc.pos.slice(), category: pc.category,
                            glb: pc.glb, dims: pc.dims || null, room: pc.room || null,
-                           elev: pc.elev || 0, zonesRel };
+                           elev: pc.elev || 0, zonesRel, rot: 0 };
       }
     });
   }
@@ -643,6 +644,26 @@ Each room keeps only what fits its own area.`)) return;
       const [lcx, lcy] = toLocal(px + dx + w / 2, py + dy + d / 2);
       return [lcx - w / 2, lcy - d / 2, w, d];
     });
+  }
+
+  // rotate the SELECTED piece 90° about the vertical axis (2D + 3D stay in
+  // sync: same state feeds the plan editor, legality and save/export)
+  function rotateSelected(pid) {
+    const target = (typeof pid === 'string' && bPieces[pid]) ? pid : bSelected;
+    if (!target || !bPieces[target]) { banner('Click a piece first, then rotate.', true); return false; }
+    const p = bPieces[target];
+    const prev = p.rot || 0;
+    p.rot = (prev + 90) % 360;
+    try { p.model.rotation = [0, p.rot, 0]; } catch (e) {}
+    if (!isLegalPiece(target)) {
+      p.rot = prev;
+      try { p.model.rotation = [0, p.rot, 0]; } catch (e) {}
+      banner('⟳ No room to rotate here — move it to a clearer spot first.', true);
+      return false;
+    }
+    banner('⟳ ' + p.category.replace(/_/g, ' ') + ' rotated to ' + p.rot + '°. 💾 Save layout / IFC export keeps it.');
+    if (window.buildingPlan && window.buildingPlan.redraw) window.buildingPlan.redraw();
+    return true;
   }
 
   function pieceIdFromPick(pr) {
@@ -800,7 +821,7 @@ Each room keeps only what fits its own area.`)) return;
 
   async function saveBuilding() {
     const positions = {};
-    Object.entries(bPieces).forEach(([id, p]) => { positions[id] = p.pos; });
+    Object.entries(bPieces).forEach(([id, p]) => { positions[id] = { pos: p.pos, rot: p.rot || 0 }; });
     banner('Saving layout & building the export GLB…');
     try {
       const r = await fetch(`/api/building/${currentBuilding}/save`, {
@@ -822,7 +843,7 @@ Each room keeps only what fits its own area.`)) return;
 
   async function exportIfc() {
     const positions = {};
-    Object.entries(bPieces).forEach(([id, p]) => { positions[id] = p.pos; });
+    Object.entries(bPieces).forEach(([id, p]) => { positions[id] = { pos: p.pos, rot: p.rot || 0 }; });
     const btn = $('bIfc');
     btn.disabled = true;
     btn.textContent = '⏳ Writing BIM file…';
@@ -896,8 +917,22 @@ Each room keeps only what fits its own area.`)) return;
     }
   }
 
+  document.addEventListener('DOMContentLoaded', () => {
+    const rb = document.getElementById('bRotateBtn');
+    if (rb) rb.addEventListener('click', rotateSelected);
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'r' || e.key === 'R') && !rb.hidden
+          && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '')) {
+        e.preventDefault();
+        rotateSelected();
+      }
+    });
+  });
+
   window.buildingMode = { ensureInit, hasContent: () => !!bShell, getFloorData,
                           selectFloor, currentFloor: () => currentFloor,
                           refreshPiece, onTabLeave, onTabEnter, pieceZonesWorld,
-                          isLegalPiece, findClashes, resolveClashes, enterRoom };
+                          isLegalPiece, findClashes, resolveClashes, enterRoom,
+                          rotateSelected, selectedPiece: () => bSelected,
+                          pieceRot: (id) => (bPieces[id] && bPieces[id].rot) || 0 };
 })();

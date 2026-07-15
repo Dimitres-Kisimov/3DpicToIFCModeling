@@ -361,6 +361,60 @@ def _resolve_layout(room: dict, objects: list):
     pres_pos, pres_keep, pres_consumed = {}, [], set()
     if (room.get("type") or "").strip() == "presentation":
         pres_pos, pres_keep, pres_consumed = _presentation_prepass(room, objects)
+
+    # SAFETY ACCESS (ASR — user rule, 'very important'): extinguisher and
+    # first-aid cabinet mount on the wall with a PERMANENTLY CLEAR 0.90 m
+    # access strip in front — no bookshelf may block them at any density.
+    SAFETY_H = {"fire_extinguisher": 1.00, "first_aid_cabinet": 1.35}
+    safety_spans = {"back": [], "left": []}
+    _safety_items = [x for x in objects if x.get("category") in SAFETY_H
+                     and not x.get("anchor") and x["id"] not in pres_consumed]
+    for k, o in enumerate(_safety_items):
+        sw = float(o["dimensions"]["width"]); sd = float(o["dimensions"]["depth"])
+        slot = [(cw * 0.30, "back"), (cw * 0.72, "back"), (ch * 0.5, "left")][k % 3]
+        c0, wall = slot
+        if wall == "back":
+            sx, sz, srot = min(max(c0, 0.4), cw - 0.4), 0.10 + sd / 2, 0
+            pres_keep.append({"x": sx - 0.45, "z": 0.0, "width": 0.90,
+                              "depth": 0.90, "kind": "safety_access"})
+            safety_spans["back"].append((sx - sw / 2 - 0.1, sx + sw / 2 + 0.1))
+        else:
+            sx, sz, srot = 0.10 + sd / 2, min(max(c0, 0.4), ch - 0.4), 90
+            pres_keep.append({"x": 0.0, "z": sz - 0.45, "width": 0.90,
+                              "depth": 0.90, "kind": "safety_access"})
+            safety_spans["left"].append((sz - sw / 2 - 0.1, sz + sw / 2 + 0.1))
+        pres_pos[o["id"]] = {"id": o["id"], "position": [sx, 0.0, sz],
+                             "rotation": [0, srot, 0],
+                             "elevation": SAFETY_H[o["category"]], "placed": True}
+        pres_consumed.add(o["id"])
+        o["anchor"] = {"to": "wall", "relation": "mounted_on"}
+
+    # ARMCHAIR ROW CLUSTER (user rule): armchairs sit IN A ROW — two side by
+    # side facing the same way; four as two opposed pairs facing each other,
+    # side table between (plant on it). Placed anywhere a legal gap exists;
+    # the solver's clearances keep it off the walkways.
+    _arm_free = [o for o in objects if o.get("category") == "armchair"
+                 and not o.get("anchor") and o["id"] not in pres_consumed]
+    arm_cluster = None
+    if len(_arm_free) >= 2:
+        _arms = _arm_free[:4]
+        _aw = max(float(a["dimensions"]["width"]) for a in _arms)
+        _ad = max(float(a["dimensions"]["depth"]) for a in _arms)
+        _st = next((o for o in objects if o.get("category") == "side_table"
+                    and not o.get("anchor") and o["id"] not in pres_consumed), None)
+        _rows = 1 if len(_arms) <= 2 else 2
+        _per_row = 2
+        _row_w = _per_row * _aw + 0.15
+        _gap = 1.15 if _rows == 2 else 0.0
+        _stw = float(_st["dimensions"]["width"]) if _st else 0.0
+        _bw = _row_w + ((_stw + 0.15) if (_st and _rows == 1) else 0.0)
+        _bd = _rows * _ad + _gap
+        arm_cluster = {"arms": _arms, "st": _st, "aw": _aw, "ad": _ad,
+                       "rows": _rows, "row_w": _row_w, "gap": _gap, "stw": _stw}
+        for a in _arms:
+            pres_consumed.add(a["id"])
+        if _st:
+            pres_consumed.add(_st["id"])
     # wall-mounted decor (clock, picture frame, mirror, tv) never stands on the
     # floor — excluded from the solve, mounted on a wall afterwards
     wall_items = [o for o in objects if not o.get("anchor") and o["id"] not in pres_consumed
@@ -403,9 +457,16 @@ def _resolve_layout(room: dict, objects: list):
         solver_objs.append(entry)
         meta[o["id"]] = {"w": w, "d": d, "extra_d": extra_d}
 
-    # columns/semi-walls + door keep-clear zones + row-engine floor items
-    # become fixed solver keep-outs
+    # columns/semi-walls + door keep-clear zones + row-engine floor items +
+    # safety access strips become fixed solver keep-outs
     keepouts = list(room.get("obstacles", [])) + list(room.get("doors", [])) + pres_keep
+    if arm_cluster:
+        solver_objs.append({"id": "_armcluster", "category": "armchair",
+                            "width": arm_cluster["row_w"]
+                            + ((arm_cluster["stw"] + 0.15) if (arm_cluster["st"] and arm_cluster["rows"] == 1) else 0.0)
+                            + 0.10,
+                            "depth": arm_cluster["rows"] * arm_cluster["ad"]
+                            + arm_cluster["gap"] + 0.10})
     extras = {"unplaced": [], "circulation": None, "diagnostics": None, "zones": {}}
     try:
         import spatial_layout
@@ -483,6 +544,45 @@ def _resolve_layout(room: dict, objects: list):
                 pos[c["id"]] = {"id": c["id"], "position": [px, 0.0, pz],
                                 "rotation": [0, _face(c, px, pz, ax, az), 0], "placed": True}
 
+    # ---- armchair ROW cluster: rows facing each other, side table between --
+    if arm_cluster:
+        b = box.get("_armcluster")
+        if b and b.get("placed", True) and b.get("position"):
+            bx, _, bz = b["position"]
+            brot = (b.get("rotation") or [0, 0, 0])[1]
+            fx, fz = b.get("front") or (0.0, 1.0)
+            rx_, rz_ = fz, -fx
+            arms, st = arm_cluster["arms"], arm_cluster["st"]
+            aw, ad = arm_cluster["aw"], arm_cluster["ad"]
+            rows, gap = arm_cluster["rows"], arm_cluster["gap"]
+
+            def _put_arm(o, lx, lz, face):
+                wx, wz = bx + rx_ * lx + fx * lz, bz + rz_ * lx + fz * lz
+                fxc, fzc = _chair_forward_xz(o)
+                yaw = (math.degrees(math.atan2(face[0], face[1]))
+                       - math.degrees(math.atan2(fxc, fzc)))
+                pos[o["id"]] = {"id": o["id"], "position": [wx, 0.0, wz],
+                                "rotation": [0, yaw, 0], "placed": True}
+            xs = [-(aw + 0.15) / 2, (aw + 0.15) / 2]
+            if rows == 1:
+                shift = -(arm_cluster["stw"] + 0.15) / 2 if st else 0.0
+                for i, a in enumerate(arms[:2]):
+                    _put_arm(a, xs[i] + shift, 0.0, (fx, fz))    # same direction
+                if st:
+                    lx = arm_cluster["row_w"] / 2 + arm_cluster["stw"] / 2 + 0.1 + shift
+                    pos[st["id"]] = {"id": st["id"],
+                                     "position": [bx + rx_ * lx, 0.0, bz + rz_ * lx],
+                                     "rotation": [0, brot, 0], "placed": True}
+            else:
+                zoff = (gap + ad) / 2
+                for i, a in enumerate(arms[:2]):
+                    _put_arm(a, xs[i], -zoff, (fx, fz))           # pair A ...
+                for i, a in enumerate(arms[2:4]):
+                    _put_arm(a, xs[i], zoff, (-fx, -fz))          # ... faces pair B
+                if st:
+                    pos[st["id"]] = {"id": st["id"], "position": [bx, 0.0, bz],
+                                     "rotation": [0, brot, 0], "placed": True}
+
     # nested children (e.g. stool beside coffee-table) — place after their parent
     for o in [x for x in objects if x.get("anchor") and x["id"] not in pos]:
         a = o["anchor"]; ref = pos.get(a["to"])
@@ -536,8 +636,8 @@ def _resolve_layout(room: dict, objects: list):
         occupied_front = (any(c.get("anchor", {}).get("relation", "in_front") == "in_front"
                               for c in direct.get(parent_id, []))
                           or (by_id[parent_id].get("anchor") or {}).get("relation") == "in_front")
-        kid_max = max(max(float(c["dimensions"]["width"]), float(c["dimensions"]["depth"]))
-                      for c in kids)
+        kid_max = max(math.hypot(float(c["dimensions"]["width"]),
+                                 float(c["dimensions"]["depth"])) for c in kids)
         # a half-arc fan spaces petals like a full circle of 2(n-1) — same chord
         n_eff = 2 * (len(kids) - 1) if occupied_front and len(kids) > 1 else len(kids)
         r = _petal_radius(float(pd["width"]), float(pd["depth"]), kid_max, n_eff)
@@ -559,7 +659,8 @@ def _resolve_layout(room: dict, objects: list):
         WALL_T = 0.08
         MOUNT_H = {"clock": 2.05, "picture_frame": 1.55, "mirror": 1.50, "tv": 1.40}
         room_h = float(room.get("height", 3.0))
-        spans = {"back": [], "left": []}
+        spans = {"back": list(safety_spans["back"]),   # safety gear owns its wall strip
+                 "left": list(safety_spans["left"])}
 
         def _blocked(wall, c0, half):
             for (a0, a1) in spans[wall]:
@@ -641,6 +742,30 @@ def _resolve_layout(room: dict, objects: list):
             o["anchor"] = o.get("anchor") or {"to": "ceiling", "relation": "ceiling_mount"}
         pos[o["id"]] = {"id": o["id"], "position": [px, 0.0, pz],
                         "rotation": [0, yaw, 0], "elevation": 2.2, "placed": True}
+
+    # dependency realism (user rule): service items exist FOR the furniture
+    # they serve. A room that ends up with NO work/dining surface keeps at
+    # most one waste bin (door duty) and no partitions — refused, not forced.
+    def _has(cat):
+        return any(o.get("category") == cat and (pos.get(o["id"]) or {}).get("placed")
+                   for o in objects)
+    if not (_has("desk") or _has("table")):
+        kept_bin = False
+        for o in objects:
+            c = o.get("category")
+            p = pos.get(o["id"])
+            if not p or not p.get("placed"):
+                continue
+            if c == "waste_bin":
+                if kept_bin:
+                    p["placed"] = False
+                    p["position"] = None
+                    extras["unplaced"].append(o["id"])
+                kept_bin = True
+            elif c == "partition":
+                p["placed"] = False
+                p["position"] = None
+                extras["unplaced"].append(o["id"])
     return pos, solver, extras
 
 

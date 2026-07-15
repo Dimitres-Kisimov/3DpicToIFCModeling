@@ -1,146 +1,86 @@
 [
  {
-  "name": "office_dense",
+  "name": "office_duo",
   "type": "office",
-  "room": "6x6 m",
-  "items": 13,
+  "room": "4.5x3.5 m",
+  "items": 10,
   "ok": true,
-  "secs": 26
+  "secs": 16
  },
  {
-  "name": "office_denser",
+  "name": "office_team",
   "type": "office",
   "room": "6x6 m",
   "items": 21,
   "ok": true,
-  "secs": 34
+  "secs": 27
  },
  {
-  "name": "office_densest",
+  "name": "office_exec",
   "type": "office",
-  "room": "6x6 m",
-  "items": 27,
-  "ok": true,
-  "secs": 66
- },
- {
-  "name": "office_wide_layout",
-  "type": "office",
-  "room": "8x4.5 m",
-  "items": 18,
+  "room": "5x4.5 m",
+  "items": 10,
   "ok": true,
   "secs": 28
  },
  {
-  "name": "meeting_dense",
-  "type": "meeting",
-  "room": "5x4 m",
-  "items": 8,
-  "ok": true,
-  "secs": 26
- },
- {
-  "name": "meeting_denser",
-  "type": "meeting",
-  "room": "5x4 m",
-  "items": 13,
-  "ok": true,
-  "secs": 32
- },
- {
-  "name": "meeting_densest",
-  "type": "meeting",
-  "room": "6x5 m",
-  "items": 18,
-  "ok": true,
-  "secs": 41
- },
- {
-  "name": "break_dense",
-  "type": "break",
-  "room": "5x4 m",
-  "items": 7,
-  "ok": true,
-  "secs": 14
- },
- {
-  "name": "break_denser",
-  "type": "break",
-  "room": "5x4 m",
-  "items": 11,
-  "ok": true,
-  "secs": 14
- },
- {
-  "name": "break_densest",
-  "type": "break",
-  "room": "6x5 m",
-  "items": 22,
-  "ok": true,
-  "secs": 25
- },
- {
-  "name": "reception_dense",
-  "type": "reception",
-  "room": "5x3.5 m",
-  "items": 6,
-  "ok": true,
-  "secs": 22
- },
- {
-  "name": "reception_denser",
-  "type": "reception",
-  "room": "5x3.5 m",
-  "items": 10,
-  "ok": true,
-  "secs": 30
- },
- {
-  "name": "reception_densest",
-  "type": "reception",
-  "room": "6x4 m",
-  "items": 15,
+  "name": "office_open",
+  "type": "office",
+  "room": "10x8 m",
+  "items": 43,
   "ok": true,
   "secs": 36
  },
  {
-  "name": "quiet_dense",
-  "type": "quiet",
-  "room": "3.5x3.5 m",
-  "items": 3,
+  "name": "meeting_hub",
+  "type": "meeting",
+  "room": "5x4 m",
+  "items": 12,
   "ok": true,
-  "secs": 13
+  "secs": 16
  },
  {
-  "name": "quiet_denser",
-  "type": "quiet",
-  "room": "3.5x3.5 m",
-  "items": 5,
+  "name": "presentation_hall",
+  "type": "presentation",
+  "room": "8x7 m",
+  "items": 30,
+  "ok": true,
+  "secs": 67
+ },
+ {
+  "name": "break_social",
+  "type": "break",
+  "room": "5x4 m",
+  "items": 12,
   "ok": true,
   "secs": 20
  },
  {
-  "name": "quiet_densest",
+  "name": "kitchen_eatin",
+  "ok": false
+ },
+ {
+  "name": "reception_welcome",
+  "type": "reception",
+  "room": "5x4 m",
+  "items": 11,
+  "ok": true,
+  "secs": 13
+ },
+ {
+  "name": "quiet_focus",
   "type": "quiet",
-  "room": "4.5x4 m",
-  "items": 9,
+  "room": "3.5x3.5 m",
+  "items": 6,
   "ok": true,
-  "secs": 30
+  "secs": 8
  },
  {
-  "name": "living_dense",
+  "name": "living_home",
   "type": "living",
   "room": "5x5 m",
-  "items": 3,
+  "items": 14,
   "ok": true,
-  "secs": 14
- },
- {
-  "name": "living_densest",
-  "type": "living",
-  "room": "5x5 m",
-  "items": 9,
-  "ok": true,
-  "secs": 28
+  "secs": 15
  }
 ]

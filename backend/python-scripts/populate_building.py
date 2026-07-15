@@ -260,7 +260,28 @@ def smart_furnish(rt, W, D, assets, density="medium"):
         min_area, extras = DENSE_EXTRAS[rt]
         if W * D >= min_area:
             items += extras
-    return [c for c in items if c in assets]
+    items = [c for c in items if c in assets]
+
+    # CAPACITY GUARD on the suggestion itself (user report: dense suggestions
+    # exceeded the room). Furniture footprint + person-space must fit the
+    # usable floor (~55% after walls/doors/circulation — the same meter the
+    # Build-a-room panel shows). Trim from the TAIL: accents and extras go
+    # first, essentials survive (the lists are ordered essentials-first).
+    _WALL_CATS = {"mirror", "clock", "picture_frame", "whiteboard",
+                  "presentation_screen", "fire_extinguisher",
+                  "first_aid_cabinet", "projector"}
+
+    def _floor_need(cat):
+        if cat in _WALL_CATS:
+            return 0.0
+        t = TARGET_DIMS.get(cat)
+        fp = (t[0] * t[1]) if t else 0.35
+        return fp * 1.5          # footprint + reach/person space
+
+    usable = W * D * 0.55
+    while items and sum(_floor_need(c) for c in items) > usable:
+        items.pop()
+    return items
 
 
 # Real-world target dimensions per category — (width, depth, height) in metres,
@@ -1461,7 +1482,6 @@ def main():
             for si in [i for i, c in enumerate(cats) if c == "stool"]:
                 host = min(table_hosts, key=lambda j: len(stools_of.get(j, [])))
                 stools_of.setdefault(host, []).append(si)
-        stool_children = {si for lst in stools_of.values() for si in lst}
         pair_of = {}                        # chair index -> its worksurface index
         _PREF = {"office_chair": ["desk", "table"], "chair": ["table", "desk"]}
         for ci in chair_idx:
@@ -1472,6 +1492,17 @@ def main():
             if not open_surfaces:
                 break
             pair_of[ci] = open_surfaces[0]
+        # leftover seats with no surface to pair JOIN THE RING around a real
+        # TABLE, facing it (user report: meeting chairs were turned away) —
+        # never around desks, so offices keep their strict desk pairing
+        real_tables = [j for j in surf_idx if cats[j] == "table"]
+        if real_tables:
+            for ci in chair_idx:
+                if ci in pair_of:
+                    continue
+                host = min(real_tables, key=lambda j: len(stools_of.get(j, [])))
+                stools_of.setdefault(host, []).append(ci)
+        stool_children = {si for lst in stools_of.values() for si in lst}
 
         # PROJECTOR pairs with its projection surface (human logic): child of
         # a presentation_screen, else a whiteboard — placed after the surface,
@@ -1518,7 +1549,10 @@ def main():
             if stools_of.get(i):
                 import math as _math
                 kids = stools_of[i]
-                kidmax = max(max(float(ext_of[si][0]), float(ext_of[si][1])) for si in kids)
+                # ring kids ROTATE to face the table — chord spacing must clear
+                # their DIAGONAL, not just the longer side (rotated squares kiss)
+                kidmax = max((float(ext_of[si][0]) ** 2 + float(ext_of[si][1]) ** 2) ** 0.5
+                             for si in kids)
                 n_eff = 2 * (len(kids) - 1) if (child_i is not None and len(kids) > 1) \
                     else max(1, len(kids))
                 ring_r = max(w_, d_) / 2 + kidmax / 2 + GAP
@@ -1628,7 +1662,7 @@ def main():
                 import math as _math
                 base = _math.atan2(fx, fzv)                    # front direction
                 pw = max(float(meshmap[oid].extents[0]), float(meshmap[oid].extents[1]))
-                kidmax_ = max(max(float(ext_of[si][0]), float(ext_of[si][1]))
+                kidmax_ = max((float(ext_of[si][0]) ** 2 + float(ext_of[si][1]) ** 2) ** 0.5
                               for si in stool_list)
                 r_ = max(float(info.get("ring_r") or 0.0), pw / 2 + kidmax_ / 2 + 0.12)
                 front_taken = info.get("child") is not None
@@ -1743,6 +1777,26 @@ def main():
                                    "mesh": mesh_of(ti), "parts": parts_of(ti),
                                    "zones": None, "elev": par_h,
                                    "rel": {"to": oid, "kind": "on_top_of"}})
+
+        # dependency realism (user rule): a room with NO work/dining surface
+        # keeps at most one waste bin and no partitions — service items exist
+        # FOR the furniture they serve
+        if not any(it["cat"] in ("desk", "table") for it in room_items):
+            _seen_bin = False
+            _pruned = []
+            for it in room_items:
+                if it["cat"] == "partition":
+                    skipped_items += 1
+                    dropped.append("partition")
+                    continue
+                if it["cat"] == "waste_bin":
+                    if _seen_bin:
+                        skipped_items += 1
+                        dropped.append("waste_bin")
+                        continue
+                    _seen_bin = True
+                _pruned.append(it)
+            room_items = _pruned
 
         boxes, room_cats = [], []
         oid2pid = {}         # solver oid -> published piece id (per room; parents

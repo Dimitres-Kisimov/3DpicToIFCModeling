@@ -105,6 +105,7 @@ ROOM_TYPES = {
             ("waste_bin", "desk", "beside"),  # the human spot: at arm's reach
             ("stool", "table", "beside"),    # stools cluster around the side table
             ("chair", "table", "beside"),
+            ("planter", "side_table", "on_top", 1),   # the cluster plant (user rule)
         ],
     },
     "living": {
@@ -133,6 +134,19 @@ ROOM_TYPES = {
             ("stool", "table", "beside"),
         ],
     },
+    "meeting": {        # Besprechungsraum: the table core, every seat FACING it
+        **_BASE,
+        "area_per_person": 2.5,
+        "min_aisle": 1.00,
+        "perimeter": {"cabinet", "presentation_screen", "whiteboard", "locker",
+                      "planter", "water_dispenser", "flipchart", "sofa"},
+        "groups": [
+            ("office_chair", "table", "beside"),   # ring the table, facing it
+            ("chair", "table", "beside"),
+            ("stool", "table", "beside"),
+            ("flipchart", "lectern", "beside"),
+        ],
+    },
     # ---- extended spaces pack (additive room types) --------------------------
     "presentation": {   # lecture hall / Hoersaal: front zone + audience rows
         **_BASE,
@@ -147,7 +161,7 @@ ROOM_TYPES = {
         "min_aisle": 0.90,
         "gap": {"in_front": 0.50, "beside": 0.20},
         "perimeter": {"armchair", "sofa", "bookshelf", "locker", "planter"},
-        "groups": [("side_table", "armchair", "beside")],
+        "groups": [("planter", "side_table", "on_top", 1)],
     },
     "break": {          # Pausenraum (ASR A4.2 requires one for >10 employees)
         **_BASE,
@@ -181,7 +195,7 @@ ROOM_TYPES = {
         "groups": [
             ("office_chair", "desk", "in_front"),
             ("monitor", "desk", "on_top"),
-            ("side_table", "armchair", "beside"),
+            ("planter", "side_table", "on_top", 1),
         ],
     },
 }
