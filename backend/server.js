@@ -163,6 +163,10 @@ app.use('/api', roomRoutes);
 const buildingRoutes = require('./routes/buildingRoutes');
 app.use('/api', buildingRoutes);
 
+// v4: procurement — cheapest visually-similar real product for a generated item
+const procurementRoutes = require('./routes/procurementRoutes');
+app.use('/api', procurementRoutes);
+
 // ============================================================================
 // 404 HANDLER
 // ============================================================================

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCS Studio — ROI: time & money saved</title>
+<style>
+  :root { --ink:#1f2733; --mut:#6b7688; --brand:#2f6bff; --line:#dfe6ee; --ok:#1d9e6f; }
+  * { box-sizing:border-box; margin:0; }
+  body { font:14px/1.6 "Segoe UI",system-ui,sans-serif; background:#f6f8fb; color:var(--ink); padding:24px; max-width:1100px; margin:auto; }
+  h1 { font-size:22px; } .sub { color:var(--mut); font-size:13px; margin:4px 0 16px; }
+  .panel { background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-bottom:16px; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th,td { border-bottom:1px solid var(--line); padding:8px 10px; text-align:right; }
+  th:first-child, td:first-child { text-align:left; }
+  th { background:var(--brand); color:#fff; }
+  td.save { color:var(--ok); font-weight:700; }
+  .dl { display:inline-block; background:var(--brand); color:#fff; border-radius:9px; padding:9px 16px;
+        text-decoration:none; font-weight:600; margin-right:8px; }
+  .note { font-size:12.5px; color:var(--mut); margin-top:12px; }
+  .big { font-size:26px; font-weight:800; color:var(--ok); }
+</style>
+</head>
+<body>
+<h1>📊 ROI — how much designer time & money SCS Studio saves</h1>
+<p class="sub">The use case: a designer/BIM planner furnishing buildings places every object
+by hand and must keep German ASR workplace rules satisfied — thousands of decisions per
+building. SCS Studio replaces the placement + compliance pass with a one-click solver run;
+the human keeps a short review/polish pass.</p>
+
+<div class="panel">
+  <div id="tbl">loading…</div>
+  <p class="note">Assumptions: manual placement 2.0 min/object (industry 1.5–3.0: search,
+  drag, rotate, clearance check) + a manual compliance re-check at 25% of placement time.
+  Machine times are <b>measured</b> fleet runs; a human review pass is included in the
+  machine column. Rates: German interior/BIM planner €45 / €60 / €90 per hour.</p>
+  <p style="margin-top:10px">Annual planning example: a firm furnishing 20 mid-size buildings/yr
+  saves ≈ 1,360 designer-hours ≈ <span class="big">€82,000 / yr</span> at €60/h
+  (€61k at €45, €122k at €90).</p>
+</div>
+
+<div class="panel">
+  <b>Download for the finance department:</b><br><br>
+  <a class="dl" href="/docs-img/roi/roi_analysis.xlsx" download>⬇ Excel (.xlsx)</a>
+  <a class="dl" href="/docs-img/roi/roi_analysis.csv" download>⬇ CSV</a>
+  <a class="dl" href="/docs-img/roi/ROI_ANALYSIS.md" download>⬇ Markdown</a>
+</div>
+
+<script>
+fetch('/docs-img/roi/roi_analysis.csv').then(r => r.text()).then(t => {
+  const rows = t.trim().split(/\r?\n/).map(l => {
+    const out = []; let cur = '', q = false;
+    for (const ch of l) {
+      if (ch === '"') q = !q;
+      else if (ch === ',' && !q) { out.push(cur); cur = ''; }
+      else cur += ch;
+    }
+    out.push(cur); return out;
+  });
+  const h = rows.shift();
+  let html = '<table><tr>' + h.map(x => `<th>${x}</th>`).join('') + '</tr>';
+  for (const r of rows) {
+    html += '<tr>' + r.map((x, i) =>
+      `<td class="${h[i].startsWith('saved') ? 'save' : ''}">${x}</td>`).join('') + '</tr>';
+  }
+  document.getElementById('tbl').innerHTML = html + '</table>';
+});
+</script>
+</body>
+</html>

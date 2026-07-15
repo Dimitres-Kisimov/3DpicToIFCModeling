@@ -1,0 +1,369 @@
+{
+ "item": "chair-TRL-001",
+ "category": "chair",
+ "query": "stuhl leder",
+ "destination": "Bildungscampus, 74076 Heilbronn (DE)",
+ "vat_note": "listed prices include 19% German VAT",
+ "similarity_floor": 0.55,
+ "companies_scanned": [
+  "IKEA Deutschland (12 candidates)",
+  "OTTO (9 candidates)",
+  "POCO Einrichtungsmärkte (12 candidates)",
+  "home24 (0 candidates)",
+  "Möbel Boss (0 candidates)",
+  "Kaiserkraft (B2B) (0 candidates)"
+ ],
+ "companies_skipped": [
+  "eBay.de (API) (no API key)",
+  "Google Shopping via SerpAPI (100s of shops) (no API key)"
+ ],
+ "candidates_total": 33,
+ "candidates_scored": 23,
+ "above_floor": 20,
+ "tiers": {
+  "budget": {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "clp kuechenstuhl linares 1er mit rueckenlehne buchenholzgestell S0O0302C",
+   "price": 49.9,
+   "url": "https://www.otto.de/p/clp-kuechenstuhl-linares-1er-mit-rueckenlehne-buchenholzgestell-S0O0302C/",
+   "image": "https://i.otto.de/i/otto/087dad64-66bc-50e8-b4a6-a53c8f3ebc86?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.6252,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 49.9,
+     "shipping": 5.95,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 55.85,
+     "landed_per_unit": 55.85
+    },
+    {
+     "qty": 10,
+     "unit_price": 49.9,
+     "shipping": 23.8,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 522.8,
+     "landed_per_unit": 52.28
+    }
+   ]
+  },
+  "standard": {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "stuhlmann esszimmerstuhl aria 631 1 st stilvoller stuhl mit holzbeinen modernes design S0Y",
+   "price": 69.99,
+   "url": "https://www.otto.de/p/stuhlmann-esszimmerstuhl-aria-631-1-st-stilvoller-stuhl-mit-holzbeinen-modernes-design-S0YGH0P3/",
+   "image": "https://i.otto.de/i/otto/adbdad0d-33ce-4def-bc1e-066dc8c18164?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5771,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 69.99,
+     "shipping": 5.95,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 75.94,
+     "landed_per_unit": 75.94
+    },
+    {
+     "qty": 10,
+     "unit_price": 69.99,
+     "shipping": 23.8,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 723.7,
+     "landed_per_unit": 72.37
+    }
+   ]
+  },
+  "premium": {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "POÄNG Sessel und Hocker",
+   "price": 279.0,
+   "url": "https://www.ikea.com/de/de/p/poaeng-sessel-und-hocker-nussbaumnachbildung-grann-schwarz-s29625460/",
+   "image": "https://www.ikea.com/de/de/images/products/poaeng-sessel-und-hocker-nussbaumnachbildung-grann-schwarz__1507341_pe1009273_s5.jpg",
+   "rating": 4.6,
+   "rating_n": 319,
+   "similarity": 0.6284,
+   "category_check": "clip-zero-shot",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 279.0,
+     "shipping": 5.99,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 284.99,
+     "landed_per_unit": 284.99,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    },
+    {
+     "qty": 10,
+     "unit_price": 279.0,
+     "shipping": 23.96,
+     "shipping_basis": "parcel estimate (3/package)",
+     "landed_total": 2813.96,
+     "landed_per_unit": 281.4,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    }
+   ]
+  }
+ },
+ "all_matches": [
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "POÄNG Sessel und Hocker",
+   "price": 279.0,
+   "url": "https://www.ikea.com/de/de/p/poaeng-sessel-und-hocker-nussbaumnachbildung-grann-schwarz-s29625460/",
+   "image": "https://www.ikea.com/de/de/images/products/poaeng-sessel-und-hocker-nussbaumnachbildung-grann-schwarz__1507341_pe1009273_s5.jpg",
+   "rating": 4.6,
+   "rating_n": 319,
+   "similarity": 0.6284,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "clp kuechenstuhl linares 1er mit rueckenlehne buchenholzgestell S0O0302C",
+   "price": 49.9,
+   "url": "https://www.otto.de/p/clp-kuechenstuhl-linares-1er-mit-rueckenlehne-buchenholzgestell-S0O0302C/",
+   "image": "https://i.otto.de/i/otto/087dad64-66bc-50e8-b4a6-a53c8f3ebc86?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.6252,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "EKENÄSET Sessel",
+   "price": 299.0,
+   "url": "https://www.ikea.com/de/de/p/ekenaeset-sessel-jonsbyn-schwarz-70539011/",
+   "image": "https://www.ikea.com/de/de/images/products/ekenaeset-sessel-jonsbyn-schwarz__1109680_pe870147_s5.jpg",
+   "rating": 4.4,
+   "rating_n": 70,
+   "similarity": 0.6125,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "BERGMUND Stuhl",
+   "price": 229.0,
+   "url": "https://www.ikea.com/de/de/p/bergmund-stuhl-schwarz-glose-schwarz-70451999/",
+   "image": "https://www.ikea.com/de/de/images/products/bergmund-stuhl-schwarz-glose-schwarz__0817914_pe774169_s5.jpg",
+   "rating": 4.7,
+   "rating_n": 39,
+   "similarity": 0.6049,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "TROLLBERGET Sitz-/Stehstütze aktiv",
+   "price": 149.0,
+   "url": "https://www.ikea.com/de/de/p/trollberget-sitz-stehstuetze-aktiv-grann-beige-00388261/",
+   "image": "https://www.ikea.com/de/de/images/products/trollberget-sitz-stehstuetze-aktiv-grann-beige__0727385_pe735637_s5.jpg",
+   "rating": 4.4,
+   "rating_n": 137,
+   "similarity": 0.6047,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "EKENÄSET Bank",
+   "price": 229.0,
+   "url": "https://www.ikea.com/de/de/p/ekenaeset-bank-jonsbyn-schwarz-10533535/",
+   "image": "https://www.ikea.com/de/de/images/products/ekenaeset-bank-jonsbyn-schwarz__1109691_pe870156_s5.jpg",
+   "rating": 4.3,
+   "rating_n": 11,
+   "similarity": 0.5996,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "EKERÖ Sessel",
+   "price": 179.0,
+   "url": "https://www.ikea.com/de/de/p/ekeroe-sessel-bomstad-schwarz-70494588/",
+   "image": "https://www.ikea.com/de/de/images/products/ekeroe-sessel-bomstad-schwarz__0951654_pe801302_s5.jpg",
+   "rating": 4.4,
+   "rating_n": 59,
+   "similarity": 0.5947,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "sitheim europe stuhl maido esszimmerstuhl 1 st S01FW045",
+   "price": 159.99,
+   "url": "https://www.otto.de/p/sitheim-europe-stuhl-maido-esszimmerstuhl-1-st-S01FW045/",
+   "image": "https://i.otto.de/i/otto/f1371d91-4baa-4a9f-8ff3-c6274f69e879?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.593,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "HERRÅKRA Sessel",
+   "price": 129.0,
+   "url": "https://www.ikea.com/de/de/p/herrakra-sessel-skulsta-schwarz-20535548/",
+   "image": "https://www.ikea.com/de/de/images/products/herrakra-sessel-skulsta-schwarz__1213663_pe911199_s5.jpg",
+   "rating": 4.5,
+   "rating_n": 128,
+   "similarity": 0.592,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "woltu esszimmerstuhl 6 st polsterstuhl drehbar gepolsterter metallbeine S0W9N0C2",
+   "price": 393.99,
+   "url": "https://www.otto.de/p/woltu-esszimmerstuhl-6-st-polsterstuhl-drehbar-gepolsterter-metallbeine-S0W9N0C2/",
+   "image": "https://i.otto.de/i/otto/edc3ea00-8b36-42a9-be3a-bb6359b067fa?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5866,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "HAVBERG Drehsessel",
+   "price": 399.0,
+   "url": "https://www.ikea.com/de/de/p/havberg-drehsessel-grann-bomstad-goldbraun-70515109/",
+   "image": "https://www.ikea.com/de/de/images/products/havberg-drehsessel-grann-bomstad-goldbraun__1070880_pe854782_s5.jpg",
+   "rating": 4.6,
+   "rating_n": 92,
+   "similarity": 0.582,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "stuhlmann esszimmerstuhl aria 631 1 st stilvoller stuhl mit holzbeinen modernes design S0Y",
+   "price": 69.99,
+   "url": "https://www.otto.de/p/stuhlmann-esszimmerstuhl-aria-631-1-st-stilvoller-stuhl-mit-holzbeinen-modernes-design-S0YGH0P3/",
+   "image": "https://i.otto.de/i/otto/adbdad0d-33ce-4def-bc1e-066dc8c18164?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5771,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "STOCKHOLM 2025 Stuhl",
+   "price": 169.0,
+   "url": "https://www.ikea.com/de/de/p/stockholm-2025-stuhl-eiche-rattan-60590142/",
+   "image": "https://www.ikea.com/de/de/images/products/stockholm-2025-stuhl-eiche-rattan__1370461_pe958726_s5.jpg",
+   "rating": 4.2,
+   "rating_n": 44,
+   "similarity": 0.5752,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "hela freischwinger flora esszimmerstuehle set 4 st schwingstuhl set 1 2 oder 4 stueck hohe",
+   "price": 122.27,
+   "url": "https://www.otto.de/p/hela-freischwinger-flora-esszimmerstuehle-set-4-st-schwingstuhl-set-1-2-oder-4-stueck-hoher-sitzkomfort-793638656/",
+   "image": "https://i.otto.de/i/otto/468cc321-f182-5b64-9a6f-85540a97f147?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5722,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "STOCKHOLM 2025 Stuhl",
+   "price": 189.0,
+   "url": "https://www.ikea.com/de/de/p/stockholm-2025-stuhl-eiche-leder-00590140/",
+   "image": "https://www.ikea.com/de/de/images/products/stockholm-2025-stuhl-eiche-leder__1370463_pe958724_s5.jpg",
+   "rating": 4.2,
+   "rating_n": 73,
+   "similarity": 0.5703,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "woltu polsterstuhl 4 st esszimmerstuehle drehbar mit armlehnen S0X7T0S7",
+   "price": 289.99,
+   "url": "https://www.otto.de/p/woltu-polsterstuhl-4-st-esszimmerstuehle-drehbar-mit-armlehnen-S0X7T0S7/",
+   "image": "https://i.otto.de/i/otto/414f75e3-59bd-4fc6-b5dc-fc14316bc3da?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5681,
+   "category_check": "title"
+  },
+  {
+   "shop": "poco",
+   "shop_name": "POCO Einrichtungsmärkte",
+   "title": "jardin sonnenliege mallorca weiss kunststoff b h l ca 58x35x192 cm 601754500",
+   "price": 94.0,
+   "url": "https://www.poco.de/p/jardin-sonnenliege-mallorca-weiss-kunststoff-b-h-l-ca-58x35x192-cm-601754500",
+   "image": "https://static.poco.de/static/media/f1/b8/dd/1775183186/4876485-.jpeg?ts=1775183186",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5655,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "STOCKHOLM 2025 / STOCKHOLM 2025 Tisch und 4 Stühle",
+   "price": 1075.0,
+   "url": "https://www.ikea.com/de/de/p/stockholm-2025-stockholm-2025-tisch-und-4-stuehle-eichenfurnier-eiche-rattan-s09580009/",
+   "image": "https://www.ikea.com/de/de/images/products/stockholm-2025-stockholm-2025-tisch-und-4-stuehle-eichenfurnier-eiche-rattan__1373065_pe959871_s5.jpg",
+   "rating": 4.7,
+   "rating_n": 3,
+   "similarity": 0.5617,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "poco",
+   "shop_name": "POCO Einrichtungsmärkte",
+   "title": "bra kochgeschirrset compac anthrazit aluminium 4 tlg 601667700",
+   "price": 149.0,
+   "url": "https://www.poco.de/p/bra-kochgeschirrset-compac-anthrazit-aluminium-4-tlg-601667700",
+   "image": "https://static.poco.de/static/media/82/48/2e/1775182818/4878845-.jpeg?ts=1775182819",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5585,
+   "category_check": "clip-zero-shot"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "sehauseu freischwinger schwingstuhl esszimmerstuhl buerostuhl set 2 st belastbarkeit 130 k",
+   "price": 175.99,
+   "url": "https://www.otto.de/p/sehauseu-freischwinger-schwingstuhl-esszimmerstuhl-buerostuhl-set-2-st-belastbarkeit-130-kg-S0ZBC02F/",
+   "image": "https://i.otto.de/i/otto/68b8d3de-2218-4f21-8acf-c77ae26d7b76?$responsive_ftfind_w800$&amp;$DIM$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5555,
+   "category_check": "title"
+  }
+ ],
+ "claim": "cheapest among the companies scanned above — not the whole internet",
+ "generated_utc": "2026-07-15 21:17 UTC"
+}

@@ -1,0 +1,389 @@
+{
+ "item": "bed-TRL-001",
+ "category": "bed",
+ "query": "bett holz",
+ "destination": "Bildungscampus, 74076 Heilbronn (DE)",
+ "vat_note": "listed prices include 19% German VAT",
+ "similarity_floor": 0.55,
+ "companies_scanned": [
+  "IKEA Deutschland (12 candidates)",
+  "OTTO (6 candidates)",
+  "POCO Einrichtungsmärkte (12 candidates)",
+  "home24 (0 candidates)",
+  "Möbel Boss (0 candidates)",
+  "Kaiserkraft (B2B) (0 candidates)"
+ ],
+ "companies_skipped": [
+  "eBay.de (API) (no API key)",
+  "Google Shopping via SerpAPI (100s of shops) (no API key)"
+ ],
+ "candidates_total": 30,
+ "candidates_scored": 20,
+ "above_floor": 9,
+ "tiers": {
+  "budget": {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "NEIDEN Bettgestell",
+   "price": 70.0,
+   "url": "https://www.ikea.com/de/de/p/neiden-bettgestell-kiefer-40395245/",
+   "image": "https://www.ikea.com/de/de/images/products/neiden-bettgestell-kiefer__0749132_pe745501_s5.jpg",
+   "rating": 4.0,
+   "rating_n": 864,
+   "similarity": 0.5719,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 70.0,
+     "shipping": 39.0,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 109.0,
+     "landed_per_unit": 109.0,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    },
+    {
+     "qty": 10,
+     "unit_price": 70.0,
+     "shipping": 39.0,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 739.0,
+     "landed_per_unit": 73.9,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    }
+   ]
+  },
+  "standard": {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "NEIDEN Bettgestell",
+   "price": 90.0,
+   "url": "https://www.ikea.com/de/de/p/neiden-bettgestell-kiefer-70395239/",
+   "image": "https://www.ikea.com/de/de/images/products/neiden-bettgestell-kiefer__0749131_pe745500_s5.jpg",
+   "rating": 3.6,
+   "rating_n": 323,
+   "similarity": 0.5585,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 90.0,
+     "shipping": 39.0,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 129.0,
+     "landed_per_unit": 129.0,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    },
+    {
+     "qty": 10,
+     "unit_price": 90.0,
+     "shipping": 39.0,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 939.0,
+     "landed_per_unit": 93.9,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    }
+   ]
+  },
+  "premium": {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "GLAMBERGET Bettgestell ausziehbar+Aufbewahr.",
+   "price": 299.0,
+   "url": "https://www.ikea.com/de/de/p/glamberget-bettgestell-ausziehbar-aufbewahr-kiefer-60564845/",
+   "image": "https://www.ikea.com/de/de/images/products/glamberget-bettgestell-ausziehbar-aufbewahr-kiefer__1521610_pe1013335_s5.jpg",
+   "rating": 4.1,
+   "rating_n": 105,
+   "similarity": 0.6641,
+   "category_check": "title",
+   "costs": [
+    {
+     "qty": 1,
+     "unit_price": 299.0,
+     "shipping": 39.0,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 338.0,
+     "landed_per_unit": 338.0,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    },
+    {
+     "qty": 10,
+     "unit_price": 299.0,
+     "shipping": 39.0,
+     "shipping_basis": "Spedition estimate (one fee/order)",
+     "landed_total": 3029.0,
+     "landed_per_unit": 302.9,
+     "pickup_alternative": {
+      "store": "IKEA Ludwigsburg",
+      "cost": 27.0,
+      "note": "90 km round trip @ 0.30 €/km, one trip/order"
+     }
+    }
+   ]
+  }
+ },
+ "all_matches": [
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "GLAMBERGET Bettgestell ausziehbar+Aufbewahr.",
+   "price": 299.0,
+   "url": "https://www.ikea.com/de/de/p/glamberget-bettgestell-ausziehbar-aufbewahr-kiefer-60564845/",
+   "image": "https://www.ikea.com/de/de/images/products/glamberget-bettgestell-ausziehbar-aufbewahr-kiefer__1521610_pe1013335_s5.jpg",
+   "rating": 4.1,
+   "rating_n": 105,
+   "similarity": 0.6641,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "LYNGÖR Bettpodest mit Lattenrost",
+   "price": 145.0,
+   "url": "https://www.ikea.com/de/de/p/lyngoer-bettpodest-mit-lattenrost-70566132/",
+   "image": "https://www.ikea.com/de/de/images/products/lyngoer-bettpodest-mit-lattenrost__1244363_pe921944_s5.jpg",
+   "rating": 3.5,
+   "rating_n": 126,
+   "similarity": 0.6564,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "rauch bett einzelbett doppelbett stauraum flexx breiten 90 140 180 cm einzelbett doppelbet",
+   "price": 294.01,
+   "url": "https://www.otto.de/p/rauch-bett-einzelbett-doppelbett-stauraum-flexx-breiten-90-140-180-cm-einzelbett-doppelbett-stauraum-flexx-breiten-90-140-180-cm-714407500/",
+   "image": "https://i.otto.de/i/otto/0cccb19f-ca63-5a47-8bb8-8aab21f0b08a?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.635,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "RÅDMANSÖ Bettgestell mit Lattenrost",
+   "price": 229.0,
+   "url": "https://www.ikea.com/de/de/p/radmansoe-bettgestell-mit-lattenrost-braun-nussbaumnachbildung-luroey-s89598637/",
+   "image": "https://www.ikea.com/de/de/images/products/radmansoe-bettgestell-mit-lattenrost-braun-nussbaumnachbildung-luroey__1397227_pe967509_s5.jpg",
+   "rating": 4.0,
+   "rating_n": 31,
+   "similarity": 0.5929,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "GLAMBERGET Bettgestell + Aufbewahrung+Matratze",
+   "price": 548.0,
+   "url": "https://www.ikea.com/de/de/p/glamberget-bettgestell-aufbewahrung-matratze-kiefer-vesteroey-mittelfest-s19568484/",
+   "image": "https://www.ikea.com/de/de/images/products/glamberget-bettgestell-aufbewahrung-matratze-kiefer-vesteroey-mittelfest__1335911_pe947199_s5.jpg",
+   "rating": 4.3,
+   "rating_n": 10,
+   "similarity": 0.5887,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "NEIDEN Bettgestell",
+   "price": 70.0,
+   "url": "https://www.ikea.com/de/de/p/neiden-bettgestell-kiefer-40395245/",
+   "image": "https://www.ikea.com/de/de/images/products/neiden-bettgestell-kiefer__0749132_pe745501_s5.jpg",
+   "rating": 4.0,
+   "rating_n": 864,
+   "similarity": 0.5719,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "BRIMNES Bettgestell, Kopfteil und Schublade",
+   "price": 468.0,
+   "url": "https://www.ikea.com/de/de/p/brimnes-bettgestell-kopfteil-und-schublade-grau-leirsund-s79590024/",
+   "image": "https://www.ikea.com/de/de/images/products/brimnes-bettgestell-kopfteil-und-schublade-grau-leirsund__1411048_pe973049_s5.jpg",
+   "rating": 4.2,
+   "rating_n": 1169,
+   "similarity": 0.5667,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "NEIDEN Bettgestell",
+   "price": 90.0,
+   "url": "https://www.ikea.com/de/de/p/neiden-bettgestell-kiefer-70395239/",
+   "image": "https://www.ikea.com/de/de/images/products/neiden-bettgestell-kiefer__0749131_pe745500_s5.jpg",
+   "rating": 3.6,
+   "rating_n": 323,
+   "similarity": 0.5585,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "TONSTAD Bettgestell mit Schubladen",
+   "price": 479.0,
+   "url": "https://www.ikea.com/de/de/p/tonstad-bettgestell-mit-schubladen-eichenfurnier-80489138/",
+   "image": "https://www.ikea.com/de/de/images/products/tonstad-bettgestell-mit-schubladen-eichenfurnier__1259651_pe926748_s5.jpg",
+   "rating": 4.1,
+   "rating_n": 155,
+   "similarity": 0.5529,
+   "category_check": "title"
+  },
+  {
+   "shop": "poco",
+   "shop_name": "POCO Einrichtungsmärkte",
+   "title": "boxspringbett sevilla grau liegeflaeche b l ca 140x200 cm 511002900",
+   "price": 499.0,
+   "url": "https://www.poco.de/p/boxspringbett-sevilla-grau-liegeflaeche-b-l-ca-140x200-cm-511002900",
+   "image": "https://static.poco.de/static/media/ab/e0/a5/1775151719/4705155-.jpeg?ts=1775151720",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5463,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "BJÖRKSNÄS Bettgestell",
+   "price": 717.0,
+   "url": "https://www.ikea.com/de/de/p/bjoerksnaes-bettgestell-birke-leirsund-s69501702/",
+   "image": "https://www.ikea.com/de/de/images/products/bjoerksnaes-bettgestell-birke-leirsund__1175828_pe894830_s5.jpg",
+   "rating": 4.4,
+   "rating_n": 139,
+   "similarity": 0.5322,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "krok wood massivholzbett jana in buche S0T2E0CR",
+   "price": 179.9,
+   "url": "https://www.otto.de/p/krok-wood-massivholzbett-jana-in-buche-S0T2E0CR/",
+   "image": "https://i.otto.de/i/otto/92081ca8-8754-4775-b17d-83735af85f68?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5298,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "TARVA Bettgestell",
+   "price": 149.0,
+   "url": "https://www.ikea.com/de/de/p/tarva-bettgestell-kiefer-s89929232/",
+   "image": "https://www.ikea.com/de/de/images/products/tarva-bettgestell-kiefer__0637611_pe698421_s5.jpg",
+   "rating": 4.0,
+   "rating_n": 751,
+   "similarity": 0.5264,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "GULLABERG Bettgestell+Mittelbal/Federholzrahm",
+   "price": 299.0,
+   "url": "https://www.ikea.com/de/de/p/gullaberg-bettgestell-mittelbal-federholzrahm-weiss-luroey-s49614521/",
+   "image": "https://www.ikea.com/de/de/images/products/gullaberg-bettgestell-mittelbal-federholzrahm-weiss-luroey__1488529_pe1003369_s5.jpg",
+   "rating": 4.4,
+   "rating_n": 19,
+   "similarity": 0.5171,
+   "category_check": "title"
+  },
+  {
+   "shop": "ikea",
+   "shop_name": "IKEA Deutschland",
+   "title": "IDANÄS Bettgestell",
+   "price": 499.0,
+   "url": "https://www.ikea.com/de/de/p/idanaes-bettgestell-weiss-00458904/",
+   "image": "https://www.ikea.com/de/de/images/products/idanaes-bettgestell-weiss__0916069_pe784945_s5.jpg",
+   "rating": 4.4,
+   "rating_n": 168,
+   "similarity": 0.5163,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "flieks holzbett hydraulisches stauraumbett schlafzimmerset 160x200cm mit usb type c S03EQ0",
+   "price": 499.99,
+   "url": "https://www.otto.de/p/flieks-holzbett-hydraulisches-stauraumbett-schlafzimmerset-160x200cm-mit-usb-type-c-S03EQ0PH/",
+   "image": "https://i.otto.de/i/otto/89f74d47-6e75-45b6-a3f9-94871d75cbc2?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.5122,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "idimex massivholzbett cefira doppelbett 140x190 cm mit rattangeflecht kastanie finish S08G",
+   "price": 282.95,
+   "url": "https://www.otto.de/p/idimex-massivholzbett-cefira-doppelbett-140x190-cm-mit-rattangeflecht-kastanie-finish-S08G00JI/",
+   "image": "https://i.otto.de/i/otto/c8f8b463-1f17-57ea-a868-f454faefdd7a?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.509,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "skolm massivholzbett alver walnuss geoelt mit metallkufen verfuegbar in 120 140 160 180 x ",
+   "price": 309.99,
+   "url": "https://www.otto.de/p/skolm-massivholzbett-alver-walnuss-geoelt-mit-metallkufen-verfuegbar-in-120-140-160-180-x-200-cm-S07EX0YG/",
+   "image": "https://i.otto.de/i/otto/3d74606b-2fde-5134-9264-a36126cd8ba4?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.4872,
+   "category_check": "title"
+  },
+  {
+   "shop": "otto",
+   "shop_name": "OTTO",
+   "title": "otto home massivholzbett paula mit tueren und ablage schublade optional landhausstil b t h",
+   "price": 299.99,
+   "url": "https://www.otto.de/p/otto-home-massivholzbett-paula-mit-tueren-und-ablage-schublade-optional-landhausstil-b-t-h-148-8-224-4-82-cm-massive-kiefer-extra-viel-stauraum-im-fussteil-fsc-zertifiziert-2084749085/",
+   "image": "https://i.otto.de/i/otto/71061e73-a68b-56df-bb77-952aff1d7898?$responsive_ftfind_w800$",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.4774,
+   "category_check": "title"
+  },
+  {
+   "shop": "poco",
+   "shop_name": "POCO Einrichtungsmärkte",
+   "title": "etagenbett casper kiefer weiss liegeflaeche b l ca 90x200 cm 511250100",
+   "price": 249.0,
+   "url": "https://www.poco.de/p/etagenbett-casper-kiefer-weiss-liegeflaeche-b-l-ca-90x200-cm-511250100",
+   "image": "https://static.poco.de/static/media/5f/33/e2/1779879021/4973242-.jpeg?ts=1779879021",
+   "rating": null,
+   "rating_n": null,
+   "similarity": 0.4435,
+   "category_check": "title"
+  }
+ ],
+ "claim": "cheapest among the companies scanned above — not the whole internet",
+ "generated_utc": "2026-07-15 21:15 UTC"
+}

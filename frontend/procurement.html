@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCS Studio — Procurement: from AI object to purchasable product</title>
+<style>
+  :root { --ink:#1f2733; --mut:#6b7688; --brand:#2f6bff; --line:#dfe6ee;
+          --panel:#fff; --bg:#f6f8fb; --ok:#1d9e6f; }
+  * { box-sizing:border-box; margin:0; }
+  body { font:14px/1.55 "Segoe UI",system-ui,sans-serif; background:var(--bg); color:var(--ink); padding:22px; }
+  h1 { font-size:22px; margin-bottom:4px; }
+  .sub { color:var(--mut); font-size:13px; margin-bottom:18px; }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:16px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:8px; max-height:300px; overflow:auto; }
+  .pick { border:2px solid var(--line); border-radius:10px; padding:5px; cursor:pointer; text-align:center; background:#fafbfe; }
+  .pick img { width:100%; border-radius:6px; }
+  .pick small { font-size:10px; color:var(--mut); word-break:break-all; }
+  .pick.sel { border-color:var(--brand); background:#eef3ff; }
+  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:12px; }
+  input[type=number] { width:80px; padding:6px; border:1px solid var(--line); border-radius:8px; }
+  button { background:var(--brand); color:#fff; border:none; border-radius:9px; padding:10px 18px;
+           font-size:14px; font-weight:600; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:wait; }
+  .tiers { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }
+  .tier { border:1px solid var(--line); border-radius:12px; padding:14px; background:#fafbfe; }
+  .tier h3 { text-transform:uppercase; font-size:12px; letter-spacing:.08em; color:var(--brand); margin-bottom:8px; }
+  .tier img { width:100%; max-height:190px; object-fit:contain; background:#fff; border-radius:8px; border:1px solid var(--line); }
+  .tier .t { font-weight:600; margin:8px 0 2px; font-size:13px; }
+  .kv { font-size:12.5px; color:var(--mut); }
+  .kv b { color:var(--ink); }
+  .money { font-size:19px; font-weight:700; color:var(--ok); margin-top:6px; }
+  table { border-collapse:collapse; width:100%; font-size:12.5px; margin-top:10px; }
+  th,td { border-bottom:1px solid var(--line); padding:6px 8px; text-align:left; }
+  th { color:var(--mut); font-weight:600; }
+  .note { font-size:12px; color:var(--mut); background:#f2f5f9; border-radius:8px; padding:10px 12px; margin-top:12px; }
+  #spin { display:none; color:var(--brand); font-weight:600; }
+  a { color:var(--brand); }
+</style>
+</head>
+<body>
+<h1>🛒 Procurement — from AI object to purchasable product</h1>
+<p class="sub">Pick a generated item → the app sweeps German retailers (real rendered pages),
+CLIP-scores every product photo against your 3D object, and reports the cheapest
+visually-similar product <b>landed at Bildungscampus, 74076 Heilbronn</b> — in three
+business tiers. <a href="/docs-img/PROCUREMENT_METHOD.html" target="_blank">Methodology</a> ·
+<a href="/hub.html#s8">Research study (bed · chair · stool)</a></p>
+
+<div class="panel">
+  <b>1 · Pick the item to source</b>
+  <div class="grid" id="targets"></div>
+  <div class="row">
+    <b>2 · Quantities:</b>
+    <label>single <input type="number" id="q1" value="1" min="1"></label>
+    <label>bulk <input type="number" id="qN" value="10" min="2"></label>
+    <button id="go" disabled>3 · Scan the market</button>
+    <span id="spin">⏳ sweeping shops + CLIP-scoring… first run takes 1–3 min</span>
+  </div>
+</div>
+
+<div id="result"></div>
+
+<script>
+let sel = null;
+const targets = document.getElementById('targets');
+fetch('/api/procure/targets').then(r => r.json()).then(items => {
+  for (const it of items) {
+    const d = document.createElement('div');
+    d.className = 'pick';
+    d.innerHTML = `<img src="${it.thumb}" loading="lazy"><small>${it.id}</small>`;
+    d.onclick = () => {
+      document.querySelectorAll('.pick.sel').forEach(x => x.classList.remove('sel'));
+      d.classList.add('sel'); sel = it.id;
+      document.getElementById('go').disabled = false;
+    };
+    targets.appendChild(d);
+  }
+});
+
+function costRows(t) {
+  return t.costs.map(c => `<tr><td>${c.qty}×</td><td>${c.unit_price.toFixed(2)} €</td>
+    <td>${c.shipping.toFixed(2)} € <span title="${c.shipping_basis}">ⓘ</span></td>
+    <td><b>${c.landed_total.toFixed(2)} €</b> (${c.landed_per_unit.toFixed(2)}/u)</td></tr>`).join('');
+}
+
+document.getElementById('go').onclick = async () => {
+  const go = document.getElementById('go');
+  go.disabled = true;
+  document.getElementById('spin').style.display = 'inline';
+  const qty = [+document.getElementById('q1').value || 1, +document.getElementById('qN').value || 10];
+  try {
+    const r = await fetch('/api/procure', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ item: sel, qty }),
+    });
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error || r.status);
+    render(j);
+  } catch (e) {
+    document.getElementById('result').innerHTML =
+      `<div class="panel" style="color:#c0392b">Scan failed: ${e.message}</div>`;
+  }
+  go.disabled = false;
+  document.getElementById('spin').style.display = 'none';
+};
+
+function render(j) {
+  const tierNames = { budget: '💶 Budget', standard: '⚖️ Standard', premium: '⭐ Premium' };
+  let tiers = '';
+  for (const [k, t] of Object.entries(j.tiers)) {
+    const pick = t.costs[0].pickup_alternative;
+    tiers += `<div class="tier"><h3>${tierNames[k] || k}</h3>
+      <img src="${t.image}" onerror="this.style.display='none'">
+      <div class="t">${t.title}</div>
+      <div class="kv"><b>${t.shop_name}</b> · visual similarity <b>${(t.similarity * 100).toFixed(0)}%</b>
+        ${t.rating ? `· ★${t.rating} (${t.rating_n || '?'})` : ''}</div>
+      <table><tr><th>qty</th><th>unit</th><th>shipping</th><th>landed</th></tr>${costRows(t)}</table>
+      ${pick ? `<div class="kv" style="margin-top:6px">🚗 pickup alt: ${pick.store} ≈ ${pick.cost.toFixed(2)} € (${pick.note})</div>` : ''}
+      <div class="money">${t.costs[0].landed_total.toFixed(2)} € landed</div>
+      <a href="${t.url}" target="_blank" rel="noopener">open product page ↗</a></div>`;
+  }
+  const all = (j.all_matches || []).map(c =>
+    `<tr><td>${c.shop_name}</td><td><a href="${c.url}" target="_blank" rel="noopener">${(c.title || '').slice(0, 60)}</a></td>
+     <td>${(c.similarity * 100).toFixed(0)}%</td><td>${c.price.toFixed(2)} €</td></tr>`).join('');
+  document.getElementById('result').innerHTML = `
+    <div class="panel"><b>Result for ${j.item}</b> — query "<i>${j.query}</i>" · ${j.candidates_scored}
+      products scored · ${j.above_floor} above the ${(j.similarity_floor * 100).toFixed(0)}% similarity floor
+      <div class="tiers" style="margin-top:12px">${tiers}</div>
+      <div class="note"><b>Companies scanned:</b> ${j.companies_scanned.join(' · ')}<br>
+        ${j.companies_skipped.length ? `<b>Available with an API key:</b> ${j.companies_skipped.join(' · ')}<br>` : ''}
+        ${j.vat_note}. Shipping figures marked "estimate" use each shop's published rates —
+        the product link shows the exact checkout price. <b>${j.claim}.</b></div>
+      <details style="margin-top:10px"><summary>All ${j.all_matches.length} top matches</summary>
+        <table><tr><th>shop</th><th>product</th><th>similarity</th><th>price</th></tr>${all}</table></details>
+      <div class="row"><button onclick='dl(${JSON.stringify(JSON.stringify(j))})'>⬇ download report (JSON)</button>
+        <button onclick="csv()">⬇ download table (CSV)</button></div>
+    </div>`;
+  window._last = j;
+}
+
+function dl(s) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([s], { type: 'application/json' }));
+  a.download = (window._last ? window._last.item : 'report') + '_procurement.json';
+  a.click();
+}
+function csv() {
+  const j = window._last; if (!j) return;
+  let rows = [['tier', 'shop', 'product', 'similarity', 'qty', 'unit_eur', 'shipping_eur', 'landed_eur', 'url']];
+  for (const [k, t] of Object.entries(j.tiers)) {
+    for (const c of t.costs) {
+      rows.push([k, t.shop_name, t.title, t.similarity, c.qty, c.unit_price, c.shipping, c.landed_total, t.url]);
+    }
+  }
+  const s = rows.map(r => r.map(x => `"${String(x).replace(/"/g, '""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['﻿' + s], { type: 'text/csv' }));
+  a.download = j.item + '_procurement.csv';
+  a.click();
+}
+</script>
+</body>
+</html>

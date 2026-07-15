@@ -1,0 +1,130 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>Procurement methodology — SCS Studio</title><style>
+body{font:15px/1.65 "Segoe UI",system-ui,sans-serif;color:#1f2733;background:#f6f8fb;
+     max-width:860px;margin:32px auto;padding:0 20px}
+h1{font-size:24px} h2{font-size:18px;margin-top:26px;color:#2f6bff}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border:1px solid #dfe6ee;padding:7px 10px;text-align:left}
+th{background:#2f6bff;color:#fff}
+code{background:#eef2f7;padding:1px 5px;border-radius:4px}
+blockquote{border-left:4px solid #2f6bff;margin:12px 0;padding:4px 14px;background:#eef3ff}
+a{color:#2f6bff}</style></head><body><h1>Procurement methodology — how the search is satisfied and the price proven</h1>
+<p><em>(v4 · Dimitres Kisimov · the in-app tool is 🛒 /procurement.html; the live study
+is /procurement_study.html)</em></p>
+<h2>The question</h2>
+<p>Given an item our AI engines generated (e.g. the TRELLIS bed, the TRELLIS chair,
+the TripoSG stool), find the <strong>cheapest real product that is visually very
+similar and of acceptable quality</strong>, delivered to <strong>Bildungscampus, 74076
+Heilbronn</strong>, with cost tiers the financial department can plan with.</p>
+<h2>Why this design (the "smartest most efficient way")</h2>
+<p>A raw crawler of "the whole internet" cannot <em>prove</em> a cheapest price: search
+engines and most shops block automated crawlers, coverage would be unknowable,
+and the claim would be unverifiable. The provable formulation is:</p>
+<blockquote>
+<p><strong>"cheapest among the companies scanned"</strong> — with the company list printed on
+every report.</p>
+</blockquote>
+<p>So the system is built as a <strong>shop registry with per-company adapters</strong>, and the
+report is honest about which rows produced candidates.</p>
+<h2>Pipeline (6 stages)</h2>
+<ol>
+<li><strong>Views</strong> — the item's rendered views (thumbnail + preview) are embedded with
+   <strong>CLIP ViT-B/32</strong> locally (RTX 4050 or CPU; the model downloads once, ~600 MB).</li>
+<li><strong>Query building</strong> — the item category maps to a German retail term
+   (bed→"bett", stool→"hocker"…), and CLIP zero-shot attribute matching picks a
+   material/colour modifier (wood / black metal / white / upholstered / leather),
+   e.g. <code>hocker holz</code>.</li>
+<li><strong>Multi-company sweep</strong> — the registry today:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>company</th>
+<th>how</th>
+<th>status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IKEA Deutschland</td>
+<td>public search JSON (prices, images, ratings)</td>
+<td>live, keyless</td>
+</tr>
+<tr>
+<td>OTTO</td>
+<td>headless-Chrome rendered DOM + generic tile extractor</td>
+<td>live, keyless</td>
+</tr>
+<tr>
+<td>POCO Einrichtungsmärkte</td>
+<td>headless-Chrome rendered DOM</td>
+<td>live, keyless</td>
+</tr>
+<tr>
+<td>home24</td>
+<td>rendered DOM</td>
+<td>registered; currently bot-walled</td>
+</tr>
+<tr>
+<td>Möbel Boss</td>
+<td>rendered DOM</td>
+<td>registered; prices load post-render</td>
+</tr>
+<tr>
+<td>Kaiserkraft (B2B)</td>
+<td>rendered DOM</td>
+<td>registered; B2B prices gated</td>
+</tr>
+<tr>
+<td>eBay.de</td>
+<td>official Browse API — <strong>exact shipping to 74076</strong></td>
+<td>plug-in: free API key</td>
+</tr>
+<tr>
+<td>Google Shopping (SerpAPI)</td>
+<td><strong>hundreds of shops at once</strong></td>
+<td>plug-in: API key</td>
+</tr>
+</tbody>
+</table>
+<p>The generic tile extractor pairs every € price in the rendered DOM with the
+   nearest product link and image — recall over precision, because stage 4
+   filters visually. Fetches are cached 24 h and rate-limited (1.5 s gap);
+   headless Chrome renders JavaScript shops exactly as a customer sees them.
+4. <strong>Visual match + quality gate</strong> — every candidate's product photo is
+   CLIP-scored (cosine) against our views; candidates under the <strong>0.55
+   similarity floor</strong> are dropped as lookalikes. Ratings gate quality where the
+   shop provides them (IKEA, Google Shopping); the tie-breaker favours rated
+   products. This is why capable engines matter: clean geometry → honest
+   renders → reliable matching.
+5. <strong>Landed cost to 74076 Heilbronn</strong> — German list prices include 19% VAT.
+   Delivery is modelled per shop and per bulk class: parcel rates for small
+   items (amortized ~3 units/package for multi-unit orders) vs one
+   <strong>Spedition</strong> fee per order for bulky categories (bed, sofa, desk…). eBay's
+   API returns the seller's exact shipping. IKEA additionally gets the
+   <strong>pickup alternative</strong>: IKEA Ludwigsburg, ~90 km round trip at 0.30 €/km ≈
+   27 €. Estimates are flagged; the product link always shows the exact
+   checkout figure.
+6. <strong>Business tiers</strong> — from the above-floor pool, preferring distinct
+   products: <strong>Budget</strong> = lowest landed price · <strong>Standard</strong> = best
+   similarity-per-euro · <strong>Premium</strong> = highest similarity × quality. Each tier
+   is costed for a single unit and a bulk quantity (default 10). At N ≥ 10 the
+   report recommends requesting a written quote — retail bulk discounts are
+   not public data and are never invented.</p>
+<h2>Honesty limits (printed on every report)</h2>
+<ul>
+<li>The claim is <strong>"cheapest among the companies scanned"</strong>, never "cheapest on
+  the internet". The scanned list (with candidate counts) is part of the report.</li>
+<li>Shipping figures marked <em>estimate</em> use each shop's published standard rates.</li>
+<li>Availability and prices change; every report carries its generation date and
+  live product links.</li>
+<li>Performance: one scan = one CLIP load + ~6 page renders + ~30 image
+  downloads → 1–3 minutes, one scan at a time, everything cached — no risk to
+  the machine.</li>
+</ul>
+<h2>Scaling the company list</h2>
+<p>Two switches multiply coverage without new code: a free <strong>eBay developer key</strong>
+(env <code>EBAY_OAUTH_TOKEN</code>) adds every eBay.de seller with exact shipping; a
+<strong>SerpAPI key</strong> (env <code>SERPAPI_KEY</code>) adds Google Shopping — hundreds of German
+shops per query. New per-shop adapters are ~20 lines each in
+<code>backend/python-scripts/procurement.py</code> (SHOPS registry).</p></body></html>

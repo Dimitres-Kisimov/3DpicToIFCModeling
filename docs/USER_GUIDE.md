@@ -200,7 +200,34 @@ Full notes: [PATCH_V2.md](PATCH_V2.md). The headlines:
 
 ---
 
-## 9. Troubleshooting
+## 9. Procurement — buy the furniture the app designed with (v4)
+
+Topbar → **🛒 Procurement** (or Research hub step 9).
+
+1. Pick any generated item (thumbnail grid).
+2. Set the single and bulk quantities.
+3. **Scan the market** — the app sweeps multiple companies (IKEA Deutschland
+   live via its public search JSON; OTTO and POCO via headless-Chrome rendered
+   pages; eBay.de and Google Shopping activate with an API key), CLIP-scores
+   every product photo against your 3D object, gates by category, and prices
+   the result **landed at Bildungscampus, 74076 Heilbronn** (19% VAT included,
+   parcel vs Spedition, IKEA pickup alternative).
+4. Read the three tiers — **Budget / Standard / Premium** — each with landed
+   cost for 1× and N×, then download the report (JSON/CSV).
+
+Every report lists the companies scanned and claims only "cheapest among the
+companies scanned". Method: `docs/PROCUREMENT_METHOD.md`. The commissioned
+three-item study (TRELLIS bed & chair, TripoSG stool) lives at
+`/procurement_study.html`.
+
+## 10. ROI — the business case
+
+Research hub step 8 → **📊 ROI**, or `/roi.html`: manual hours vs measured
+machine minutes for one room, a 6-storey office and the whole fleet, at
+€45/€60/€90 designer rates — downloadable as Excel/CSV/Markdown
+(`docs/roi/`).
+
+## 11. Troubleshooting
 
 | Symptom | Cause / fix |
 |---|---|

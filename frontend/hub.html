@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SCS Studio — Research Hub, the pipeline in 7 steps</title>
+<title>SCS Studio — Research Hub, the pipeline in 9 steps</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔬</text></svg>">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -79,7 +79,8 @@
   <span class="stop" data-t="s4"><span class="n">5</span>🗂️ Catalog</span><span class="arrow">→</span>
   <span class="stop" data-t="s5"><span class="n">6</span>🛋️ Rooms</span><span class="arrow">→</span>
   <span class="stop" data-t="s6"><span class="n">7</span>🏢 Buildings</span><span class="arrow">→</span>
-  <span class="stop" data-t="s7"><span class="n">8</span>✅ Proof &amp; docs</span>
+  <span class="stop" data-t="s7"><span class="n">8</span>✅ Proof &amp; docs</span><span class="arrow">→</span>
+  <span class="stop" data-t="s8"><span class="n">9</span>🛒 Procurement</span>
 </nav>
 
 <main>
@@ -270,6 +271,33 @@
       <a class="card" href="/architecture.html"><b>🌳 Program Structure — how this is built</b>
         <span>The codebase as a clickable tree — for anyone extending the program (paired with the
         Developer Manual in the repo).</span></a>
+      <a class="card" href="/roi.html"><b>📊 ROI — time &amp; money saved</b>
+        <span>The business case in one table: manual hours vs measured machine minutes, at €45/€60/€90
+        designer rates. Downloadable as Excel/CSV for the finance department.</span></a>
+    </div>
+  </section>
+
+  <section class="step" id="s8">
+    <div class="stephead"><span class="big">9</span><h2>Procurement — from AI object to purchasable product
+      <span class="apptab">this tab: 🛒 Procurement</span></h2></div>
+    <p class="expl">The v4 study: can the app close the loop and BUY the furniture it designed with?
+      For a generated item, the app sweeps <b>multiple companies</b> — IKEA Deutschland, OTTO and POCO
+      live today via their real rendered pages, plus eBay.de and Google Shopping (hundreds of shops)
+      the moment an API key is added — CLIP-scores every product photo against the 3D object, and
+      reports the cheapest visually-similar product <b>landed at Bildungscampus, 74076 Heilbronn</b>
+      (price + shipping/Spedition + the drive-and-pick-up alternative) in three business tiers,
+      for single and bulk quantities. The claim is always "cheapest among the companies scanned" —
+      each report lists them — never "cheapest on the internet".</p>
+    <div class="grid">
+      <a class="card hero" href="/procurement.html"><b>🛒 Run a procurement scan</b>
+        <span>Pick any generated item → tiered offers with landed costs. First run 1–3 min
+        (shop sweep + CLIP scoring, all local).</span></a>
+      <a class="card hero" href="/procurement_study.html"><b>🔬 The three-item study: bed · chair · stool</b>
+        <span>TRELLIS bed, TRELLIS chair, TripoSG stool — the engines' IFC outputs sourced as real
+        products, with every company scanned listed and all matches shown.</span></a>
+      <a class="card" href="/docs-img/PROCUREMENT_METHOD.html"><b>📐 Methodology — how the search is satisfied</b>
+        <span>Query building, the multi-company sweep, CLIP similarity floor, the landed-cost model
+        (VAT, parcel vs Spedition, pickup), tiering rules, and the honesty limits.</span></a>
     </div>
   </section>
 
