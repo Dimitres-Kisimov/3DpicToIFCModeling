@@ -26,7 +26,7 @@ INCLUDE = [
     "data/mesh_library_polyhaven", "data/mesh_library", "data/furniture_library",
     "data/demo_photos", "sample_buildings", "demo",
     "deliverable/cloud_gallery", "deliverable/manuals",
-    "package.json", "package-lock.json", "requirements.txt",
+    "package.json", "package-lock.json", "requirements.txt", "SCS_Studio.bat",
     "README.md", "CREDITS.md", "LICENSE",
 ]
 EXCLUDE_DIRS = {"node_modules", "__pycache__", ".git", "_ingest_work",
@@ -36,7 +36,11 @@ EXCLUDE_EXT = {".pyc"}
 BUNDLE_README = """SCS Studio — photo -> 3D -> room -> BIM  (app bundle v1.0)
 =============================================================
 
-RUN ON WINDOWS
+RUN ON WINDOWS — EASIEST: double-click  SCS_Studio.bat
+  It checks Node/Python, installs packages on first run, starts the server
+  and opens http://localhost:3000 in your browser. Keep its window open.
+
+  Manual alternative:
   1. Install Node.js 18+ and Python 3.11+ (python on PATH).
   2. In this folder:   npm install
   3. Python deps:      pip install -r requirements.txt
