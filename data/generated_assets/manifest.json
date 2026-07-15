@@ -10641,6 +10641,23 @@
    "num": 1,
    "code": "sofa-CC0-001",
    "display_name": "sofa \u2014 PolyHaven CC0 \u2014 #001"
+  },
+  {
+   "id": "gen_93b581b6d4f7",
+   "category": "table",
+   "glb": "table-TSR-008.glb",
+   "dims_m": [
+    1.5,
+    0.798,
+    0.842
+   ],
+   "thumb": "table-TSR-008.thumb.png",
+   "generated": true,
+   "source_file": "Lighting.glb",
+   "engine": "TSR",
+   "num": 8,
+   "code": "table-TSR-008",
+   "display_name": "table \u2014 TripoSR \u2014 #008"
   }
  ]
 }
