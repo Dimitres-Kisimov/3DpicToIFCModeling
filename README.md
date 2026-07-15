@@ -1,11 +1,55 @@
-# 3D Picture → IFC Modeling — SCS Studio
+# SCS Studio — 3D Picture → IFC Modeling
+
+<p align="center">
+  <img src="docs/img/hero_xray.jpg" alt="X-ray of the SCS Office Tower: 805 solver-placed furniture pieces visible through the ghosted shell of all 8 storeys" width="760">
+  <br>
+  <em>X-ray of a populated 8-storey office tower — 805 pieces placed by the CP-SAT solver under German ASR workplace law, furniture visible through the ghosted building shell.</em>
+</p>
+
+![status](https://img.shields.io/badge/status-complete-2ea44f) ![version](https://img.shields.io/badge/release-v4.1.0-2f6bff) ![platform](https://img.shields.io/badge/platform-Windows%20%7C%20local-lightgrey) ![standards](https://img.shields.io/badge/standards-IFC4%20%C2%B7%20German%20ASR%20%C2%B7%20DIN%20277-orange)
+
+> **A main, fully finished project by [Dimitres Kisimov](https://github.com/Dimitres-Kisimov).**
+> One photo in → a furnished, German-workplace-law-compliant BIM building out — shipped
+> through four tagged releases (v1 pipeline → v2 editing & safety → v3 room parity →
+> v4 procurement & ROI), every claim test-gated, downloadable below.
 
 **Photo-to-BIM pipeline**: converts a single 2D photograph into a watertight, real-dimensioned,
 BIM-classified 3D object — then composes those objects into ergonomically furnished rooms and
 whole buildings, exported as optimized IFC4.
 
-**One app** (`npm start` → http://localhost:3000), three workspaces sharing one 3D viewport,
-plus a full **Research & Comparisons hub** (`/hub.html`) documenting every experiment behind it.
+**One app** (`npm start` → http://localhost:3000, or double-click `SCS_Studio.bat`), three
+workspaces sharing one 3D viewport, plus a full **Research & Comparisons hub** (`/hub.html`,
+9 guided steps) documenting every experiment behind it.
+
+📦 **Just want to run it?** Grab the ~512 MB `*_lite.zip` from
+[**Releases**](https://github.com/Dimitres-Kisimov/3DpicToIFCModeling/releases), unzip,
+double-click `SCS_Studio.bat` — it self-installs on first run.
+
+<details>
+<summary><b>✨ Feature highlights across the four releases (click to expand)</b></summary>
+
+- **Photo → 3D**: five AI engines benchmarked on 187 photos (TripoSR runs locally); broken
+  meshes repaired with parametric chair-base grafts; every object auto-registered with a
+  professional code (`desk-TSG-042`).
+- **Rooms**: 18 selectable room types (offices → kitchens → server rooms, DE/EN), engine
+  suggestions at three densities, collision checker with 0.90 m walking paths, honest refusals.
+- **Buildings**: drop ANY IFC — 1,506 rooms across the 15-building demo fleet auto-classified
+  (DIN 277, four languages) and furnished in minutes; floor-by-floor 2D/3D navigation.
+- **Editing everywhere**: drag with live legality, 90° yaw rotation (R / ⟳ / Ctrl+right-click),
+  delete-everywhere, lock/unlock — all baked into the exported IFC.
+- **German ASR compliance, cited**: staffing caps (§5(3) ArbStättV), movement areas, route
+  widths, protected access to fire extinguisher & first aid — mapping in
+  [`docs/ASR_COMPLIANCE.md`](docs/ASR_COMPLIANCE.md).
+- **🛒 Procurement (v4)**: pick or drop any generated object → multi-company market sweep
+  (IKEA · OTTO · POCO live; eBay & Google Shopping via keys) → CLIP visual matching →
+  cheapest visually-similar product **landed in Heilbronn**, three business tiers, finance
+  Excel pack. Honest claim printed on every report. [`docs/PROCUREMENT_METHOD.md`](docs/PROCUREMENT_METHOD.md)
+- **📊 ROI**: measured, downloadable — one room 59% time saved, a 6-storey office 95.3%,
+  the whole fleet 95.9% ([`docs/roi/`](docs/roi/)).
+- **Proof**: e2e 8/8 · floor dissection 15/15 · ergonomics 40/40 ×2 · exact-geometry meter
+  over ~6,000 pieces · boot-verified release bundles.
+
+</details>
 
 | Workspace | What it does |
 |-----------|--------------|

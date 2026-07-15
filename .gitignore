@@ -118,3 +118,4 @@ deliverable/*.pptx
 deliverable/~$*.pptx
 deliverable/DEVELOPER_MANUAL.pdf
 benchmark/_ingest_work/
+data/procurement_cache/
