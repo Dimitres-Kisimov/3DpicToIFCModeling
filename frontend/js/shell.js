@@ -171,6 +171,9 @@
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('#mainTabs .tab').forEach((b) =>
       b.addEventListener('click', () => setTab(b.dataset.tab)));
+    // deep-linkable tabs: /#room and /#building open that workspace directly
+    const h = (location.hash || '').replace('#', '');
+    if (h === 'room' || h === 'building') setTab(h);
     $('demoRunBtn').addEventListener('click', demoRun);
     $('fitViewBtn').addEventListener('click', (e) => {
       // generator tab keeps its own fit behavior from index.js; for room/building
