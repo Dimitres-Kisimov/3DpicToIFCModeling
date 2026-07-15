@@ -93,7 +93,13 @@ _PT_PREFER = {"sofa": ("SOFA",), "cabinet": ("CABINET", "DRESSER"), "lamp": ("LA
 def _manifest():
     global _MANIFEST
     if _MANIFEST is None:
-        _MANIFEST = json.loads((ABO_DIR / "manifest.json").read_text(encoding="utf-8"))
+        try:
+            _MANIFEST = json.loads((ABO_DIR / "manifest.json").read_text(encoding="utf-8"))
+        except FileNotFoundError:
+            # lite install: the ABO library arrives later via
+            # download_abo_subset.py — the catalog must still list categories
+            # (generated/custom items keep working meanwhile)
+            _MANIFEST = []
     return _MANIFEST
 
 

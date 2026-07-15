@@ -365,29 +365,45 @@ def _resolve_layout(room: dict, objects: list):
     # SAFETY ACCESS (ASR — user rule, 'very important'): extinguisher and
     # first-aid cabinet mount on the wall with a PERMANENTLY CLEAR 0.90 m
     # access strip in front — no bookshelf may block them at any density.
-    SAFETY_H = {"fire_extinguisher": 1.00, "first_aid_cabinet": 1.35}
+    # category -> (mount height, protected front strip). Safety gear AND display
+    # panels: both stay reachable/VISIBLE — nothing may stand in front of them
+    # (user rule: "like the fire extinguisher").
+    WALL_PREMOUNT = {"fire_extinguisher": (1.00, 0.90), "first_aid_cabinet": (1.35, 0.90),
+                     "whiteboard": (0.90, 0.75), "presentation_screen": (0.80, 0.75),
+                     "mirror": (0.0, 0.50)}
     safety_spans = {"back": [], "left": []}
-    _safety_items = [x for x in objects if x.get("category") in SAFETY_H
-                     and not x.get("anchor") and x["id"] not in pres_consumed]
-    for k, o in enumerate(_safety_items):
+    _PM_SLOTS = [(0.50, "back"), (0.30, "back"), (0.72, "back"),
+                 (0.15, "back"), (0.85, "back"), (0.50, "left"), (0.30, "left")]
+
+    def _span_free(wall, c0, half):
+        return all(c0 + half <= a or c0 - half >= b for (a, b) in safety_spans[wall])
+
+    for o in [x for x in objects if x.get("category") in WALL_PREMOUNT
+              and not x.get("anchor") and x["id"] not in pres_consumed]:
         sw = float(o["dimensions"]["width"]); sd = float(o["dimensions"]["depth"])
-        slot = [(cw * 0.30, "back"), (cw * 0.72, "back"), (ch * 0.5, "left")][k % 3]
-        c0, wall = slot
-        if wall == "back":
-            sx, sz, srot = min(max(c0, 0.4), cw - 0.4), 0.10 + sd / 2, 0
-            pres_keep.append({"x": sx - 0.45, "z": 0.0, "width": 0.90,
-                              "depth": 0.90, "kind": "safety_access"})
-            safety_spans["back"].append((sx - sw / 2 - 0.1, sx + sw / 2 + 0.1))
-        else:
-            sx, sz, srot = 0.10 + sd / 2, min(max(c0, 0.4), ch - 0.4), 90
-            pres_keep.append({"x": 0.0, "z": sz - 0.45, "width": 0.90,
-                              "depth": 0.90, "kind": "safety_access"})
-            safety_spans["left"].append((sz - sw / 2 - 0.1, sz + sw / 2 + 0.1))
-        pres_pos[o["id"]] = {"id": o["id"], "position": [sx, 0.0, sz],
-                             "rotation": [0, srot, 0],
-                             "elevation": SAFETY_H[o["category"]], "placed": True}
-        pres_consumed.add(o["id"])
-        o["anchor"] = {"to": "wall", "relation": "mounted_on"}
+        elev, strip = WALL_PREMOUNT[o["category"]]
+        for frac, wall in _PM_SLOTS:
+            lim = cw if wall == "back" else ch
+            c0 = min(max(frac * lim, sw / 2 + 0.15), lim - sw / 2 - 0.15)
+            if not _span_free(wall, c0, sw / 2 + 0.1):
+                continue
+            if wall == "back":
+                sx, sz, srot = c0, 0.10 + sd / 2, 0
+                pres_keep.append({"x": c0 - max(sw / 2, 0.45), "z": 0.0,
+                                  "width": max(sw, 0.90), "depth": strip + sd + 0.1,
+                                  "kind": "visibility"})
+            else:
+                sx, sz, srot = 0.10 + sd / 2, c0, 90
+                pres_keep.append({"x": 0.0, "z": c0 - max(sw / 2, 0.45),
+                                  "width": strip + sd + 0.1, "depth": max(sw, 0.90),
+                                  "kind": "visibility"})
+            safety_spans[wall].append((c0 - sw / 2 - 0.1, c0 + sw / 2 + 0.1))
+            pres_pos[o["id"]] = {"id": o["id"], "position": [sx, 0.0, sz],
+                                 "rotation": [0, srot, 0],
+                                 "elevation": elev, "placed": True}
+            pres_consumed.add(o["id"])
+            o["anchor"] = {"to": "wall", "relation": "mounted_on"}
+            break
 
     # ARMCHAIR ROW CLUSTER (user rule): armchairs sit IN A ROW — two side by
     # side facing the same way; four as two opposed pairs facing each other,
@@ -638,9 +654,106 @@ def _resolve_layout(room: dict, objects: list):
                           or (by_id[parent_id].get("anchor") or {}).get("relation") == "in_front")
         kid_max = max(math.hypot(float(c["dimensions"]["width"]),
                                  float(c["dimensions"]["depth"])) for c in kids)
+        pw_, pd_ = float(pd["width"]), float(pd["depth"])
+        if abs(pw_ - pd_) > 0.25 * max(pw_, pd_):
+            # RECTANGULAR table (user rule: petals fit only round/square tables):
+            # max 4 seats per LONG side, centred; 1 per end; EXTRA chairs park
+            # at a free wall facing the opposing wall.
+            fxp, fzp = math.sin(base), math.cos(base)
+            rxp, rzp = fzp, -fxp
+            if pw_ >= pd_:
+                ldir, lLen, sdir, sLen = (rxp, rzp), pw_, (fxp, fzp), pd_
+            else:
+                ldir, lLen, sdir, sLen = (fxp, fzp), pd_, (rxp, rzp), pw_
+            kd = max(float(c["dimensions"]["depth"]) for c in kids)
+            kw = max(float(c["dimensions"]["width"]) for c in kids)
+            pitch = kw + 0.12
+            per_side = max(1, min(int(lLen // pitch), 4))     # MAX 4 per side (user)
+            side_off = sLen / 2 + kd / 2 + 0.10
+            end_off = lLen / 2 + kd / 2 + 0.10
+            spots = []
+            for s in (+1, -1):
+                if occupied_front and s == +1 and sdir == (fxp, fzp):
+                    continue                        # the paired chair owns that side
+                for k2 in range(per_side):
+                    spots.append(((k2 - (per_side - 1) / 2) * pitch, s, False))
+            spots += [(+1.0, 0, True), (-1.0, 0, True)]
+            spare_kids = []
+            for idx_c, c in enumerate(kids):
+                if idx_c >= len(spots):
+                    spare_kids.append(c)
+                    continue
+                lx, s, is_end = spots[idx_c]
+                if is_end:
+                    px_ = ax_ + ldir[0] * end_off * lx
+                    pz_ = az_ + ldir[1] * end_off * lx
+                    fdx, fdy = -ldir[0] * lx, -ldir[1] * lx
+                else:
+                    px_ = ax_ + ldir[0] * lx + sdir[0] * side_off * s
+                    pz_ = az_ + ldir[1] * lx + sdir[1] * side_off * s
+                    fdx, fdy = -sdir[0] * s, -sdir[1] * s
+                px_, pz_ = _clamp_in_room(px_, pz_, c, 0)
+                pos[c["id"]] = {"id": c["id"], "position": [px_, 0.0, pz_],
+                                "rotation": [0, _face(c, px_, pz_, px_ + fdx, pz_ + fdy), 0],
+                                "placed": True}
+            if spare_kids:
+                # spare chairs line a wall, backs to it, facing the opposing wall
+                def _rect_of(oid):
+                    p2 = pos.get(oid)
+                    o2 = by_id.get(oid)
+                    if not p2 or not p2.get("placed") or not p2.get("position") or not o2:
+                        return None
+                    w2 = float(o2["dimensions"]["width"]); d2 = float(o2["dimensions"]["depth"])
+                    if round((p2.get("rotation") or [0, 0, 0])[1] / 90) % 2:
+                        w2, d2 = d2, w2
+                    x2, _, z2 = p2["position"]
+                    return (x2 - w2 / 2, z2 - d2 / 2, w2, d2)
+                placed_rects = [r2 for r2 in (_rect_of(i2) for i2 in pos) if r2]
+                placed_rects += [(kk["x"], kk["z"], kk["width"], kk["depth"]) for kk in keepouts]
+
+                def _free_spot(x2, z2, w2, d2):
+                    for (rx2, rz2, rw2, rd2) in placed_rects:
+                        if (min(x2 + w2, rx2 + rw2) - max(x2, rx2) > 0.03
+                                and min(z2 + d2, rz2 + rd2) - max(z2, rz2) > 0.03):
+                            return False
+                    return True
+                walls = [("back", 0), ("front", 0), ("left", 0), ("right", 0)]
+                for c in spare_kids:
+                    cwd = float(c["dimensions"]["width"]); cdd = float(c["dimensions"]["depth"])
+                    done = False
+                    for wname, _ in walls:
+                        steps = int((cw if wname in ("back", "front") else ch) / 0.3)
+                        for st2 in range(2, steps - 2):
+                            t2 = st2 * 0.3
+                            if wname == "back":
+                                x2, z2, rot2 = t2, 0.12 + cdd / 2, 0
+                            elif wname == "front":
+                                x2, z2, rot2 = t2, ch - 0.12 - cdd / 2, 180
+                            elif wname == "left":
+                                x2, z2, rot2 = 0.12 + cdd / 2, t2, 90
+                            else:
+                                x2, z2, rot2 = cw - 0.12 - cdd / 2, t2, 270
+                            if x2 - cwd / 2 < 0.05 or x2 + cwd / 2 > cw - 0.05:
+                                continue
+                            if z2 - cdd / 2 < 0.05 or z2 + cdd / 2 > ch - 0.05:
+                                continue
+                            if _free_spot(x2 - cwd / 2, z2 - cdd / 2, cwd, cdd):
+                                fx3 = math.sin(math.radians(rot2))
+                                fz3 = math.cos(math.radians(rot2))
+                                pos[c["id"]] = {"id": c["id"],
+                                                "position": [x2, 0.0, z2],
+                                                "rotation": [0, _face(c, x2, z2,
+                                                                      x2 + fx3, z2 + fz3), 0],
+                                                "placed": True}
+                                placed_rects.append((x2 - cwd / 2, z2 - cdd / 2, cwd, cdd))
+                                done = True
+                                break
+                        if done:
+                            break
+            continue
         # a half-arc fan spaces petals like a full circle of 2(n-1) — same chord
         n_eff = 2 * (len(kids) - 1) if occupied_front and len(kids) > 1 else len(kids)
-        r = _petal_radius(float(pd["width"]), float(pd["depth"]), kid_max, n_eff)
+        r = _petal_radius(pw_, pd_, kid_max, n_eff)
         for k, c in enumerate(kids):
             if occupied_front:
                 ang = base + math.radians(90 + 180 * k / max(1, len(kids) - 1))

@@ -72,13 +72,14 @@
 </header>
 
 <nav id="stepper">
-  <span class="stop" data-t="s1"><span class="n">1</span>📸 Photo → 3D</span><span class="arrow">→</span>
-  <span class="stop" data-t="s2"><span class="n">2</span>🏆 Benchmarks</span><span class="arrow">→</span>
-  <span class="stop" data-t="s3"><span class="n">3</span>🪑 Repair &amp; refine</span><span class="arrow">→</span>
-  <span class="stop" data-t="s4"><span class="n">4</span>🗂️ Catalog</span><span class="arrow">→</span>
-  <span class="stop" data-t="s5"><span class="n">5</span>🛋️ Rooms</span><span class="arrow">→</span>
-  <span class="stop" data-t="s6"><span class="n">6</span>🏢 Buildings</span><span class="arrow">→</span>
-  <span class="stop" data-t="s7"><span class="n">7</span>✅ Proof &amp; docs</span>
+  <span class="stop" data-t="s0"><span class="n">1</span>📁 Code files</span><span class="arrow">→</span>
+  <span class="stop" data-t="s1"><span class="n">2</span>📸 Photo → 3D</span><span class="arrow">→</span>
+  <span class="stop" data-t="s2"><span class="n">3</span>🏆 Benchmarks</span><span class="arrow">→</span>
+  <span class="stop" data-t="s3"><span class="n">4</span>🪑 Repair &amp; refine</span><span class="arrow">→</span>
+  <span class="stop" data-t="s4"><span class="n">5</span>🗂️ Catalog</span><span class="arrow">→</span>
+  <span class="stop" data-t="s5"><span class="n">6</span>🛋️ Rooms</span><span class="arrow">→</span>
+  <span class="stop" data-t="s6"><span class="n">7</span>🏢 Buildings</span><span class="arrow">→</span>
+  <span class="stop" data-t="s7"><span class="n">8</span>✅ Proof &amp; docs</span>
 </nav>
 
 <main>
@@ -88,8 +89,26 @@
     and holds the evidence pages for that step. Click a step above to jump; follow the ⬇ arrows to read
     it like a story. Everything runs on this localhost — nothing is mocked.</div>
 
+  <section class="step" id="s0">
+    <div class="stephead"><span class="big">1</span><h2>Code files and what they do — how this is built
+      <span class="apptab">the whole app, mapped</span></h2></div>
+    <p class="expl">Before the story: the machine itself. One Node/Express server, three workspaces over a
+      shared 3D viewport, every heavy job in Python behind queues, and ONE rulebook file
+      (<b>rule_packs.py</b>, ASR legal text cited) that both the room and building engines obey. The page
+      below documents <b>every button, upload box, right-click and keyboard shortcut</b> — chip
+      right-click = multi-copy, room right-click = picks blueprint, 📐 = layout blueprint, R/⟳ = rotate
+      90°, drag with live legality — and maps each to the exact file and function that implements it.</p>
+    <div class="grid">
+      <a class="card hero" href="/code_files.html"><b>📁 Code files and what they do</b>
+        <span>Navigation, all three tabs control by control (what it does + the code behind it),
+        every file's responsibility, and three end-to-end click walkthroughs.</span></a>
+      <a class="card" href="/architecture.html"><b>🌳 The structure tree (classic view)</b>
+        <span>The codebase as a clickable tree — the compact companion to the detailed tables.</span></a>
+    </div>
+  </section>
+
   <section class="step" id="s1">
-    <div class="stephead"><span class="big">1</span><h2>Photo → 3D — five AI engines make the mesh
+    <div class="stephead"><span class="big">2</span><h2>Photo → 3D — five AI engines make the mesh
       <span class="apptab">app tab: ⚙️ Generate object</span></h2></div>
     <p class="expl">Drop a single furniture photo in the <b>Generate object</b> tab: the image is segmented
       (rembg), a 3D engine reconstructs the mesh (TripoSR runs locally on this laptop; TripoSG, TRELLIS,
@@ -109,7 +128,7 @@
   </section>
 
   <section class="step" id="s2">
-    <div class="stephead"><span class="big">2</span><h2>Benchmarks — which AI wins, measured not guessed
+    <div class="stephead"><span class="big">3</span><h2>Benchmarks — which AI wins, measured not guessed
       <span class="apptab">evidence for: ⚙️ Generate object</span></h2></div>
     <p class="expl">Same inputs, same ground truth, same metric for every engine. 187 internet photos,
       up to 9 variants each, F-scores against ABO reference meshes. This is why the app defaults the way
@@ -130,7 +149,7 @@
   </section>
 
   <section class="step" id="s3">
-    <div class="stephead"><span class="big">3</span><h2>Repair &amp; refine — broken meshes become products
+    <div class="stephead"><span class="big">4</span><h2>Repair &amp; refine — broken meshes become products
       <span class="apptab">runs inside: ⚙️ Generate object</span></h2></div>
     <p class="expl">Raw AI output is rarely usable: swivel chairs come out with ~500-fragment broken bases,
       surfaces are noisy, exports are bloated. This step grafts parametric bases, smooths, decimates and
@@ -158,7 +177,7 @@
   </section>
 
   <section class="step" id="s4">
-    <div class="stephead"><span class="big">4</span><h2>The Catalog — 626 generated items + ABO + your own
+    <div class="stephead"><span class="big">5</span><h2>The Catalog — 626 generated items + ABO + your own
       <span class="apptab">app tabs: ⚙️ Generate · 🛏️ Build a room</span></h2></div>
     <p class="expl">Everything that survives steps 1–3 lands in the catalog with a professional code —
       <b>item&nbsp;·&nbsp;engine&nbsp;·&nbsp;number</b> (desk-SAM3D-001, sofa-TRL-014…), renumbered
@@ -177,7 +196,7 @@
   </section>
 
   <section class="step" id="s5">
-    <div class="stephead"><span class="big">5</span><h2>Rooms — human logic + German law place the furniture
+    <div class="stephead"><span class="big">6</span><h2>Rooms — human logic + German law place the furniture
       <span class="apptab">app tab: 🛏️ Build a room</span></h2></div>
     <p class="expl">A CP-SAT solver places every item under the <b>ASR</b> (Arbeitsstättenrichtlinie) envelope —
       legal staffing caps, movement areas, route widths — and the human relational rules: chair tucked at its
@@ -202,7 +221,7 @@
   </section>
 
   <section class="step" id="s6">
-    <div class="stephead"><span class="big">6</span><h2>Buildings — whole IFC buildings, furnished floor by floor
+    <div class="stephead"><span class="big">7</span><h2>Buildings — whole IFC buildings, furnished floor by floor
       <span class="apptab">app tab: 🏢 Building</span></h2></div>
     <p class="expl">Drop <b>any</b> IFC on the Building tab — drop-tested twice on 2026-07-15 with a fresh
       7-storey tower: <b>9/9 space-bearing floors, 81/81 rooms exact</b>, smart suggestions attached, and
@@ -235,7 +254,7 @@
   </section>
 
   <section class="step" id="s7">
-    <div class="stephead"><span class="big">7</span><h2>Proof &amp; documentation — tested, dated, explained
+    <div class="stephead"><span class="big">8</span><h2>Proof &amp; documentation — tested, dated, explained
       <span class="apptab">this tab: 🔬 Research</span></h2></div>
     <p class="expl">Nothing above is taken on faith: system test campaigns, the exact-geometry clash meter
       (fleet-wide: 4,891 pieces, one 0.045 m² sliver), floor-dissection cross-validation, and the dated

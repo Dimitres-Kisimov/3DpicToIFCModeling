@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code files and what they do — SCS Studio</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📁</text></svg>">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --bg:#f4f6fb; --panel:#fff; --ink:#1f2733; --mut:#6b7688; --line:#e3e8f0;
+          --brand:#2f6bff; --ok:#1a7f4b; }
+  body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:var(--panel); border-bottom:1px solid var(--line); padding:16px 28px;
+           display:flex; align-items:baseline; gap:14px; position:sticky; top:0; z-index:5; }
+  header h1 { font-size:19px; } header p { color:var(--mut); font-size:13px; }
+  header a { margin-left:auto; color:var(--brand); font-size:13px; text-decoration:none; font-weight:600; }
+  main { max-width:1240px; margin:0 auto; padding:22px 28px 70px; }
+  .note { background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--brand);
+          border-radius:12px; padding:14px 18px; font-size:13.5px; line-height:1.65; margin-bottom:10px; }
+  h2 { font-size:16px; margin:28px 2px 4px; }
+  h2 small { color:var(--mut); font-weight:400; font-size:12.5px; margin-left:8px; }
+  .tw { overflow-x:auto; background:var(--panel); border:1px solid var(--line); border-radius:12px; margin-top:8px; }
+  table { border-collapse:collapse; width:100%; font-size:12.5px; }
+  th, td { text-align:left; padding:8px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { background:#f0f4fc; font-size:11.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--mut); }
+  td code, li code, p code { background:#eef2fa; border-radius:5px; padding:1px 6px; font-size:11.5px; }
+  .key { display:inline-block; border:1px solid #b9c3d6; border-bottom-width:2px; border-radius:5px;
+         padding:0 7px; font:600 11.5px Consolas,monospace; background:#fff; }
+  ul.flow { margin:8px 0 0 22px; font-size:13.5px; line-height:1.8; }
+</style>
+</head>
+<body>
+<header>
+  <h1>📁 Code files and what they do</h1>
+  <p>every button, gesture and file — and how the UI maps to the engines underneath</p>
+  <a href="/hub.html">← Research hub</a>
+</header>
+<main>
+  <div class="note"><b>How the app is built, in one paragraph:</b> a Node/Express server
+    (<code>backend/server.js</code>) serves the one-page UI (<code>frontend/</code>) and a REST API
+    (<code>backend/routes/</code>). Every heavy operation — mesh generation, catalog work, the CP-SAT
+    layout solver, building population, IFC export — runs in Python (<code>backend/python-scripts/</code>),
+    spawned per request through <code>services/roomApi.js</code> with queues so bursts can't pile up.
+    One shared 3D viewport (xeokit) hosts three workspaces; switching tabs never destroys work.
+    The German ASR rulebook lives in ONE file (<code>rule_packs.py</code>) that both the room and the
+    building engines read — change a rule once, both obey. The classic clickable tree view lives
+    <a href="/architecture.html">here</a>.</div>
+
+  <h2>1 · Navigating the app <small>tabs, stage bar, keyboard — and where each lives in code</small></h2>
+  <div class="tw"><table>
+    <tr><th>Control</th><th>What it does</th><th>Code</th></tr>
+    <tr><td><b>Tab bar</b> (📷 Generate · 🛋️ Build a room · 🏢 Building)</td>
+        <td>Switches workspace. Models stay loaded per tab; the camera position is remembered per workspace. Deep-links: <code>/#room</code>, <code>/#building</code> open a tab directly.</td>
+        <td><code>frontend/js/shell.js → setTab()</code></td></tr>
+    <tr><td><b>▶ Demo run</b></td><td>One-click: a full room is suggested, solved, rendered and loaded — nothing to type.</td>
+        <td><code>shell.js → demoRun()</code> → <code>POST /api/room/demo</code></td></tr>
+    <tr><td><b>🔬 Research</b></td><td>Opens the research hub — every benchmark and evidence page.</td><td><code>frontend/hub.html</code></td></tr>
+    <tr><td><b>Stage bar</b> (bottom of the 3D view)</td>
+        <td>Context buttons per tab: 🎛 Fit view · 🔄 Rotate view (generate) · 📐 2D plan + 🧱 Walls (room) · 📐 2D floor, 🔒 Lock camera, 👻 X-ray, <b>⟳ 90°</b> (building).</td>
+        <td><code>shell.js</code> visibility · handlers in each workspace file</td></tr>
+    <tr><td><span class="key">R</span> key</td>
+        <td>Rotates the SELECTED piece 90° around the vertical axis — yaw only, pieces face the four walls, never ceiling/floor. Works in the Building 3D view, the Building 2D plan, and the Room 2D plan editor. Legality is re-checked each turn (snaps back if blocked); rotation is baked into GLB/IFC exports.</td>
+        <td><code>buildingMode.js → rotateSelected()</code> · <code>planEditor.js</code> · bake: <code>room_api.py → cmd_building_save / cmd_building_export_ifc</code></td></tr>
+    <tr><td>Health dot (top right)</td><td>Green = server reachable; polls every 30 s.</td><td><code>shell.js → pollHealth()</code></td></tr>
+  </table></div>
+
+  <h2>2 · Tab 1 — Generate object <small>photo → coded catalog item</small></h2>
+  <div class="tw"><table>
+    <tr><th>Control</th><th>What it does</th><th>Code</th></tr>
+    <tr><td><b>Choose a photo</b> box (click or drag&drop)</td>
+        <td>Uploads one furniture photo (stays local). Preview appears below.</td>
+        <td><code>index.js</code> dropzone → generate pipeline</td></tr>
+    <tr><td><b>🪑 Try a sample chair</b></td><td>Loads a bundled sample photo so the flow can be tested with zero assets.</td>
+        <td><code>index.js → useSampleBtn</code>, served from the <code>/sample</code> mount</td></tr>
+    <tr><td><b>Quality</b> select</td><td><i>Detailed</i> = TripoSR builds a brand-new mesh (runs locally, ~60–90 s; the first ever run downloads its weights once). <i>Fast</i> = classify the photo and pull the best catalog match instantly.</td>
+        <td><code>backend/ai/triposr.js</code> → <code>run_triposr.py</code> / <code>detect_worker.py</code></td></tr>
+    <tr><td><b>🏷️ Object type</b> select</td><td><i>Auto</i> lets the AI classify; choosing a type FORCES category, IFC class and the professional code (e.g. <code>projector-TSR-001</code>).</td>
+        <td><code>triposr.js</code> forcedCategory → numbering in <code>room_api.py</code></td></tr>
+    <tr><td><b>🪑 Chair base</b> select</td><td>AI can't rebuild thin chair legs from one photo. <i>Auto</i> grafts a clean parametric base only when the bottom is broken; or pick a style (5-star, sled, 4 legs…).</td>
+        <td><code>graft_chair_base.py</code> (6 styles + broken-bottom detector)</td></tr>
+    <tr><td><b>Generate 3D model</b></td><td>Segment → reconstruct → repair → real-dimension → thumbnail → auto-register. The pipeline lights show each stage; the result lands in the viewer, your inventory AND the room catalog (badge OURS).</td>
+        <td><code>routes/objectRoutes.js</code> → <code>run_triposr.py</code>, <code>_triposr_postprocess.py</code>, <code>register_upload</code></td></tr>
+    <tr><td><b>Your models</b> list</td><td>Everything generated this session; click to focus, ✕ deletes — the professional numbering renumbers automatically.</td>
+        <td><code>inventory.js</code> · <code>DELETE /api/room/generated/:id</code></td></tr>
+    <tr><td><b>Export</b> buttons</td><td>📥 all as one IFC · 📄 CSV table · 📦 each object as its own IFC.</td>
+        <td><code>exporter.js</code> → <code>routes/exportRoutes.js</code> → <code>saveIFC.py</code> + the IFC optimizer</td></tr>
+  </table></div>
+
+  <h2>3 · Tab 2 — Build a room <small>the ergonomics engine, hands-on</small></h2>
+  <div class="tw"><table>
+    <tr><th>Control</th><th>What it does</th><th>Code</th></tr>
+    <tr><td><b>Width/Depth</b> + <b>Type</b> + <b>Size presets</b></td>
+        <td>Room definition. Types are grouped Workplace-first; each type activates its ASR rule pack (staffing caps, route widths, groupings).</td>
+        <td><code>roomBuilder.js</code> · packs: <code>rule_packs.py → ROOM_TYPES</code></td></tr>
+    <tr><td><b>Population</b> Light/Medium/Dense + <b>✨ Suggest</b></td>
+        <td>Asks the SAME engine buildings use (<code>smart_furnish</code>) for a fitting set. Dense staffs toward the ASR legal floor; the suggestion is capacity-guarded so it fits the usable floor (~55% of the room).</td>
+        <td><code>GET /api/room/suggest</code> → <code>populate_building.py → smart_furnish()</code></td></tr>
+    <tr><td><b>Pick furniture</b> counts + <b>⋯ variant browser</b></td>
+        <td>− / + set counts per category; ⋯ opens every selectable mesh (ABO products, OURS generated, CC0, PRIM styles) — picking specific ones sends <code>ids</code> instead of a count. The meter turns red when furniture + person-space exceeds the usable floor.</td>
+        <td><code>roomBuilder.js → browse/chosen/itemsPayload()</code></td></tr>
+    <tr><td><b>+ New category…</b></td><td>Declare your own category name and upload one or many IFC items — they join the catalog with codes (<code>&lt;name&gt;-USER-001</code>) and become placeable everywhere, buildings included.</td>
+        <td><code>POST /api/room/catalog/custom</code> → <code>cmd_register_ifc_item</code></td></tr>
+    <tr><td><b>Build / solve</b></td><td>CP-SAT places everything under ASR + the human rules (see the Item Logic Register). What can't sit legally is REFUSED and listed — never forced.</td>
+        <td><code>POST /api/room/layout</code> → <code>build_room_scene.py</code> + <code>spatial_layout.py</code></td></tr>
+    <tr><td><b>📐 2D plan editor</b></td><td>Drag any piece — its people-space zones ride along; overlaps flag red; <span class="key">R</span>/⟳ rotates 90°. Every change saves (debounced) and can rebuild the 3D scene.</td>
+        <td><code>planEditor.js</code> → <code>POST /api/room/positions</code></td></tr>
+    <tr><td><b>Exports</b></td><td>CSV object table · GLB scene · IFC (BIM) with the furniture as IfcFurnishingElements.</td>
+        <td><code>routes/roomRoutes.js</code> · <code>build_room_ifc.py</code></td></tr>
+  </table></div>
+
+  <h2>4 · Tab 3 — Building <small>whole IFC buildings, floor by floor</small></h2>
+  <div class="tw"><table>
+    <tr><th>Control</th><th>What it does</th><th>Code</th></tr>
+    <tr><td><b>Choose a building</b> / <b>Drop an .ifc here</b></td>
+        <td>Any IFC: checked, profiled (storeys/spaces/products shown instantly) and registered. The first room-dissection triggers a one-time geometry scan (big files take minutes, cached forever). Drop-tested: a fresh 7-storey tower → 9/9 floors, 81/81 rooms exact.</td>
+        <td><code>POST /api/buildings/upload</code> → <code>register_building / prepare_building</code></td></tr>
+    <tr><td><b>Room cards</b> + per-room <b>selection bar</b></td>
+        <td>Every recognized room with its measured area and a smart suggestion you can edit — same catalog, same ⋯ variants; generated items are picked as <code>gen:&lt;id&gt;</code>.</td>
+        <td><code>buildingMode.js</code> · <code>GET /api/building/:id/rooms</code></td></tr>
+    <tr><td><b>Right-click a furniture chip</b></td><td>Multi-copy: add several of that item at once.</td><td><code>buildingMode.js</code> chip contextmenu</td></tr>
+    <tr><td><b>Right-click a room card</b></td><td>Sets that room's PICKS as the default blueprint for every room of the same name/type.</td><td><code>buildingMode.js</code> picks blueprint</td></tr>
+    <tr><td><b>📐 button on a room card</b></td><td>LAYOUT blueprint: after populating, copy this room's exact arrangement to every similar room — exact-size rooms match 1:1, slightly different rooms are clash-checked piece by piece, too-small rooms are refused with a clear message. Re-center anchors: left/right/up/down.</td>
+        <td><code>buildingMode.js → applyLayoutBlueprint()</code></td></tr>
+    <tr><td><b>Population</b> Light/Medium/Dense + <b>Populate building</b></td>
+        <td>Every furnishable room solved with the full rulebook: de-rotated frames for rotated buildings, walking-path protection, door keep-clears, safety-access strips, presentation row engine, door-flank coat racks. Result: colored, movable pieces + a furniture schedule.</td>
+        <td><code>POST /api/building/:id/populate</code> → <code>populate_building.py</code> (~1900 lines, the flagship)</td></tr>
+    <tr><td><b>Floor chips</b> / <b>All floors</b></td><td>Isolate one storey in 3D and in the 2D floor plan; every floor that has rooms is listed.</td>
+        <td><code>buildingMode.js → selectFloor()</code> + section planes</td></tr>
+    <tr><td><b>Drag a piece</b> (3D or 2D)</td><td>Reposition; legality (room walls, keep-outs, neighbours) is checked live — illegal spots snap back.</td>
+        <td><code>buildingMode.js</code> drag + <code>isLegalPiece()</code>; 2D: <code>buildingPlan.js</code></td></tr>
+    <tr><td><b>⟳ 90° / <span class="key">R</span></b></td><td>Rotate the selected piece around the vertical axis (see §1) — synced 2D↔3D, export-baked.</td>
+        <td><code>buildingMode.js → rotateSelected()</code></td></tr>
+    <tr><td><b>Double-click a room (2D)</b></td><td>Enter the room: the camera flies in, its pieces highlight.</td><td><code>buildingPlan.js → enterRoom</code></td></tr>
+    <tr><td><b>💾 Save layout</b> / <b>📥 Download IFC</b></td>
+        <td>GLB of the whole furnished building, or a BIM IFC where every piece — at its final, possibly dragged/rotated spot — is an IfcFurnishingElement contained in its storey. Opens in Revit/BIMvision.</td>
+        <td><code>cmd_building_save / cmd_building_export_ifc</code> (room_api.py)</td></tr>
+    <tr><td><b>👻 X-ray</b> · <b>🔒 Lock</b> · <b>🧹 Clear &amp; redo</b></td>
+        <td>Ghost the shell to inspect furniture · lock the camera while dragging · wipe picks and start fresh.</td>
+        <td><code>buildingMode.js</code></td></tr>
+  </table></div>
+
+  <h2>5 · The files <small>what each one owns</small></h2>
+  <div class="tw"><table>
+    <tr><th>File</th><th>Responsibility</th></tr>
+    <tr><td><code>backend/server.js</code></td><td>Express app: static mounts (frontend, /out, /benchmark, /gallery, /docs-img, xeokit vendor), API routers, port from the <code>PORT</code> env var.</td></tr>
+    <tr><td><code>backend/routes/*.js</code></td><td>REST endpoints: <code>objectRoutes</code> (generate), <code>roomRoutes</code> (catalog/suggest/layout/positions/upload), <code>buildingRoutes</code> (upload/rooms/populate/save/export-ifc), <code>exportRoutes</code>, <code>apiRoutes</code> (engine installs + health), <code>pipelineRoutes</code>, <code>debugRoutes</code>.</td></tr>
+    <tr><td><code>backend/services/roomApi.js</code></td><td>Spawns <code>room_api.py</code> per command with JSON I/O; catalog caching + invalidation; queues (<code>cpuQueue</code>, building queue) so heavy jobs serialize.</td></tr>
+    <tr><td><code>backend/ai/*.js</code></td><td><code>triposr.js</code> local generation orchestration; <code>bigEngine.js</code> lists installable engines (VRAM/OS-gated) for in-app installs.</td></tr>
+    <tr><td><code>python-scripts/rule_packs.py</code></td><td><b>THE RULEBOOK.</b> ASR constants with the legal text cited, per-room-type packs (clearances, aisles, perimeter sets, groupings with caps), archetypes, placement profiles (incl. safety front zones). Both engines read it.</td></tr>
+    <tr><td><code>python-scripts/spatial_layout.py</code></td><td>The CP-SAT solver: no-overlap, clearances, people-space zones, wall/corner/centre preferences, door keep-outs, optional placement (honest refusals), circulation walk (a 0.90 m person-path to every item).</td></tr>
+    <tr><td><code>python-scripts/build_room_scene.py</code></td><td>Room engine: presentation row pre-pass, safety/display wall pre-mount with protected strips, armchair row clusters, table rings (round) / edge seating (rectangular: max 4 per side, spares parked at walls), anchored children (chair→desk, monitor→desk…), wall decor at human heights, projector ceiling-aim, dependency realism; outputs GLB + metamodel + schedule.</td></tr>
+    <tr><td><code>python-scripts/populate_building.py</code></td><td>Building engine (~1900 lines): IFC storey/space dissection, true footprints (L-rooms, voids), obstacles + door keep-clears + walking-path protection, <code>smart_furnish</code> (area-scaled, ASR-capped, capacity-guarded), row engine, door-flank logic, desk-side bins, rel-link export, per-piece movable GLBs.</td></tr>
+    <tr><td><code>python-scripts/room_api.py</code></td><td>Command hub: catalog list/renumber, uploads with engine badges, custom IFC categories, layout, positions update (drag/rotate persistence), building rooms/save/IFC export (rotation-aware), suggest, demo.</td></tr>
+    <tr><td><code>python-scripts/catalog.py</code></td><td>Catalog data: 38 categories with IFC classes + real dims, the ABO manifest (graceful when the library isn't downloaded yet), mesh borrowing, generated-item overlay, the group→anchor assigner (with per-rule caps).</td></tr>
+    <tr><td><code>python-scripts/test_*.py</code></td><td>The gates: <code>test_e2e_smoke</code> (8 end-user capabilities incl. a real generation) and <code>test_floor_dissection</code> (15/15 fleet vs IFC ground truth).</td></tr>
+    <tr><td><code>frontend/js/*.js</code></td><td><code>shell.js</code> conductor · <code>index.js</code> generate tab · <code>roomBuilder.js</code> room tab · <code>planEditor.js</code> room 2D · <code>buildingMode.js</code> building tab · <code>buildingPlan.js</code> building 2D · <code>xeokitViewer.js</code> shared 3D (WebGL-gated with an actionable error) · <code>inventory.js</code>, <code>exporter.js</code>, <code>api.js</code>, <code>glbLoader.js</code>, <code>transformControls.js</code>.</td></tr>
+    <tr><td><code>scripts/*.py</code></td><td>Reproducibility: every artifact regenerates — <code>make_human_layouts</code>, <code>make_showcase_assets</code> (showroom + X-rays), <code>make_fleet_report</code>, <code>make_item_register</code> (3 outputs), <code>make_presentation_shots</code> + <code>make_building_shots</code>, <code>drop_test_7f</code>, <code>test_late_variants</code>, <code>make_release_zip</code> (full/--lite bundles), the variant-sourcing scripts.</td></tr>
+    <tr><td><code>docs/</code></td><td>USER_GUIDE, DEVELOPER_MANUAL, ASR_COMPLIANCE (legal mapping), ITEM_LOGIC_REGISTER, PATCH_V2, DROP_TEST_REPORT, LATE_VARIANTS_COVERAGE, BUILDINGS_PROVENANCE, the human-layout renders.</td></tr>
+    <tr><td><code>data/</code></td><td><code>generated_assets/</code> (714+ coded items + manifest), <code>buildings/</code> (fleet registry + IFCs), <code>mesh_library_abo/</code> (CC-BY catalog, re-downloadable), the PolyHaven CC0 pool, demo photos.</td></tr>
+  </table></div>
+
+  <h2>6 · One click, end to end <small>how the UI relates to functionality</small></h2>
+  <ul class="flow">
+    <li><b>Generate:</b> photo → <code>objectRoutes</code> → rembg segmentation → TripoSR mesh → repair pack + chair-base graft → real dimensions (Neufert) → thumbnail → auto-register with a professional code → appears in the viewer + the catalog.</li>
+    <li><b>Suggest &amp; solve:</b> type/size/density → <code>smart_furnish</code> (ASR staffing, capacity guard) → your edits and ⋯ picks → <code>build_room_scene</code> pre-passes (rows, safety strips, armchair rows) → CP-SAT → children attach → wall decor mounts → GLB + 2D plan + the refusal list.</li>
+    <li><b>Building:</b> drop an IFC → profile + registry → geometry scan → per-room cards → picks/blueprints → <code>populate_building</code> per room (same rulebook) → movable pieces in 3D/2D → drag/rotate → 💾 GLB / 📥 IFC with everything baked in.</li>
+  </ul>
+</main>
+</body>
+</html>
