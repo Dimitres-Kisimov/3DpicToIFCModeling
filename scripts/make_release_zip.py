@@ -16,8 +16,9 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 import sys
 LITE = "--lite" in sys.argv
+VERSION = "v4.2"
 OUT = REPO / "deliverable" / "local_only" / (
-    "SCS_Studio_App_v2.0_lite.zip" if LITE else "SCS_Studio_App_v2.0.zip")
+    f"SCS_Studio_App_{VERSION}_lite.zip" if LITE else f"SCS_Studio_App_{VERSION}.zip")
 
 ABO = "data/mesh_library_abo"
 INCLUDE = [
@@ -33,8 +34,8 @@ EXCLUDE_DIRS = {"node_modules", "__pycache__", ".git", "_ingest_work",
                 "_listings_work", "app_out", "outputs", "engines"}
 EXCLUDE_EXT = {".pyc"}
 
-BUNDLE_README = """SCS Studio — photo -> 3D -> room -> BIM  (app bundle v1.0)
-=============================================================
+BUNDLE_README = """SCS Studio — photo -> 3D -> room -> BIM -> procurement  (app bundle v4.2)
+==========================================================================
 
 RUN ON WINDOWS — EASIEST: double-click  SCS_Studio.bat
   It checks Node/Python, installs packages on first run, starts the server
